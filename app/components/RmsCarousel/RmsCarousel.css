@@ -1,0 +1,51 @@
+.rmsCarousel {
+  text-align: left;
+
+}
+
+.rmsCarousel .text {  
+  text-align: left;
+}
+
+.rmsCarousel .page {
+  display:inline-block; width:8px; height: 8px; background-color: #1eb7ff; margin:5px 2px; cursor: pointer; border-radius:50%;
+  filter: opacity(45%);
+}
+
+.rmsCarousel .active {
+  filter: opacity(100%);
+}
+
+.rmsCarousel .title {
+  color:#1eb7ff!important;
+  text-align:left;
+  margin-bottom:0.1rem;
+}
+
+.rmsCarousel .paging {
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+}
+
+.rmsCarousel p {
+  margin-bottom: 0.5rem!important;
+}
+
+.markAsRead {
+  background-color: #1eb7ff;
+  color: white;
+  border-radius: 0.25rem;
+  padding:3px 6px;
+  cursor: pointer;
+  position:absolute;
+  right:1rem;
+  top:40%;
+  top:-webkit-calc(50% - 1rem);
+  top:calc(50% - 1rem);
+}
+
+.markAsRead:hover {
+  background-color: #D2EEFF!important;
+  color:#4F6A75;
+}

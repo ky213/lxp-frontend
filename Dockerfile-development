@@ -1,0 +1,9 @@
+FROM node:carbon
+
+WORKDIR /srv/app/lxp-client
+
+COPY package.json /srv/app/lxp-client
+
+RUN npm install
+
+CMD [ "npm", "start"]

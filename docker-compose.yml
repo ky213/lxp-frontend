@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+################################
+# Frontend 
+################################
+  client: 
+    container_name: lxp-frontend
+    hostname: lxp-frontend
+    build: 
+        context: .
+        dockerfile: Dockerfile-development
+    expose:
+      - 4101
+    environment:
+      - NODE_ENV=development
+      - API_URL=http://localhost:4001/api
+    ports:
+      - 4101:4101
+    volumes:
+        - ./:/srv/app/lxp-client
+        - ./app:/srv/app/lxp-client/app
+        - ./build:/srv/app/lxp-client/build
+        - /srv/app/lxp-client/node_modules
+    command: npm run start

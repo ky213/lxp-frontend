@@ -1,0 +1,525 @@
+import React from 'react';
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    Row,
+    Col,
+    Card,
+    CardBody,
+    FormGroup,
+    Label,
+    CustomInput,
+    InputGroup,
+    InputGroupAddon,
+    InvalidFeedback
+  } from "@/components";
+
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import DatePicker, { setDefaultLocale } from 'react-datepicker';
+import moment from 'moment';
+import {AddonInput} from '@/routes/Forms/DatePicker/components';
+import {activityService, residentService, subspecialtiesService, expLevelService, programService} from '@/services';
+import { useAppState } from '@/components/AppState';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { Role } from '@/helpers';
+import ThemedButton from "@/components/ThemedButton";
+import RRuleGenerator from 'react-rrule-generator';
+
+export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, currentProgramId, userPrograms}) => {
+    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
+    const [users, setUsers] = React.useState([]);
+    const [activityTypes, setActivityTypes] = React.useState([]);
+    const [timeDifference, setTimeDifference] = React.useState(30);
+    const [experienceLevels, setExperienceLevels] = React.useState([]);
+    const [rrule, setRRule] = React.useState([]);
+    const [showRepeatOptions, setShowRepeatOptions] = React.useState(false);
+    //const [userPrograms, setUserPrograms] = React.useState([]);
+    const [selectedProgram, setSelectedProgram] = React.useState(null);
+    const currentProgram = currentProgramId && userPrograms && userPrograms.filter(p => p.programId == currentProgramId) || [];
+
+    React.useEffect(() => {
+        if(isOpen) {
+
+            const fetchData = async () => {
+                try {
+                    const activityTypes = await activityService.getActivityTypes(selectedInstitute.instituteId);
+                    setActivityTypes(activityTypes);
+                }
+                catch(error) {
+                    console.log("Error while fetching activity types:", error)
+                }
+
+                if(currentUser && currentUser.user) {
+                    if(currentProgramId) {
+                        try {
+                            const residents = await residentService.getAllActive(1, 999, null, selectedInstitute.instituteId, currentProgramId);
+                            setUsers(residents.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
+                        }
+                        catch(error) {
+                            console.log("Error while fetching residents:", error)
+                        }
+
+                        try {
+                            const expLevels = await expLevelService.getByProgramId(currentProgramId);
+                            setExperienceLevels(expLevels);
+                        }
+                        catch(error) {
+                            console.log("Error while fetching experience levels:", error)
+                        }
+                    }
+                }
+            }
+
+            fetchData();
+        }
+
+        setRRule(false);
+        setShowRepeatOptions(false);
+
+    }, [isOpen]);
+
+    const eventStartObj = eventStart && moment(eventStart).toObject() || null;
+    const eventEndObj = eventStart && moment(eventEnd).toObject() || null;
+    const remainder = 30 - (moment().minute() % 30);
+
+    const changePriority = (formikProps, priority) => {
+        formikProps.setFieldValue('priority', priority)
+        formikProps.setFieldValue('levels', [])
+        formikProps.setFieldValue('residents', [])        
+    }
+
+    console.log("Selected program id:", currentProgramId)
+
+    return (
+        <Modal toggle={toggle} isOpen={isOpen} className="modal-outline-primary" size="lg">
+            <Formik
+                enableReinitialize={false}
+                initialValues={{
+                    activityName: '',
+                    description: '',
+                    program: currentProgram || [],
+                    start: eventStart && moment().add(remainder, 'minutes').set({ years: eventStartObj.years, months: eventStartObj.months, date: eventStartObj.date }).toDate() || '',
+                    end: eventEnd && moment().add(remainder, 'minutes').add(timeDifference, 'minutes').set({ years: eventEndObj.years, months: eventEndObj.months, date: eventEndObj.date }).toDate() || '',
+                    residents: [],
+                    priority: 1,
+                    activityType: '',
+                    levels: []
+                }}
+                validationSchema={Yup.object().shape({
+                    program: Yup.array().min(1, 'You need to select a program'),
+                    priority: Yup.string().required('You need to select a priority'),
+                    activityName: Yup.string().required('You need to enter a name for the activity'),
+                    start: Yup.date().required('Starting time of the activity is required'),
+                    activityType: Yup.string().required('You need to select the activity type'),
+                    end: Yup.date().required('Ending time of the activity is required')
+                            .when('start', (start, schema) => schema.min(start, ({min}) => `Ending time must be greater than the activity starting time (${moment(min).format('LLLL')})`)),
+                    levels: Yup.array().when('priority', {
+                        is: "2",
+                        then: Yup.array().min(1, 'You need to select a level')
+                    }),
+                    residents: Yup.array().when('priority', {
+                        is: "3",
+                        then: Yup.array().min(1, 'You need to select a resident')
+                    }) 
+                })}
+                onSubmit={async ({ activityName, description, start, end, priority, program, residents, activityType, 
+                    location, levels, during }, { setStatus, setSubmitting }) => {
+                    setStatus();
+                    setSubmitting(false);  
+                   
+                    console.log('onSubmit', activityName, description, start, end, priority, program, residents, activityType, 
+                        location, levels);
+                   
+                    if(!program || program && program.length == 0) {
+                        alert(`You need to select a program first!`);
+                        return;
+                    }
+                    
+                    if(priority == 3 && residents && residents.length == 0) {
+                        alert(`You need to select some residents first! :)`);
+                        return;
+                    }
+
+                    if(priority == 2 && (!levels || levels && levels.length == 0)) {
+                        alert(`You must choose a level!`);
+                        return;
+                    }
+
+                    setSubmitting(true);
+
+                    const activity = {
+                        programId: program[0].programId, 
+                        name: activityName,
+                        start: start,      
+                        end: end,      
+                        priority: priority,
+                        activityTypeId: activityType,
+                        location: location,
+                        repeat: showRepeatOptions,
+                        description: description,
+                        participants: residents,
+                        levels: levels,
+                        rrule: rrule && rrule.toString() || null,
+                        instituteId: selectedInstitute.instituteId,
+                        during: during
+                    };
+                    
+                    try {
+                        await activityService.create(activity);
+                        alert(`You have successfully assigned an activity!`);
+
+                        toggle();
+                        if(onSuccess) {
+                            onSuccess();
+                        }
+                    }
+                    catch(error) {
+                        console.log("Error while creating activity:", error);
+                        setStatus(error);  
+                        
+                        alert(`We're sorry but something went wrong while trying to assign the activity: ${error}`);
+                    }
+                    
+                    setSubmitting(false); 
+                }}
+            >
+                {formikProps => {
+                    console.log("Priority:", formikProps.values.priority)
+
+                    return (
+                    <React.Fragment>
+                        <Form onSubmit={formikProps.handleSubmit}>
+                        <ModalHeader tag="h6" toggle={toggle}>Assign an activity</ModalHeader>
+                        <ModalBody>
+
+                        <Row>
+                            <Col lg={ 12 }>
+                                <Card className="mb-3">
+                                    <CardBody>
+                                        { /* START Form */}
+                                        
+                                            { /* START Input */}
+                                            <FormGroup row>
+                                                <Label for="programId" sm={3}>
+                                                    Program
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <Typeahead
+                                                        clearButton
+                                                        id="program"
+                                                        name="program"
+                                                        labelKey="name"
+                                                        options={userPrograms || []}
+                                                        selected={formikProps.values.program}
+                                                        className={(formikProps.errors.program && formikProps.touched.program ? ' is-invalid' : '')}
+                                                        placeholder="Select a program..."
+                                                        onChange={(selectedOptions) => {
+                                                            console.log("Selected program on activity:", selectedOptions)
+                                                            formikProps.setFieldValue('program', selectedOptions || []);
+                                                            //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null)
+                                                            changePriority(formikProps, 1)
+                                                        }}
+                                                        onInputChange={(selectedOptions) => {
+                                                            formikProps.setFieldValue('program', selectedOptions || []);
+                                                            //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null);
+                                                            changePriority(formikProps, 1)
+                                                        }}
+                                                    /> 
+                                                    <ErrorMessage name="program" component="div" className="invalid-feedback" /> 
+                                                </Col>                                                    
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="name" sm={3}>
+                                                    Activity name
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <Field 
+                                                        type="text" 
+                                                        name="activityName" 
+                                                        id="activityName" 
+                                                        className={'bg-white form-control' + (formikProps.errors.activityName && formikProps.touched.activityName ? ' is-invalid' : '')} 
+                                                        placeholder="Activity name..." 
+                                                    />
+                                                    <ErrorMessage name="activityName" component="div" className="invalid-feedback" />
+                                                </Col>                                                    
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="start" sm={3}>
+                                                    From
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <DatePicker
+                                                        customInput={ <AddonInput /> }
+                                                        dateFormat="dd/MM/yyyy h:mm aa"
+                                                        showTimeSelect
+                                                        autoComplete="off"
+                                                        showMonthDropdown
+                                                        showYearDropdown
+                                                        name="start"
+                                                        id="start"
+                                                        className={(formikProps.errors.start && formikProps.touched.start ? ' is-invalid' : '')}
+                                                        selected={formikProps.values.start}
+                                                        onChange={e => {
+                                                            formikProps.setFieldValue('start', e);
+                                                            formikProps.setFieldValue('end', moment(e).add(timeDifference, 'minutes').toDate());
+                                                        }}
+                                                    />
+                                                    {formikProps.errors.start && formikProps.touched.start && <InvalidFeedback>{formikProps.errors.start}</InvalidFeedback>}                               
+                                                </Col>
+                                            </FormGroup>
+        
+                                            <FormGroup row>
+                                                <Label for="end" sm={3}>
+                                                    To
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <DatePicker
+                                                        customInput={ <AddonInput /> }
+                                                        showMonthDropdown
+                                                        showYearDropdown
+                                                        autoComplete="off"
+                                                        dateFormat="dd/MM/yyyy h:mm aa"
+                                                        name="end"
+                                                        id="end"
+                                                        showTimeSelect
+                                                        className={ (formikProps.errors.end && formikProps.touched.end ? ' is-invalid' : '')}
+                                                        selected={formikProps.values.end}
+                                                        onChange={e => {
+                                                            formikProps.setFieldValue('end', e);
+                                                            const calculatedTimeDifference = moment.duration(moment(e).diff(moment(formikProps.values.start))).asMinutes();
+                                                            setTimeDifference(calculatedTimeDifference)
+                                                        }}
+                                                        />  
+                                                    {formikProps.errors.end && formikProps.touched.end && <InvalidFeedback>{formikProps.errors.end}</InvalidFeedback>}                                                             
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="type" sm={3}>
+                                                    During
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <Field 
+                                                        component="select" 
+                                                        name="during" 
+                                                        id="during" 
+                                                        defaultValue={""}
+                                                        className={'bg-white form-control' + (formikProps.errors.during && formikProps.touched.during ? ' is-invalid' : '')} 
+                                                        placeholder="During..." 
+                                                    >
+                                                        <option value="">- select duration -</option>
+                                                        <option value="1">Whole day (working hours)</option>
+                                                        <option value="2">Day shift</option>
+                                                        <option value="3">Night shift</option>
+                                                    </Field> 
+                                                    <ErrorMessage name="during" component="div" className="invalid-feedback" />                                                           
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="description" sm={3}>
+                                                    Repeat?
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <CustomInput inline
+                                                            type="radio" 
+                                                            id="repeatYes" 
+                                                            name="repeat"
+                                                            label="Yes"
+                                                            value="1"
+                                                            
+                                                            onChange={(event) => {
+                                                                setShowRepeatOptions(true)
+                                                            }}
+                                                            />
+                                                    <CustomInput inline
+                                                        type="radio" 
+                                                        id="repeatNo" 
+                                                        name="repeat"
+                                                        label="No"
+                                                        value="0"
+                                                        defaultChecked  
+                                                        onChange={(event) => {
+                                                            setShowRepeatOptions(false)
+                                                        }}
+                                                    />
+                                                    
+                                                </Col>                                                    
+                                            </FormGroup>
+                                            {showRepeatOptions && (
+                                                <FormGroup row>
+                                                
+                                                    <Col sm={12} style={{whiteSpace: 'nowrap'}}>
+                                                        <RRuleGenerator onChange={(rrule) => {
+                                                            console.log(`RRule changed, now it's ${rrule}`);
+                                                            setRRule(rrule);
+                                                        }}
+                                                        //config={{end: ['Never', 'After']}}
+                                                        />
+                                                    </Col>
+                                                </FormGroup>
+                                            )}
+  
+                                            <FormGroup row>
+                                                <Label for="type" sm={3}>
+                                                    Activity type
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <Field 
+                                                        component="select" 
+                                                        name="activityType" 
+                                                        id="activityType" 
+                                                        className={'bg-white form-control' + (formikProps.errors.activityType && formikProps.touched.activityType ? ' is-invalid' : '')} 
+                                                        placeholder="Activity type..." 
+                                                    >
+                                                        <option value="">Activity type...</option>
+                                                        {activityTypes.map(at => {
+                                                            //console.log("Map each at:", at)
+                                                            return (
+                                                            <option value={at.activityTypeId}>{at.activityTypeName}</option>
+                                                            );
+                                                        })} 
+                                                    </Field> 
+                                                    <ErrorMessage name="activityType" component="div" className="invalid-feedback" />                                                           
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="location" sm={3}>
+                                                    Location
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <Field 
+                                                        type="text" 
+                                                        name="location" 
+                                                        id="location" 
+                                                        className={'bg-white form-control' + (formikProps.errors.location && formikProps.touched.location ? ' is-invalid' : '')} 
+                                                        placeholder="Location..." 
+                                                    /> 
+                                                    <ErrorMessage name="location" component="div" className="invalid-feedback" />                                                           
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="description" sm={3}>
+                                                    Description
+                                                </Label>
+                                                <Col sm={9}>
+                                                    <Field component="textarea"
+                                                        name="description" 
+                                                        id="description" 
+                                                        className={'bg-white form-control' + (formikProps.errors.description && formikProps.touched.description ? ' is-invalid' : '')} 
+                                                        placeholder="Enter agenda..." 
+                                                    />
+                                                    <ErrorMessage name="description" component="div" className="invalid-feedback" />
+                                                </Col>                                                    
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label for="priority" sm={3}>
+                                                    Assign to
+                                                </Label>
+                                                <Col sm={9}>
+                                                    {currentUserRole != Role.Resident && (
+                                                        <>
+                                                            <CustomInput inline
+                                                            type="radio" 
+                                                            id="priorityProgram" 
+                                                            name="priority"
+                                                            label="Program"
+                                                            checked={formikProps.values.priority == 1}
+                                                            value="1"
+                                                            onChange={(event) => {
+                                                                changePriority(formikProps, event.target.value)
+                                                            }}
+                                                            />
+                                                            <CustomInput inline
+                                                                type="radio" 
+                                                                id="priorityLevel" 
+                                                                name="priority"
+                                                                label="Level" 
+                                                                value="2"
+                                                                checked={formikProps.values.priority == 2}
+                                                                onChange={(event) => {
+                                                                    formikProps.setFieldValue('priority', event.target.value);
+                                                                    changePriority(formikProps, event.target.value)
+                                                                }}
+                                                            />                                                           
+                                                        </>
+                                                    )}
+
+                                                    <CustomInput inline
+                                                        type="radio" 
+                                                        id="priorityResidents" 
+                                                        name="priority"
+                                                        label={currentUserRole != Role.Resident ? "Residents" : "Residents and supervisors"}
+                                                        value="3"
+                                                        checked={formikProps.values.priority == 3}
+                                                        onChange={(event) => {
+                                                            formikProps.setFieldValue('priority', event.target.value);
+                                                            changePriority(formikProps, event.target.value)
+                                                        }}
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+                                            {formikProps.values && formikProps.values.priority && formikProps.values.priority == 2 && (
+                                                <FormGroup row>
+                                                    <Label for="level" sm={3}>
+                                                        Level
+                                                    </Label>
+                                                    <Col sm={9}>
+                                                        <Typeahead
+                                                            clearButton
+                                                            id="levels"
+                                                            labelKey="name"
+                                                            options={experienceLevels || []}
+                                                            multiple
+                                                            className={(formikProps.errors.levels && formikProps.touched.levels ? ' is-invalid' : '')}
+                                                            placeholder="Select levels..."
+                                                            onChange={(selectedOptions) =>  formikProps.setFieldValue('levels', selectedOptions)}
+                                                            onInputChange={(selectedOptions) =>  formikProps.setFieldValue('levels', selectedOptions)}
+                                                        />
+                                                        <ErrorMessage name="levels" component="div" className="invalid-feedback" /> 
+                                                    </Col>                                                    
+                                                </FormGroup>
+                                            )}
+                                            {formikProps.values && formikProps.values.priority && formikProps.values.priority == 3 && (
+                                                <FormGroup row>
+                                                    <Label for="residents" sm={3}>
+                                                        Residents
+                                                    </Label>
+                                                    <Col sm={9}>
+                                                            <Typeahead
+                                                                clearButton
+                                                                id="residents"
+                                                                labelKey="name"
+                                                                options={users}
+                                                                multiple
+                                                                className={(formikProps.errors.residents && formikProps.touched.residents ? ' is-invalid' : '')}
+                                                                placeholder="Select residents..."
+                                                                onChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
+                                                                onInputChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
+                                                            />
+                                                        
+                                                            <ErrorMessage name="residents" component="div" className="invalid-feedback" />
+                                                    </Col>                                                    
+                                                </FormGroup>
+                                            )}
+                                        { /* END Form */}
+                                    </CardBody>
+                                </Card>                  
+                            </Col>                
+                        </Row>
+                        </ModalBody>
+                        <ModalFooter>
+                            <ThemedButton type="submit">Assign</ThemedButton>{' '}
+                            <Button type="button" onClick={toggle} color="light">Close</Button>
+                        </ModalFooter>
+                    </Form>
+                </React.Fragment>
+                )
+            }}
+            </Formik>
+        </Modal>
+    )
+}

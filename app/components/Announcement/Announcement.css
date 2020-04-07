@@ -1,0 +1,10 @@
+.announcement {
+  border-top: 1px solid rgba(31, 45, 61, 0.125);
+  border-bottom: 1px solid rgba(31, 45, 61, 0.125);
+  border-right: 1px solid rgba(31, 45, 61, 0.125);
+  padding: 0.5rem 1.5rem;
+  background-color: #eaf8ff;
+  color:#1f2d3d;
+  position:relative;
+}
+

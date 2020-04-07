@@ -1,0 +1,33 @@
+.size32 {
+  width:32px;
+  height:32px;
+}
+
+.size64 {
+  width:64px;
+  height:64px;
+}
+
+.size96 {
+  width:96px;
+  height:96px;
+}
+
+.size128 {
+  width:128px;
+  height:128px;
+}
+
+.size192 {
+  width:192px;
+  height:192px;
+}
+
+.size256 {
+  width:256px;
+  height:256px;
+}
+
+.buttonSmall {
+  
+}

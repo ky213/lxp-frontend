@@ -1,0 +1,23 @@
+.announcementTr{
+  cursor: pointer;
+}
+
+.fileContainer {
+  border-radius:5px;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  margin-bottom: 5px;
+  background-color: #1eb7ff!important;
+  color:#fff; 
+  font-size: 1em;
+  display:inline-block;
+  margin-right: 0.25rem;
+}
+
+.fileContainer:hover {
+  background-color: #D2EEFF!important;
+}
+
+.fileContainerDownload:hover {
+  color:#4F6A75;
+}

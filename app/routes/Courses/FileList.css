@@ -1,0 +1,37 @@
+.browseFilesContainer {
+  border: 3px dashed #DADADA;
+  border-radius:5px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 25px;
+  padding: 25px 0px;
+  margin-bottom: 5px;
+}
+
+.browseFilesContainer:hover {
+  background-color: #F1F1F1;  
+}
+
+.fileContainer {
+  border: 3px solid #ADE3FF;
+  border-radius:5px;
+  cursor: pointer;
+  line-height: 30px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  background-color: #CCEEFF!important;
+  color:#668796;
+  font-size: 1.1em;
+}
+
+.fileContainer:hover {
+  background-color: #D2EEFF!important;
+}
+
+.fileContainerDownload:hover {
+  color:#4F6A75;
+}
+
+.fileContainerDelete:hover {
+  color:#C90000;
+}

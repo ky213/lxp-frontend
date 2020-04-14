@@ -93,6 +93,13 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
+        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
+        icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
+        title="Courses"
+        to="/courses"
+      />
+
+      <SidebarMenu.Item
           roles={[
             Role.Admin,
             Role.SuperAdmin,

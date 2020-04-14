@@ -14,3 +14,4 @@ export * from './exp_level.service';
 export * from './announcements.service';
 export * from './notification.service';
 export * from './super_admin.service';
+export * from './course.service';

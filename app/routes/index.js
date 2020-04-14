@@ -19,6 +19,8 @@ import AdminSuperAdmins from './AdminSuperAdmins';
 import Announcements from './Announcements';
 import AdminAnnouncements from './AdminAnnouncements';
 
+import Courses from './Courses';
+
 // import UserEdit from './AdminInstitute/UserEdit';
 // import AddNewUser from './AdminInstitute/AddNewUser';
 
@@ -211,6 +213,18 @@ export const RoutedContent = (props) => {
           ]}
           exact
           component={AcademicYears}
+        />
+
+        <PrivateRoute
+          path="/courses"
+          roles={[
+            Role.Admin,
+            Role.SuperAdmin,
+            Role.InstituteManager,
+            Role.ProgramDirector
+          ]}
+          exact
+          component={Courses}
         />
 
         <PrivateRoute

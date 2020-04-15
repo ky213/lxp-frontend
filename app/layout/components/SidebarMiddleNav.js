@@ -80,7 +80,7 @@ export const SidebarMiddleNav = navbarProps => {
       <SidebarMenu.Item
         roles={[Role.ProgramDirector]}
         icon={<i className="fa fa-fw fa-users"></i>}
-        title="Residents"
+        title="Learners"
         to="/residents"
         exact
       />
@@ -104,6 +104,12 @@ export const SidebarMiddleNav = navbarProps => {
           to="/activity-types"
         />
 
+      <SidebarMenu.Item
+        icon={<i className="fa fa-fw fa-calendar"></i>}
+        title="Courses"
+        to="/courses"
+      />
+      
       <SidebarMenu.Item
         icon={<i className="fa fa-fw fa-calendar"></i>}
         title="Activities"

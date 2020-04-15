@@ -97,6 +97,7 @@ import ResidentHome from './ResidentHome';
 import FacultyMemberHome from './FacultyMemberHome';
 import SuperAdminHome from './SuperAdminHome';
 import Notifications from './Notifications';
+import Courses from './Courses';
 import ActivityTypes from './ActivityTypes';
 
 import { useAppState, AppStateContext } from '@/components/AppState';
@@ -120,7 +121,6 @@ export const RoutedContent = (props) => {
               (user.role != Role.Resident && user.role != Role.SuperAdmin) && FacultyMemberHome 
  
             ) || ResidentHome 
-
           }
         />
         <PrivateRoute path="/user/profile" exact component={UserProfile} />
@@ -224,6 +224,12 @@ export const RoutedContent = (props) => {
           path="/notifications"
           exact
           component={Notifications}
+        />
+
+        <PrivateRoute
+          path="/courses"
+          exact
+          component={Courses}
         />
 
         <PrivateRoute path="/calendar" exact component={Calendar} />

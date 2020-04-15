@@ -93,6 +93,28 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
+        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
+        icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
+        title="Upload Courses"
+        to="/admin/courses"
+      />
+
+
+
+      <SidebarMenu.Item
+        icon={<i className="fa fa-fw fa-calendar"></i>}
+        title="Courses"
+        to="/courses"
+      />
+
+      <SidebarMenu.Item
+        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager, Role.ProgramDirector]}
+        icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
+        title="Learner Reporting"
+        to="/reporting"
+      />
+      
+      <SidebarMenu.Item
           roles={[
             Role.Admin,
             Role.SuperAdmin,
@@ -103,13 +125,7 @@ export const SidebarMiddleNav = navbarProps => {
           title="Activity Types"
           to="/activity-types"
         />
-
-      <SidebarMenu.Item
-        icon={<i className="fa fa-fw fa-calendar"></i>}
-        title="Courses"
-        to="/courses"
-      />
-      
+        
       <SidebarMenu.Item
         icon={<i className="fa fa-fw fa-calendar"></i>}
         title="Activities"

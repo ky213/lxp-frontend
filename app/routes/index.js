@@ -19,6 +19,8 @@ import AdminSuperAdmins from './AdminSuperAdmins';
 import Announcements from './Announcements';
 import AdminAnnouncements from './AdminAnnouncements';
 
+import AdminCourses from './AdminCourses';
+
 // import UserEdit from './AdminInstitute/UserEdit';
 // import AddNewUser from './AdminInstitute/AddNewUser';
 
@@ -99,6 +101,7 @@ import SuperAdminHome from './SuperAdminHome';
 import Notifications from './Notifications';
 import Courses from './Courses';
 import ActivityTypes from './ActivityTypes';
+import Reporting from './Reporting';
 
 import { useAppState, AppStateContext } from '@/components/AppState';
 
@@ -214,6 +217,18 @@ export const RoutedContent = (props) => {
         />
 
         <PrivateRoute
+          path="/admin/courses"
+          roles={[
+            Role.Admin,
+            Role.SuperAdmin,
+            Role.InstituteManager,
+            Role.ProgramDirector
+          ]}
+          exact
+          component={AdminCourses}
+        />
+
+        <PrivateRoute
           path="/admin/announcements"
           roles={[Role.Admin, Role.InstituteManager, Role.SuperAdmin, Role.ProgramDirector]}
           exact
@@ -230,6 +245,12 @@ export const RoutedContent = (props) => {
           path="/courses"
           exact
           component={Courses}
+        />
+
+        <PrivateRoute
+          path="/reporting"
+          exact
+          component={Reporting}
         />
 
         <PrivateRoute path="/calendar" exact component={Calendar} />

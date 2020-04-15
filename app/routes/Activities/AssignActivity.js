@@ -486,7 +486,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                             {formikProps.values && formikProps.values.priority && formikProps.values.priority == 3 && (
                                                 <FormGroup row>
                                                     <Label for="residents" sm={3}>
-                                                        Residents
+                                                        Learners
                                                     </Label>
                                                     <Col sm={9}>
                                                             <Typeahead

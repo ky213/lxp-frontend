@@ -15,8 +15,7 @@ const AdminCourses = () => {
   const [course, setCourse] = React.useState(null);  
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
-  const [editForm, setEditForm] = React.useState(false);
-  
+  const [editForm, setEditForm] = React.useState(false);  
 
   React.useEffect(() => {
     getAllCourses();
@@ -47,6 +46,7 @@ const AdminCourses = () => {
   }
 
   const handleCourseEdit = (e, courseId) => {
+    console.log('handleCourseEdit', courseId);
     e.preventDefault();
     hideAlertMessage();
     courseService.getById(courseId, selectedInstitute.instituteId).then(data => {
@@ -68,14 +68,14 @@ const AdminCourses = () => {
 
   const editCourse = (courseData) => {
     courseService
-      .update(courseData)
+      .update(courseData, selectedInstitute && selectedInstitute.instituteId)
       .then(data => {
         setEditForm(false);
         setCourse(null);
         getAllCourses();
         showAlertMessage({
           title: "Success",
-          message: "You have sucessfully updated an announcement",
+          message: "You have sucessfully updated an course",
           type: "success"
         });
       });
@@ -83,7 +83,7 @@ const AdminCourses = () => {
 
   const insertCourse = (courseData) => {
     courseService
-      .create(courseData)
+      .create(courseData, selectedInstitute && selectedInstitute.instituteId)
       .then(courseId => {
         setEditForm(false);
         setCourse(null);
@@ -91,7 +91,7 @@ const AdminCourses = () => {
 
         showAlertMessage({
           title: "Success",
-          message: "You have sucessfully created announcement",
+          message: "You have sucessfully created course",
           type: "success"
         });
 
@@ -102,14 +102,14 @@ const AdminCourses = () => {
   // refresh num of files after add/delete on Edit
   const updateCourseList = (fileNum) => {
     
-    let x = courses.map(a => {
-      if (a.announcementId == course.courseId)
+    let x = courses.map(c => {
+      if (c.course_id == course.courseId)
         return {
-          ...a, 
+          ...c, 
           fileNum
         }
       else
-        return a;
+        return c;
     });
     setCourses(x);
   }
@@ -145,7 +145,7 @@ const AdminCourses = () => {
     
       {editForm && (
         <React.Fragment>
-            <HeaderMain title="Announcement administration" />
+            <HeaderMain title="Course administration" />
             <EditCourse
               course={course}
               onCancel={handleCancel}

@@ -73,14 +73,14 @@ export const SidebarMiddleNav = navbarProps => {
           title="Faculty members"
           to="/admin/users/facultymembers"
         />
-        <SidebarMenu.Item title="Residents" to="/admin/users/residents" />
+        <SidebarMenu.Item title="Learners" to="/admin/users/residents" />
         <SidebarMenu.Item title="User roles" to="/admin/users/roles" />
       </SidebarMenu.Item>
 
       <SidebarMenu.Item
         roles={[Role.ProgramDirector]}
         icon={<i className="fa fa-fw fa-users"></i>}
-        title="Residents"
+        title="Learners"
         to="/residents"
         exact
       />

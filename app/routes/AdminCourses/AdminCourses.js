@@ -8,7 +8,7 @@ import { useAppState } from '@/components/AppState';
 import CourseList from "./CourseList";
 import EditCourse from "./EditCourse";
 
-const Courses = () => {  
+const AdminCourses = () => {  
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   
   const [courses, setCourses] = React.useState(null);
@@ -162,4 +162,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default AdminCourses;

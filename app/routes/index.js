@@ -19,7 +19,7 @@ import AdminSuperAdmins from './AdminSuperAdmins';
 import Announcements from './Announcements';
 import AdminAnnouncements from './AdminAnnouncements';
 
-import Courses from './Courses';
+import AdminCourses from './AdminCourses';
 
 // import UserEdit from './AdminInstitute/UserEdit';
 // import AddNewUser from './AdminInstitute/AddNewUser';
@@ -216,7 +216,7 @@ export const RoutedContent = (props) => {
         />
 
         <PrivateRoute
-          path="/courses"
+          path="/admin/courses"
           roles={[
             Role.Admin,
             Role.SuperAdmin,
@@ -224,7 +224,7 @@ export const RoutedContent = (props) => {
             Role.ProgramDirector
           ]}
           exact
-          component={Courses}
+          component={AdminCourses}
         />
 
         <PrivateRoute

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Alert,
   Avatar,
@@ -13,7 +13,8 @@ import {
   Form,
   FormGroup,
   Row,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  CardColumns
 } from "@/components";
 import {
   Button,
@@ -45,6 +46,7 @@ import {
 
 import ContentMobile from "./components/ContentMobile";
 import ContentDefault from "./components/ContentDefault";
+import { CourseCard } from "./components/CourseCard";
 import TinCan from 'tincanjs';
 import config from '@/config';
 
@@ -103,15 +105,13 @@ const Courses = props => {
 
 
   React.useEffect(() => {
-    resizeListener();
+    //resizeListener();
     setDeviceIsMobile(isMobileDevice());
-    window.addEventListener("resize", resizeListener);
-    programService
-      .getByCurrentUser(selectedInstitute.instituteId)
-      .then(data => {
-        setPrograms(data);
-      })
-      .catch(err => console.log("programService.getByCurrentUser", err));
+    //window.addEventListener("resize", resizeListener);
+    programService.getByCurrentUser(selectedInstitute.instituteId).then(data => {
+      setPrograms(data);
+    })
+    .catch(err => console.log("programService.getByCurrentUser", err));
   }, []);
 
   React.useEffect(() => {
@@ -197,55 +197,55 @@ const Courses = props => {
   };
 
 
-const sendStatement = () => {
-  var lrs;
+  const sendStatement = () => {
+    let lrs;
 
-  try {
-      lrs = new TinCan.LRS(
-          {
-              endpoint: config.apiUrl.replace('/api', '/xapi'),
-              username: "test",
-              password: "test",
-              allowFail: false
-          }
-      );
+    try {
+        lrs = new TinCan.LRS(
+            {
+                endpoint: config.apiUrl.replace('/api', '/xapi'),
+                username: "test",
+                password: "test",
+                allowFail: false
+            }
+        );
+    }
+    catch (ex) {
+        console.log('Failed to setup LRS object: ' + ex);
+    }
+
+    let statement = new TinCan.Statement(
+        {
+            id: TinCan.Utils.getUUID(),
+            actor: getActor(),
+            verb: {
+                id: 'http://adlnet.gov/expapi/verbs/launched',
+                display: {
+                    en: 'launched'
+                }
+            },
+            object: activity
+        }
+    );
+
+    console.log(statement);
+    lrs.saveStatement(
+        statement,
+        {
+            callback: function (err, xhr) {
+                if (err !== null) {
+                    if (xhr !== null) {
+                        console.log('Failed to save statement: ' + xhr.responseText + ' (' + xhr.status + ')');
+                    }
+                    console.log('Failed to save statement: ' + err);
+                    alert('There was a problem communicating with the Learning Record Store. Your results may not be saved. Please check your internet connection and try again.');
+                    return;
+                }
+                console.log("Statement saved");
+            }
+        }
+    );
   }
-  catch (ex) {
-      console.log('Failed to setup LRS object: ' + ex);
-  }
-
-  var statement = new TinCan.Statement(
-      {
-          id: TinCan.Utils.getUUID(),
-          actor: getActor(),
-          verb: {
-              id: 'http://adlnet.gov/expapi/verbs/launched',
-              display: {
-                  en: 'launched'
-              }
-          },
-          object: activity
-      }
-  );
-
-  console.log(statement);
-  lrs.saveStatement(
-      statement,
-      {
-          callback: function (err, xhr) {
-              if (err !== null) {
-                  if (xhr !== null) {
-                      console.log('Failed to save statement: ' + xhr.responseText + ' (' + xhr.status + ')');
-                  }
-                  console.log('Failed to save statement: ' + err);
-                  alert('There was a problem communicating with the Learning Record Store. Your results may not be saved. Please check your internet connection and try again.');
-                  return;
-              }
-              console.log("Statement saved");
-          }
-      }
-  );
-}
 
   const readXML = (filename, callback) => {
     var xobj = new XMLHttpRequest();
@@ -348,7 +348,7 @@ const sendStatement = () => {
 
   return (
     <React.Fragment>
-      <Container fluid className="residents-home">
+      <Container className="courses-home">
         <HeaderMain title="Courses" subTitles="" />
 
         {showAlert && alertMessage && (
@@ -431,8 +431,8 @@ const sendStatement = () => {
         {isLoading && <Loading />}
 
         {coursesData && !deviceIsMobile && (
-          <Fragment>
-            <Card>
+          <>
+           
               <CardBody
                 style={{
                   width: `${contentWidth && contentWidth - 30}px` || "99%"
@@ -470,17 +470,17 @@ const sendStatement = () => {
                     )}
                   </Col>
                 </Row>
-                <Row className={styles.tableContainer}>
-                  <Col lg={12}>
-                    <ContentDefault
-                      courses={coursesData}
-                      onLaunch={handleLaunch}
-                    />
-                  </Col>
-                </Row>
+
               </CardBody>
-            </Card>
-          </Fragment>
+        
+              <CardColumns>
+                {coursesData && coursesData.length > 0 && coursesData.map(course => (
+                  <CourseCard course={course} onLaunch={handleLaunch} />
+                ))}
+ 
+                </CardColumns>
+              
+          </>
         )}
 
         {/*rotationData && deviceIsMobile && (

@@ -10,14 +10,19 @@ import {
   CourseCard
 } from "./CourseCard";
 
+import {
+  ListGroup,
+  ListGroupItem,
+} from '@/components'
+
 const ContentDefault = ({ courses, onLaunch }) => {
 
   return (
-    <div key="ttContent" className={styles.rotationTimetable}>
+    <>
       {courses && courses.length > 0 && courses.map(course => (
         <CourseCard course={course} onLaunch={onLaunch} />
       ))}
-    </div>
+    </>
   );
 };
 

@@ -29,7 +29,7 @@ const CourseCard = ({course, onLaunch, ...otherProps}) => {
                     iconChar=""
                     size={ 32 }
                 >
-                <CardImg top />
+                <CardImg top src={course.image || ''} onClick={() => onLaunch(course)}/>
                 </HolderProvider.Icon>
                 <CardBody>
                     <div className="d-flex mb-3">

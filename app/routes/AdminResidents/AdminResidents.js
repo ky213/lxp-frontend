@@ -94,7 +94,7 @@ const AdminResidents = () => {
   return (
     <React.Fragment>
       <Container>
-        <HeaderMain title="Residents" />
+        <HeaderMain title="Learners" />
         {showEditForm && (
           <Row>
             <ResidentEdit

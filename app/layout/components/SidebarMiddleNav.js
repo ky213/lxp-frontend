@@ -73,7 +73,7 @@ export const SidebarMiddleNav = navbarProps => {
           title="Faculty members"
           to="/admin/users/facultymembers"
         />
-        <SidebarMenu.Item title="Residents" to="/admin/users/residents" />
+        <SidebarMenu.Item title="Learners" to="/admin/users/residents" />
         <SidebarMenu.Item title="User roles" to="/admin/users/roles" />
       </SidebarMenu.Item>
 

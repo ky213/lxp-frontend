@@ -8,9 +8,9 @@ export const reportingService = {
     getById,
 };
 
-function getAll({ selectedInstituteId, statementId, voidedStatementId, agent, verb, activity, since, until, limit, ascending, page, take }) {    
+function getAll({ selectedInstituteId, statementId, voidedStatementId, registration, agent, verb, activity, since, until, limit, ascending, page, take }) {    
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ statementId, voidedStatementId, agent, verb, activity, since, until, limit, ascending, page, take, selectedInstituteId });
+    let query = buildQuery({ statementId, voidedStatementId, registration, agent, verb, activity, since, until, limit, ascending, page, take, selectedInstituteId });
     return fetch(`${xapiUrl}/statements?${query}`, requestOptions).then(handleResponse);    
 }
 

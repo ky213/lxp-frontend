@@ -40,7 +40,7 @@ const CourseList = ({
             setSelectedCourses([]);
         }
         catch(error) {
-            console.log("Error while deleting announcements:", error);
+            console.log("Error while deleting courses:", error);
             alert(`Something went wrong while deleting ${message}!`)
         }
     }
@@ -86,11 +86,10 @@ const CourseList = ({
                     <tr>
                       <th className="bt-0"></th>
                       <th className="bt-0"></th>
-                      <th className="bt-0">Title</th>
-                      <th className="bt-0 text-center">Status</th>
-                      <th className="bt-0 text-center">Date from</th>
-                      <th className="bt-0 text-center">Date to</th>
-                      <th className="bt-0 text-center">Num of files</th>
+                      <th className="bt-0">Name</th>
+                      <th className="bt-0">Program name</th>
+                      <th className="bt-0 text-center">Starting date</th>
+                      <th className="bt-0 text-center">Period days</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -98,6 +97,7 @@ const CourseList = ({
                       return (
                         <tr key={item.courseId}>
                           <td>
+                            {console.log('item', item)}
                             <CustomInput
                               type="checkbox"
                               onClick={e =>
@@ -117,7 +117,10 @@ const CourseList = ({
                               Edit
                             </a>
                           </td>
-                          <td>{item.name}</td>
+                          <td className="bt-0">{item.name}</td>
+                          <td className="bt-0">{item.programName}</td>
+                          <td className="bt-0 text-center">{item.startingDate && moment(item.startingDate).format("L")}</td>
+                          <td className="bt-0 text-center">{item.periodDays}</td>
                         </tr>
                       );
                     })}

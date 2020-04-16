@@ -6,3 +6,4 @@ export * from './role';
 export * from './combineReducers';
 export * from './buildQuery';
 export * from './useInterval';
+export * from './tincan-launch';

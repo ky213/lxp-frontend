@@ -596,7 +596,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                     {formikProps.values && formikProps.values.priority && formikProps.values.priority == 3 && (
                                                         <FormGroup row>
                                                             <Label for="residents" sm={3}>
-                                                                Residents
+                                                                Learners
                                                             </Label>
                                                             <Col sm={9}>
                                                                     <Typeahead

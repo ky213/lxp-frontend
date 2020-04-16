@@ -17,38 +17,36 @@ function getAll(instituteId, programId, page, take, filter) {
     return fetch(`${config.apiUrl}/courses?${query}`, requestOptions).then(handleResponse);    
 }
 
-function getById(id, selectedInstituteId) {
+function getById(courseId, instituteId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ selectedInstituteId });
-
-    return fetch(`${config.apiUrl}/courses/${id}?${query}`, requestOptions).then(handleResponse);
+    let query = buildQuery({courseId, instituteId});
+    return fetch(`${routePrefix}/getById?${query}`, requestOptions).then(handleResponse);
 }
 
-
-function create(event) {
+function create(courseData, selectedInstitute) {
     //console.log("Create calendar event:", event)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(event)
+        body: JSON.stringify({courseData, selectedInstitute})
     };
 
-    return fetch(`${config.apiUrl}/calendar/event`, requestOptions)
+    return fetch(`${routePrefix}`, requestOptions)
         .then(handleResponse)
         .then((data) => {
             return data;
         });
 }
 
-function update(event) {
+function update(courseData, selectedInstitute) {
     console.log("Update calendar event:", event)
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(event)
+        body: JSON.stringify({courseData, selectedInstitute})
     };
 
-    return fetch(`${config.apiUrl}/calendar/event`, requestOptions)
+    return fetch(`${routePrefix}`, requestOptions)
         .then(handleResponse)
         .then((data) => {
             return data;

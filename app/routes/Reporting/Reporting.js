@@ -13,13 +13,13 @@ import {
     CardBody
 } from '@/components';
 
-import { reportingService } from '@/services';
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
 import { Paginations } from "@/routes/components/Paginations";
+import { Typeahead } from "react-bootstrap-typeahead";
 import moment from 'moment';
 
-import { authenticationService } from '@/services';
+import { reportingService, programService } from '@/services';
 import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
@@ -29,6 +29,8 @@ const Reporting = () => {
     const [count, setCount] = React.useState(0);
     const [pageId, setPageId] = React.useState(1);
     const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(100);  
+    const [programs, setPrograms] = React.useState(null);
+    const [selectedProgramId, setSelectedProgramId] = React.useState(null);
 
     let paginationContent = null;
     if (totalNumberOfRecords > 0) {
@@ -44,14 +46,29 @@ const Reporting = () => {
       );
     }
 
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const data = await programService.getByCurrentUser(selectedInstitute.instituteId);
+            setPrograms(data);
+
+            await getStatements();
+        }
+        
+        fetchData();
+    }, []);
+
     const onSearch = (e) => {
         //console.log("Handle edited!")
-       
-        
+
     }
 
     const getStatements = async () => {
-        const data = await reportingService.getAll({selectedInstituteId: selectedInstitute.instituteId, limit: 100, take: 100, page: pageId});
+        const filter = {selectedInstituteId: selectedInstitute.instituteId, limit: 100, take: 100, page: pageId};
+        if(selectedProgramId) {
+            filter.registration = selectedProgramId;
+        }
+
+        const data = await reportingService.getAll(filter);
         console.log("Got statements:", data)
         setStatements(data.statements);
     }
@@ -60,9 +77,18 @@ const Reporting = () => {
         const fetchData = async () => {
             await getStatements();
         }
-
+        
         fetchData();
-    }, [])
+    }, [selectedProgramId])
+
+    const handleProgramChange = e => {
+        if (e && e.length > 0) {
+          let x = e[0].programId;
+          setSelectedProgramId(x);
+        } else {
+            setSelectedProgramId(null);
+        }
+      };
     
     /*
     if(!statements) {
@@ -73,7 +99,7 @@ const Reporting = () => {
     return (
         <React.Fragment>
             <Container>
-                <HeaderMain title="Reporting" />
+                <HeaderMain title="Learner Reporting" />
 
                 <React.Fragment>
 
@@ -81,7 +107,7 @@ const Reporting = () => {
                     <Col lg={ 12 }>
                         <HeaderDemo 
                             no={1} 
-                            title="Learner Reporting" 
+                            title="Reporting" 
                             subTitle="You can view learners results from here"
                         />
                     </Col>
@@ -92,6 +118,18 @@ const Reporting = () => {
                             <CardBody>
                                 <div className="d-lg-flex justify-content-end">
                                     <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+                          
+                                        <Typeahead
+                                            clearButton
+                                            id="programs"
+                                            className="mr-3 form-control"
+                                            labelKey="name"
+                                            selected={selectedProgramId && programs && programs.filter(p => p.programId == selectedProgramId) || []}
+                                            options={programs}
+                                            placeholder="Program..."
+                                            onChange={handleProgramChange}
+                                        />
+                           
                                         <InputGroup>
                                             <Input onKeyUp={(e) => onSearch(e)} placeholder="Search for..." />
                                             <InputGroupAddon addonType="append">

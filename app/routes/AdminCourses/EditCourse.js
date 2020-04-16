@@ -7,6 +7,9 @@ import moment from "moment";
 import styled from "styled-components";
 import ThemedButton from "@/components/ThemedButton";
 import { Typeahead } from "react-bootstrap-typeahead";
+import axios from 'axios';
+import config from '@/config';
+import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
 import {
   Row,
@@ -21,23 +24,21 @@ import {
   Label,
   Loading
 } from "@/components";
-import { courseService, programService } from "@/services";
+import { programService } from "@/services";
 import { Consumer } from "@/components/Theme/ThemeContext";
 import { useAppState } from '@/components/AppState';
-import FileList from "./FileList";
 
 const EditCourse = ({ course,
   onCancel, editCourse, insertCourse, showAlertMessage, 
   hideAlertMessage, updateCourseList}) => {
   
   const [{selectedInstitute}] = useAppState();
-
-  const [files, setFiles] = React.useState([]);
   const [programs, setPrograms] = React.useState([]);
   const [startingDate, setStartingDate] = React.useState(null);
 
   const [programsLoaded, setProgramsLoaded] = React.useState(false);
   const [formLoaded, setFormLoaded] = React.useState(false);
+  const [uploadProgress, setUploadProgress] = React.useState(0);
 
   React.useEffect(() => {
     programService.getByCurrentUser(selectedInstitute.instituteId).then(data => {
@@ -63,45 +64,6 @@ const EditCourse = ({ course,
     onCancel();
   };
 
-  const uploadFile = (file) => {    
-    console.log('uploading file', file);
-
-    courseService.uploadFile(file);
-
-
-    // announcementService.addFile(file)
-    //   .then((announcementFileId) => {
-    //     updateAnnouncementInList(files.length + 1);
-    //     console.log('file uploaded', announcementFileId);
-    //     file = {...file, announcementFileId: announcementFileId, status: 'uploaded'};
-    //     setFiles(z => z.map(f => {
-    //       if (f.name != file.name)
-    //         return f;
-          
-    //       return file;
-    //     }));
-    //     showAlertMessage({
-    //       title: "Success",
-    //       message: "The file has been uploaded",
-    //       type: "success"
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     file = {...file, status: 'error'};
-    //     setFiles(z => z.map(f => {
-    //       if (f.name != file.name)
-    //         return f;
-          
-    //       return file;
-    //     }));
-    //     showAlertMessage({
-    //       title: "Error",
-    //       message: `Error while uploading the file`,
-    //       type: "danger"
-    //     });
-    //   });
-  }
-
   const InvalidFeedback = styled.section`
     width: 100%;
     margin-top: 0.25rem;
@@ -124,6 +86,19 @@ const EditCourse = ({ course,
       'list', 'bullet', 'indent'
   ]
 
+  const handleUploadFile = (fileData) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      
+      reader.onloadend = e => {
+        const text = e.target.result;
+        resolve(text);
+      }
+      
+      reader.readAsDataURL(fileData);  
+    });
+  }
+
   return (
     (formLoaded && (
       <Consumer>
@@ -135,39 +110,77 @@ const EditCourse = ({ course,
               name: (course && course.name) || "",
               description: (course && course.description) || "",
               programId: (course && course.programId) || '',
-              periodDays: (course && course.periodDays) || 0              
+              periodDays: (course && course.periodDays) || 0,
+              fileData: ""
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required("Title is required"),
               description: Yup.string().required("Text is required")
             })}
             onSubmit={(
-              { name, description, programId, periodDays },
+              { name, description, programId, periodDays, fileData },
               { setStatus, setSubmitting }
             ) => {
-              
-              let courseData = {
-                name,
-                description,
-                programId,
-                periodDays,
-                startingDate: startingDate && moment(startingDate).format() || null,
-                instituteId: selectedInstitute.instituteId
-              };
 
-              console.log('xxx', courseData);
-              return;
-              if (course) {
-                courseData = { ...courseData, courseId: course.courseId };
-                editCourse(courseData);
-              } else {
-                insertCourse(courseData).then(courseId => {
-                  console.log(
-                    "insertCourse -> courseId",
-                    courseId
-                  );
-                });
-              }
+              setSubmitting(true);
+              const formData = new FormData();
+              formData.append('file', fileData);
+              formData.append('name', name);
+              formData.append('description', description);
+              formData.append('programId', programId);
+
+              axios({
+                  method: 'post',
+                  headers: {
+                      'Content-Type': 'multipart/form-data',
+                      ...authHeader()
+                  },
+                  data: formData,
+                  url: config.apiUrl + "/courses/uploadFile",
+                  onUploadProgress: (ev) => {
+                      const progress = ev.loaded / ev.total * 100;
+                      setUploadProgress(Math.round(progress));
+                  },
+              })
+              .then((resp) => {
+                  // our mocked response will always return true
+                  // in practice, you would want to use the actual response object
+                  //setUploadStatus(true);
+                  setSubmitting(false);
+     
+              })
+              .catch((err) => console.error(err));
+              
+              
+              // let fd;
+              /*
+              handleUploadFile(fileData).then(fd => {
+                let courseData = {
+                  name,
+                  description,
+                  programId,
+                  periodDays,
+                  startingDate: startingDate && moment(startingDate).format() || null,
+                  instituteId: selectedInstitute.instituteId,
+                  fileData: fd
+                };
+                console.log('xxx', courseData);
+
+                if (course) {
+                  courseData = { ...courseData, courseId: course.courseId };
+                  editCourse(courseData);
+                } else {
+                  insertCourse(courseData).then(courseId => {
+                    console.log(
+                      "insertCourse -> courseId",
+                      courseId
+                    );
+                  });
+                }
+
+
+              });
+              */
             }}
           >
             {props => {
@@ -286,53 +299,50 @@ const EditCourse = ({ course,
                                 Program
                               </Label>
                               <Col sm={9}>
-                                <Typeahead
-                                  clearButton
-                                  id="programId"
-                                  selected={props.values.programId}
-                                  labelKey="name"
-                                  className={
-                                    props.errors.programId &&
-                                    props.touched.programId
-                                      ? " is-invalid"
-                                      : ""
-                                  }
-                                  options={programs}
-                                  placeholder="Choose a program..."
-                                  onChange={selectedOptions =>
-                                    props.setFieldValue(
-                                      "programId",
-                                      selectedOptions
-                                    )
-                                  }
-                                  onInputChange={selectedOptions =>
-                                    props.setFieldValue(
-                                      "programId",
-                                      selectedOptions
-                                    )
-                                  }
-                                />
-                                {props.errors.programId && (
-                                  <InvalidFeedback>
-                                    {props.errors.programId}
-                                  </InvalidFeedback>
-                                )}
+                                <Field 
+                                  component="select" 
+                                  name="programId" 
+                                  id="programId" 
+                                  className={'bg-white form-control' + (props.errors.programId && props.touched.programId ? ' is-invalid' : '')}                                   
+                                >
+                                    <option value="">Select a program</option>
+                                    {programs.map(p => {
+                                        console.log("Map each p:", p)
+                                        return (
+                                          <option value={p.programId}>{p.name}</option>
+                                        );
+                                    })} 
+                                </Field> 
+                                {props.errors.programId &&
+                                    props.touched.programId && (
+                                      <InvalidFeedback>
+                                        {props.errors.programId}
+                                      </InvalidFeedback>
+                                    )}
                               </Col>
                             </FormGroup>
 
-                            <Row>
-                              <Col sm={3} />
+                            <FormGroup row>
+                              <Label for="courseFile" sm={3}>
+                                Course file (.zip)
+                              </Label>
                               <Col sm={9}>
-                                <FileList
-                                  course={course}
-                                  files={files}
-                                  setFiles={setFiles}
-                                  uploadFile={uploadFile}
-                                  showAlertMessage={showAlertMessage}
-                                  updateCourseList={updateCourseList}
-                                />
+                                <input
+                                  type="file"
+                                  onChange={(f) => props.setFieldValue(
+                                    "fileData",
+                                    f.target.files[0]
+                                  )}
+                                  accept=".zip" />
+                                {/* {props.errors.programId && (
+                                  <InvalidFeedback>
+                                    {props.errors.programId}
+                                  </InvalidFeedback>
+                                )} */}
+
+                                Uploading: {uploadProgress}/100%
                               </Col>
-                            </Row>
+                            </FormGroup>
 
                             <FormGroup row>
                               <Col sm={3} />

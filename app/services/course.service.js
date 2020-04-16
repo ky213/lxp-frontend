@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
-
+import moment from "moment";
+import axios from 'axios';
 const routePrefix = `${config.apiUrl}/courses`;
 
 export const courseService = {
@@ -24,33 +25,64 @@ function getById(courseId, instituteId) {
 }
 
 function create(courseData, selectedInstitute) {
-    //console.log("Create calendar event:", event)
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify({courseData, selectedInstitute})
-    };
+    
+    const formData = new FormData();
+    formData.append('file', courseData.fileData);
+    formData.append('name', courseData.name);
+    formData.append('description', courseData.description);
+    formData.append('programId', courseData.programId);
+    formData.append('periodDays', courseData.periodDays);
+    formData.append('startingDate', moment(courseData.startingDate).format('L'));
+    formData.append('selectedInstitute', selectedInstitute);              
 
-    return fetch(`${routePrefix}`, requestOptions)
-        .then(handleResponse)
-        .then((data) => {
-            return data;
-        });
+    axios({
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            ...authHeader()
+        },
+        data: formData,
+        url: routePrefix,
+        onUploadProgress: (ev) => {
+            const progress = ev.loaded / ev.total * 100;
+            setUploadProgress(Math.round(progress));
+        },
+    })
+    .then((resp) => {
+        return resp;
+    })
+    .catch((err) => console.error(err));
 }
 
 function update(courseData, selectedInstitute) {
-    console.log("Update calendar event:", event)
-    const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify({courseData, selectedInstitute})
-    };
+    const formData = new FormData();
+    formData.append('file', courseData.fileData);
+    formData.append('name', courseData.name);
+    formData.append('description', courseData.description);
+    formData.append('programId', courseData.programId);
+    formData.append('periodDays', courseData.periodDays);
+    formData.append('startingDate', moment(courseData.startingDate).format('L'));
+    formData.append('selectedInstitute', selectedInstitute);              
+    formData.append('courseId', courseData.courseId);
+    formData.append('contentPath', courseData.contentPath);
 
-    return fetch(`${routePrefix}`, requestOptions)
-        .then(handleResponse)
-        .then((data) => {
-            return data;
-    });
+    axios({
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            ...authHeader()
+        },
+        data: formData,
+        url: routePrefix,
+        onUploadProgress: (ev) => {
+            const progress = ev.loaded / ev.total * 100;
+            setUploadProgress(Math.round(progress));
+        },
+    })
+    .then((resp) => {
+        return resp;
+    })
+    .catch((err) => console.error(err));
 }
 
 function uploadFile(file) {

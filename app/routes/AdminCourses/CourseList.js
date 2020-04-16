@@ -117,10 +117,10 @@ const CourseList = ({
                               Edit
                             </a>
                           </td>
-                          <td className="bt-0">{item.name}</td>
-                          <td className="bt-0">{item.programName}</td>
-                          <td className="bt-0 text-center">{item.startingDate && moment(item.startingDate).format("L")}</td>
-                          <td className="bt-0 text-center">{item.periodDays}</td>
+                          <td className="">{item.name}</td>
+                          <td className="">{item.programName}</td>
+                          <td className="text-center">{item.startingDate && moment(item.startingDate).format("L")}</td>
+                          <td className="text-center">{item.periodDays}</td>
                         </tr>
                       );
                     })}

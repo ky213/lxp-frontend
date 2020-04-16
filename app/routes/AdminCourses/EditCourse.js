@@ -29,7 +29,7 @@ import { Consumer } from "@/components/Theme/ThemeContext";
 import { useAppState } from '@/components/AppState';
 
 const EditCourse = ({ course,
-  onCancel, editCourse, insertCourse, showAlertMessage, 
+  onCancel, finishEdit, finishInsert, showAlertMessage, 
   hideAlertMessage, updateCourseList}) => {
   
   const [{selectedInstitute}] = useAppState();
@@ -114,8 +114,9 @@ const EditCourse = ({ course,
               fileData: ""
             }}
             validationSchema={Yup.object().shape({
-              name: Yup.string().required("Title is required"),
-              description: Yup.string().required("Text is required")
+              name: Yup.string().required("Name is required"),
+              description: Yup.string().required("Description is required"),
+              periodDays: Yup.number(),
             })}
             onSubmit={(
               { name, description, programId, periodDays, fileData },
@@ -123,64 +124,51 @@ const EditCourse = ({ course,
             ) => {
 
               setSubmitting(true);
+              
               const formData = new FormData();
               formData.append('file', fileData);
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
+              formData.append('periodDays', periodDays);
+              formData.append('startingDate', moment(startingDate).format('L'));
+              formData.append('selectedInstitute', selectedInstitute.instituteId);              
+
+              let httpMethod = '';
+              if (course) {
+                httpMethod = 'PUT';
+                formData.append('courseId', course.courseId);
+                formData.append('contentPath', course.contentPath);
+              } else {
+                httpMethod = 'POST';
+              }
 
               axios({
-                  method: 'post',
-                  headers: {
-                      'Content-Type': 'multipart/form-data',
-                      ...authHeader()
-                  },
-                  data: formData,
-                  url: config.apiUrl + "/courses/uploadFile",
-                  onUploadProgress: (ev) => {
-                      const progress = ev.loaded / ev.total * 100;
-                      setUploadProgress(Math.round(progress));
-                  },
+                method: httpMethod,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    ...authHeader()
+                },
+                data: formData,
+                url: config.apiUrl + "/courses",
+                onUploadProgress: (ev) => {
+                    const progress = ev.loaded / ev.total * 100;
+                    setUploadProgress(Math.round(progress));
+                },
               })
               .then((resp) => {
                   // our mocked response will always return true
                   // in practice, you would want to use the actual response object
                   //setUploadStatus(true);
                   setSubmitting(false);
-     
+                  if (course) {
+                    finishEdit();
+                  }
+                  else {
+                    finishInsert();
+                  }
               })
               .catch((err) => console.error(err));
-              
-              
-              // let fd;
-              /*
-              handleUploadFile(fileData).then(fd => {
-                let courseData = {
-                  name,
-                  description,
-                  programId,
-                  periodDays,
-                  startingDate: startingDate && moment(startingDate).format() || null,
-                  instituteId: selectedInstitute.instituteId,
-                  fileData: fd
-                };
-                console.log('xxx', courseData);
-
-                if (course) {
-                  courseData = { ...courseData, courseId: course.courseId };
-                  editCourse(courseData);
-                } else {
-                  insertCourse(courseData).then(courseId => {
-                    console.log(
-                      "insertCourse -> courseId",
-                      courseId
-                    );
-                  });
-                }
-
-
-              });
-              */
             }}
           >
             {props => {
@@ -266,6 +254,7 @@ const EditCourse = ({ course,
                                   <DatePicker
                                     id="startingDate"
                                     name="startingDate"
+                                    
                                     showMonthDropdown
                                     showYearDropdown
                                     autoComplete="off"
@@ -280,7 +269,6 @@ const EditCourse = ({ course,
                                     showMonthDropdown
                                     showYearDropdown
                                     onChange={date => {
-                                      console.log('date', moment(date).format());
                                       setStartingDate(date);
                                     }}
                                   />
@@ -292,6 +280,22 @@ const EditCourse = ({ course,
                                     )}
                                 </InputGroup>
                               </Col>                            
+                            </FormGroup>
+
+                            <FormGroup row>
+                              <Label for="periodDays" sm={3}>
+                                Period days
+                              </Label>
+                              <Col sm={4}>
+                                <Field
+                                  type="text"
+                                  name="periodDays"
+                                  id="periodDays"
+                                  className={'bg-white form-control' + (props.errors.periodDays && props.touched.periodDays ? ' is-invalid' : '')}
+                                  placeholder="Min level..."
+                                />
+                                <ErrorMessage name="periodDays" component="div" className="invalid-feedback" />
+                              </Col>
                             </FormGroup>
 
                             <FormGroup row>

@@ -66,37 +66,27 @@ const AdminCourses = () => {
     setCourse(null);
   };
 
-  const editCourse = (courseData) => {
-    courseService
-      .update(courseData, selectedInstitute && selectedInstitute.instituteId)
-      .then(data => {
-        setEditForm(false);
-        setCourse(null);
-        getAllCourses();
-        showAlertMessage({
-          title: "Success",
-          message: "You have sucessfully updated an course",
-          type: "success"
-        });
-      });
+  const finishEdit = () => {
+    setEditForm(false);
+    setCourse(null);
+    getAllCourses();
+    showAlertMessage({
+      title: "Success",
+      message: "You have sucessfully updated the course",
+      type: "success"
+    });
   }
 
-  const insertCourse = (courseData) => {
-    courseService
-      .create(courseData, selectedInstitute && selectedInstitute.instituteId)
-      .then(courseId => {
-        setEditForm(false);
-        setCourse(null);
-        getAllCourses();
+  const finishInsert = () => {
+    setEditForm(false);
+    setCourse(null);
+    getAllCourses();
 
-        showAlertMessage({
-          title: "Success",
-          message: "You have sucessfully created course",
-          type: "success"
-        });
-
-        return courseId;
-      });
+    showAlertMessage({
+      title: "Success",
+      message: "You have sucessfully created a course",
+      type: "success"
+    });
   }
 
   // refresh num of files after add/delete on Edit
@@ -149,8 +139,8 @@ const AdminCourses = () => {
             <EditCourse
               course={course}
               onCancel={handleCancel}
-              editCourse={editCourse}
-              insertCourse={insertCourse}
+              finishEdit={finishEdit}
+              finishInsert={finishInsert}
               showAlertMessage={showAlertMessage}
               hideAlertMessage={hideAlertMessage}
               updateCourseList={updateCourseList}

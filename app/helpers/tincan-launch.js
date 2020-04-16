@@ -2,7 +2,8 @@ import TinCan from 'tincanjs';
 import config from '@/config';
 
 export const TinCanLaunch = {
-    launchContent
+    launchContent,
+    getActor
 }
 
 const lrsConfig = {
@@ -145,9 +146,9 @@ function launchContent(user, programId, course, launcher) {
     });
 }
 
-const getActor = (user) => {
+function getActor(user) {
     //console.log("Got user for actor:", user)
-    return new TinCan.Agent ({'name': user.fullName,'mbox': 'mailto:'+ user.email});
+    return new TinCan.Agent ({'name': user.fullName, 'mbox': 'mailto:'+ user.email});
 }
 
 

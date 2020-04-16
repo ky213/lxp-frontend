@@ -10,7 +10,9 @@ import {
     InputGroup,
     Input,
     InputGroupAddon,
-    CardBody
+    CardBody,
+    Form,
+    FormGroup
 } from '@/components';
 
 import { HeaderMain } from "@/routes/components/HeaderMain";
@@ -19,8 +21,8 @@ import { Paginations } from "@/routes/components/Paginations";
 import { Typeahead } from "react-bootstrap-typeahead";
 import moment from 'moment';
 
-import { reportingService, programService } from '@/services';
-import { Role } from '@/helpers';
+import { reportingService, programService, residentService, userService } from '@/services';
+import { Role, TinCanLaunch } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
 const Reporting = () => {
@@ -30,7 +32,9 @@ const Reporting = () => {
     const [pageId, setPageId] = React.useState(1);
     const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(100);  
     const [programs, setPrograms] = React.useState(null);
-    const [selectedProgramId, setSelectedProgramId] = React.useState(null);
+    const [selectedProgram, setSelectedProgram] = React.useState(null);
+    const [learners, setLearners] = React.useState([]);
+    const [selectedLearner, setSelectedLearner] = React.useState(null);
 
     let paginationContent = null;
     if (totalNumberOfRecords > 0) {
@@ -50,8 +54,18 @@ const Reporting = () => {
         const fetchData = async () => {
             const data = await programService.getByCurrentUser(selectedInstitute.instituteId);
             setPrograms(data);
-
-            await getStatements();
+            
+            if(data && data.length == 1) {
+                setSelectedProgram(data[0])
+            }
+            
+            try {
+                const learners = await residentService.getAllActive(1, 999, null, selectedInstitute.instituteId, selectedProgram && selectedProgram.programId || null);
+                setLearners(learners.users.map(usr => ({employeeId: usr.employeeId, email: usr.email, fullName: `${usr.name} ${usr.surname}`})));
+            }
+            catch(error) {
+                console.log("Error while fetching learners:", error)
+            }
         }
         
         fetchData();
@@ -62,10 +76,14 @@ const Reporting = () => {
 
     }
 
-    const getStatements = async () => {
+    const getStatements = async (program, learner) => {
         const filter = {selectedInstituteId: selectedInstitute.instituteId, limit: 100, take: 100, page: pageId};
-        if(selectedProgramId) {
-            filter.registration = selectedProgramId;
+        if(program && program.programId) {
+            filter.registration = program.programId;
+        }
+
+        if(learner) {
+            filter.agent = TinCanLaunch.getActor(learner);
         }
 
         const data = await reportingService.getAll(filter);
@@ -75,20 +93,27 @@ const Reporting = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await getStatements();
+            await getStatements(selectedProgram, selectedLearner);
         }
         
         fetchData();
-    }, [selectedProgramId])
+    }, [selectedProgram, selectedLearner])
 
     const handleProgramChange = e => {
         if (e && e.length > 0) {
-          let x = e[0].programId;
-          setSelectedProgramId(x);
+          setSelectedProgram(e[0]);
         } else {
-            setSelectedProgramId(null);
+            setSelectedProgram(null);
         }
-      };
+    };
+
+    const handleLearnerChange = e => {
+        if (e && e.length > 0) {
+          setSelectedLearner(e[0]);
+        } else {
+            setSelectedLearner(null);
+        }
+    };
     
     /*
     if(!statements) {
@@ -118,26 +143,41 @@ const Reporting = () => {
                             <CardBody>
                                 <div className="d-lg-flex justify-content-end">
                                     <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
-                          
+                                    <Form inline>
+                                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                                            <Typeahead
+                                                clearButton
+                                                id="programs"
+                                                labelKey="name"
+                                                selected={selectedProgram && programs && programs.filter(p => p.programId == selectedProgram.programId) || []}
+                                                options={programs}
+                                                placeholder="Program..."
+                                                onChange={handleProgramChange}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                         <Typeahead
                                             clearButton
-                                            id="programs"
-                                            className="mr-3 form-control"
-                                            labelKey="name"
-                                            selected={selectedProgramId && programs && programs.filter(p => p.programId == selectedProgramId) || []}
-                                            options={programs}
-                                            placeholder="Program..."
-                                            onChange={handleProgramChange}
+                                            id="learners"
+                                            labelKey="fullName"
+                                            options={learners}
+                                            multiple
+                                            placeholder="Select learners..."
+                                            onChange={handleLearnerChange}
                                         />
+                                        </FormGroup>
+                                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                            
-                                        <InputGroup>
-                                            <Input onKeyUp={(e) => onSearch(e)} placeholder="Search for..." />
-                                            <InputGroupAddon addonType="append">
-                                                <Button color="secondary" outline>
-                                                    <i className="fa fa-search"></i>
-                                                </Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
+                                            <InputGroup>
+                                                <Input onKeyUp={(e) => onSearch(e)} placeholder="Search for..." />
+                                                <InputGroupAddon addonType="append">
+                                                    <Button color="secondary" outline>
+                                                        <i className="fa fa-search"></i>
+                                                    </Button>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                            </FormGroup>
+                                        </Form>
                                     </div>
                                 </div>
                             </CardBody>

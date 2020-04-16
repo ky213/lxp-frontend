@@ -13,5 +13,5 @@ export const RoleDescription = {
     InstituteManager: 'Institute Manager',
     ProgramDirector: 'Program Director',
     FacultyMember: 'Faculty Member',
-    Resident: 'Resident'   
+    Resident: 'Learner'   
 }

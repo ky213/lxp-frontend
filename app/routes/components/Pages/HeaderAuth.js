@@ -12,7 +12,7 @@ const HeaderAuth = (props) => (
             </Link>
         </div>
         <p className="mb-5 text-left header-auth__subtitle">
-            Residency<br />
+            Learning<br />
             Management<br/>
             System
         </p>

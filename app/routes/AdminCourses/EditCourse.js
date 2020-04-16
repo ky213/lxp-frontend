@@ -35,7 +35,7 @@ const EditCourse = ({ course,
   
   const [{selectedInstitute}] = useAppState();
   const [programs, setPrograms] = React.useState([]);
-  const [startingDate, setStartingDate] = React.useState(null);
+  //const [startingDate, setStartingDate] = React.useState(null);
 
   const [programsLoaded, setProgramsLoaded] = React.useState(false);
   const [formLoaded, setFormLoaded] = React.useState(false);
@@ -54,17 +54,10 @@ const EditCourse = ({ course,
   }, [programsLoaded]);
 
   React.useEffect(() => {
-    if (course)
-    {
+    if (course) {
       setSelectedLogoDataUrl(course.image);
-      
-      if (course.startingDate) {
-        setStartingDate(moment(course.startingDate).toDate());
-      }
     }
-    else 
-    {
-      setStartingDate(null);
+    else {
       setSelectedLogoDataUrl(null);
     }
   }, [course]);
@@ -95,18 +88,7 @@ const EditCourse = ({ course,
       'list', 'bullet', 'indent'
   ]
 
-  const handleUploadFile = (fileData) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      
-      reader.onloadend = e => {
-        const text = e.target.result;
-        resolve(text);
-      }
-      
-      reader.readAsDataURL(fileData);  
-    });
-  }
+
 
   return (
     (formLoaded && (
@@ -120,7 +102,7 @@ const EditCourse = ({ course,
               description: (course && course.description) || "",
               programId: (course && course.programId) || '',
               periodDays: (course && course.periodDays) || 0,
-              startingDate: '',
+              startingDate: (course && course.startingDate) || '',
               fileData: ""
             }}
             validationSchema={Yup.object().shape({
@@ -184,8 +166,8 @@ const EditCourse = ({ course,
               .catch((err) => console.error(err));
             }}
           >
-            {props => {
-              console.log("props", props);
+            {formikProps => {
+              console.log("props", formikProps);
               return (
                 <React.Fragment>
                   <Row>
@@ -193,7 +175,7 @@ const EditCourse = ({ course,
                       <Card className="mb-3">
                         <CardBody>
                           {/* START Form */}
-                          <Form onSubmit={props.handleSubmit}>
+                          <Form onSubmit={formikProps.handleSubmit}>
                             {/* START Input */}
                             <FormGroup row>
                               <Label for="name" sm={3}>
@@ -206,7 +188,7 @@ const EditCourse = ({ course,
                                   id="name"
                                   className={
                                     "bg-white form-control" +
-                                    (props.errors.name && props.touched.name
+                                    (formikProps.errors.name && formikProps.touched.name
                                       ? " is-invalid"
                                       : "")
                                   }
@@ -238,9 +220,9 @@ const EditCourse = ({ course,
                               </Label>
                               <Col sm={9}>
                                 <ReactQuill
-                                  value={props.values.description}
+                                  value={formikProps.values.description}
                                   name="text"
-                                  onChange={ x => props.setFieldValue(
+                                  onChange={ x => formikProps.setFieldValue(
                                     "description",
                                     x
                                   )}
@@ -248,7 +230,7 @@ const EditCourse = ({ course,
                                   formats={formats}
                                   className={
                                     "bg-white form-control" +
-                                    (props.errors.description && props.touched.description
+                                    (formikProps.errors.description && formikProps.touched.description
                                       ? " is-invalid"
                                       : "")
                                   }
@@ -285,22 +267,20 @@ const EditCourse = ({ course,
                                     autoComplete="off"
                                     className={
                                       "bg-white form-control zIndex100" +
-                                      (props.errors.startingDate &&
-                                      props.touched.startingDate
+                                      (formikProps.errors.startingDate &&
+                                        formikProps.touched.startingDate
                                         ? " is-invalid"
                                         : "")
                                     }
-                                    selected={startingDate}
+                                    selected={formikProps.values.startingDate}
                                     showMonthDropdown
                                     showYearDropdown
-                                    onChange={date => {
-                                      setStartingDate(date);
-                                    }}
+                                    onChange={date => formikProps.setFieldValue('startingDate', date)}
                                   />
-                                  {props.errors.startingDate &&
-                                    props.touched.startingDate && (
+                                  {formikProps.errors.startingDate &&
+                                    formikProps.touched.startingDate && (
                                       <InvalidFeedback>
-                                        {props.errors.startingDate}
+                                        {formikProps.errors.startingDate}
                                       </InvalidFeedback>
                                     )}
                                 </InputGroup>
@@ -316,7 +296,7 @@ const EditCourse = ({ course,
                                   type="text"
                                   name="periodDays"
                                   id="periodDays"
-                                  className={'bg-white form-control' + (props.errors.periodDays && props.touched.periodDays ? ' is-invalid' : '')}
+                                  className={'bg-white form-control' + (formikProps.errors.periodDays && formikProps.touched.periodDays ? ' is-invalid' : '')}
                                   placeholder="Min level..."
                                 />
                                 <ErrorMessage name="periodDays" component="div" className="invalid-feedback" />
@@ -332,7 +312,7 @@ const EditCourse = ({ course,
                                   component="select" 
                                   name="programId" 
                                   id="programId" 
-                                  className={'bg-white form-control' + (props.errors.programId && props.touched.programId ? ' is-invalid' : '')}                                   
+                                  className={'bg-white form-control' + (formikProps.errors.programId && formikProps.touched.programId ? ' is-invalid' : '')}                                   
                                 >
                                     <option value="">Select a program</option>
                                     {programs.map(p => {
@@ -342,10 +322,10 @@ const EditCourse = ({ course,
                                         );
                                     })} 
                                 </Field> 
-                                {props.errors.programId &&
-                                    props.touched.programId && (
+                                {formikProps.errors.programId &&
+                                    formikProps.touched.programId && (
                                       <InvalidFeedback>
-                                        {props.errors.programId}
+                                        {formikProps.errors.programId}
                                       </InvalidFeedback>
                                     )}
                               </Col>
@@ -358,7 +338,7 @@ const EditCourse = ({ course,
                               <Col sm={9}>
                                 <input
                                   type="file"
-                                  onChange={(f) => props.setFieldValue(
+                                  onChange={(f) => formikProps.setFieldValue(
                                     "fileData",
                                     f.target.files[0]
                                   )}

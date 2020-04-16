@@ -496,7 +496,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                                                 options={users}
                                                                 multiple
                                                                 className={(formikProps.errors.residents && formikProps.touched.residents ? ' is-invalid' : '')}
-                                                                placeholder="Select residents..."
+                                                                placeholder="Select learners..."
                                                                 onChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
                                                                 onInputChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
                                                             />

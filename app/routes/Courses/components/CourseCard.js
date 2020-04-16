@@ -20,7 +20,11 @@ const status = [
 ];
 
 const CourseCard = ({course, onLaunch, ...otherProps}) => {
+    const createMarkup = (html) => {
+        return {__html: html};
+    }
 
+      
     return (
         <React.Fragment>
             { /* START Card */}
@@ -29,7 +33,7 @@ const CourseCard = ({course, onLaunch, ...otherProps}) => {
                     iconChar=""
                     size={ 32 }
                 >
-                <CardImg top src={course.image || ''} onClick={() => onLaunch(course)}/>
+                <CardImg style={{cursor:'pointer'}} title="Launch course" top src={course.image || ''} onClick={() => onLaunch(course)}/>
                 </HolderProvider.Icon>
                 <CardBody>
                     <div className="d-flex mb-3">
@@ -38,11 +42,11 @@ const CourseCard = ({course, onLaunch, ...otherProps}) => {
                                 { course.name }
                             </a>
                             <br />
-                            <a href="#" className="text-success">
-                                { course.description }
-                            </a>
+                            <p dangerouslySetInnerHTML={createMarkup(course.description)}>
+
+                            </p>
                         </span>
-                        <a href="#" className="ml-auto" onClick={() => onLaunch(course)}>
+                        <a href="#" title="Launch course" className="ml-auto" onClick={() => onLaunch(course)}>
                             <i className="fa fa-external-link"></i>
                         </a>
                     </div>
@@ -72,7 +76,7 @@ const CourseCard = ({course, onLaunch, ...otherProps}) => {
                 </CardBody>
                 <CardFooter className="bt-0">
                     <span className="mr-3">
-                        <i className="fa fa-eye mr-1"></i> <span className="text-inverse">233</span> 
+                        <i className="fa fa-eye mr-1"></i> <span className="text-inverse">0</span> 
                     </span>
                 </CardFooter>
             </Card>

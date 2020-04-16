@@ -120,7 +120,7 @@ const EditCourse = ({ course,
               description: (course && course.description) || "",
               programId: (course && course.programId) || '',
               periodDays: (course && course.periodDays) || 0,
-              startingDate: null,
+              startingDate: '',
               fileData: ""
             }}
             validationSchema={Yup.object().shape({
@@ -144,7 +144,7 @@ const EditCourse = ({ course,
               formData.append('description', description);
               formData.append('programId', programId);
               formData.append('periodDays', periodDays);
-              formData.append('startingDate', moment(startingDate).format('L'));
+              formData.append('startingDate', startingDate);
               formData.append('selectedInstitute', selectedInstitute.instituteId);              
 
               let httpMethod = '';

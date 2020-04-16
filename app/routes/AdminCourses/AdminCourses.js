@@ -31,7 +31,6 @@ const AdminCourses = () => {
     setShowAlert(true);
   };
 
-
   const hideAlertMessage = () => {
     setAlertMessage(null);
     setShowAlert(false);
@@ -128,6 +127,7 @@ const AdminCourses = () => {
               handleCourseEdit={handleCourseEdit}
               addNewClick={addNewClick}
               getAllCourses={getAllCourses}
+              showAlertMessage={showAlertMessage}
               />
             )) || <Loading />}
         </React.Fragment>

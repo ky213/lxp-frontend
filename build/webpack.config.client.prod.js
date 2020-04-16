@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 
 var config = require('../config');
 
-var BASE_PATH = process.env.BASE_PATH || '/';
+var BASE_PATH = '/lxp/'; //process.env.BASE_PATH || '/lxp';
 const fs = require('fs'); // to check if the file exists
 
 module.exports = (env) => {

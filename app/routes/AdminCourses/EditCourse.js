@@ -111,6 +111,7 @@ const EditCourse = ({ course,
               description: (course && course.description) || "",
               programId: (course && course.programId) || '',
               periodDays: (course && course.periodDays) || 0,
+              startingDate: null,
               fileData: ""
             }}
             validationSchema={Yup.object().shape({
@@ -118,8 +119,8 @@ const EditCourse = ({ course,
               description: Yup.string().required("Text is required")
             })}
             onSubmit={(
-              { name, description, programId, periodDays, fileData },
-              { setStatus, setSubmitting }
+              { name, description, programId, periodDays, fileData, startingDate },
+              { setStatus, setSubmitting, isSubmitting }
             ) => {
 
               setSubmitting(true);
@@ -128,6 +129,9 @@ const EditCourse = ({ course,
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
+              formData.append('periodDays', periodDays);
+              formData.append('startingDate', startingDate);
+              formData.append('instituteId', selectedInstitute.instituteId);
 
               axios({
                   method: 'post',
@@ -147,9 +151,12 @@ const EditCourse = ({ course,
                   // in practice, you would want to use the actual response object
                   //setUploadStatus(true);
                   setSubmitting(false);
-     
+                  alert("Course created successfully!")
               })
-              .catch((err) => console.error(err));
+              .catch((err) => {
+                console.error(err);
+                alert("Something went wrong while creating the course!")
+              });
               
               
               // let fd;

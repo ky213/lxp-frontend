@@ -10,6 +10,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import axios from 'axios';
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
+import  ImageUpload from '@/components/ImageUpload';
 
 import {
   Row,
@@ -39,6 +40,7 @@ const EditCourse = ({ course,
   const [programsLoaded, setProgramsLoaded] = React.useState(false);
   const [formLoaded, setFormLoaded] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(0);
+  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
 
   React.useEffect(() => {
     programService.getByCurrentUser(selectedInstitute.instituteId).then(data => {
@@ -54,10 +56,17 @@ const EditCourse = ({ course,
   React.useEffect(() => {
     if (course)
     {
+      setSelectedLogoDataUrl(course.image);
+      
       if (course.startingDate) {
         setStartingDate(moment(course.startingDate).toDate());
       }
-    } 
+    }
+    else 
+    {
+      setStartingDate(null);
+      setSelectedLogoDataUrl(null);
+    }
   }, [course]);
 
   const cancel = () => {
@@ -124,9 +133,12 @@ const EditCourse = ({ course,
             ) => {
 
               setSubmitting(true);
-              
+
               const formData = new FormData();
-              formData.append('file', fileData);
+              if (fileData)
+                formData.append('file', fileData);
+              if (selectedLogoDataUrl)
+                formData.append('logo', selectedLogoDataUrl);
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
@@ -204,6 +216,18 @@ const EditCourse = ({ course,
                                   component="div"
                                   className="invalid-feedback"
                                 />
+                              </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                              <Label for="name" sm={3}>
+                                Logo
+                              </Label>
+                              <Col sm={9}>
+                                <ImageUpload maxFileSizeKB={200} defaultImage={selectedLogoDataUrl} onSelectedImage={(imageDataUrl) => {
+                                  //console.log("Selected image:", imageDataUrl)
+                                  setSelectedLogoDataUrl(imageDataUrl);
+                                }} />
                               </Col>
                             </FormGroup>
 

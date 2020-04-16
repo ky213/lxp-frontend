@@ -97,7 +97,6 @@ const CourseList = ({
                       return (
                         <tr key={item.courseId}>
                           <td>
-                            {console.log('item', item)}
                             <CustomInput
                               type="checkbox"
                               onClick={e =>

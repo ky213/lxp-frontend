@@ -13,13 +13,16 @@ import {
 } from "@/components";
 import ThemedButton from "@/components/ThemedButton";
 import { courseService } from "@/services";
+import { useAppState } from '@/components/AppState';
 
 const CourseList = ({
   courses,
   handleCourseEdit,
   addNewClick,
-  getAllCourses
+  getAllCourses,
+  showAlertMessage
 }) => {
+  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   const [selectedCourses, setSelectedCourses] = React.useState([]);
 
   const onSelected = (courseId, e) => {
@@ -32,12 +35,17 @@ const CourseList = ({
   }
 
   const onDelete = async () => {
-    const message = setSelectedCourses.length == 1 ? "this course" : "these courses";
+    const message = selectedCourses.length == 1 ? "this course" : "these courses";
     if(confirm(`Are you sure you want to delete ${message}?`)) {
         try {
-            await courseService.deleteCourses(setSelectedCourses);
+            await courseService.deleteCourses(selectedCourses, selectedInstitute.instituteId);
             getAllCourses();
             setSelectedCourses([]);
+            showAlertMessage({
+              title: "Success",
+              message: "You have sucessfully deleted the courses",
+              type: "success"
+            });
         }
         catch(error) {
             console.log("Error while deleting courses:", error);

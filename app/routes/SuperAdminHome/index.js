@@ -18,6 +18,7 @@ import { useAppState } from '@/components/AppState';
 import { SUPER_ADMIN_SELECT_INSTITUTE } from "@/actions";
 import { Consumer, ThemeContext } from '@/components/Theme/ThemeContext';
 import PulseLogo from '@/components/PulseLogo';
+import { defineMessages, FormattedMessage } from "react-intl";
 
 const SuperAdminHome = (props) => {
     const [{currentUser, selectedInstitute}, dispatch] = useAppState();
@@ -130,6 +131,8 @@ const SuperAdminHome = (props) => {
                     </Alert>
                 )}
                 
+                <FormattedMessage id="Title" />
+
                 <HeaderMain title={`Hello, ${currentUser && currentUser.user && currentUser.user.fullName}`} />
                 {showInstituteForm && (
                     <InstituteSettings instituteId={selectedInstituteId} onEdited={handleEdited} onCancel={handleCancel} />

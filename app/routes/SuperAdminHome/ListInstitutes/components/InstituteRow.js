@@ -1,6 +1,5 @@
 import React from "react";
 import { useIntl } from "react-intl";
-
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useAppState } from "@/components/AppState";
@@ -42,7 +41,7 @@ const InstituteLogoGenerated = styled.div`
 
 const InstituteRow = (props) => {
   const intl = useIntl();
-  const [dispatch] = useAppState();
+  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
 
   return (
     <Consumer>
@@ -100,7 +99,7 @@ const InstituteRow = (props) => {
               >
                 {/*<i className="fa fa-fw fa-edit mr-2"></i>*/}
                 <i className="fa fa-fw fa-pencil mr-2"></i>
-                {intl.formatMessage({
+                  {intl.formatMessage({
                       id: "General.Edit",
                     })}
               </Button>

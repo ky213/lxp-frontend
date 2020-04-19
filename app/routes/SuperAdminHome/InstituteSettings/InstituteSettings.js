@@ -1,33 +1,23 @@
 import React from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useIntl } from "react-intl";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import moment from 'moment';
 import { SketchPicker } from 'react-color';
 import styled from "styled-components";
 import ThemedButton from "@/components/ThemedButton";
-import { Loading } from "@/components";
 
 import { 
-    Container,
     Row,
     Col,
     Card,
-    CardTitle,
     CardBody,
     Button,
-    InputGroup,
-    InputGroupAddon,
     CustomInput,
     FormGroup, 
     Label, 
-    Media,
-    Input, 
-    FormText,
     Alert
 } from '@/components';
-import { instituteService, authenticationService } from '@/services';
+import { instituteService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import  ImageUpload from '@/components/ImageUpload';
 import {
@@ -72,7 +62,8 @@ const InvalidFeedback = styled.section`
 `;
 
 const InstituteSettings = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const intl = useIntl();
+    
     const [institute, setInstitute] = React.useState(null);
     const [showAlert, setShowAlert] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState(null);
@@ -82,7 +73,6 @@ const InstituteSettings = (props) => {
     const [selectedBackgroundColorCode, setSelectedBackgroundColorCode] = React.useState('#1EB7FF');
     const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
     const { onCancel } = props;
-
     
     const dismissAlert = () => {
         setAlertMessage(null);
@@ -103,9 +93,6 @@ const InstituteSettings = (props) => {
                     setSelectedColorCode(data.colorCode || '#FFFFFF');
                     setSelectedBackgroundColorCode(data.backgroundColorCode || '#1EB7FF');
                     setSelectedLogoDataUrl(data.logo || null);
-                    
-                
-                // console.log('Got institute:', data);
                 });
             } 
             else {
@@ -122,8 +109,8 @@ const InstituteSettings = (props) => {
             <Row> 
                 <Col lg={ 12 }>
                     <HeaderDemo 
-                    title="Edit institute settings"
-                    subTitle="You can change institute settings like institute name, logo, academic months etc. here" 
+                    title={intl.formatMessage({ id: 'SuperAdminHome.EditInstituteSettingsTitle'})}
+                    subTitle={intl.formatMessage({ id: 'SuperAdminHome.EditInstituteSettingsSubtitle'})}
                     />
                 </Col>
             </Row>
@@ -138,7 +125,7 @@ const InstituteSettings = (props) => {
                     isActive: institute && institute.isActive  || !institute,
                 }}
                 validationSchema={Yup.object().shape({
-                    name: Yup.string().required('Name is required'),
+                    name: Yup.string().required(intl.formatMessage({ id: 'General.NameIsRequired'})),
                 })}
                 onSubmit={async ({ name, isActive }, { setStatus, setSubmitting }) => {
                     setStatus();
@@ -161,8 +148,8 @@ const InstituteSettings = (props) => {
                             dispatch({type:SUPER_ADMIN_UPDATE_INSTITUTE, institute: updatedInstitute});
 
                             showAlertMessage({
-                                title: "Success",
-                                message: "You have sucessfully changed the institute settings!",
+                                title: intl.formatMessage({ id: 'General.Success'}),
+                                message: intl.formatMessage({ id: 'General.SuccessUpdateMessage'}),
                                 type: "success"
                             });
 
@@ -171,8 +158,8 @@ const InstituteSettings = (props) => {
                         }
                         catch(exc) {
                             showAlertMessage({
-                                title: "Error",
-                                message: `Error while changing institute settings: ${error}`,
+                                title: intl.formatMessage({ id: 'General.Error'}),
+                                message: intl.formatMessage({ id: 'General.ErrorUpdateMessage'}, {error: error }),
                                 type: "danger"
                             });
                             setSubmitting(false);
@@ -185,7 +172,7 @@ const InstituteSettings = (props) => {
                             logo: selectedLogoDataUrl}).then(
                             reponse => {
                                 showAlertMessage({
-                                    title: "Success",
+                                    title: intl.formatMessage({ id: 'General.Success'}),
                                     message: "You have sucessfully created an institute!",
                                     type: "success"
                                 });
@@ -195,8 +182,8 @@ const InstituteSettings = (props) => {
                             },
                             error => {
                                 showAlertMessage({
-                                    title: "Error",
-                                    message: `Error while trying to create an institute: ${error}`,
+                                    title: intl.formatMessage({ id: 'General.Error'}),
+                                    message: intl.formatMessage({ id: 'General.ErrorInsertMessage'}, {error: error }),
                                     type: "danger"
                                 });
                                 setSubmitting(false);
@@ -204,16 +191,11 @@ const InstituteSettings = (props) => {
                             }
                         ); 
                     }
-
-                               
                 }}
             >
                  {formikProps => {
-                     console.log("Formik props", formikProps.values)
                      return (
                       <React.Fragment>
-            
-                        
                           {
                             showAlert && alertMessage && (
                                 <Alert color={alertMessage.type}>
@@ -222,7 +204,7 @@ const InstituteSettings = (props) => {
                                     </h6>
                                     {alertMessage.message}
                                     <div className="mt-2">
-                                        <Button color={alertMessage.type} onClick={dismissAlert}>Dismiss</Button>
+                                        <Button color={alertMessage.type} onClick={dismissAlert}>{intl.formatMessage({ id: 'General.Dismiss'})}</Button>
                                     </div>      
                                 </Alert>
                             )
@@ -238,7 +220,7 @@ const InstituteSettings = (props) => {
             
                                               <FormGroup row>
                                                   <Label for="name" sm={3}>
-                                                      Name
+                                                  {intl.formatMessage({ id: 'General.Name'})}
                                                   </Label>
                                                   <Col sm={9}>
                                                       <Field 
@@ -246,25 +228,24 @@ const InstituteSettings = (props) => {
                                                           name="name" 
                                                           id="name" 
                                                           className={'bg-white form-control' + (formikProps.errors.name && formikProps.touched.name ? ' is-invalid' : '')} 
-                                                          placeholder="Enter Name..." 
+                                                          placeholder={intl.formatMessage({ id: 'SuperAdminHome.PlaceHolderEnterTheName'})}
                                                       />
                                                       <ErrorMessage name="name" component="div" className="invalid-feedback" />
                                                   </Col>                                                    
                                               </FormGroup>
                                               <FormGroup row>
                                                   <Label for="name" sm={3}>
-                                                      Logo
+                                                    {intl.formatMessage({ id: 'SuperAdminHome.Logo'})}
                                                   </Label>
                                                   <Col sm={9}>
                                                       <ImageUpload maxFileSizeKB={200} defaultImage={selectedLogoDataUrl} onSelectedImage={(imageDataUrl) => {
-                                                          //console.log("Selected image:", imageDataUrl)
                                                           setSelectedLogoDataUrl(imageDataUrl);
                                                       }} />
                                                   </Col>                                                    
                                               </FormGroup>
                                               <FormGroup row>
                                                   <Label for="colorPicker" sm={3}>
-                                                      Foreground color
+                                                    {intl.formatMessage({ id: 'SuperAdminHome.ForegroundColor'})}
                                                   </Label>
                                                   <Col sm={9}>
                                                     <Swatch>
@@ -282,7 +263,7 @@ const InstituteSettings = (props) => {
                                               </FormGroup>
                                               <FormGroup row>
                                                   <Label for="colorPicker" sm={3}>
-                                                      Background color
+                                                    {intl.formatMessage({ id: 'SuperAdminHome.BackgroundColor'})}
                                                   </Label>
                                                   <Col sm={9}>
                                                     <Swatch>
@@ -299,8 +280,8 @@ const InstituteSettings = (props) => {
                                                   </Col>
                                               </FormGroup>
                                               <FormGroup row>
-                                                    <Label for="email" sm={3}>
-                                                    Status
+                                                    <Label sm={3}>
+                                                        {intl.formatMessage({ id: 'General.Status'})}
                                                     </Label>
                                                     <Col sm={9}>
                                                     <CustomInput
@@ -312,9 +293,7 @@ const InstituteSettings = (props) => {
                                                         checked={formikProps.values.isActive == true}
                                                         value="true"
                                                         onChange={event => {
-                                                            
                                                             formikProps.setFieldValue("isActive", true);
-                                                            console.log("IsActive",event.target.value, formikProps.values.isActive)
                                                         }}
                                                     />
                                                     <CustomInput
@@ -325,10 +304,8 @@ const InstituteSettings = (props) => {
                                                         label="Inactive"
                                                         value="false"
                                                         checked={formikProps.values.isActive == false}
-                                                        onChange={event => {
-                                                            
-                                                            formikProps.setFieldValue("isActive", false);
-                                                            console.log("IsActive",event.target.value, formikProps.values.isActive)
+                                                        onChange={event => {                                                            
+                                                            formikProps.setFieldValue("isActive", false);                                                            
                                                         }}
                                                     />
                                                     </Col>
@@ -336,7 +313,9 @@ const InstituteSettings = (props) => {
                                                 <FormGroup row>
                                                     <Col sm={3} />
                                                     <Col sm={9}>
-                                                        <ThemedButton type="submit">{institute && "Update" || "Create"}</ThemedButton>{' '}
+                                                        <ThemedButton type="submit">
+                                                            {institute && intl.formatMessage({ id: 'General.Update'}) || intl.formatMessage({ id: 'General.Create'})}
+                                                        </ThemedButton>{' '}
                                                         <Button type="button" onClick={() => onCancel()} color="light">{!institute && "Cancel" || "Go back"}</Button>
                                                     </Col>
                                                 </FormGroup>

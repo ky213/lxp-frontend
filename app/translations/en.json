@@ -1,3 +1,43 @@
 {
-    "Title": "Hello"
+    "General": {
+        "HandleDeleteConfirm": "Are you sure you want to delete",
+        "HandleDeleteError": "Something went wrong while trying to delete",
+        "Name": "Name",
+        "NameIsRequired": "Name is required",
+        "Success": "Success",
+        "SuccessUpdateMessage": "You have sucessfully updated the data!",
+        "Error": "Error",
+        "ErrorUpdateMessage": "Error while updating: {error}",
+        "ErrorInsertMessage": "Error while inserting: {error}",
+        "Dismiss": "Dismiss",
+        "Status": "Status",
+        "Update": "Update",
+        "Create": "Create",
+        "SearchFor": "Search for...",
+        "Actions": "Actions",
+        "Edit": "Edit",
+        "Select": "Select",
+
+        "OvoBriši": "zadnji-briši"
+    },
+    "SuperAdminHome": {
+        "Title": "Hello, {name}",
+        "Institutes": "Institutes",        
+        "HandleDeleteTheseInst": "there institutes",
+        "HandleDeleteThisInst": "this institute",
+        "EditInstituteSettingsTitle": "Edit institute settings",
+        "EditInstituteSettingsSubtitle": "You can change institute settings like institute name, logo, academic months etc. here",
+        "PlaceHolderEnterTheName": "Enter the name...",
+        "ForegroundColor": "Foreground color",
+        "BackgroundColor": "Background color",
+        "Logo": "Logo",
+        "InstituteRow": {
+            "SelectThis1": "Select this as a working institute"
+        },
+        "ListInstitutes": {
+            "Subtitle": "You can select your working institute, edit existing and enter new institutes from here",
+            "AddNewInstitute": "Add New Institute",
+            "NoInstitutes": "No institutes have been created yet."
+        }
+    }
 }

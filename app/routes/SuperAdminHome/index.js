@@ -1,11 +1,7 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import {
     Container,
-    Card,    
-    CardFooter,
-    Col,
-    Row,
-    Table,
     Alert
 } from '@/components';
 
@@ -17,10 +13,9 @@ import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 import { SUPER_ADMIN_SELECT_INSTITUTE } from "@/actions";
 import { Consumer, ThemeContext } from '@/components/Theme/ThemeContext';
-import PulseLogo from '@/components/PulseLogo';
-import { defineMessages, FormattedMessage } from "react-intl";
 
 const SuperAdminHome = (props) => {
+    const intl = useIntl();
     const [{currentUser, selectedInstitute}, dispatch] = useAppState();
     const theme = React.useContext(ThemeContext);
     //const currentUser = authenticationService.currentUserValue;
@@ -38,7 +33,6 @@ const SuperAdminHome = (props) => {
     const getInstitutes = () => {
         if(isSuperAdmin) {
             instituteService.getAll(pageId, recordsPerPage, searchText).then((data) => {
-                console.log('Got institutes:', data.institutes);
                 setInstitutes(data.institutes);
                 setTotalNumberOfRecords(data.totalNumberOfRecords);
             });
@@ -50,26 +44,21 @@ const SuperAdminHome = (props) => {
     }
 
     const handleInstituteCreate = () => {
-        console.log("Handle institute create:");
         setSelectedInstituteId(null);
         setShowInstituteForm(true);
     }
 
     const handleCancel = () => {
-        console.log("Handle cancel create:");
         setSelectedInstituteId(null);
         setShowInstituteForm(false);
     }
 
     const handleInstituteEdit = (instituteId) => {
-        console.log("Handle institute edit:", instituteId);
         setSelectedInstituteId(instituteId);
         setShowInstituteForm(true);
     }
 
     const handleEdited = () => {
-        console.log("Handle edited!")
-
         if(isSuperAdmin) {
             getInstitutes();
             setShowInstituteForm(false);
@@ -77,7 +66,6 @@ const SuperAdminHome = (props) => {
     }
     
     const handleSelected = (e, institute) => {
-        console.log("Selected:", e, institute)
         if(e.target.checked) {
             setSelectedInstitutes([...selectedInstitutes, institute]);
         }
@@ -87,21 +75,20 @@ const SuperAdminHome = (props) => {
     }
 
     const handleDelete = async () => {
-        console.log("Delete selected institutes:", selectedInstitutes)
-        const deleteMessage = `${selectedInstitutes.length > 1 ? "these institutes" : "this institute"}?`;
-        if(confirm('Are you sure you want to delete ' + deleteMessage)) {
+        const deleteMessage = `${selectedInstitutes.length > 1 ? 
+            intl.formatMessage({ id: 'SuperAdminHome.HandleDeleteTheseInst'}) : intl.formatMessage({ id: 'SuperAdminHome.HandleDeleteThisInst'})}?`;
+        if(confirm(intl.formatMessage({ id: 'General.HandleDeleteConfirm'}) + " " + deleteMessage)) {
             try {
                 await instituteService.deleteInstitutes(selectedInstitutes.map(i => i.instituteId));
                 getInstitutes();
                 setSelectedInstitutes([]);
             }
             catch(error) {
-                console.log("Error while deleting institutes:", error)
-                alert("Something went wrong while trying to delete " + deleteMessage)
+                alert(intl.formatMessage({ id: 'General.HandleDeleteError'}) + deleteMessage)
             }
         }
     }
-    
+
     React.useEffect(() => {
         getInstitutes();
         }, [pageId, searchText]
@@ -118,7 +105,7 @@ const SuperAdminHome = (props) => {
           });
        
     }, [])
-
+    
     return (
         <React.Fragment>
             <Container>
@@ -131,9 +118,8 @@ const SuperAdminHome = (props) => {
                     </Alert>
                 )}
                 
-                <FormattedMessage id="Title" />
+                <HeaderMain title={intl.formatMessage({ id: 'SuperAdminHome.Title'}, {name:  currentUser && currentUser.user && currentUser.user.fullName })} />
 
-                <HeaderMain title={`Hello, ${currentUser && currentUser.user && currentUser.user.fullName}`} />
                 {showInstituteForm && (
                     <InstituteSettings instituteId={selectedInstituteId} onEdited={handleEdited} onCancel={handleCancel} />
                 )}

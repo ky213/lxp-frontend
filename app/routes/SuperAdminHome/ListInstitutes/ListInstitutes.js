@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import {
     Container,
     Card,    
@@ -37,6 +38,7 @@ const ListInstitutes = ({
         searchText
     }) => {
 
+    const intl = useIntl();
 
     let paginationContent = "";
     if (totalNumberOfRecords > 0) {
@@ -52,17 +54,14 @@ const ListInstitutes = ({
         );
     }
 
-
-
     return (
         <React.Fragment>
-
                 <Row>
                     <Col lg={ 12 }>
                         <HeaderDemo 
                             no={1} 
-                            title="Institutes" 
-                            subTitle="You can select your working institute, edit existing and enter new institutes from here"
+                            // title={useIntl.formatMessage({ id: 'SuperAdminHome.Institutes'})}
+                            subTitle={intl.formatMessage({ id: 'SuperAdminHome.ListInstitutes.Subtitle'})}
                         />
                     </Col>
                 </Row>
@@ -73,7 +72,7 @@ const ListInstitutes = ({
                                 <div className="d-lg-flex justify-content-end">
                                     <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
                                         <InputGroup>
-                                            <Input onKeyUp={(e) => onSearch(e)} defaultValue={searchText} placeholder="Search for..." />
+                                            <Input onKeyUp={(e) => onSearch(e)} defaultValue={searchText} placeholder={intl.formatMessage({ id: 'General.SearchFor'})} />
                                             <InputGroupAddon addonType="append">
                                                 <Button color="secondary" outline>
                                                     <i className="fa fa-search"></i>
@@ -91,7 +90,7 @@ const ListInstitutes = ({
                                                         <i className="fa fa-fw fa-trash"></i>
                                                     </Button>
                                                     <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                                                        Delete
+                                                        {intl.formatMessage({ id: 'General.Delete'})}
                                                     </UncontrolledTooltip>
                                                 </>
                                             )}
@@ -104,7 +103,7 @@ const ListInstitutes = ({
                                                 <i className="fa fa-fw fa-pencil"></i>
                                             </Button>
                                             <UncontrolledTooltip placement="bottom" target="tooltipAddNew">
-                                                Add New Institute
+                                            {intl.formatMessage({ id: 'SuperAdminHome.ListInstitutes.AddNewInstitute'})}
                                             </UncontrolledTooltip>
                                         </ButtonGroup>
                                     </ButtonToolbar>
@@ -115,19 +114,19 @@ const ListInstitutes = ({
                                 <thead>
                                     <tr>
                                         <th className="align-middle bt-0 text-center">
-                                            Actions
+                                            {intl.formatMessage({ id: 'General.Actions'})}
                                         </th>
-                                        <th className="align-middle bt-0">Name</th>
-                                        <th className="align-middle bt-0">Foreground color</th>
-                                        <th className="align-middle bt-0">Background color</th>
-                                        <th className="align-middle bt-0">Status</th>
+                                        <th className="align-middle bt-0">{intl.formatMessage({ id: 'General.Name'})}</th>
+                                        <th className="align-middle bt-0">{intl.formatMessage({ id: 'SuperAdminHome.ForegroundColor'})}</th>
+                                        <th className="align-middle bt-0">{intl.formatMessage({ id: 'SuperAdminHome.BackgroundColor'})}</th>
+                                        <th className="align-middle bt-0">{intl.formatMessage({ id: 'General.Status'})}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
                                         institutes && institutes.length > 0 && institutes.map((institute) => <InstituteRow props={institute} 
                                              key={institute.instituteId} onInstituteEdit={onInstituteEdit} onSelected={onSelected} />) || 
-                                            <tr><td colSpan={5}>No institutes have been created yet.</td></tr>
+                                            <tr><td colSpan={5}>{intl.formatMessage({ id: 'SuperAdminHome.ListInstitutes.NoInstitutes'})}</td></tr>
                                     } 
                                 </tbody>
                             </Table>

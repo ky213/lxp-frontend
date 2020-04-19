@@ -206,7 +206,7 @@ const Courses = props => {
             {alertMessage.message}
             <div className="mt-2">
               <Button color={alertMessage.type} onClick={dismissAlert}>
-                Dismiss
+                {intl.formatMessage({ id: 'General.Dismiss'})}
               </Button>
             </div>
           </Alert>

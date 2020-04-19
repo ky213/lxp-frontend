@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import AnnouncementList from "./AnnouncementList";
 import { Container, Button, Alert } from "@/components";
@@ -8,6 +9,8 @@ import { Loading } from "@/components";
 import { useAppState } from '@/components/AppState';
 
 const AdminAnnouncements = () => {  
+  const intl = useIntl();
+
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   const [announcements, setAnnouncements] = React.useState(null);
   const [announcement, setAnnouncement] = React.useState(null);  
@@ -38,7 +41,6 @@ const AdminAnnouncements = () => {
   const getAllAnnouncements = () => {
     setAnnouncement(null);
     announcementService.getAll(selectedInstitute.instituteId).then(data => {
-      console.log('ann', data);
       setAnnouncements(data);
     });
   }
@@ -66,8 +68,8 @@ const AdminAnnouncements = () => {
         setAnnouncement(null);
         getAllAnnouncements();
         showAlertMessage({
-          title: "Success",
-          message: "You have sucessfully updated an announcement",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
+          message: intl.formatMessage({ id: 'AdminAnnouncements.SuccessUpdateMessage'}),
           type: "success"
         });
       });
@@ -87,8 +89,8 @@ const AdminAnnouncements = () => {
         getAllAnnouncements();
 
         showAlertMessage({
-          title: "Success",
-          message: "You have sucessfully created announcement",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
+          message: intl.formatMessage({ id: 'AdminAnnouncements.SuccessCreateMessage'}),
           type: "success"
         });
 
@@ -111,8 +113,6 @@ const AdminAnnouncements = () => {
     setAnnouncements(x);
   }
 
-  
-
   return (
     <React.Fragment>
         <Container>
@@ -122,7 +122,7 @@ const AdminAnnouncements = () => {
           {alertMessage.message}
           <div className="mt-2">
             <Button color={alertMessage.type} onClick={dismissAlert}>
-              Dismiss
+            {intl.formatMessage({ id: 'General.Dismiss'})}
             </Button>
           </div>
         </Alert>
@@ -130,12 +130,12 @@ const AdminAnnouncements = () => {
 
       {editForm && (
         <React.Fragment>
-            <HeaderMain title="Announcement administration" />
+            <HeaderMain title={intl.formatMessage({ id: 'AdminAnnouncements.Administration'})} />
             <EditAnnouncements
               announcement={announcement}
               onCancel={handleCanceled}
               editAnnouncement={editAnnouncement}
-              createAnnouncement={createAnnouncement}đ
+              createAnnouncement={createAnnouncement}
               showAlertMessage={showAlertMessage}
               hideAlertMessage={hideAlertMessage}
               updateAnnouncementInList={updateAnnouncementInList}
@@ -145,7 +145,7 @@ const AdminAnnouncements = () => {
 
       {!editForm && (
         <React.Fragment>
-            <HeaderMain title="Announcement administration" />
+            <HeaderMain title={intl.formatMessage({ id: 'AdminAnnouncements.Administration'})} />
             {(announcements && (
               <AnnouncementList
                 announcements={announcements}

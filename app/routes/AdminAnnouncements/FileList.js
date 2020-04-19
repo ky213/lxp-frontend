@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { announcementService } from "@/services";
 import styles from "./FileList.css";
 var path = require("path");
@@ -11,6 +12,9 @@ const FileList = ({
   showAlertMessage,
   updateAnnouncementInList
 }) => {
+  
+  const intl = useIntl();
+
   const [
     isFileDragAndDropEnabled,
     setIsFileDragAndDropEnabled
@@ -40,8 +44,8 @@ const FileList = ({
         );
 
         showAlertMessage({
-          title: "Success",
-          message: "The file has been deleted",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
+          message: intl.formatMessage({ id: 'File.FileDeleteSuccess'}),
           type: "success"
         });
       });
@@ -170,8 +174,8 @@ const FileList = ({
             onDrop={e => dropHandler(e)}
             onDragOver={e => allowDrop(e)}
             onClick={handleImportFileClick}
-          >
-            Browse or drag&drop the file
+          >            
+            {intl.formatMessage({ id: 'File.BrowseOrDragAndDrop'})}
           </div>
           <input
             type="file"
@@ -205,7 +209,7 @@ const FileList = ({
                   <div
                     className={deleteFileClass}                    
                   >
-                    Uploading....
+                    {intl.formatMessage({ id: 'File.Uploading'})}
                   </div>
                   <div className="clearfix" />
                 </React.Fragment>
@@ -216,7 +220,7 @@ const FileList = ({
                   <div
                     className={deleteFileClass}
                   >
-                    Try again
+                    {intl.formatMessage({ id: 'File.TryAgain'})}
                   </div>
                   <div className="clearfix" />
                 </React.Fragment>

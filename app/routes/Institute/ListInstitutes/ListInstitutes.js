@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import {
     Container,
     Card,    
@@ -23,9 +24,7 @@ import {
 } from "../../components/HeaderDemo";
 
 const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearch}) => {
-    const [count, setCount] = React.useState(0);
-    const [pageNumber, setPageNumber] = React.useState(1);
-
+    const intl = useIntl();
 
     return (
         <React.Fragment>
@@ -55,40 +54,6 @@ const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearc
                                         </InputGroup>
                                     </div>
                                     <ButtonToolbar>
-                                        {/*
-                                        <ButtonGroup className="mr-2">
-                                            <Button color="link" className="text-decoration-none align-self-center" id="tooltipRefresh">
-                                                <i className="fa fa-fw fa-refresh"></i>
-                                            </Button>
-                                            <UncontrolledTooltip placement="bottom" target="tooltipRefresh">
-                                                Refresh
-                                            </UncontrolledTooltip>
-                                            <Button color="link" className="text-decoration-none align-self-center" id="tooltipFav">
-                                                <i className="fa fa-fw fa-star"></i>
-                                            </Button>
-                                            <UncontrolledTooltip placement="bottom" target="tooltipFav">
-                                                Add to Favorites
-                                            </UncontrolledTooltip>
-                                            <Button color="link" className="text-decoration-none align-self-center" id="tooltipTag">
-                                                <i className="fa fa-fw fa-tag"></i>
-                                            </Button>
-                                            <UncontrolledTooltip placement="bottom" target="tooltipTag">
-                                                Tag
-                                            </UncontrolledTooltip>
-                                            <Button color="link" className="text-decoration-none align-self-center" id="tooltipBan">
-                                                <i className="fa fa-fw fa-ban"></i>
-                                            </Button>
-                                            <UncontrolledTooltip placement="bottom" target="tooltipBan">
-                                                Ban this User
-                                            </UncontrolledTooltip>
-                                            <Button color="link" className="text-decoration-none align-self-center" id="tooltipDelete">
-                                                <i className="fa fa-fw fa-trash"></i>
-                                            </Button>
-                                            <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                                                Delete
-                                            </UncontrolledTooltip>
-                                        </ButtonGroup>
-                                        */}
                                         <ButtonGroup className="ml-auto ml-lg-0">
                                             <Button color="primary" className="align-self-center" onClick={() => onInstituteCreate()} id="tooltipAddNew">
                                                 <i className="fa fa-fw fa-pencil"></i>

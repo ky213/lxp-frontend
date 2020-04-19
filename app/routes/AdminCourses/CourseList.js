@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
   ButtonGroup,
@@ -22,6 +23,8 @@ const CourseList = ({
   getAllCourses,
   showAlertMessage
 }) => {
+  const intl = useIntl();
+  
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   const [selectedCourses, setSelectedCourses] = React.useState([]);
 
@@ -42,7 +45,7 @@ const CourseList = ({
             getAllCourses();
             setSelectedCourses([]);
             showAlertMessage({
-              title: "Success",
+              title: intl.formatMessage({ id: 'General.Sucess'}),
               message: "You have sucessfully deleted the courses",
               type: "success"
             });
@@ -77,7 +80,7 @@ const CourseList = ({
                         <i className="fa fa-fw fa-trash"></i>
                     </Button>
                     <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                        Delete
+                    {intl.formatMessage({ id: 'General.Delete'})}
                     </UncontrolledTooltip>
                 </ButtonGroup>
               )}

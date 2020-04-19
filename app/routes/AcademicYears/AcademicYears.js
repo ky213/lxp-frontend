@@ -22,7 +22,6 @@ const AcademicYears = () => {
 
   const getAcademicYears = () => {
     academicYearService.getByLoggedInUser(selectedInstitute.instituteId).then(data => {
-      console.log('academicYearService', data);
       setAcademicYears(data);
     });
   }
@@ -55,7 +54,6 @@ const AcademicYears = () => {
       programService.getAll(selectedInstitute.instituteId, 1, 999, null).then(data => setPrograms(data.programs));
     }
 
-
     academicYearService.getById(academicYearId, selectedInstitute.instituteId).then(data => {
       setEditForm(true);
       setAcademicYear(data);
@@ -77,7 +75,7 @@ const AcademicYears = () => {
         getAcademicYears();
 
         showAlertMessage({
-          title: "Success",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
           message: "You have sucessfully created academic year",
           type: "success"
         });
@@ -85,7 +83,6 @@ const AcademicYears = () => {
   }
 
   const updateAcademicYear = (ay) => {
-    console.log('updateAcademicYear', ay);
     academicYearService
       .update(ay, selectedInstitute.instituteId)
       .then(data => {
@@ -94,7 +91,7 @@ const AcademicYears = () => {
         getAcademicYears();
 
         showAlertMessage({
-          title: "Success",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
           message: "You have sucessfully created announcement",
           type: "success"
         });
@@ -102,7 +99,6 @@ const AcademicYears = () => {
   }
 
   const onDelete = () => {
-    console.log('academicYear', academicYear);
     academicYearService.deleteAcademicYear(academicYear.academicYearId, selectedInstitute.instituteId)
       .then(response => {
         setEditForm(false);
@@ -110,7 +106,7 @@ const AcademicYears = () => {
         getAcademicYears();
 
         showAlertMessage({
-          title: "Success",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
           message: "You have sucessfully deleted the academic year",
           type: "success"
         });
@@ -126,7 +122,7 @@ const AcademicYears = () => {
           {alertMessage.message}
           <div className="mt-2">
             <Button color={alertMessage.type} onClick={hideAlertMessage}>
-              Dismiss
+            {intl.formatMessage({ id: 'General.Dismiss'})}
             </Button>
           </div>
         </Alert>
@@ -134,7 +130,7 @@ const AcademicYears = () => {
 
       {editForm && (
         <React.Fragment>
-            <HeaderMain title="Academic Years Edit" />
+            <HeaderMain title={intl.formatMessage({ id: 'AcademicYears.Title'})} />
             <EditAcademicYear
               academicYear={academicYear}
               onCancel={handleCancel}
@@ -148,7 +144,7 @@ const AcademicYears = () => {
 
       {!editForm && (
         <React.Fragment>
-            <HeaderMain title="Academic Years" />
+            <HeaderMain title={intl.formatMessage({ id: 'AcademicYears.Title'})} />
             {!academicYears && <Loading />}
             {academicYears && (
               <AcademicYearsList

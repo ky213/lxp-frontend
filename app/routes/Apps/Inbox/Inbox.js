@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import faker from 'faker/locale/en_US';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';

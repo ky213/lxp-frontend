@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import {
     Modal,
     ModalHeader,
@@ -25,6 +26,8 @@ import { useAppState, AppStateContext } from '@/components/AppState';
 
 
 export const EditCalendarEvent = ({toggle, isOpen, selectedEvent, onSuccess}) => {
+    const intl = useIntl();
+
     const [{currentUser}, dispatch] = useAppState();
     const setEventStatus = async (status) => {
         try {
@@ -33,7 +36,6 @@ export const EditCalendarEvent = ({toggle, isOpen, selectedEvent, onSuccess}) =>
             onSuccess();
         }
         catch(error) {
-            console.log("Error while updating status of calendar event:", error)
             alert("Error occured while updating the status of the event!");
         }
         
@@ -57,7 +59,7 @@ export const EditCalendarEvent = ({toggle, isOpen, selectedEvent, onSuccess}) =>
     
                                     <FormGroup row>
                                         <Label for="title" sm={3}>
-                                            Title
+                                        {intl.formatMessage({ id: 'General.Title'})}
                                         </Label>
                                         <Col sm={9}>
                                             <strong>{selectedEvent.title}</strong>
@@ -66,7 +68,7 @@ export const EditCalendarEvent = ({toggle, isOpen, selectedEvent, onSuccess}) =>
                                     </FormGroup>
                                     <FormGroup row>
                                         <Label for="title" sm={3}>
-                                            Status
+                                            {intl.formatMessage({ id: 'General.Status'})}
                                         </Label>
                                         <Col sm={9}>
                                             <strong style={{color: 

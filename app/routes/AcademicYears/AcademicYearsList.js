@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
   Button,
@@ -16,6 +17,8 @@ import { academicYearService } from "@/services";
 import { useAppState } from '@/components/AppState';
 
 const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademicYears }) => {
+  const intl = useIntl();
+  
   const [{selectedInstitute}] = useAppState();
   const [selectedAcademicYears, setSelectedAcademicYears] = React.useState([]);
 
@@ -29,16 +32,15 @@ const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademi
   }
 
   const onDelete = async () => {
-    const message = selectedAcademicYears.length == 1 ? "this academic year" : "these academic years";
-    if(confirm(`Are you sure you want to delete ${message}?`)) {
+    const message = selectedAcademicYears.length == 1 ? intl.formatMessage({ id: 'AcademicYears.ThisAcademicYear'}) : intl.formatMessage({ id: 'AcademicYears.ThereAcademicYears'});
+    if(confirm(intl.formatMessage({ id: 'General.HandleDeleteConfirm'}) + " " + message + "?")) {
         try {
             await academicYearService.deleteAcademicYears(selectedInstitute.instituteId, selectedAcademicYears);
             getAcademicYears();
             setSelectedAcademicYears([]);
         }
         catch(error) {
-            console.log("Error while deleting academic years:", error);
-            alert(`Something went wrong while deleting ${message}!`)
+            alert(intl.formatMessage({ id: 'General.HandleDeleteError'}))
         }
     }
   }
@@ -66,7 +68,7 @@ const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademi
                         <i className="fa fa-fw fa-trash"></i>
                     </Button>
                     <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                        Delete
+                      {intl.formatMessage({ id: 'General.Delete'})}
                     </UncontrolledTooltip>
                 </ButtonGroup>
               )}
@@ -78,7 +80,7 @@ const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademi
                 <br />
               </div>
               {academicYears && academicYears.length == 0 && (
-                <div>There are no academic years</div>
+                <div>{intl.formatMessage({ id: 'AcademicYears.NoAcademicYears'})}</div>
               )}
 
               {academicYears && academicYears.length > 0 && (
@@ -87,12 +89,12 @@ const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademi
                     <tr>
                       <th className="align-middle bt-0 text-center"></th>
                       <th className="align-middle bt-0 text-center"></th>
-                      <th className="align-middle bt-0">Name</th>
-                      <th className="align-middle bt-0">Program</th>
+                      <th className="align-middle bt-0">{intl.formatMessage({ id: 'General.Name'})}</th>
+                      <th className="align-middle bt-0">{intl.formatMessage({ id: 'General.Program'})}</th>
                       <th className="align-middle bt-0 text-center">
-                        Date from
+                        {intl.formatMessage({ id: 'General.DateFrom'})}
                       </th>
-                      <th className="align-middle bt-0 text-center">Date to</th>                      
+                      <th className="align-middle bt-0 text-center">{intl.formatMessage({ id: 'General.DateFrom'})}</th>                      
                     </tr>
                   </thead>
                   <tbody>
@@ -114,7 +116,7 @@ const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademi
                               onClick={e => handleEdit(e, item.academicYearId)}
                             >
                               <i className="fa fa-fw fa-pencil mr-2"></i>
-                              Edit
+                              {intl.formatMessage({ id: 'General.Edit'})}
                             </a>
                           </td>
                           <td>{item.academicYearName}</td>

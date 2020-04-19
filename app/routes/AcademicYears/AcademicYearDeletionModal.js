@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import {
   Modal,
   ModalHeader,
@@ -12,23 +13,25 @@ import {
 import ThemedButton from "@/components/ThemedButton";
 
 const AcademicYearDeletionModal = ({isOpen, handleDeletion, cancelDeletion}) => {
+  const intl = useIntl();
+
   return (
     <React.Fragment>
       <Modal isOpen={isOpen} className="modal-outline-primary">
-        <ModalHeader tag="h6">Academic year deletion</ModalHeader>
+        <ModalHeader tag="h6">{intl.formatMessage({ id: 'AcademicYears.TitleDeletion'})}</ModalHeader>
         <ModalBody>
           <Row>
             <Col>
               <p>
-                Are you sure you want to delete this academic year?
+              {intl.formatMessage({ id: 'AcademicYears.DeleteConfirmationMessage'})}
               </p>              
             </Col>
           </Row>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={handleDeletion} type="button" color="danger">Delete</Button>
+          <Button onClick={handleDeletion} type="button" color="danger">{intl.formatMessage({ id: 'General.Delete'})}</Button>
           <Button type="button" color="light" onClick={cancelDeletion}>
-            Cancel
+            {intl.formatMessage({ id: 'General.Cancel'})}
           </Button>
         </ModalFooter>
       </Modal>

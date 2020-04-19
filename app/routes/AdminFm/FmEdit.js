@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { Link, useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -35,6 +36,8 @@ const InvalidFeedback = styled.section`
 `;
 
 const FmEdit = props => {
+  const intl = useIntl();
+  
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
   const isSuperAdmin = loggedInUser && loggedInUser.role == Role.SuperAdmin || false;
@@ -124,7 +127,7 @@ const FmEdit = props => {
                   props.onEdited();
 
                   showAlertMessage({
-                    title: "Success",
+                    title: intl.formatMessage({ id: 'General.Sucess'}),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
@@ -161,7 +164,7 @@ const FmEdit = props => {
                   props.onEdited();
 
                   showAlertMessage({
-                    title: "Success",
+                    title: intl.formatMessage({ id: 'General.Sucess'}),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
@@ -193,7 +196,7 @@ const FmEdit = props => {
                 {alertMessage.message}
                 <div className="mt-2">
                   <Button color={alertMessage.type} onClick={dismissAlert}>
-                    Dismiss
+                  {intl.formatMessage({ id: 'General.Dismiss'})}
                   </Button>
                 </div>
               </Alert>
@@ -333,7 +336,7 @@ const FmEdit = props => {
 
                       <FormGroup row>
                         <Label for="email" sm={3}>
-                          Status
+                        {intl.formatMessage({ id: 'General.Status'})}
                         </Label>
                         <Col sm={9}>
                           <CustomInput

@@ -175,7 +175,7 @@ const EditProgram = (props) => {
                 seniorResidentsStartLevel                
               }).then(
                 reponse => {
-                  let alertMessage = { title: "Success", message: "You have sucessfully changed the program!", type: "success" }
+                  let alertMessage = { title: intl.formatMessage({ id: 'General.Sucess'}), message: "You have sucessfully changed the program!", type: "success" }
                   props.onEdited(alertMessage);
                 },
                 error => {

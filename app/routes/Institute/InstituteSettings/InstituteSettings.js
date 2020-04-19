@@ -151,7 +151,7 @@ const InstituteSettings = (props) => {
                             dispatch({type:SUPER_ADMIN_UPDATE_INSTITUTE, institute: updatedInstitute});
 
                             showAlertMessage({
-                                title: "Success",
+                                title: intl.formatMessage({ id: 'General.Sucess'}),
                                 message: "You have sucessfully changed the institute settings!",
                                 type: "success"
                             });
@@ -175,7 +175,7 @@ const InstituteSettings = (props) => {
                             logo: selectedLogoDataUrl}).then(
                             reponse => {
                                 showAlertMessage({
-                                    title: "Success",
+                                    title: intl.formatMessage({ id: 'General.Sucess'}),
                                     message: "You have sucessfully created an institute!",
                                     type: "success"
                                 });

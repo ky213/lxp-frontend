@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useIntl } from "react-intl";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
@@ -24,7 +25,8 @@ import AcademicYearDeletionModal from './AcademicYearDeletionModal';
 
 const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear, createAcademicYear,
   programs }) => {  
-  
+  const intl = useIntl();
+
   const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState(false);
   console.log('academicYear', academicYear, programs);
 
@@ -275,7 +277,7 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                                       onClick={showDeletionModal}
                                       type="button"
                                       color="danger">
-                                      Delete
+                                      {intl.formatMessage({ id: 'General.Delete'})}
                                     </Button>
                                     <AcademicYearDeletionModal 
                                       isOpen={isDeletionModalOpen} 

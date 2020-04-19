@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useIntl } from "react-intl";
 import {
   Container,
   Card,
@@ -25,8 +26,7 @@ const ListPrograms = ({
   onSearch,
   onSelected
 }) => {
-  const [count, setCount] = React.useState(0);
-  const [pageNumber, setPageNumber] = React.useState(1);
+  const intl = useIntl();
 
   return (
     <React.Fragment>

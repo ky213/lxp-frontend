@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import {
     Modal,
     ModalHeader,
@@ -26,6 +27,8 @@ import { useAppState, AppStateContext } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, eventEnd, onSuccess}) => {
+    const intl = useIntl();
+    
     //console.log("Selected resident for calendar:", selectedResident)
     const minDate = moment().toDate();
     const [{currentUser, selectedInstitute}, dispatch] = useAppState();
@@ -151,7 +154,7 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
             
                                             <FormGroup row>
                                                 <Label for="title" sm={3}>
-                                                    Title
+                                                {intl.formatMessage({ id: 'General.Title'})}
                                                 </Label>
                                                 <Col sm={9}>
                                                     <Field 

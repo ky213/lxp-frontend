@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
@@ -33,6 +34,8 @@ const InvalidFeedback = styled.section`
 `;
 
 const ResidentEdit = props => {
+  const intl = useIntl();
+  
   const [{selectedInstitute}] = useAppState();
   const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
@@ -193,7 +196,7 @@ const ResidentEdit = props => {
                   props.onEdited();
 
                   showAlertMessage({
-                    title: "Success",
+                    title: intl.formatMessage({ id: 'General.Sucess'}),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
@@ -233,7 +236,7 @@ const ResidentEdit = props => {
                   props.onEdited();
 
                   showAlertMessage({
-                    title: "Success",
+                    title: intl.formatMessage({ id: 'General.Sucess'}),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
@@ -440,7 +443,7 @@ const ResidentEdit = props => {
 
                       <FormGroup row>
                         <Label for="email" sm={3}>
-                          Status
+                        {intl.formatMessage({ id: 'General.Status'})}
                         </Label>
                         <Col sm={9}>
                           <CustomInput

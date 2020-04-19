@@ -70,7 +70,7 @@ const AdminCourses = () => {
     setCourse(null);
     getAllCourses();
     showAlertMessage({
-      title: "Success",
+      title: intl.formatMessage({ id: 'General.Sucess'}),
       message: "You have sucessfully updated the course",
       type: "success"
     });
@@ -82,7 +82,7 @@ const AdminCourses = () => {
     getAllCourses();
 
     showAlertMessage({
-      title: "Success",
+      title: intl.formatMessage({ id: 'General.Sucess'}),
       message: "You have sucessfully created a course",
       type: "success"
     });

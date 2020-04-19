@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
   ButtonGroup,
@@ -20,6 +21,8 @@ const AnnouncementList = ({
   addNewClick,
   getAllAnnouncements  
 }) => {
+  const intl = useIntl();
+
   const [selectedAnnouncements, setSelectedAnnouncements] = React.useState([]);
 
   const onSelected = (announcementId, e) => {
@@ -32,16 +35,16 @@ const AnnouncementList = ({
   }
 
   const onDelete = async () => {
-    const message = selectedAnnouncements.length == 1 ? "this announcement" : "these announcements";
-    if(confirm(`Are you sure you want to delete ${message}?`)) {
+    const message = selectedAcademicYears.length == 1 ? 
+      intl.formatMessage({ id: 'AdminAnnouncements.ThisAnnouncement'}) : intl.formatMessage({ id: 'AdminAnnouncements.TheseAnnouncements'});
+    if(confirm(intl.formatMessage({ id: 'General.HandleDeleteConfirm'}) + " " + message + "?")) {
         try {
             await announcementService.deleteAnnouncements(selectedAnnouncements);
             getAllAnnouncements();
             setSelectedAnnouncements([]);
         }
         catch(error) {
-            console.log("Error while deleting announcements:", error);
-            alert(`Something went wrong while deleting ${message}!`)
+            alert(intl.formatMessage({ id: 'General.HandleDeleteError'}))
         }
     }
   }
@@ -60,7 +63,7 @@ const AnnouncementList = ({
                 <i className="fa fa-fw fa-pencil"></i>
               </ThemedButton>
               <UncontrolledTooltip placement="bottom" target="tooltipAddNew">
-                Add New Announcement
+                {intl.formatMessage({ id: 'AdminAnnouncements.AddNew'})}
               </UncontrolledTooltip>
               
               {selectedAnnouncements && selectedAnnouncements.length > 0 && (
@@ -69,7 +72,7 @@ const AnnouncementList = ({
                         <i className="fa fa-fw fa-trash"></i>
                     </Button>
                     <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                        Delete
+                    {intl.formatMessage({ id: 'General.Delete'})}
                     </UncontrolledTooltip>
                 </ButtonGroup>
               )}
@@ -86,11 +89,11 @@ const AnnouncementList = ({
                     <tr>
                       <th className="bt-0"></th>
                       <th className="bt-0"></th>
-                      <th className="bt-0">Title</th>
-                      <th className="bt-0 text-center">Status</th>
-                      <th className="bt-0 text-center">Date from</th>
-                      <th className="bt-0 text-center">Date to</th>
-                      <th className="bt-0 text-center">Num of files</th>
+                      <th className="bt-0">{intl.formatMessage({ id: 'General.Title'})}</th>
+                      <th className="bt-0 text-center">{intl.formatMessage({ id: 'General.Status'})}</th>
+                      <th className="bt-0 text-center">{intl.formatMessage({ id: 'General.DateFrom'})}</th>
+                      <th className="bt-0 text-center">{intl.formatMessage({ id: 'General.DateTo'})}</th>
+                      <th className="bt-0 text-center">{intl.formatMessage({ id: 'AdminAnnouncements.FileNum'})}</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -114,7 +114,7 @@ const AddEditProgram = (props) => {
                                 programService.update({ name, programId: program.programId, programDirectors, instituteId: selectedInstitute.instituteId }).then(
                                     reponse => {
                                         showAlertMessage({
-                                            title: "Success",
+                                            title: intl.formatMessage({ id: 'General.Sucess'}),
                                             message: "You have sucessfully changed the program!",
                                             type: "success"
                                         });
@@ -142,7 +142,7 @@ const AddEditProgram = (props) => {
                                 programService.create({ name, programDirectors, instituteId: selectedInstitute.instituteId }).then(
                                     reponse => {
                                         showAlertMessage({
-                                            title: "Success",
+                                            title: intl.formatMessage({ id: 'General.Sucess'}),
                                             message: "You have sucessfully created a program!",
                                             type: "success"
                                         });

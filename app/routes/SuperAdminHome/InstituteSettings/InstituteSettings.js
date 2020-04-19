@@ -228,7 +228,7 @@ const InstituteSettings = (props) => {
                                                           name="name" 
                                                           id="name" 
                                                           className={'bg-white form-control' + (formikProps.errors.name && formikProps.touched.name ? ' is-invalid' : '')} 
-                                                          placeholder={intl.formatMessage({ id: 'SuperAdminHome.PlaceHolderEnterTheName'})}
+                                                          placeholder={intl.formatMessage({ id: 'General.NamePlaceholder'})}
                                                       />
                                                       <ErrorMessage name="name" component="div" className="invalid-feedback" />
                                                   </Col>                                                    

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from "react-intl";
 import {
     Container,
     Card,
@@ -31,7 +32,8 @@ const ListPrograms = ({ programs, onProgramEdit, onProgramCreate, onSearch, onSe
     searchText,
     hideCreateButton }) => {
 
-    
+    const intl = useIntl();
+
     let paginationContent = "";
     if (totalNumberOfRecords > 0) {
         paginationContent = (
@@ -71,7 +73,7 @@ const ListPrograms = ({ programs, onProgramEdit, onProgramCreate, onSearch, onSe
                                                 <i className="fa fa-fw fa-trash"></i>
                                             </Button>
                                             <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                                                Delete
+                                            {intl.formatMessage({ id: 'General.Delete'})}
                                             </UncontrolledTooltip>
                                         </ButtonGroup>
                                        )}

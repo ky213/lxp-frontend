@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ReactQuill from 'react-quill';
@@ -28,6 +29,8 @@ import { useAppState } from '@/components/AppState';
 
 const EditAnnouncements = ({ announcement, onCancel, editAnnouncement, createAnnouncement,
 showAlertMessage, updateAnnouncementInList }) => {
+  const intl = useIntl();
+  
   const [{selectedInstitute}] = useAppState();
 
   const [files, setFiles] = React.useState([]);
@@ -85,12 +88,9 @@ showAlertMessage, updateAnnouncementInList }) => {
   };
 
   const uploadFile = (file) => {    
-    console.log('uploading file', file);
-
     announcementService.addFile(file)
       .then((announcementFileId) => {
         updateAnnouncementInList(files.length + 1);
-        console.log('file uploaded', announcementFileId);
         file = {...file, announcementFileId: announcementFileId, status: 'uploaded'};
         setFiles(z => z.map(f => {
           if (f.name != file.name)
@@ -99,8 +99,8 @@ showAlertMessage, updateAnnouncementInList }) => {
           return file;
         }));
         showAlertMessage({
-          title: "Success",
-          message: "The file has been uploaded",
+          title: intl.formatMessage({ id: 'General.Sucess'}),
+          message: intl.formatMessage({ id: 'File.FileUploadSuccess'}),
           type: "success"
         });
       })
@@ -113,8 +113,8 @@ showAlertMessage, updateAnnouncementInList }) => {
           return file;
         }));
         showAlertMessage({
-          title: "Error",
-          message: `Error while uploading the file`,
+          title: intl.formatMessage({ id: 'General.Error'}),
+          message: intl.formatMessage({ id: 'File.FileUploadError'}),
           type: "danger"
         });
       });
@@ -158,8 +158,8 @@ showAlertMessage, updateAnnouncementInList }) => {
               isActive: (announcement && announcement.isActive) || false
             }}
             validationSchema={Yup.object().shape({
-              title: Yup.string().required("Title is required"),
-              text: Yup.string().required("Text is required")
+              title: Yup.string().required(intl.formatMessage({ id: 'AdminAnnouncements.TitleRequired'})),
+              text: Yup.string().required(intl.formatMessage({ id: 'AdminAnnouncements.TextRequired'}))
             })}
             onSubmit={(
               { title, text, programs, roles, expLevels, isActive },
@@ -182,17 +182,11 @@ showAlertMessage, updateAnnouncementInList }) => {
                 a = { ...a, announcementId: announcement.announcementId };
                 editAnnouncement(a);
               } else {
-                createAnnouncement(a).then(announcementId => {
-                  console.log(
-                    "createAnnouncement -> announcementId",
-                    announcementId
-                  );
-                });
+                createAnnouncement(a);
               }
             }}
           >
             {props => {
-              console.log("props", props);
               return (
                 <React.Fragment>
                   <Row>
@@ -204,7 +198,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                             {/* START Input */}
                             <FormGroup row>
                               <Label for="title" sm={3}>
-                                Title
+                              {intl.formatMessage({ id: 'General.Title'})}
                               </Label>
                               <Col sm={9}>
                                 <Field
@@ -217,7 +211,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                                       ? " is-invalid"
                                       : "")
                                   }
-                                  placeholder="Enter Title..."
+                                  placeholder={intl.formatMessage({ id: 'General.TitlePlaceholder'})}
                                 />
                                 <ErrorMessage
                                   name="title"
@@ -229,7 +223,7 @@ showAlertMessage, updateAnnouncementInList }) => {
 
                             <FormGroup row>
                               <Label for="ann" sm={3}>
-                                Text
+                              {intl.formatMessage({ id: 'General.Text'})}
                               </Label>
                               <Col sm={9}>
                                 <ReactQuill
@@ -247,23 +241,11 @@ showAlertMessage, updateAnnouncementInList }) => {
                                       ? " is-invalid"
                                       : "")
                                   }
-                                  placeholder="Enter Text..."
+                                  placeholder={intl.formatMessage({ id: 'General.TextPlaceholder'})}
                                   style={{
                                     minHeight: "180px"
                                   }}
                                 />
-                                {/* <Field
-                                  component="textarea"
-                                  name="text"
-                                  className={
-                                    "bg-white form-control" +
-                                    (props.errors.text && props.touched.text
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  placeholder="Enter Text..."
-                                /> */}
-
                                 <ErrorMessage
                                   name="text"
                                   component="div"
@@ -274,13 +256,13 @@ showAlertMessage, updateAnnouncementInList }) => {
 
                             <FormGroup row>
                               <Label for="period" sm={3}>
-                                Available in period
+                              {intl.formatMessage({ id: 'AdminAnnouncements.AvailableInPeriod'})}
                               </Label>
                               <Col sm={4}>
                                 <InputGroup>
                                   <InputGroupAddon addonType="prepend">
                                     <i className="fa fa-fw fa-calendar"></i>
-                                    From:
+                                    {intl.formatMessage({ id: 'General.From'})}
                                   </InputGroupAddon>
                                   <DatePicker
                                     id="dateFrom"
@@ -299,7 +281,6 @@ showAlertMessage, updateAnnouncementInList }) => {
                                     showMonthDropdown
                                     showYearDropdown
                                     onChange={date => {
-                                      console.log('date', moment(date).format());
                                       setDutyDateFrom(date);
                                     }}
                                   />
@@ -315,7 +296,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                                 <InputGroup>
                                   <InputGroupAddon addonType="prepend">
                                     <i className="fa fa-fw fa-calendar"></i>
-                                    To:
+                                    {intl.formatMessage({ id: 'General.To'})}
                                   </InputGroupAddon>
                                   <DatePicker
                                     id="dateTo"
@@ -347,7 +328,7 @@ showAlertMessage, updateAnnouncementInList }) => {
 
                             <FormGroup row>
                               <Label for="programs" sm={3}>
-                                Program
+                              {intl.formatMessage({ id: 'General.Program'})}
                               </Label>
                               <Col sm={9}>
                                 <Typeahead
@@ -363,7 +344,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                                       : ""
                                   }
                                   options={programs}
-                                  placeholder="Choose a program..."
+                                  placeholder={intl.formatMessage({ id: 'General.ProgramPlaceholder'})}
                                   onChange={selectedOptions =>
                                     props.setFieldValue(
                                       "programs",
@@ -387,7 +368,7 @@ showAlertMessage, updateAnnouncementInList }) => {
 
                             <FormGroup row>
                               <Label for="expLevel" sm={3}>
-                                Experience level
+                              {intl.formatMessage({ id: 'General.ExpLevel'})}
                               </Label>
                               <Col sm={9}>
                                 <Typeahead
@@ -403,7 +384,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                                       : ""
                                   }
                                   options={expLevels}
-                                  placeholder="Choose experience level..."
+                                  placeholder={intl.formatMessage({ id: 'General.ExpLevelPlaceholder'})}
                                   onChange={selectedOptions =>
                                     props.setFieldValue(
                                       "expLevels",
@@ -427,7 +408,7 @@ showAlertMessage, updateAnnouncementInList }) => {
 
                             <FormGroup row>
                               <Label for="roles" sm={3}>
-                                Role
+                              {intl.formatMessage({ id: 'General.Role'})}
                               </Label>
                               <Col sm={9}>
                                 <Typeahead
@@ -443,7 +424,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                                       : ""
                                   }
                                   options={roles}
-                                  placeholder="Choose a role..."
+                                  placeholder={intl.formatMessage({ id: 'General.RolePlaceholder'})}
                                   onChange={selectedOptions =>
                                     props.setFieldValue(
                                       "roles",
@@ -467,7 +448,7 @@ showAlertMessage, updateAnnouncementInList }) => {
 
                             <FormGroup row>
                               <Label for="email" sm={3}>
-                                Status
+                              {intl.formatMessage({ id: 'General.Status'})}
                               </Label>
                               <Col sm={9}>
                                 <CustomInput
@@ -517,14 +498,14 @@ showAlertMessage, updateAnnouncementInList }) => {
                               <Col sm={3} />
                               <Col sm={9}>
                                 <ThemedButton type="submit">
-                                  {(announcement && "Update") || "Create"}
+                                  {(announcement && intl.formatMessage({ id: 'General.Update'})) || intl.formatMessage({ id: 'General.Create'})}
                                 </ThemedButton>{" "}
                                 <Button
                                   type="button"
                                   onClick={cancel}
                                   color="light"
                                 >
-                                  Back
+                                  {intl.formatMessage({ id: 'General.Back'})}
                                 </Button>
                               </Col>
                             </FormGroup>

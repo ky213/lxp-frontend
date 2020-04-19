@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -34,6 +35,8 @@ const ListUsers = ({
   onAddNew,
   getUsers
 }) => {
+  const intl = useIntl();
+
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   const [selectedEmployees, setSelectedEmployees] = React.useState([]);
 
@@ -103,7 +106,7 @@ const ListUsers = ({
                             <i className="fa fa-fw fa-trash"></i>
                         </Button>
                         <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-                            Delete
+                        {intl.formatMessage({ id: 'General.Delete'})}
                         </UncontrolledTooltip>
                     </ButtonGroup>
                   )}

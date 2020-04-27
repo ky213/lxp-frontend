@@ -6,6 +6,7 @@ import {
   Container,
   Card,
   CardBody,
+  CardFooter,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -14,7 +15,7 @@ import {
   FormGroup,
   Row,
   UncontrolledTooltip,
-  CardColumns
+  CardColumns,
 } from "@/components";
 import {
   Button,
@@ -22,15 +23,13 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Table
+  Table,
 } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import ThemedButton from "@/components/ThemedButton";
 import { HeaderMain } from "@/routes/components/HeaderMain";
-import {
-  programService,
-  courseService,
-} from "@/services";
+import { Paginations } from "@/routes/components/Paginations";
+import { programService, courseService } from "@/services";
 
 import { useAppState } from "@/components/AppState";
 
@@ -41,20 +40,23 @@ import {
   isMobileDevice,
   isTabletDevice,
   isLaptopDevice,
-  isBiggerThanLaptop
+  isBiggerThanLaptop,
 } from "responsive-react";
 
 import { CourseCard } from "./components/CourseCard";
-import TinCan from 'tincanjs';
-import config from '@/config';
-import { TinCanLaunch } from '@/helpers';
+import TinCan from "tincanjs";
+import config from "@/config";
+import { TinCanLaunch } from "@/helpers";
 
-const Courses = props => {
+const recordsPerPage = 20;
+
+const Courses = (props) => {
   const [{ currentUser, selectedInstitute }] = useAppState();
   const user = currentUser && currentUser.user;
 
   const [deviceIsMobile, setDeviceIsMobile] = React.useState(null);
   const [pageId, setPageId] = React.useState(null);
+  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
 
   const [programs, setPrograms] = React.useState([]);
 
@@ -67,8 +69,6 @@ const Courses = props => {
   const [modal, setModal] = React.useState(false);
   const [subSpec, setSubSpec] = React.useState(null);
 
- 
-
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [employeeNameFilter, setEmployeeNameFilter] = React.useState(null);
@@ -77,22 +77,23 @@ const Courses = props => {
   const [displayFilterControls, setDisplayFilterControls] = React.useState(
     false
   );
+  const [filter, setFilter] = React.useState(null);
   const [startSearch, setStartSearch] = React.useState(false);
   const [contentWidth, setContentWidth] = React.useState(null);
   //const [launchUrl, setLaunchUrl] = useState('');
 
   let rowContent = React.useRef();
 
-
-
   React.useEffect(() => {
     //resizeListener();
     setDeviceIsMobile(isMobileDevice());
     //window.addEventListener("resize", resizeListener);
-    programService.getByCurrentUser(selectedInstitute.instituteId).then(data => {
-      setPrograms(data);
-    })
-    .catch(err => console.log("programService.getByCurrentUser", err));
+    programService
+      .getByCurrentUser(selectedInstitute.instituteId)
+      .then((data) => {
+        setPrograms(data);
+      })
+      .catch((err) => console.log("programService.getByCurrentUser", err));
   }, []);
 
   React.useEffect(() => {
@@ -100,8 +101,6 @@ const Courses = props => {
       setSelectedProgramId(programs[0].programId);
     else setSelectedProgramId(null);
   }, [programs]);
-
-  
 
   React.useEffect(() => {
     setShowAlert(alertMessage ? true : false);
@@ -113,14 +112,11 @@ const Courses = props => {
     } else {
       setCoursesData(null);
     }
-
   }, [selectedProgramId]);
-
 
   React.useEffect(() => {
     loadCourses();
   }, [startSearch]);
-
 
   const handleSearch = async () => {
     await loadCourses();
@@ -134,18 +130,23 @@ const Courses = props => {
       dismissAlert();
 
       try {
-        const data = await courseService.getAll(selectedInstitute.instituteId, selectedProgramId)
+        const data = await courseService.getAll(
+          selectedInstitute.instituteId,
+          selectedProgramId,
+          pageId,
+          recordsPerPage,
+          filter
+        );
         console.log("Get courses:", data);
 
         if (data) {
           setCoursesData(data);
         }
-      }
-      catch(err) {
+      } catch (err) {
         showAlertMessage({
           title: "Error",
           message: err,
-          type: "danger"
+          type: "danger",
         });
       }
 
@@ -163,22 +164,25 @@ const Courses = props => {
     setShowAlert(true);
   };
 
-  const onProgramChange = e => {
+  const onProgramChange = (e) => {
     if (e && e.length > 0) {
       let x = e[0].programId;
       setSelectedProgramId(x);
     } else setSelectedProgramId(null);
   };
 
-
-
   const handleLaunch = (course) => {
-    TinCanLaunch.launchContent(user, selectedProgramId, course, launchLink => {
-      window.open(launchLink)
-    });
-  }
+    TinCanLaunch.launchContent(
+      user,
+      selectedProgramId,
+      course,
+      (launchLink) => {
+        window.open(launchLink);
+      }
+    );
+  };
 
-  const handleKeyDownSearch = ev => {
+  const handleKeyDownSearch = (ev) => {
     console.log(
       "Typing:",
       ev.target.value,
@@ -206,7 +210,7 @@ const Courses = props => {
             {alertMessage.message}
             <div className="mt-2">
               <Button color={alertMessage.type} onClick={dismissAlert}>
-                {intl.formatMessage({ id: 'General.Dismiss'})}
+                {intl.formatMessage({ id: "General.Dismiss" })}
               </Button>
             </div>
           </Alert>
@@ -234,21 +238,23 @@ const Courses = props => {
                       selected={
                         (selectedProgramId &&
                           programs && [
-                            programs.find(p => p.programId == selectedProgramId)
+                            programs.find(
+                              (p) => p.programId == selectedProgramId
+                            ),
                           ]) ||
                         (programs && programs.length == 1 && [programs[0]]) ||
                         []
                       }
                       options={programs}
                       placeholder="Program..."
-                      onChange={e => onProgramChange(e)}
+                      onChange={(e) => onProgramChange(e)}
                     />
                   </FormGroup>
 
                   {selectedProgramId && (
                     <React.Fragment>
                       <div className="align-right">
-                        {(coursesData && (
+                        {coursesData && (
                           <React.Fragment>
                             <ThemedButton
                               id="btnRefresh"
@@ -265,10 +271,8 @@ const Courses = props => {
                               Search courses
                             </UncontrolledTooltip>
                           </React.Fragment>
-                        ))} 
-                        
+                        )}
                       </div>
-
                     </React.Fragment>
                   )}
                 </Form>
@@ -281,70 +285,64 @@ const Courses = props => {
 
         {coursesData && !deviceIsMobile && (
           <>
-           
-              <CardBody
-                style={{
-                  width: `${contentWidth && contentWidth - 30}px` || "99%"
-                }}
-              >
-                <Row>
-                  <Col lg={12}>
-                    {displayFilterControls && (
-                      <React.Fragment>
-                        <Form className={!deviceIsMobile ? "form-inline" : ""}>
-                          <InputGroup>
-                            <Input
-                              onKeyDown={handleKeyDownSearch}
-                              onChange={e =>
-                                setEmployeeNameFilter(e.target.value)
-                              }
-                              placeholder="Search for course..."
-                              defaultValue={employeeNameFilter}
-                            />
-                            <InputGroupAddon addonType="append">
-                              <Button
-                                color="secondary"
-                                outline
-                                onClick={handleSearch}
-                              >
-                                <i className="fa fa-search"></i>
-                              </Button>
-                            </InputGroupAddon>
-                          </InputGroup>
-                          &nbsp;
-        
-                        </Form>
-                        <br />
-                      </React.Fragment>
-                    )}
-                  </Col>
-                </Row>
+            <CardBody
+              style={{
+                width: `${contentWidth && contentWidth - 30}px` || "99%",
+              }}
+            >
+              <Row>
+                <Col lg={12}>
+                  {displayFilterControls && (
+                    <React.Fragment>
+                      <Form className={!deviceIsMobile ? "form-inline" : ""}>
+                        <InputGroup>
+                          <Input
+                            onKeyDown={handleKeyDownSearch}
+                            onChange={(e) =>
+                              setEmployeeNameFilter(e.target.value)
+                            }
+                            placeholder="Search for course..."
+                            defaultValue={employeeNameFilter}
+                          />
+                          <InputGroupAddon addonType="append">
+                            <Button
+                              color="secondary"
+                              outline
+                              onClick={handleSearch}
+                            >
+                              <i className="fa fa-search"></i>
+                            </Button>
+                          </InputGroupAddon>
+                        </InputGroup>
+                        &nbsp;
+                      </Form>
+                      <br />
+                    </React.Fragment>
+                  )}
+                </Col>
+              </Row>
+            </CardBody>
 
-              </CardBody>
-        
-              <CardColumns>
-                {coursesData && coursesData.length > 0 && coursesData.map(course => (
-                  <CourseCard course={course} onLaunch={handleLaunch} />
-                ))}
-              </CardColumns>
-              
+            {coursesData && coursesData.courses &&
+              coursesData.courses.length > 0 &&
+              coursesData.courses.map((course) => (
+                <React.Fragment>
+                  <CardColumns>
+                    <CourseCard course={course} onLaunch={handleLaunch} />
+                  </CardColumns>
+                  <CardFooter className="d-flex justify-content-center pb-0">
+                    <Paginations
+                      pageId={pageId}
+                      setPageId={setPageId}
+                      totalNumber={coursesData.totalNumberOfRecords}
+                      recordsPerPage={recordsPerPage}
+                    />
+                  </CardFooter>
+                </React.Fragment>
+              ))}
           </>
         )}
-
-
       </Container>
-
-      {/*
-            <RotationDetailsModal
-        subSpec={subSpec}
-        modal={modal}
-        courses={coursesData}
-        toggleRotationDetails={toggleRotationDetails}
-      />
-      */}
-
-
-
     </React.Fragment>
   );
 };

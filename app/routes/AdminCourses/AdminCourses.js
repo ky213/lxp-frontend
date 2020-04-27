@@ -8,6 +8,8 @@ import { useAppState } from '@/components/AppState';
 import CourseList from "./CourseList";
 import EditCourse from "./EditCourse";
 
+const recordsPerPage = 20;
+
 const AdminCourses = () => {  
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   
@@ -16,6 +18,7 @@ const AdminCourses = () => {
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [editForm, setEditForm] = React.useState(false);  
+  const [pageId, setPageId] = React.useState(1);
 
   React.useEffect(() => {
     getAllCourses();
@@ -38,7 +41,7 @@ const AdminCourses = () => {
 
   const getAllCourses = () => {
     setCourse(null);
-    courseService.getAll(selectedInstitute.instituteId).then(data => {
+    courseService.getAll(selectedInstitute.instituteId, null, pageId, recordsPerPage).then(data => {
       console.log('getAllCourses', data);
       setCourses(data);
     });
@@ -91,7 +94,7 @@ const AdminCourses = () => {
   // refresh num of files after add/delete on Edit
   const updateCourseList = (fileNum) => {
     
-    let x = courses.map(c => {
+    let x = courses.courses.map(c => {
       if (c.course_id == course.courseId)
         return {
           ...c, 
@@ -121,13 +124,17 @@ const AdminCourses = () => {
       {!editForm && (
         <React.Fragment>
             <HeaderMain title="Courses administration" />
-            {(courses && (
+            {(courses && courses.courses && (
               <CourseList
-              courses={courses}
+              courses={courses.courses}
               handleCourseEdit={handleCourseEdit}
               addNewClick={addNewClick}
               getAllCourses={getAllCourses}
               showAlertMessage={showAlertMessage}
+              pageId={pageId}
+              setPageId={setPageId}
+              recordsPerPage={recordsPerPage}
+              totalNumberOfRecords={courses.totalNumberOfRecords}              
               />
             )) || <Loading />}
         </React.Fragment>

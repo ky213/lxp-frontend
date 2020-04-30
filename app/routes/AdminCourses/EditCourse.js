@@ -102,7 +102,7 @@ const EditCourse = ({ course,
               description: (course && course.description) || "",
               programId: (course && course.programId) || '',
               periodDays: (course && course.periodDays) || 0,
-              startingDate: (course && course.startingDate) || '',
+              startingDate: (course && course.startingDate && moment(course.startingDate).toDate()) || '',
               fileData: ""
             }}
             validationSchema={Yup.object().shape({

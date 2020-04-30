@@ -48,7 +48,7 @@ import TinCan from "tincanjs";
 import config from "@/config";
 import { TinCanLaunch } from "@/helpers";
 
-const recordsPerPage = 20;
+const recordsPerPage = 2;
 
 const Courses = (props) => {
   const [{ currentUser, selectedInstitute }] = useAppState();
@@ -323,13 +323,15 @@ const Courses = (props) => {
               </Row>
             </CardBody>
 
-            {coursesData && coursesData.courses &&
-              coursesData.courses.length > 0 &&
-              coursesData.courses.map((course) => (
+            {coursesData &&
+              coursesData.courses &&
+              coursesData.courses.length > 0 && (
                 <React.Fragment>
-                  <CardColumns>
-                    <CourseCard course={course} onLaunch={handleLaunch} />
-                  </CardColumns>
+                  {coursesData.courses.map((course) => (
+                    <CardColumns>
+                      <CourseCard course={course} onLaunch={handleLaunch} />
+                    </CardColumns>
+                  ))}
                   <CardFooter className="d-flex justify-content-center pb-0">
                     <Paginations
                       pageId={pageId}
@@ -339,7 +341,7 @@ const Courses = (props) => {
                     />
                   </CardFooter>
                 </React.Fragment>
-              ))}
+              )}
           </>
         )}
       </Container>

@@ -1,30 +1,20 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React from "react";
 import {
   Alert,
-  Avatar,
   Col,
   Container,
-  Card,
   CardBody,
   CardFooter,
   Input,
   InputGroup,
   InputGroupAddon,
-  Media,
   Form,
   FormGroup,
   Row,
   UncontrolledTooltip,
   CardColumns,
 } from "@/components";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Table,
-} from "reactstrap";
+import { Button } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import ThemedButton from "@/components/ThemedButton";
 import { HeaderMain } from "@/routes/components/HeaderMain";
@@ -36,19 +26,12 @@ import { useAppState } from "@/components/AppState";
 import styles from "./Courses.css";
 import Loading from "@/components/Loading";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import {
-  isMobileDevice,
-  isTabletDevice,
-  isLaptopDevice,
-  isBiggerThanLaptop,
-} from "responsive-react";
+import { isMobileDevice } from "responsive-react";
 
 import { CourseCard } from "./components/CourseCard";
-import TinCan from "tincanjs";
-import config from "@/config";
 import { TinCanLaunch } from "@/helpers";
 
-const recordsPerPage = 2;
+const recordsPerPage = 20;
 
 const Courses = (props) => {
   const [{ currentUser, selectedInstitute }] = useAppState();
@@ -56,23 +39,15 @@ const Courses = (props) => {
 
   const [deviceIsMobile, setDeviceIsMobile] = React.useState(null);
   const [pageId, setPageId] = React.useState(null);
-  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
 
   const [programs, setPrograms] = React.useState([]);
 
-  const [expLevels, setExpLevels] = React.useState([]);
-  const [selectedAcademicYear, setSelectedAcademicYear] = React.useState();
   const [selectedProgramId, setSelectedProgramId] = React.useState(null);
   const [coursesData, setCoursesData] = React.useState(null);
-  const [rotationQualityData, setRotationQualityData] = React.useState(null);
-  const [ttContent, setTtContent] = React.useState(null);
-  const [modal, setModal] = React.useState(false);
-  const [subSpec, setSubSpec] = React.useState(null);
 
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [employeeNameFilter, setEmployeeNameFilter] = React.useState(null);
-  const [expLevelIdFilter, setExpLevelIdFilter] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [displayFilterControls, setDisplayFilterControls] = React.useState(
     false
@@ -80,14 +55,11 @@ const Courses = (props) => {
   const [filter, setFilter] = React.useState(null);
   const [startSearch, setStartSearch] = React.useState(false);
   const [contentWidth, setContentWidth] = React.useState(null);
-  //const [launchUrl, setLaunchUrl] = useState('');
 
   let rowContent = React.useRef();
 
   React.useEffect(() => {
-    //resizeListener();
     setDeviceIsMobile(isMobileDevice());
-    //window.addEventListener("resize", resizeListener);
     programService
       .getByCurrentUser(selectedInstitute.instituteId)
       .then((data) => {
@@ -116,7 +88,7 @@ const Courses = (props) => {
 
   React.useEffect(() => {
     loadCourses();
-  }, [startSearch]);
+  }, [startSearch, pageId]);
 
   const handleSearch = async () => {
     await loadCourses();
@@ -137,7 +109,6 @@ const Courses = (props) => {
           recordsPerPage,
           filter
         );
-        console.log("Get courses:", data);
 
         if (data) {
           setCoursesData(data);
@@ -327,11 +298,11 @@ const Courses = (props) => {
               coursesData.courses &&
               coursesData.courses.length > 0 && (
                 <React.Fragment>
-                  {coursesData.courses.map((course) => (
-                    <CardColumns>
+                  <CardColumns>
+                    {coursesData.courses.map((course) => (
                       <CourseCard course={course} onLaunch={handleLaunch} />
-                    </CardColumns>
-                  ))}
+                    ))}
+                  </CardColumns>
                   <CardFooter className="d-flex justify-content-center pb-0">
                     <Paginations
                       pageId={pageId}

@@ -32,8 +32,7 @@ const CourseList = ({
   const intl = useIntl();
 
   const [{ currentUser, selectedInstitute }, dispatch] = useAppState();
-  const [selectedCourses, setSelectedCourses] = React.useState([]);
-  
+  const [selectedCourses, setSelectedCourses] = React.useState([]);  
 
   const onSelected = (courseId, e) => {
     if (e.target.checked) {

@@ -24,6 +24,10 @@ const AdminCourses = () => {
     getAllCourses();
   }, []);
 
+  React.useEffect(() => {
+    getAllCourses();
+  }, [pageId]);
+
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);

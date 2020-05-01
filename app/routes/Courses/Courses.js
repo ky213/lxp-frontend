@@ -38,7 +38,7 @@ const Courses = (props) => {
   const user = currentUser && currentUser.user;
 
   const [deviceIsMobile, setDeviceIsMobile] = React.useState(null);
-  const [pageId, setPageId] = React.useState(null);
+  const [pageId, setPageId] = React.useState(1);
 
   const [programs, setPrograms] = React.useState([]);
 

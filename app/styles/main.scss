@@ -402,3 +402,25 @@ body {
 .rbc-toolbar .add-new-event:hover {
     color:#131313!important;
 }
+
+.cardWrapper {
+    padding:10px;
+}
+
+.cardWrapper .courseLogo {
+    width: 100%;
+    padding-top: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.courseDescription {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.courseDescription > p {
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -22,34 +22,23 @@ const CourseCard = ({ course, onLaunch, ...otherProps }) => {
     <React.Fragment>
       {/* START Card */}
       <Card className="mb-3">
-        <HolderProvider.Icon iconChar="" size={32}>
-          <CardImg
-            style={{ cursor: "pointer" }}
-            title="Launch course"
-            top
-            src={course.image || ""}
-            onClick={() => onLaunch(course)}
-          />
-        </HolderProvider.Icon>
+        <div className="cardWrapper">
+          <div
+            className="courseLogo"
+            style={{ backgroundImage: `url(${course.image})` }}
+          ></div>
+        </div>
         <CardBody>
-          <div className="d-flex mb-3">
-            <span>
-              <a className="h6 text-decoration-none" href="#">
+          <div className="mt-3 mb-2">
+            <div className="mb-2">
+              <a className="h4 text-decoration-none" href="#">
                 {course.name}
               </a>
-              <br />
-              <p dangerouslySetInnerHTML={createMarkup(course.description)}></p>
-            </span>
-            <a
-              href="#"
-              title="Launch course"
-              className="ml-auto"
-              onClick={() => onLaunch(course)}
-            >
-              <i className="fa fa-external-link"></i>
-            </a>
+            </div>
+            <div className="courseDescription" dangerouslySetInnerHTML={createMarkup(course.description)}>
+            </div>
           </div>
-          <Media>
+          <Media className="mb-2">
             <Media left className="align-self-center mr-3">
               <Avatar.Image
                 size="md"

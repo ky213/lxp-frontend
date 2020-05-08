@@ -88,8 +88,6 @@ const EditCourse = ({ course,
       'list', 'bullet', 'indent'
   ]
 
-
-
   return (
     (formLoaded && (
       <Consumer>
@@ -99,6 +97,7 @@ const EditCourse = ({ course,
             enableReinitialize={true}
             initialValues={{
               name: (course && course.name) || "",
+              logoImage: (course && course.image) || "",
               description: (course && course.description) || "",
               programId: (course && course.programId) || '',
               periodDays: (course && course.periodDays) || 0,
@@ -111,7 +110,7 @@ const EditCourse = ({ course,
               periodDays: Yup.number(),
             })}
             onSubmit={(
-              { name, description, programId, periodDays, fileData, startingDate },
+              { name, description, programId, periodDays, fileData, startingDate, logoImage },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
 
@@ -120,8 +119,8 @@ const EditCourse = ({ course,
               const formData = new FormData();
               if (fileData)
                 formData.append('file', fileData);
-              if (selectedLogoDataUrl)
-                formData.append('logo', selectedLogoDataUrl);
+              if (logoImage)
+                formData.append('logo', logoImage);
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
@@ -207,8 +206,9 @@ const EditCourse = ({ course,
                                 Logo
                               </Label>
                               <Col sm={9}>
-                                <ImageUpload maxFileSizeKB={200} defaultImage={selectedLogoDataUrl} onSelectedImage={(imageDataUrl) => {
+                                <ImageUpload name="logoImage" maxFileSizeKB={200} defaultImage={formikProps.values.logoImage} onSelectedImage={(imageDataUrl) => {
                                   //console.log("Selected image:", imageDataUrl)
+                                  setFieldValue('logoImage', imageDataUrl);
                                   setSelectedLogoDataUrl(imageDataUrl);
                                 }} />
                               </Col>
@@ -316,7 +316,6 @@ const EditCourse = ({ course,
                                 >
                                     <option value="">Select a program</option>
                                     {programs.map(p => {
-                                        console.log("Map each p:", p)
                                         return (
                                           <option value={p.programId}>{p.name}</option>
                                         );

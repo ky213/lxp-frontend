@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import { Container, Button, Alert } from "@/components";
 import { Loading } from "@/components";
@@ -7,7 +8,9 @@ import EditAcademicYear from "./EditAcademicYear";
 import { academicYearService, programService } from "@/services";
 import { useAppState } from '@/components/AppState';
 
-const AcademicYears = () => {  
+const AcademicYears = () => {
+  const intl = useIntl();
+  
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   const [academicYears, setAcademicYears] = React.useState(null);
   const [academicYear, setAcademicYear] = React.useState(null);

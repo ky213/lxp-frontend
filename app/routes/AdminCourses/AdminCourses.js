@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import { Container, Button, Alert } from "@/components";
 import { courseService } from "@/services";
@@ -11,6 +12,8 @@ import EditCourse from "./EditCourse";
 const recordsPerPage = 20;
 
 const AdminCourses = () => {  
+  const intl = useIntl();
+  
   const [{currentUser, selectedInstitute}, dispatch] = useAppState();
   
   const [courses, setCourses] = React.useState(null);

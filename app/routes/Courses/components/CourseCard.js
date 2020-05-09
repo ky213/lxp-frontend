@@ -34,9 +34,19 @@ const CourseCard = ({ course, onLaunch, ...otherProps }) => {
               <a className="h4 text-decoration-none" href="#">
                 {course.name}
               </a>
+              <a
+                href="#"
+                title="Launch course"
+                className="pull-right"
+                onClick={() => onLaunch(course)}
+              >
+                <i className="fa fa-external-link"></i>
+              </a>
             </div>
-            <div className="courseDescription" dangerouslySetInnerHTML={createMarkup(course.description)}>
-            </div>
+            <div
+              className="courseDescription"
+              dangerouslySetInnerHTML={createMarkup(course.description)}
+            ></div>
           </div>
           <Media className="mb-2">
             <Media left className="align-self-center mr-3">

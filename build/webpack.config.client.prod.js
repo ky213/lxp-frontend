@@ -4,6 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var TerserPlugin = require('terser-webpack-plugin');
+
 const dotenv = require('dotenv');
 
 var config = require('../config');
@@ -36,7 +37,7 @@ module.exports = (env) => {
     }, {});
 
     return {
-        devtool: 'inline-source-map',
+        devtool: '',
         mode: 'production',
         entry: {
             app: ['react-hot-loader/patch', path.join(config.srcDir, 'index.js')]
@@ -88,7 +89,19 @@ module.exports = (env) => {
             })
         ],
         optimization: {
-            minimizer: [new TerserPlugin()]
+            minimizer: [new TerserPlugin()],
+            splitChunks: {
+                cacheGroups: {
+                    commons: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        chunks: 'all'
+                    }
+                }
+            },
+            runtimeChunk: {
+                name: 'manifest'
+            }
         },
         module: {
             rules: [

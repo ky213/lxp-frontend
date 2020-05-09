@@ -97,7 +97,7 @@ const NavbarActivityFeed = (props) => {
             await getNotifications();
             //console.log("RMS_API_URL", process.env.API_URL, config.apiUrl)
         }
-    }, 10000);
+    }, 30000);
 
     React.useEffect(() => {
         if(loggedInUser) {

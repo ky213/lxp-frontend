@@ -403,15 +403,14 @@ body {
     color:#131313!important;
 }
 
-.cardWrapper {
-    padding:10px;
-}
 
 .cardWrapper .courseLogo {
     width: 100%;
     padding-top: 75%;
     background-repeat: no-repeat;
     background-position: center;
+    background-color:lightgrey;
+    cursor:pointer;
 }
 
 .courseDescription {
@@ -420,7 +419,7 @@ body {
 }
 
 .courseDescription > p {
-    height: 100px;
+    height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

@@ -9,7 +9,6 @@ import {
 } from '@/components';
 
 import { NavbarActivityFeed } from './NavbarActivityFeed';
-import { NavbarMessages } from './NavbarMessages';
 import { NavbarUser } from './NavbarUser';
 import { LogoThemed } from '@/routes/components/LogoThemed/LogoThemed';
 import PulseLogo from '@/components/PulseLogo';

@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CircularDependencyPlugin = require('circular-dependency-plugin');
 var ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var config = require('../config');
 
@@ -89,6 +90,7 @@ module.exports = (env) => {
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new ExtractCssChunks(),
+            new BundleAnalyzerPlugin()
         ],
         module: {
             rules: [

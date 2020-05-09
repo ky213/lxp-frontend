@@ -2,8 +2,6 @@ import React from "react";
 
 import {
   Card,
-  CardImg,
-  HolderProvider,
   Media,
   Avatar,
   AvatarAddOn,
@@ -25,15 +23,16 @@ const CourseCard = ({ course, onLaunch, ...otherProps }) => {
         <div className="cardWrapper">
           <div
             className="courseLogo"
+            title="Launch course"
             style={{ backgroundImage: `url(${course.image})` }}
           ></div>
         </div>
         <CardBody>
           <div className="mt-3 mb-2">
             <div className="mb-2">
-              <a className="h4 text-decoration-none" href="#">
+              <span className="h4 text-decoration-none" onClick={() => onLaunch(course)}>
                 {course.name}
-              </a>
+              </span>
               <a
                 href="#"
                 title="Launch course"

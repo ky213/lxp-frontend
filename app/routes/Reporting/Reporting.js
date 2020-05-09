@@ -6,10 +6,7 @@ import {
     Col,
     Row,
     Table,
-    Button, 
-    InputGroup,
-    Input,
-    InputGroupAddon,
+    Loading,
     CardBody,
     Form,
     FormGroup
@@ -21,8 +18,8 @@ import { Paginations } from "@/routes/components/Paginations";
 import { Typeahead } from "react-bootstrap-typeahead";
 import moment from 'moment';
 
-import { reportingService, programService, residentService, userService } from '@/services';
-import { Role, TinCanLaunch } from '@/helpers';
+import { reportingService, programService, residentService } from '@/services';
+import {  TinCanLaunch } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
 const Reporting = () => {
@@ -37,6 +34,7 @@ const Reporting = () => {
     const [selectedLearner, setSelectedLearner] = React.useState(null);
     const [experiences, setExperiences] = React.useState([]);
     const [selectedExperiences, setSelectedExperiences] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     let paginationContent = null;
     if (totalNumberOfRecords > 0) {
@@ -54,6 +52,7 @@ const Reporting = () => {
 
     React.useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             const data = await programService.getByCurrentUser(selectedInstitute.instituteId);
             setPrograms(data);
             
@@ -68,11 +67,8 @@ const Reporting = () => {
             catch(error) {
                 console.log("Error while fetching learners:", error)
             }
-
             
-            console.log("Got experiences:", exp)
-            
-  
+            setLoading(false);
         }
         
         fetchData();
@@ -80,32 +76,23 @@ const Reporting = () => {
 
     React.useEffect(() => {
         const fetchData = async () => {
-            let filter = {};
-            //filter.program = 
-
-  
-            const data = await reportingService.getAll(filter);
-            console.log("Got statements:", data), selectedProgram
-
+            setLoading(true);
+     
             const exp = await reportingService.getExperiences({programId:selectedProgram.programId});
-            console.log("Got experiences:", exp)
             setExperiences(exp.filter((v,i,a)=>a.findIndex(t=>(t === v))===i).map(e => {
-                const val = e && e.experience && JSON.parse(e.experience);
-                return {
-                    name: val['en'] || val['en-US'],
-                    value: val['en'] || val['en-US'],
+                    const val = e && e.experience && JSON.parse(e.experience);
+                    return {
+                        name: val['en'] || val['en-US'],
+                        value: val['en'] || val['en-US'],
+                    }
                 }
-            }
             ))
+            setLoading(false);
         }
         
         fetchData();
     }, [selectedProgram]);
 
-    const onSearch = (e) => {
-        //console.log("Handle edited!")
-
-    }
 
     const getStatements = async (program, learner, experiences) => {
         const filter = {selectedInstituteId: selectedInstitute.instituteId, limit: 100, take: 100, page: pageId};
@@ -124,20 +111,14 @@ const Reporting = () => {
         const data = await reportingService.getAll(filter);
         console.log("Got statements:", data)
 
-        /*
-        const experience = data && data.statements && data.statements.map(statement => statement.verb && statement.verb.display && (statement.verb.display.en || statement.verb.display["en-US"]));
-        setExperiences(experience.filter((v,i,a)=>a.findIndex(t=>(t === v))===i).map(e => ({
-            name: e,
-            value: e
-        })))
-        */
-
         setStatements(data.statements);
     }
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             await getStatements(selectedProgram, selectedLearner, selectedExperiences);
+            setLoading(false);
         }
         
         fetchData();
@@ -229,6 +210,7 @@ const Reporting = () => {
                                             onChange={handleExperienceChange}
                                         />
                                         </FormGroup>
+                                        {/*
                                         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                            
                                             <InputGroup>
@@ -240,39 +222,45 @@ const Reporting = () => {
                                                 </InputGroupAddon>
                                             </InputGroup>
                                             </FormGroup>
-                                        </Form>
+                                      
+                                        */}
+                                    </Form>
                                     </div>
                                 </div>
                             </CardBody>
-                            
-                            <Table className="mb-0" hover striped responsive>
+                            {!loading && (
+                                <Table className="mb-0" hover striped responsive>
                                 <thead>
                                     <tr>
-                                        <th className="align-middle bt-0 text-center">Time</th>
-                                        <th className="align-middle bt-0 text-left">Learner</th>
-                                       
-                                        <th className="align-middle bt-0">Activity name</th>
-                                        <th className="align-middle bt-0">Activity description</th>
-                                        <th className="align-middle bt-0">Experience</th>
-                                        <th className="align-middle bt-0">Result</th>
-                                        <th className="align-middle bt-0">Success</th>
+                                        <th className="align-middle bt-0 text-center" width="20%">Time</th>
+                                        <th className="align-middle bt-0 text-left" width="15%">Learner</th>
+                                        <th className="align-middle bt-0 text-left" width="20%">Activity name</th>
+                                        <th className="align-middle bt-0 text-left" width="20%">Activity description</th>
+                                        <th className="align-middle bt-0 text-center" width="10%">Experience</th>
+                                        <th className="align-middle bt-0 text-right" width="5%">Result</th>
+                                        <th className="align-middle bt-0 text-center" width="10%">Success</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {statements && statements.map(statement => (
                                         <tr>
-                                        <td className="align-middle bt-0 text-center">{moment(statement.timestamp).format('LLL')}</td>
-                                        <td className="align-middle bt-0 text-left">{statement.actor.name}</td>
+                                        <td className="align-middle bt-0">{moment(statement.timestamp).format('LLL')}</td>
+                                        <td className="align-middle bt-0">{statement.actor.name}</td>
                                         
                                         <td className="align-middle bt-0">{statement.object.definition.name.und}</td>
                                         <td className="align-middle bt-0">{statement.object.definition.name.description}</td>
                                         <td className="align-middle bt-0">{statement.verb && statement.verb.display && (statement.verb.display.en || statement.verb.display["en-US"]) }</td>
-                                        <td className="align-middle bt-0">{statement.result && statement.result.score &&  statement.result.score.scaled }</td>
+                                        {/*"result":{"success":false,"score":{"scaled":0.36,"raw":9,"min":0,"max":25}}, */}
+                                        <td className="align-middle bt-0">{statement.result && statement.result.score && statement.result.score.scaled && `${statement.result.score.scaled*100}%` || ''}</td>
                                         <td className="align-middle bt-0">{statement.result && statement.result.success }</td>
                                     </tr>
                                     ))} 
                                 </tbody>
-                            </Table>
+                                </Table>
+                            )}
+                            {loading && (
+                                <Loading />
+                            )}
                         
                             { /* END Table */}
                             {paginationContent}

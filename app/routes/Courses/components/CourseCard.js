@@ -21,7 +21,7 @@ const CourseCard = ({ course, onLaunch, ...otherProps }) => {
   return (
     <React.Fragment>
       {/* START Card */}
-      <Card className="mb-3">
+      <Card className="mb-3" onClick={() => onLaunch(course)}>
         <div className="cardWrapper">
           <div
             className="courseLogo"

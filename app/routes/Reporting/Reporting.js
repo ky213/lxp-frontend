@@ -35,6 +35,8 @@ const Reporting = () => {
     const [selectedProgram, setSelectedProgram] = React.useState(null);
     const [learners, setLearners] = React.useState([]);
     const [selectedLearner, setSelectedLearner] = React.useState(null);
+    const [experiences, setExperiences] = React.useState([]);
+    const [selectedExperiences, setSelectedExperiences] = React.useState(null);
 
     let paginationContent = null;
     if (totalNumberOfRecords > 0) {
@@ -66,17 +68,46 @@ const Reporting = () => {
             catch(error) {
                 console.log("Error while fetching learners:", error)
             }
+
+            
+            console.log("Got experiences:", exp)
+            
+  
         }
         
         fetchData();
     }, []);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            let filter = {};
+            //filter.program = 
+
+  
+            const data = await reportingService.getAll(filter);
+            console.log("Got statements:", data), selectedProgram
+
+            const exp = await reportingService.getExperiences({programId:selectedProgram.programId});
+            console.log("Got experiences:", exp)
+            setExperiences(exp.filter((v,i,a)=>a.findIndex(t=>(t === v))===i).map(e => {
+                const val = e && e.experience && JSON.parse(e.experience);
+                return {
+                    name: val['en'] || val['en-US'],
+                    value: val['en'] || val['en-US'],
+                }
+            }
+            ))
+        }
+        
+        fetchData();
+    }, [selectedProgram]);
 
     const onSearch = (e) => {
         //console.log("Handle edited!")
 
     }
 
-    const getStatements = async (program, learner) => {
+    const getStatements = async (program, learner, experiences) => {
         const filter = {selectedInstituteId: selectedInstitute.instituteId, limit: 100, take: 100, page: pageId};
         if(program && program.programId) {
             filter.registration = program.programId;
@@ -86,18 +117,31 @@ const Reporting = () => {
             filter.agent = TinCanLaunch.getActor(learner);
         }
 
+        if(experiences && experiences.length > 0) {
+            filter.experiences = JSON.stringify(experiences);
+        }
+
         const data = await reportingService.getAll(filter);
         console.log("Got statements:", data)
+
+        /*
+        const experience = data && data.statements && data.statements.map(statement => statement.verb && statement.verb.display && (statement.verb.display.en || statement.verb.display["en-US"]));
+        setExperiences(experience.filter((v,i,a)=>a.findIndex(t=>(t === v))===i).map(e => ({
+            name: e,
+            value: e
+        })))
+        */
+
         setStatements(data.statements);
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            await getStatements(selectedProgram, selectedLearner);
+            await getStatements(selectedProgram, selectedLearner, selectedExperiences);
         }
         
         fetchData();
-    }, [selectedProgram, selectedLearner])
+    }, [selectedProgram, selectedLearner, selectedExperiences])
 
     const handleProgramChange = e => {
         if (e && e.length > 0) {
@@ -112,6 +156,14 @@ const Reporting = () => {
           setSelectedLearner(e[0]);
         } else {
             setSelectedLearner(null);
+        }
+    };
+
+    const handleExperienceChange = e => {
+        if (e && e.length > 0) {
+            setSelectedExperiences(e);
+        } else {
+            setSelectedExperiences(null);
         }
     };
     
@@ -167,6 +219,17 @@ const Reporting = () => {
                                         />
                                         </FormGroup>
                                         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                                        <Typeahead
+                                            clearButton
+                                            id="experience"
+                                            labelKey="name"
+                                            options={experiences}
+                                            multiple
+                                            placeholder="Select experience..."
+                                            onChange={handleExperienceChange}
+                                        />
+                                        </FormGroup>
+                                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                            
                                             <InputGroup>
                                                 <Input onKeyUp={(e) => onSearch(e)} placeholder="Search for..." />
@@ -191,6 +254,8 @@ const Reporting = () => {
                                         <th className="align-middle bt-0">Activity name</th>
                                         <th className="align-middle bt-0">Activity description</th>
                                         <th className="align-middle bt-0">Experience</th>
+                                        <th className="align-middle bt-0">Result</th>
+                                        <th className="align-middle bt-0">Success</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -202,6 +267,8 @@ const Reporting = () => {
                                         <td className="align-middle bt-0">{statement.object.definition.name.und}</td>
                                         <td className="align-middle bt-0">{statement.object.definition.name.description}</td>
                                         <td className="align-middle bt-0">{statement.verb && statement.verb.display && (statement.verb.display.en || statement.verb.display["en-US"]) }</td>
+                                        <td className="align-middle bt-0">{statement.result && statement.result.score &&  statement.result.score.scaled }</td>
+                                        <td className="align-middle bt-0">{statement.result && statement.result.success }</td>
                                     </tr>
                                     ))} 
                                 </tbody>

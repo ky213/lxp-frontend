@@ -138,6 +138,8 @@ const EditCourse = ({ course,
                 httpMethod = 'POST';
               }
 
+              console.log("Submitting")
+
               axios({
                 method: httpMethod,
                 headers: {

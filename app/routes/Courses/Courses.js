@@ -110,6 +110,8 @@ const Courses = (props) => {
           filter
         );
 
+        console.log("Courses data:", data)
+
         if (data) {
           setCoursesData(data);
         }
@@ -143,6 +145,7 @@ const Courses = (props) => {
   };
 
   const handleLaunch = (course) => {
+    console.log("Got course before launch:", course)
     TinCanLaunch.launchContent(
       user,
       selectedProgramId,

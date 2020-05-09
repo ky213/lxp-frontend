@@ -6,11 +6,18 @@ const xapiUrl = `${config.apiUrl.replace('/api', '/xapi')}`;
 export const reportingService = {
     getAll,
     getById,
+    getExperiences
 };
 
-function getAll({ selectedInstituteId, statementId, voidedStatementId, registration, agent, verb, activity, since, until, limit, ascending, page, take }) {    
+function getExperiences({ programId }) {    
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ statementId, voidedStatementId, registration, agent, verb, activity, since, until, limit, ascending, page, take, selectedInstituteId });
+    let query = buildQuery({ programId });
+    return fetch(`${xapiUrl}/statements/experiences?${query}`, requestOptions).then(handleResponse);    
+}
+
+function getAll({ selectedInstituteId, statementId, voidedStatementId, registration, agent, verb, activity, since, until, limit, ascending, experiences, page, take }) {    
+    const requestOptions = { method: 'GET', headers: authHeader() };
+    let query = buildQuery({ statementId, voidedStatementId, registration, agent, verb, activity, since, until, limit, ascending, experiences, page, take, selectedInstituteId });
     return fetch(`${xapiUrl}/statements?${query}`, requestOptions).then(handleResponse);    
 }
 

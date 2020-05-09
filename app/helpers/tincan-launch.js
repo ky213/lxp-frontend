@@ -92,7 +92,7 @@ const readXML = (filename, user, callback) => {
     xobj.send(null);
 } */
 
-function launchContent(user, programId, course, launcher) {
+function launchContent(user, registration, course, launcher) {
     const launchUrlBase = `${config.apiUrl}/static${!course.contentPath.startsWith('/') && '/' || ''}${course.contentPath}${!course.contentPath.endsWith('/') && '/' || ''}`;
 
     console.log("xml url:", launchUrlBase + 'tincan.xml')
@@ -133,7 +133,7 @@ function launchContent(user, programId, course, launcher) {
 
             const actor = getActor(user);
             launchLink += '&actor=' + encodeURIComponent(JSON.stringify(actor.asVersion('1.0.0')));
-            launchLink += '&registration=' + encodeURIComponent(programId || TinCan.Utils.getUUID());
+            launchLink += '&registration=' + encodeURIComponent(`${registration}|${course.courseId}` || TinCan.Utils.getUUID());
 
             launchLink += '&activity_id=' + encodeURIComponent(activity.id);
 

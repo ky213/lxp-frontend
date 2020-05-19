@@ -51,6 +51,7 @@ export const SidebarMiddleNav = navbarProps => {
         title="Programs"
         to="/programs"
       />
+      {/* 
       <SidebarMenu.Item
         roles={[
           Role.Admin,
@@ -62,7 +63,7 @@ export const SidebarMiddleNav = navbarProps => {
         title="Program Settings"
         to="/program-settings"
       />
-
+*/}
       <SidebarMenu.Item
         roles={[Role.SuperAdmin, Role.Admin, Role.InstituteManager]}
         icon={<i className="fa fa-fw fa-user-md"></i>}
@@ -85,12 +86,14 @@ export const SidebarMiddleNav = navbarProps => {
         exact
       />
 
+ {/* 
       <SidebarMenu.Item
         roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
         icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
         title="Academic Years"
         to="/academic-years"
       />
+      */}
 
       <SidebarMenu.Item
         roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}

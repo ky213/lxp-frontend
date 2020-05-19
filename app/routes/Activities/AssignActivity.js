@@ -22,7 +22,7 @@ import * as Yup from 'yup';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
 import moment from 'moment';
 import {AddonInput} from '@/routes/Forms/DatePicker/components';
-import {activityService, residentService, subspecialtiesService, expLevelService, programService} from '@/services';
+import {activityService, residentService, subspecialtiesService, courseService, programService} from '@/services';
 import { useAppState } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
@@ -35,7 +35,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
     const [users, setUsers] = React.useState([]);
     const [activityTypes, setActivityTypes] = React.useState([]);
     const [timeDifference, setTimeDifference] = React.useState(30);
-    const [experienceLevels, setExperienceLevels] = React.useState([]);
+    const [courses, setCourses] = React.useState([]);
     const [rrule, setRRule] = React.useState([]);
     const [showRepeatOptions, setShowRepeatOptions] = React.useState(false);
     //const [userPrograms, setUserPrograms] = React.useState([]);
@@ -46,12 +46,30 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
         if(isOpen) {
 
             const fetchData = async () => {
+                console.log("Nešo test")
                 try {
                     const activityTypes = await activityService.getActivityTypes(selectedInstitute.instituteId);
                     setActivityTypes(activityTypes);
                 }
                 catch(error) {
                     console.log("Error while fetching activity types:", error)
+                }
+
+
+                try {
+                    const data = await courseService.getAll(
+                      selectedInstitute.instituteId,
+                      currentProgramId,
+                      1,
+                    );
+            
+                    console.log("Courses data:", data)
+            
+                    if (data && data.courses) {
+                      setCourses(data.courses);
+                    }
+                } catch (err) {
+                    console.log("Error while fetching courses:", err)
                 }
 
                 if(currentUser && currentUser.user) {
@@ -64,13 +82,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                             console.log("Error while fetching residents:", error)
                         }
 
-                        try {
-                            const expLevels = await expLevelService.getByProgramId(currentProgramId);
-                            setExperienceLevels(expLevels);
-                        }
-                        catch(error) {
-                            console.log("Error while fetching experience levels:", error)
-                        }
+                      
                     }
                 }
             }
@@ -89,7 +101,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
 
     const changePriority = (formikProps, priority) => {
         formikProps.setFieldValue('priority', priority)
-        formikProps.setFieldValue('levels', [])
+        formikProps.setFieldValue('courses', [])
         formikProps.setFieldValue('residents', [])        
     }
 
@@ -108,7 +120,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                     residents: [],
                     priority: 1,
                     activityType: '',
-                    levels: []
+                    courses: []
                 }}
                 validationSchema={Yup.object().shape({
                     program: Yup.array().min(1, 'You need to select a program'),
@@ -118,9 +130,9 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                     activityType: Yup.string().required('You need to select the activity type'),
                     end: Yup.date().required('Ending time of the activity is required')
                             .when('start', (start, schema) => schema.min(start, ({min}) => `Ending time must be greater than the activity starting time (${moment(min).format('LLLL')})`)),
-                    levels: Yup.array().when('priority', {
+                    courses: Yup.array().when('priority', {
                         is: "2",
-                        then: Yup.array().min(1, 'You need to select a level')
+                        then: Yup.array().min(1, 'You need to select a course')
                     }),
                     residents: Yup.array().when('priority', {
                         is: "3",
@@ -128,12 +140,12 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                     }) 
                 })}
                 onSubmit={async ({ activityName, description, start, end, priority, program, residents, activityType, 
-                    location, levels, during }, { setStatus, setSubmitting }) => {
+                    location, courses, during }, { setStatus, setSubmitting }) => {
                     setStatus();
                     setSubmitting(false);  
                    
                     console.log('onSubmit', activityName, description, start, end, priority, program, residents, activityType, 
-                        location, levels);
+                        location, courses);
                    
                     if(!program || program && program.length == 0) {
                         alert(`You need to select a program first!`);
@@ -145,8 +157,8 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                         return;
                     }
 
-                    if(priority == 2 && (!levels || levels && levels.length == 0)) {
-                        alert(`You must choose a level!`);
+                    if(priority == 2 && (!courses || courses && courses.length == 0)) {
+                        alert(`You must choose a course!`);
                         return;
                     }
 
@@ -163,7 +175,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                         repeat: showRepeatOptions,
                         description: description,
                         participants: residents,
-                        levels: levels,
+                        courses: courses,
                         rrule: rrule && rrule.toString() || null,
                         instituteId: selectedInstitute.instituteId,
                         during: during
@@ -437,7 +449,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                                                 type="radio" 
                                                                 id="priorityLevel" 
                                                                 name="priority"
-                                                                label="Level" 
+                                                                label="Courses" 
                                                                 value="2"
                                                                 checked={formikProps.values.priority == 2}
                                                                 onChange={(event) => {
@@ -464,22 +476,22 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                             </FormGroup>
                                             {formikProps.values && formikProps.values.priority && formikProps.values.priority == 2 && (
                                                 <FormGroup row>
-                                                    <Label for="level" sm={3}>
-                                                        Level
+                                                    <Label for="courses" sm={3}>
+                                                        Course
                                                     </Label>
                                                     <Col sm={9}>
                                                         <Typeahead
                                                             clearButton
-                                                            id="levels"
+                                                            id="courses"
                                                             labelKey="name"
-                                                            options={experienceLevels || []}
+                                                            options={courses || []}
                                                             multiple
-                                                            className={(formikProps.errors.levels && formikProps.touched.levels ? ' is-invalid' : '')}
-                                                            placeholder="Select levels..."
-                                                            onChange={(selectedOptions) =>  formikProps.setFieldValue('levels', selectedOptions)}
-                                                            onInputChange={(selectedOptions) =>  formikProps.setFieldValue('levels', selectedOptions)}
+                                                            className={(formikProps.errors.courses && formikProps.touched.courses ? ' is-invalid' : '')}
+                                                            placeholder="Select courses..."
+                                                            onChange={(selectedOptions) =>  formikProps.setFieldValue('courses', selectedOptions)}
+                                                            onInputChange={(selectedOptions) =>  formikProps.setFieldValue('courses', selectedOptions)}
                                                         />
-                                                        <ErrorMessage name="levels" component="div" className="invalid-feedback" /> 
+                                                        <ErrorMessage name="courses" component="div" className="invalid-feedback" /> 
                                                     </Col>                                                    
                                                 </FormGroup>
                                             )}

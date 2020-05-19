@@ -9,14 +9,19 @@ import {
     Loading,
     CardBody,
     Form,
-    FormGroup
+    FormGroup,
+    ButtonToolbar,
+    UncontrolledTooltip
 } from '@/components';
+import ThemedButton from "@/components/ThemedButton";
 
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
 import { Paginations } from "@/routes/components/Paginations";
 import { Typeahead } from "react-bootstrap-typeahead";
 import moment from 'moment';
+import { CSVLink } from "react-csv";
+ 
 
 import { reportingService, programService, residentService } from '@/services';
 import {  TinCanLaunch } from '@/helpers';
@@ -35,6 +40,9 @@ const Reporting = () => {
     const [experiences, setExperiences] = React.useState([]);
     const [selectedExperiences, setSelectedExperiences] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
+    const [csvData, setCsvData] = React.useState([]);
+    const csvLink = React.useRef();
+
 
     let paginationContent = null;
     if (totalNumberOfRecords > 0) {
@@ -55,10 +63,11 @@ const Reporting = () => {
             setLoading(true);
             const data = await programService.getByCurrentUser(selectedInstitute.instituteId);
             setPrograms(data);
-            
+            /*
             if(data && data.length == 1) {
                 setSelectedProgram(data[0])
             }
+            */
             
             try {
                 const learners = await residentService.getAllActive(1, 999, null, selectedInstitute.instituteId, selectedProgram && selectedProgram.programId || null);
@@ -78,7 +87,7 @@ const Reporting = () => {
         const fetchData = async () => {
             setLoading(true);
      
-            const exp = await reportingService.getExperiences({programId:selectedProgram.programId});
+            const exp = await reportingService.getExperiences({programId:selectedProgram && selectedProgram.programId || null});
             setExperiences(exp.filter((v,i,a)=>a.findIndex(t=>(t === v))===i).map(e => {
                     const val = e && e.experience && JSON.parse(e.experience);
                     return {
@@ -92,6 +101,50 @@ const Reporting = () => {
         
         fetchData();
     }, [selectedProgram]);
+
+/*
+    React.useEffect(() => {
+        if(csvData && csvData.length > 1) {
+            csvLink.current.link.click()
+        }
+    }, [csvData])
+    */
+
+    const getExport = async (program, learner, experiences) => {
+        const filter = {selectedInstituteId: selectedInstitute.instituteId, page: 1};
+        if(program && program.programId) {
+            filter.registration = program.programId;
+        }
+
+        if(learner) {
+            filter.agent = TinCanLaunch.getActor(learner);
+        }
+
+        if(experiences && experiences.length > 0) {
+            filter.experiences = JSON.stringify(experiences);
+        }
+
+        const data = await reportingService.getAll(filter);
+        console.log("Got statements for export:", data)
+
+        let exportData = [];
+        exportData.push(["Time", "Learner", "Program", "Activity name", "Activity description", "Experience", "Result", "Success"]);
+  
+        if(data.statements) {
+            data.statements.map(statement => (
+                exportData.push([moment(statement.timestamp).format('LLL'), statement.actor.name, selectedProgram && selectedProgram.name || "", statement.object.definition.name.und,
+                statement.object.definition.name.description, statement.verb && statement.verb.display && (statement.verb.display.en || statement.verb.display["en-US"]),
+                statement.result && statement.result.score && statement.result.score.scaled && `${decimalAdjust('round', statement.result.score.scaled*100, -2)}%` || '',
+                statement.result && statement.result.success
+                ])
+            ));
+
+            setCsvData(exportData);
+            csvLink.current.link.click()
+            
+        }
+        
+    }
 
 
     const getStatements = async (program, learner, experiences) => {
@@ -147,12 +200,36 @@ const Reporting = () => {
             setSelectedExperiences(null);
         }
     };
-    
+
+
+    function decimalAdjust(type, value, exp) {
+        // If the exp is undefined or zero...
+        if (typeof exp === 'undefined' || +exp === 0) {
+            return Math[type](value);
+        }
+        value = +value;
+        exp = +exp;
+        // If the value is not a number or the exp is not an integer...
+        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+            return NaN;
+        }
+        // Shift
+        value = value.toString().split('e');
+        value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+        // Shift back
+        value = value.toString().split('e');
+        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+    }
+
     /*
     if(!statements) {
         return <Loading />;
     }
     */
+
+    const handleClickExport = async () => {
+        await getExport(selectedProgram, selectedLearner, selectedExperiences);
+    }
  
     return (
         <React.Fragment>
@@ -226,6 +303,23 @@ const Reporting = () => {
                                         */}
                                     </Form>
                                     </div>
+                                    <ButtonToolbar>
+                                        
+                                        <ThemedButton
+                                            className="align-self-center"
+                                            onClick={handleClickExport}
+                                        >
+                                            <i className="fa fa-fw fa-file-excel-o"></i>                    
+                                        </ThemedButton>
+                                    
+                                        <CSVLink
+                                            data={csvData}
+                                            filename="report.csv"
+                                            className="hidden"
+                                            ref={csvLink}
+                                            target="_blank" 
+                                        />
+                                    </ButtonToolbar>
                                 </div>
                             </CardBody>
                             {!loading && (
@@ -251,7 +345,7 @@ const Reporting = () => {
                                         <td className="align-middle bt-0">{statement.object.definition.name.description}</td>
                                         <td className="align-middle bt-0">{statement.verb && statement.verb.display && (statement.verb.display.en || statement.verb.display["en-US"]) }</td>
                                         {/*"result":{"success":false,"score":{"scaled":0.36,"raw":9,"min":0,"max":25}}, */}
-                                        <td className="align-middle bt-0">{statement.result && statement.result.score && statement.result.score.scaled && `${statement.result.score.scaled*100}%` || ''}</td>
+                                        <td className="align-middle bt-0">{statement.result && statement.result.score && statement.result.score.scaled && `${decimalAdjust('round', statement.result.score.scaled*100, -2)}%` || ''}</td>
                                         <td className="align-middle bt-0">{statement.result && statement.result.success }</td>
                                     </tr>
                                     ))} 

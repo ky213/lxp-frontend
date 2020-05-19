@@ -52,12 +52,6 @@ const UserRowResident = props => {
           {props.props.email}
         </td>
         <td className="align-middle">
-          {props.props.expLevelName}
-        </td>
-        <td className="align-middle">
-          {props.props.programName}
-        </td>
-        <td className="align-middle">
           {props.props.isActive && 'Active' || 'Inactive'}
         </td>
       </tr>

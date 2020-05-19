@@ -22,7 +22,7 @@ import {
   Row
 } from "@/components";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { programService, residentService, expLevelService } from "@/services";
+import { residentService } from "@/services";
 import { useAppState } from '@/components/AppState';
 import moment from "moment";
 
@@ -40,70 +40,11 @@ const ResidentEdit = props => {
   const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
-  const [programs, setPrograms] = React.useState([]);
-  const [selectedProgram, setSelectedProgram] = React.useState(null);
-  const [expLevels, setExpLevels] = React.useState([]);
-  const [expLevelState, setExpLevelState] = React.useState({disabled: true});
-  const [selectedExpLevel, setSelectedExpLevel] = React.useState(null);
-
-  React.useEffect(() => {
-    programService.getAll(selectedInstitute.instituteId, 1, 999, null).then(data => {
-      console.log("Got programs on resident:", data)
-      setPrograms(data.programs);      
-    });
-  }, []);
 
   React.useEffect(() => {
     setUser(props.user);
   }, [props.user]);
-
-  React.useEffect(() => {
-    renderSelectedProgram();    
-  }, [user, programs]);
-
-  React.useEffect(() => {
-    getExpLevelsByProgramId();
-  }, [selectedProgram]);
-
-  React.useEffect(() => {
-    renderSelectedExpLevel();
-  }, [expLevels]);
-
-  const renderSelectedProgram = () => {
-    if (user && user.programId && programs && programs.length > 0) {
-      let sp = programs.find(p => p.programId == user.programId);
-      setSelectedProgram([sp]);  // Typeahead expects array
-    } else {
-      setSelectedProgram(null);
-    }
-  };
-
-  const getExpLevelsByProgramId = () => {
-    
-    if (selectedProgram && selectedProgram.length > 0) {
-      expLevelService
-        .getByProgramId(selectedProgram[0].programId)
-        .then(data => {
-          setExpLevels(data);
-          setExpLevelState({disabled: false});
-        });
-    } else {
-      setExpLevels(null);
-      setExpLevelState({disabled: true});
-    }
-  };
-
-  const renderSelectedExpLevel = () => {
-    if(user && expLevels)
-    {
-      let el = expLevels.find(t => t.expLevelId == user.expLevelId);
-      setSelectedExpLevel([el]); // Typeahead expects array
-    }
-    else
-    {
-      setSelectedExpLevel(null);
-    }
-  }
+  
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);
@@ -118,24 +59,6 @@ const ResidentEdit = props => {
     props.onCancel();
   };
 
-  const handleChange = (selectedProgram) => {
-    if (!selectedProgram || selectedProgram.length == 0)
-    {
-      setExpLevelState({disabled: true});
-    }
-    else
-    {
-      console.log('selectedProgram[0]', selectedProgram[0]);
-      expLevelService.getByProgramId(selectedProgram[0].programId).then(
-        data => {
-          setExpLevels(data);
-        }
-      );
-      
-      setExpLevelState({disabled: false});
-    }
-  }
-
   return (
     <Formik
       {...props}
@@ -146,17 +69,14 @@ const ResidentEdit = props => {
         email: (user && user.email) || "",
         gender: (user && user.gender) || "",
         startDate: (user && user.startDate && moment(user.startDate).toDate()) || new Date(),
-        program: selectedProgram || [],
-        expLevel: selectedExpLevel || [],
         isActive: (!user && true) || user.isActive
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required("Name is required"),
         surname: Yup.string().required("Surname is required"),
         email: Yup.string().required("Email is required"),
-        gender: Yup.string().required("Email is required"),
-        program: Yup.array().min(1, "You have to select Program"),
-        expLevel: Yup.array().min(1, "You have to select Experience level")
+        gender: Yup.string().required("Gender is required"),
+        
       })}
       onSubmit={(
         {
@@ -165,8 +85,6 @@ const ResidentEdit = props => {
           email,
           gender,
           startDate,
-          program,
-          expLevel,
           isActive
         },
         { setStatus, setSubmitting }
@@ -184,8 +102,6 @@ const ResidentEdit = props => {
                 startDate,
                 userId: user.userId,
                 employeeId: user.employeeId,
-                programId: program[0].programId,
-                expLevelId: expLevel[0].expLevelId
               },
               selectedInstitute.instituteId
             )
@@ -223,8 +139,6 @@ const ResidentEdit = props => {
                 email,
                 gender,
                 startDate,
-                programId: program[0].programId,
-                expLevelId: expLevel[0].expLevelId
               },
               selectedInstitute.instituteId
             )
@@ -402,6 +316,13 @@ const ResidentEdit = props => {
                               props.setFieldValue("gender", event.target.value);
                             }}
                           />{" "}
+
+                          {props.errors.gender &&
+                            props.touched.gender && (
+                              <InvalidFeedback>
+                                {props.errors.gender}
+                              </InvalidFeedback>
+                            )}
                         </Col>
                       </FormGroup>
 
@@ -457,7 +378,7 @@ const ResidentEdit = props => {
                             onChange={event => {
                               props.setFieldValue(
                                 "isActive",
-                                event.target.value == true
+                                true
                               );
                             }}
                           />
@@ -472,70 +393,10 @@ const ResidentEdit = props => {
                             onChange={event => {
                               props.setFieldValue(
                                 "isActive",
-                                event.target.value == true
+                                false
                               );
                             }}
                           />{" "}
-                        </Col>
-                      </FormGroup>
-
-                      <FormGroup row>
-                        <Label for="program" sm={3}>
-                          Program
-                        </Label>
-                        <Col sm={9}>
-                          <Typeahead
-                            clearButton
-                            id="program"
-                            selected={selectedProgram || []}
-                            labelKey="name"
-                            options={programs || []}
-                            className={
-                              props.errors.program && props.touched.program
-                                ? " is-invalid"
-                                : ""
-                            }
-                            placeholder="Choose a program..."
-                            onChange={selectedOption => {
-                              handleChange(selectedOption);
-                              props.setFieldValue("program", selectedOption);
-                            }}
-                          />
-                          {props.errors.program && (
-                            <InvalidFeedback>
-                              {props.errors.program}
-                            </InvalidFeedback>
-                          )}
-                        </Col>
-                      </FormGroup>
-
-                      <FormGroup row>
-                        <Label for="exc-level" sm={3}>
-                          Experience level
-                        </Label>
-                        <Col sm={9}>
-                          <Typeahead
-                            {...expLevelState}
-                            clearButton
-                            id="expLevel"
-                            selected={selectedExpLevel || []}
-                            labelKey="name"
-                            options={expLevels || []}
-                            className={
-                              props.errors.expLevel && props.touched.expLevel
-                                ? " is-invalid"
-                                : ""
-                            }
-                            placeholder="Choose experience level..."
-                            onChange={selectedOption =>
-                              props.setFieldValue("expLevel", selectedOption)
-                            }
-                          />
-                          {props.errors.expLevel && (
-                            <InvalidFeedback>
-                              {props.errors.expLevel}
-                            </InvalidFeedback>
-                          )}
                         </Col>
                       </FormGroup>
 

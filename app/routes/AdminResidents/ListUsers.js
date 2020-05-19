@@ -156,8 +156,6 @@ const ListUsers = ({
                     <th className="align-middle bt-0">Last name</th>
                     <th className="align-middle bt-0">First name</th>
                     <th className="align-middle bt-0">Email</th>
-                    <th className="align-middle bt-0">Exp. level</th>
-                    <th className="align-middle bt-0">Program</th>
                     <th className="align-middle bt-0">Status</th>                   
                   </tr>
                 </thead>

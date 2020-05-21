@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, Link } from "react-router-dom";
+import { useIntl } from "react-intl";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
@@ -42,6 +43,8 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditProgram = (props) => {
+    const intl = useIntl();
+
     const [{currentUser, selectedInstitute}, dispatch] = useAppState();
     const [program, setProgram] = React.useState(null);
     const [users, setUsers] = React.useState([]);
@@ -114,7 +117,7 @@ const AddEditProgram = (props) => {
                                 programService.update({ name, programId: program.programId, programDirectors, instituteId: selectedInstitute.instituteId }).then(
                                     reponse => {
                                         showAlertMessage({
-                                            title: intl.formatMessage({ id: 'General.Sucess'}),
+                                            title: intl.formatMessage({ id: 'General.Success'}),
                                             message: "You have sucessfully changed the program!",
                                             type: "success"
                                         });
@@ -142,7 +145,7 @@ const AddEditProgram = (props) => {
                                 programService.create({ name, programDirectors, instituteId: selectedInstitute.instituteId }).then(
                                     reponse => {
                                         showAlertMessage({
-                                            title: intl.formatMessage({ id: 'General.Sucess'}),
+                                            title: intl.formatMessage({ id: 'General.Success'}),
                                             message: "You have sucessfully created a program!",
                                             type: "success"
                                         });

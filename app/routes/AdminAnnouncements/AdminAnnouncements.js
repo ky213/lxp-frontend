@@ -68,7 +68,7 @@ const AdminAnnouncements = () => {
         setAnnouncement(null);
         getAllAnnouncements();
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: intl.formatMessage({ id: 'AdminAnnouncements.SuccessUpdateMessage'}),
           type: "success"
         });
@@ -89,7 +89,7 @@ const AdminAnnouncements = () => {
         getAllAnnouncements();
 
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: intl.formatMessage({ id: 'AdminAnnouncements.SuccessCreateMessage'}),
           type: "success"
         });

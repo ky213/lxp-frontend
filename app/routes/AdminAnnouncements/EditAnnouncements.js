@@ -99,7 +99,7 @@ showAlertMessage, updateAnnouncementInList }) => {
           return file;
         }));
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: intl.formatMessage({ id: 'File.FileUploadSuccess'}),
           type: "success"
         });

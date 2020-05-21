@@ -54,7 +54,7 @@ const CourseList = ({
         getAllCourses();
         setSelectedCourses([]);
         showAlertMessage({
-          title: intl.formatMessage({ id: "General.Sucess" }),
+          title: intl.formatMessage({ id: "General.Success" }),
           message: "You have sucessfully deleted the courses",
           type: "success",
         });

@@ -94,7 +94,7 @@ const AddEditActivityType = (props) => {
                                 activityTypesService.update({ name, activityTypeId: activityType.activityTypeId, instituteId: selectedInstitute.instituteId }).then(
                                     reponse => {
                                         showAlertMessage({
-                                            title: intl.formatMessage({ id: 'General.Sucess'}),
+                                            title: intl.formatMessage({ id: 'General.Success'}),
                                             message: "You have sucessfully changed the activity type!",
                                             type: "success"
                                         });
@@ -116,7 +116,7 @@ const AddEditActivityType = (props) => {
                                 activityTypesService.create({ name, instituteId: selectedInstitute.instituteId }).then(
                                     reponse => {
                                         showAlertMessage({
-                                            title: intl.formatMessage({ id: 'General.Sucess'}),
+                                            title: intl.formatMessage({ id: 'General.Success'}),
                                             message: "You have sucessfully created a activity type!",
                                             type: "success"
                                         });

@@ -44,7 +44,7 @@ const FileList = ({
         );
 
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: intl.formatMessage({ id: 'File.FileDeleteSuccess'}),
           type: "success"
         });

@@ -78,7 +78,7 @@ const AcademicYears = () => {
         getAcademicYears();
 
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: "You have sucessfully created academic year",
           type: "success"
         });
@@ -94,7 +94,7 @@ const AcademicYears = () => {
         getAcademicYears();
 
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: "You have sucessfully created announcement",
           type: "success"
         });
@@ -109,7 +109,7 @@ const AcademicYears = () => {
         getAcademicYears();
 
         showAlertMessage({
-          title: intl.formatMessage({ id: 'General.Sucess'}),
+          title: intl.formatMessage({ id: 'General.Success'}),
           message: "You have sucessfully deleted the academic year",
           type: "success"
         });

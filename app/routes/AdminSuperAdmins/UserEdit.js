@@ -99,7 +99,7 @@ const UserEdit = props => {
                 props.onEdited();
 
                   showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Sucess'}),
+                    title: intl.formatMessage({ id: 'General.Success'}),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
@@ -126,7 +126,7 @@ const UserEdit = props => {
                 props.onEdited();
 
                 showAlertMessage({
-                  title: intl.formatMessage({ id: 'General.Sucess'}),
+                  title: intl.formatMessage({ id: 'General.Success'}),
                   message: "You have sucessfully created an user!",
                   type: "success"
                 });

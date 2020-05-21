@@ -69,7 +69,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
     const [selectedPriority, setSelectedPriority] = React.useState(1);
     const [timeDifference, setTimeDifference] = React.useState(30);
     const [remainder, setRemainder] = React.useState(selectedActivity && (30 - moment(selectedActivity.start).minute() % 30) || 0);
-    const [experienceLevels, setExperienceLevels] = React.useState([]);
+    const [courses, setCourses] = React.useState([]);
     const [rrule, setRRule] = React.useState(selectedActivity.rrule);
     const [showRepeatOptions, setShowRepeatOptions] = React.useState(selectedActivity.repeat);
     const currentProgram = selectedActivity && selectedActivity.programId && userPrograms && userPrograms.filter(p => p.programId == selectedActivity.programId) || [];
@@ -114,11 +114,19 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     }
                   
                     try {
-                        const expLevels = await expLevelService.getByProgramId(selectedActivity.programId);
-                        setExperienceLevels(expLevels && expLevels.map(e => ({expLevelId: e.expLevelId, name: e.name})));
-                    }
-                    catch(error) {
-                        console.log("Error while fetching experience levels:", error)
+                        const data = await courseService.getAll(
+                          selectedInstitute.instituteId,
+                          currentProgramId,
+                          1,
+                        );
+                
+                        console.log("Courses data:", data)
+                
+                        if (data && data.courses) {
+                          setCourses(data.courses);
+                        }
+                    } catch (err) {
+                        console.log("Error while fetching courses:", err)
                     }
                 
                     
@@ -163,7 +171,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     residents: selectedActivity.participants || [],
                     priority: selectedActivity.priority || 1,
                     activityType: selectedActivity.activityTypeId || '',
-                    levels: selectedActivity.levels || [],
+                    courses: selectedActivity.courses || [],
                     during: selectedActivity.during || null
                 }}
                 validationSchema={Yup.object().shape({
@@ -174,9 +182,9 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     activityType: Yup.string().required('You need to select the activity type'),
                     end: Yup.date().required('Ending time of the activity is required')
                             .when('start', (start, schema) => schema.min(start, ({min}) => `Ending time must be greater than the activity starting time (${moment(min).format('LLLL')})`)),
-                    levels: Yup.array().when('priority', {
+                    courses: Yup.array().when('priority', {
                         is: "2",
-                        then: Yup.array().min(1, 'You need to select a level')
+                        then: Yup.array().min(1, 'You need to select a course')
                     }),
                     residents: Yup.array().when('priority', {
                         is: "3",
@@ -184,7 +192,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     }) 
                 })}
                 onSubmit={async ({ activityName, description, start, end, priority, program, residents, activityType, 
-                    location, levels, during }, { setStatus, setSubmitting }) => {
+                    location, courses, during }, { setStatus, setSubmitting }) => {
                     setStatus();
                     setSubmitting(false);  
                     if(selectedActivity.repeat && !confirm('This is a repeating activity. By changing the values here you are changing the original starting activity and changing all the repeating events. Are you sure you want to continue?')) {
@@ -192,7 +200,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     }
 
                     console.log('onSubmit', activityName, description, start, end, priority, program, residents, activityType,
-                        location, levels);
+                        location, courses);
                    
                     if(!program || program && program.length == 0) {
                         alert(`You need to select a program first!`);
@@ -204,7 +212,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         return;
                     }
 
-                    if(priority == 2 && (!levels || levels && levels.length == 0)) {
+                    if(priority == 2 && (!courses || courses && courses.length == 0)) {
                         alert(`You must choose a level!`);
                         return;
                     }
@@ -223,7 +231,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         repeat: showRepeatOptions,
                         description: description,
                         participants: residents || null,
-                        levels: levels || null,
+                        courses: courses || null,
                         rrule: rrule && rrule.toString() || null,
                         instituteId: selectedInstitute.instituteId, 
                         during: during
@@ -538,7 +546,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                         type="radio" 
                                                                         id="priorityLevel" 
                                                                         name="priority"
-                                                                        label="Level" 
+                                                                        label="Courses" 
                                                                         value="2"
                                                                         defaultChecked={selectedActivity.priority == 2}
                                                                         onChange={(event) => {
@@ -573,22 +581,22 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                     {formikProps.values && formikProps.values.priority && formikProps.values.priority == 2 && (
                                                         <FormGroup row>
                                                             <Label for="level" sm={3}>
-                                                                Level
+                                                                Courses
                                                             </Label>
                                                             <Col sm={9}>
                                                                 <Typeahead
                                                                     clearButton
-                                                                    id="levels"
+                                                                    id="courses"
                                                                     labelKey="name"
-                                                                    options={experienceLevels || []}
-                                                                    selected={formikProps.values.levels}
+                                                                    options={courses || []}
+                                                                    selected={formikProps.values.courses}
                                                                     multiple
-                                                                    className={(formikProps.errors.levels && formikProps.touched.levels ? ' is-invalid' : '')}
-                                                                    placeholder="Select levels..."
-                                                                    onChange={(selectedOptions) =>  formikProps.setFieldValue('levels', selectedOptions)}
-                                                                    onInputChange={(selectedOptions) =>  formikProps.setFieldValue('levels', selectedOptions)}
+                                                                    className={(formikProps.errors.courses && formikProps.touched.courses ? ' is-invalid' : '')}
+                                                                    placeholder="Select courses..."
+                                                                    onChange={(selectedOptions) =>  formikProps.setFieldValue('courses', selectedOptions)}
+                                                                    onInputChange={(selectedOptions) =>  formikProps.setFieldValue('courses', selectedOptions)}
                                                                 />
-                                                                <ErrorMessage name="levels" component="div" className="invalid-feedback" /> 
+                                                                <ErrorMessage name="courses" component="div" className="invalid-feedback" /> 
                                                             </Col>                                                    
                                                         </FormGroup>
                                                     )}

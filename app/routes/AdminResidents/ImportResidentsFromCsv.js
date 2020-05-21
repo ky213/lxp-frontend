@@ -62,8 +62,6 @@ const ImportResidentsFromCsv = () => {
             surname: row.data.Surname,
             email: row.data.Email,gender: row.data.Gender,
             startDate: moment(row.data.StartDate, "YYYYMMDD"),
-            programName: row.data.Program,
-            expLevelName: row.data.Level,
             instituteId: selectedInstitute.instituteId,
             error: ""
           };
@@ -103,8 +101,6 @@ const ImportResidentsFromCsv = () => {
                     <th className="align-middle bt-0">Email</th>
                     <th className="align-middle bt-0">Gender</th>
                     <th className="align-middle bt-0">StartDate</th>
-                    <th className="align-middle bt-0">Program</th>
-                    <th className="align-middle bt-0">Exp. level</th>
                     <th className="align-middle bt-0">Error</th>
                   </tr>
                 </thead>
@@ -119,8 +115,6 @@ const ImportResidentsFromCsv = () => {
                       <td>{user.email}</td>
                       <td>{user.gender == 'M' && 'Male' || user.gender == 'F' && 'Female' || user.gender}</td>
                       <td>{moment(user.startDate).format('L')}</td>
-                      <td>{user.programName}</td>
-                      <td>{user.expLevelName}</td>
                       <td><span style={{color:'red'}}>{user.error}</span></td>
                     </tr>
                   )})}
@@ -163,9 +157,7 @@ const ImportResidentsFromCsv = () => {
                 <th className="align-middle bt-0">Surname</th>
                 <th className="align-middle bt-0">Email</th>
                 <th className="align-middle bt-0">Gender</th>
-                <th className="align-middle bt-0">StartDate</th>
-                <th className="align-middle bt-0">Program</th>
-                <th className="align-middle bt-0">Level</th>
+                <th className="align-middle bt-0">StartDate</th>                
               </tr>
             </thead>
             <tbody>
@@ -175,8 +167,6 @@ const ImportResidentsFromCsv = () => {
                 <td>Email</td>
                 <td>M or F</td>
                 <td>yyyyMMdd</td>
-                <td>Program</td>
-                <td>Exp. level</td>
               </tr>
             </tbody>
           </Table>
@@ -194,9 +184,6 @@ const ImportResidentsFromCsv = () => {
             </li>
             <li>
               Gender options: M (male), F (female)
-            </li>
-            <li>
-              Valid Levels: R1, R2, R3 and R4
             </li>
           </ul>
         </Col>
@@ -216,7 +203,7 @@ const ImportResidentsFromCsv = () => {
 
   return (
     <Container>
-      <HeaderMain title="Import residents from csv" />
+      <HeaderMain title="Import learners from csv" />
       <Card className="mb-3">
         <CardBody>
           <Row>

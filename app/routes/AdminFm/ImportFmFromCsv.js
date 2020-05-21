@@ -194,7 +194,7 @@ const ImportFmFromCsv = () => {
             <li>
               Gender options: M (male), F (female)
             </li>
-            <li>Valid roles: {fmRoles && fmRoles.join(', ')}</li>
+            <li>Valid roles: {fmRoles && fmRoles.map(r => r.roleId).join(', ')}</li>
           </ul>
         </Col>
       </Row>

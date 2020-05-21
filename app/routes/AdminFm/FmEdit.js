@@ -1,14 +1,12 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import ProfilePhoto from '@/components/ProfilePhoto';
 import ThemedButton from "@/components/ThemedButton";
-import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
-import DatePicker from "react-datepicker";
 import {
   Alert,
   Container,
@@ -17,8 +15,6 @@ import {
   Card,
   CardBody,
   CustomInput,
-  InputGroup,
-  InputGroupAddon,
   FormGroup,
   Label,
   Row
@@ -26,7 +22,6 @@ import {
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
 import { facultyMemberService, roleService } from "@/services";
 import { useAppState } from '@/components/AppState';
-import moment from "moment";
 
 const InvalidFeedback = styled.section`
     width: 100%;
@@ -35,37 +30,21 @@ const InvalidFeedback = styled.section`
     color: #ED1C24;
 `;
 
-const FmEdit = props => {
+const FmEdit = ({ user, onEdited, onCancel }) => {
   const intl = useIntl();
-  
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
-  const loggedInUser = currentUser && currentUser.user;
-  const isSuperAdmin = loggedInUser && loggedInUser.role == Role.SuperAdmin || false;
+
+  const [{ currentUser, selectedInstitute }, dispatch] = useAppState();
 
   let history = useHistory();
-  const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
   const [roles, setRoles] = React.useState([]);
-  const [selectedRoles, setSelectedRoles] = React.useState(null);
 
   React.useEffect(() => {
     roleService.getFmRoles().then(data => {
       setRoles(data);
     });
   }, []);
-
-  React.useEffect(() => {
-    setUser(props.user);    
-  }, [props.user]);
-
-  React.useEffect(() => {
-    if (user && user.roleId && roles) {
-      setSelectedRoles([user.roleId]);
-    }
-
-    console.log('props.user', user);
-  }, [user, roles]);
 
   const dismissAlert = () => {
     setAlertMessage(null);
@@ -78,32 +57,34 @@ const FmEdit = props => {
   };
 
   const goBack = () => {
-    props.onCancel();
+    onCancel();
   };
 
   return (
-    <Formik  {...props}
+    <Formik
       enableReinitialize={true}
       initialValues={{
         name: (user && user.name) || "",
         surname: (user && user.surname) || "",
         email: (user && user.email) || "",
-        gender: (user && user.gender) || "",        
-        role: selectedRoles || [],
+        gender: (user && user.gender) || "",
+        userRoleId: (user && user.roleId) || "",
         isActive: (!user && true) || user.isActive
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required("Name is required"),
-        surname: Yup.string().required("Surname is required"),        
+        surname: Yup.string().required("Surname is required"),
         email: Yup.string().required("Email is required"),
-        role: Yup.array().min(1, 'You have to select Role')
+        userRoleId: Yup.string().required('You have to select Role'),
+        gender: Yup.string().required('Gender is required')
       })}
       onSubmit={(
         { name, surname, email, gender,
-          role, isActive },
+          userRoleId, isActive },
         { setStatus, setSubmitting }
       ) => {
         setStatus();
+
         if (user) {
           facultyMemberService
             .update({
@@ -114,33 +95,31 @@ const FmEdit = props => {
               isActive,
               userId: user.userId,
               employeeId: user.employeeId,
-              roleId: role[0],
+              roleId: userRoleId,
               instituteId: selectedInstitute.instituteId
             },
-            selectedInstitute.instituteId)
+              selectedInstitute.instituteId)
             .then(
               response => {
                 setSubmitting(false);
                 console.log('response', response);
-                if (response.isValid)
-                {
-                  props.onEdited();
+                if (response.isValid) {
+                  onEdited();
 
                   showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Sucess'}),
+                    title: intl.formatMessage({ id: 'General.Sucess' }),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
 
                 }
-                else
-                {
+                else {
                   showAlertMessage({
                     title: "Error",
                     message: response.errorDetails,
                     type: "danger"
                   });
-                }   
+                }
               }
             )
             .catch(err => console.log("err", err));
@@ -152,25 +131,23 @@ const FmEdit = props => {
               email,
               gender,
               instituteId: selectedInstitute.instituteId,
-              roleId: role[0]
+              roleId: userRoleId
             },
-            selectedInstitute.instituteId)
+              selectedInstitute.instituteId)
             .then(
               response => {
                 setSubmitting(false);
-                
-                if (response.isValid)
-                {
-                  props.onEdited();
+
+                if (response.isValid) {
+                  onEdited();
 
                   showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Sucess'}),
+                    title: intl.formatMessage({ id: 'General.Sucess' }),
                     message: "You have sucessfully created an user!",
                     type: "success"
                   });
                 }
-                else
-                {
+                else {
                   showAlertMessage({
                     title: "Error",
                     message: response.errorDetails,
@@ -196,7 +173,7 @@ const FmEdit = props => {
                 {alertMessage.message}
                 <div className="mt-2">
                   <Button color={alertMessage.type} onClick={dismissAlert}>
-                  {intl.formatMessage({ id: 'General.Dismiss'})}
+                    {intl.formatMessage({ id: 'General.Dismiss' })}
                   </Button>
                 </div>
               </Alert>
@@ -331,12 +308,13 @@ const FmEdit = props => {
                               props.setFieldValue("gender", event.target.value);
                             }}
                           />{" "}
+                          {props.errors.gender && <InvalidFeedback>{props.errors.gender}</InvalidFeedback>}
                         </Col>
                       </FormGroup>
 
                       <FormGroup row>
                         <Label for="email" sm={3}>
-                        {intl.formatMessage({ id: 'General.Status'})}
+                          {intl.formatMessage({ id: 'General.Status' })}
                         </Label>
                         <Col sm={9}>
                           <CustomInput
@@ -348,7 +326,7 @@ const FmEdit = props => {
                             checked={props.values.isActive}
                             value={true}
                             onChange={event => {
-                              props.setFieldValue("isActive", event.target.value == true);
+                              props.setFieldValue("isActive", true);
                             }}
                           />
                           <CustomInput
@@ -360,7 +338,7 @@ const FmEdit = props => {
                             value={false}
                             checked={!props.values.isActive}
                             onChange={event => {
-                              props.setFieldValue("isActive", event.target.value == true);
+                              props.setFieldValue("isActive", false);
                             }}
                           />{" "}
                         </Col>
@@ -371,18 +349,20 @@ const FmEdit = props => {
                           Role
                         </Label>
                         <Col sm={9}>
-                          <Typeahead
-                            clearButton
-                            id="role"
-                            selected={selectedRoles || []}
-                            labelKey="name"
-                            options={roles || []}
-                            className={(props.errors.role && props.touched.role ? ' is-invalid' : '')}
-                            placeholder="Choose a role..."
-                            onChange={selectedOption => { props.setFieldValue('role', selectedOption)}
-                            }
-                          />
-                          {props.errors.role && <InvalidFeedback>{props.errors.role}</InvalidFeedback>}
+                          <Field
+                            component="select"
+                            name="userRoleId"
+                            id="userRoleId"
+                            className={'bg-white form-control' + (props.errors.userRoleId && props.touched.userRoleId ? ' is-invalid' : '')}
+                          >
+                            <option value="">Select user role...</option>
+                            {roles.map(r => {
+                              return (
+                                <option value={r.roleId} selected={user && r.roleId == user.roleId}>{r.name}</option>
+                              );
+                            })}
+                          </Field>
+                          {props.errors.userRoleId && <InvalidFeedback>{props.errors.userRoleId}</InvalidFeedback>}
                         </Col>
                       </FormGroup>
                       <FormGroup row>

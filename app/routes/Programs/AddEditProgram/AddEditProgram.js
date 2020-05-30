@@ -107,7 +107,7 @@ const AddEditProgram = (props) => {
                         }}
                         validationSchema={Yup.object().shape({
                             name: Yup.string().required('Name is required'),
-                            programDirectors: Yup.array().min(1, 'You need to select at least one program director').typeError('Invalid entry')
+                            programDirectors: Yup.array().min(1, 'You need to select at least one program manager').typeError('Invalid entry')
                         })}
                         onSubmit={({ name, programDirectors }, { setStatus, setSubmitting }) => {
 
@@ -215,7 +215,7 @@ const AddEditProgram = (props) => {
                                                             </FormGroup>
                                                             <FormGroup row>
                                                                 <Label for="programDirectors" sm={3}>
-                                                                    Program director/s
+                                                                    Program manager/s
                                                                 </Label>
                                                                 <Col sm={9}>
                                                                     <Typeahead
@@ -226,12 +226,12 @@ const AddEditProgram = (props) => {
                                                                         multiple
                                                                         className={(props.errors.programDirectors && props.touched.programDirectors ? ' is-invalid' : '')}
                                                                         options={users}
-                                                                        placeholder="Choose a program director..."
+                                                                        placeholder="Choose a program manager..."
                                                                         onChange={(selectedOptions) => props.setFieldValue('programDirectors', selectedOptions)}
-                                                                        onInputChange={(selectedOptions) => props.setFieldValue('programDirectors', selectedOptions)}
+                                                                        
                                                                     />
                                                                     {props.errors.programDirectors && <InvalidFeedback>{props.errors.programDirectors}</InvalidFeedback>}
-                                                                    <em>You can only select program directors here (users in the Program Director role)</em>
+                                                                    <em>You can only select program managers here (users in the Program Manager role)</em>
                                                                 </Col>
                                                             </FormGroup>
 

@@ -10,7 +10,7 @@ import {
     isBiggerThanLaptop
   } from "responsive-react";
 
-const ThemeClass = ({ children, color, style, foregroundColor, backgroundColor, instituteLogo, instituteName, darkMode }) => {
+const ThemeClass = ({ children, color, style, foregroundColor, backgroundColor, organizationLogo, organizationName, darkMode }) => {
     let history = useHistory();
  
     const currentPathName = history && history.location && history.location.pathname && history.location.pathname.replace("/", "").replace("-"," ") || "";
@@ -26,8 +26,8 @@ ThemeClass.propTypes = {
     style: PropTypes.string,
     foregroundColor: PropTypes.string,
     backgroundColor: PropTypes.string,
-    instituteLogo: PropTypes.string,
-    instituteName: PropTypes.string,
+    organizationLogo: PropTypes.string,
+    organizationName: PropTypes.string,
     darkMode: PropTypes.string
 };
 

@@ -28,7 +28,7 @@ import {  TinCanLaunch } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
 const Reporting = () => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [statements, setStatements] = useState(null);
     const [count, setCount] = React.useState(0);
     const [pageId, setPageId] = React.useState(1);
@@ -61,7 +61,7 @@ const Reporting = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const data = await programService.getByCurrentUser(selectedInstitute.instituteId);
+            const data = await programService.getByCurrentUser(selectedOrganization.organizationId);
             setPrograms(data);
             /*
             if(data && data.length == 1) {
@@ -70,7 +70,7 @@ const Reporting = () => {
             */
             
             try {
-                const learners = await residentService.getAllActive(1, 999, null, selectedInstitute.instituteId, selectedProgram && selectedProgram.programId || null);
+                const learners = await residentService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedProgram && selectedProgram.programId || null);
                 setLearners(learners.users.map(usr => ({employeeId: usr.employeeId, email: usr.email, fullName: `${usr.name} ${usr.surname}`})));
             }
             catch(error) {
@@ -111,7 +111,7 @@ const Reporting = () => {
     */
 
     const getExport = async (program, learner, experiences) => {
-        const filter = {selectedInstituteId: selectedInstitute.instituteId, page: 1};
+        const filter = {selectedOrganizationId: selectedOrganization.organizationId, page: 1};
         if(program && program.programId) {
             filter.registration = program.programId;
         }
@@ -148,7 +148,7 @@ const Reporting = () => {
 
 
     const getStatements = async (program, learner, experiences) => {
-        const filter = {selectedInstituteId: selectedInstitute.instituteId, limit: 100, take: 100, page: pageId};
+        const filter = {selectedOrganizationId: selectedOrganization.organizationId, limit: 100, take: 100, page: pageId};
         if(program && program.programId) {
             filter.registration = program.programId;
         }

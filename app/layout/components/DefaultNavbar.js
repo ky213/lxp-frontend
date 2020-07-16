@@ -11,11 +11,11 @@ import {
 import { NavbarActivityFeed } from './NavbarActivityFeed';
 import { NavbarUser } from './NavbarUser';
 import { LogoThemed } from '@/routes/components/LogoThemed/LogoThemed';
-import PulseLogo from '@/components/PulseLogo';
+import LearnLogo from '@/components/LearnLogo';
 import { authenticationService } from '@/services';
 import { history} from '@/helpers';
 import Announcement from '@/components/Announcement';
-import InstituteLogoThemed from '@/components/InstituteLogoThemed';
+import OrganizationLogoThemed from '@/components/OrganizationLogoThemed';
 
 import {
     Responsive,
@@ -41,7 +41,7 @@ export const DefaultNavbar = () => {
              
                 <NavItem className="navbar-brand d-lg-none">
                     <Link to="/">
-                        <PulseLogo style={{height:'25px'}} fill={defaultFill} />
+                        <LearnLogo style={{height:'25px'}} fill={defaultFill} />
                     </Link>
                 </NavItem>
                 <NavItem className="d-none d-md-block">
@@ -70,7 +70,7 @@ export const DefaultNavbar = () => {
             <Nav navbar className="ml-auto">
                 <NavbarActivityFeed />
                 {/*<NavbarMessages className="ml-2" />*/}
-                <InstituteLogoThemed marginRight="0px" marginLeft="10px" />
+                <OrganizationLogoThemed marginRight="0px" marginLeft="10px" />
                 
             </Nav>
         </Navbar>

@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useAppState } from "@/components/AppState";
-import { SUPER_ADMIN_SELECT_INSTITUTE } from "@/actions";
+import { SUPER_ADMIN_SELECT_ORGANIZATION } from "@/actions";
 import { Consumer } from "@/components/Theme/ThemeContext";
 
 import { Media, CustomInput, UncontrolledTooltip, Button } from "@/components";
@@ -14,7 +14,7 @@ const ColorCode = styled.section`
   background: ${(props) => props.color || "#fff"};
 `;
 
-const InstituteLogo = styled.div`
+const OrganizationLogo = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -27,7 +27,7 @@ const InstituteLogo = styled.div`
   border: 3px solid ${(props) => props.backgroundColor || "#fff"};
 `;
 
-const InstituteLogoGenerated = styled.div`
+const OrganizationLogoGenerated = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -39,9 +39,9 @@ const InstituteLogoGenerated = styled.div`
   line-height: 30px;
 `;
 
-const InstituteRow = (props) => {
+const OrganizationRow = (props) => {
   const intl = useIntl();
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
 
   return (
     <Consumer>
@@ -55,24 +55,24 @@ const InstituteRow = (props) => {
                     type="checkbox"
                     className="p-1"
                     onChange={(e) => props.onSelected(e, props.props)}
-                    id={`InstituteRow-${props.props.instituteId}`}
+                    id={`OrganizationRow-${props.props.organizationId}`}
                     label=""
                     inline
                   />
                   <Button
                     type="button"
-                    id={`InstituteRowSelect-${props.props.instituteId}`}
+                    id={`OrganizationRowSelect-${props.props.organizationId}`}
                     color="link"
                     onClick={() => {
                       dispatch({
-                        type: SUPER_ADMIN_SELECT_INSTITUTE,
-                        selectedInstitute: props.props,
+                        type: SUPER_ADMIN_SELECT_ORGANIZATION,
+                        selectedOrganization: props.props,
                       });
                       themeState.onChangeTheme({
                         backgroundColor: props.props.backgroundColorCode,
                         foregroundColor: props.props.colorCode,
-                        instituteLogo: props.props.logo,
-                        instituteName: props.props.name,
+                        OrganizationLogo: props.props.logo,
+                        OrganizationName: props.props.name,
                       });
                     }}
                   >
@@ -83,10 +83,10 @@ const InstituteRow = (props) => {
                   </Button>
                   <UncontrolledTooltip
                     placement="bottom"
-                    target={`InstituteRowSelect-${props.props.instituteId}`}
+                    target={`OrganizationRowSelect-${props.props.organizationId}`}
                   >
                     {intl.formatMessage({
-                      id: "SuperAdminHome.InstituteRow.SelectThis1",
+                      id: "SuperAdminHome.OrganizationRow.SelectThis1",
                     })}
                   </UncontrolledTooltip>
                 </>
@@ -95,7 +95,7 @@ const InstituteRow = (props) => {
               <Button
                 type="button"
                 color="link"
-                onClick={() => props.onInstituteEdit(props.props.instituteId)}
+                onClick={() => props.onOrganizationEdit(props.props.organizationId)}
               >
                 {/*<i className="fa fa-fw fa-edit mr-2"></i>*/}
                 <i className="fa fa-fw fa-pencil mr-2"></i>
@@ -109,18 +109,18 @@ const InstituteRow = (props) => {
               <Media>
                 <Media left className="d-flex align-self-center mr-3">
                   {(props.props.logo && (
-                    <InstituteLogo
+                    <OrganizationLogo
                       color={props.props.colorCode}
                       backgroundColor={props.props.backgroundColorCode}
                       src={props.props.logo}
                     />
                   )) || (
-                    <InstituteLogoGenerated
+                    <OrganizationLogoGenerated
                       color={props.props.colorCode}
                       backgroundColor={props.props.backgroundColorCode}
                     >
                       {props.props.name[0].toUpperCase()}
-                    </InstituteLogoGenerated>
+                    </OrganizationLogoGenerated>
                   )}
                 </Media>
                 <Media body>
@@ -145,11 +145,11 @@ const InstituteRow = (props) => {
     </Consumer>
   );
 };
-InstituteRow.propTypes = {
+OrganizationRow.propTypes = {
   id: PropTypes.node,
 };
-InstituteRow.defaultProps = {
+OrganizationRow.defaultProps = {
   id: "1",
 };
 
-export { InstituteRow };
+export { OrganizationRow };

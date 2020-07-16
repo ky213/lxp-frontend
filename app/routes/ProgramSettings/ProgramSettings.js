@@ -11,7 +11,7 @@ import { Loading } from "@/components";
 import { useAppState } from '@/components/AppState';
 
 const ProgramSettings = () => {
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const isProgramDirector = currentUser && currentUser.user && currentUser.user.role == Role.ProgramDirector;
 
   const [count, setCount] = React.useState(0);
@@ -28,7 +28,7 @@ const ProgramSettings = () => {
 
 
   const getPrograms = () => {
-    programService.getAll(selectedInstitute && selectedInstitute.instituteId, pageId, recordsPerPage, searchText).then((data) => {
+    programService.getAll(selectedOrganization && selectedOrganization.organizationId, pageId, recordsPerPage, searchText).then((data) => {
         setPrograms(data.programs);
         setTotalNumberOfRecords(data.totalNumberOfRecords);
         if (data.totalNumberOfRecords == 1) {
@@ -42,7 +42,7 @@ const ProgramSettings = () => {
   }
 
   const handleProgramCreate = () => {
-    /*  console.log("Handle institute create"); */
+    /*  console.log("Handle Organization create"); */
     setSelectedProgramId(null);
   }
 

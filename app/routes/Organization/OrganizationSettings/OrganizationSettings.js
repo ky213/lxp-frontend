@@ -26,14 +26,14 @@ import {
     FormText,
     Alert
 } from '@/components';
-import { instituteService } from '@/services';
+import { organizationService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import  ImageUpload from '@/components/ImageUpload';
 import {
     HeaderDemo
 } from "@/routes/components/HeaderDemo";
 import { useAppState } from '@/components/AppState';
-import {SUPER_ADMIN_UPDATE_INSTITUTE} from '@/actions';
+import {SUPER_ADMIN_UPDATE_ORGANIZATION} from '@/actions';
 
 const Swatch = styled.section`
     padding: 5px;
@@ -70,9 +70,9 @@ const InvalidFeedback = styled.section`
     color: #ED1C24;
 `;
 
-const InstituteSettings = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
-    const [institute, setInstitute] = React.useState(null);
+const OrganizationSettings = (props) => {
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+    const [organization, setOrganization] = React.useState(null);
     const [showAlert, setShowAlert] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState(null);
     const [showColorPicker, setShowColorPicker] = React.useState(false);
@@ -93,26 +93,26 @@ const InstituteSettings = (props) => {
     }
 
     React.useEffect(() => {
-            //const instituteId = queryParams && queryParams.id || currentUser && currentUser.user.instituteId;
-            if(props.instituteId) {
-                //console.log("Edit institute useEffect:", instituteId)
-                instituteService.getById(props.instituteId).then((data) => {
-                    setInstitute(data);
+            //const organizationId = queryParams && queryParams.id || currentUser && currentUser.user.organizationId;
+            if(props.organizationId) {
+                //console.log("Edit organization useEffect:", organizationId)
+                organizationService.getById(props.organizationId).then((data) => {
+                    setOrganization(data);
                     setSelectedColorCode(data.colorCode || '#FFFFFF');
                     setSelectedBackgroundColorCode(data.backgroundColorCode || '#1EB7FF');
                     setSelectedLogoDataUrl(data.logo || null);
                     
                 
-                // console.log('Got institute:', data);
+                // console.log('Got organization:', data);
                 });
             } 
             else {
-                setInstitute(null);
+                setOrganization(null);
                 setSelectedColorCode('#FFFFFF');
                 setSelectedBackgroundColorCode('#1EB7FF');
                 setSelectedLogoDataUrl(null);
             }
-        }, [props.instituteId]
+        }, [props.organizationId]
     );
 
     return (
@@ -120,8 +120,8 @@ const InstituteSettings = (props) => {
             <Row> 
                 <Col lg={ 12 }>
                     <HeaderDemo 
-                    title="Edit institute settings"
-                    subTitle="You can change institute settings like institute name, logo, academic months etc. here" 
+                    title="Edit organization settings"
+                    subTitle="You can change organization settings like organization name, logo, academic months etc. here" 
                     />
                 </Col>
             </Row>
@@ -132,7 +132,7 @@ const InstituteSettings = (props) => {
             <Formik { ...themeState } { ...props }
                 enableReinitialize={true}
                 initialValues={{
-                    name: institute && institute.name || '',
+                    name: organization && organization.name || '',
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required('Name is required'),
@@ -142,17 +142,17 @@ const InstituteSettings = (props) => {
                     //console.log('onSubmit', name, academicFirstMonth, academicLastMonth);
 
                     // Updating existing
-                    if(institute) {
+                    if(organization) {
                         try {
-                            const updatedInstitute = {name, instituteId: institute.instituteId, 
+                            const updatedOrganization = {name, organizationId: organization.organizationId, 
                                 colorCode: selectedColorCode, backgroundColorCode: selectedBackgroundColorCode, logo: selectedLogoDataUrl};
-                            await instituteService.update(updatedInstitute);
+                            await organizationService.update(updatedOrganization);
 
-                            dispatch({type:SUPER_ADMIN_UPDATE_INSTITUTE, institute: updatedInstitute});
+                            dispatch({type:SUPER_ADMIN_UPDATE_ORGANIZATION, organization: updatedOrganization});
 
                             showAlertMessage({
                                 title: intl.formatMessage({ id: 'General.Success'}),
-                                message: "You have sucessfully changed the institute settings!",
+                                message: "You have sucessfully changed the organization settings!",
                                 type: "success"
                             });
 
@@ -162,7 +162,7 @@ const InstituteSettings = (props) => {
                         catch(exc) {
                             showAlertMessage({
                                 title: "Error",
-                                message: `Error while changing institute settings: ${error}`,
+                                message: `Error while changing organization settings: ${error}`,
                                 type: "danger"
                             });
                             setSubmitting(false);
@@ -171,12 +171,12 @@ const InstituteSettings = (props) => {
                        
                     }
                     else {
-                        instituteService.create({name, colorCode: selectedColorCode, backgroundColorCode: selectedBackgroundColorCode, 
+                        organizationService.create({name, colorCode: selectedColorCode, backgroundColorCode: selectedBackgroundColorCode, 
                             logo: selectedLogoDataUrl}).then(
                             reponse => {
                                 showAlertMessage({
                                     title: intl.formatMessage({ id: 'General.Success'}),
-                                    message: "You have sucessfully created an institute!",
+                                    message: "You have sucessfully created an organization!",
                                     type: "success"
                                 });
       
@@ -186,7 +186,7 @@ const InstituteSettings = (props) => {
                             error => {
                                 showAlertMessage({
                                     title: "Error",
-                                    message: `Error while trying to create an institute: ${error}`,
+                                    message: `Error while trying to create an organization: ${error}`,
                                     type: "danger"
                                 });
                                 setSubmitting(false);
@@ -196,7 +196,7 @@ const InstituteSettings = (props) => {
                     }
 
                     themeState.onChangeTheme({backgroundColor: selectedBackgroundColorCode, foregroundColor: selectedColorCode,
-                    instituteLogo: selectedLogoDataUrl});             
+                    organizationLogo: selectedLogoDataUrl});             
                 }}
             >
                  {props => {
@@ -291,8 +291,8 @@ const InstituteSettings = (props) => {
                                               <FormGroup row>
                                                   <Col sm={3} />
                                                   <Col sm={9}>
-                                                      <ThemedButton type="submit">{institute && "Update" || "Create"}</ThemedButton>{' '}
-                                                      {/*<Button type="button" onClick={() => onCancel()} color="light">{!institute && "Cancel" || "Go back"}</Button>*/}
+                                                      <ThemedButton type="submit">{organization && "Update" || "Create"}</ThemedButton>{' '}
+                                                      {/*<Button type="button" onClick={() => onCancel()} color="light">{!organization && "Cancel" || "Go back"}</Button>*/}
                                                   </Col>
                                               </FormGroup>
                                           </Form>
@@ -314,4 +314,4 @@ const InstituteSettings = (props) => {
     )
 };
 
-export default InstituteSettings;
+export default OrganizationSettings;

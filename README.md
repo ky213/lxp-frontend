@@ -1,6 +1,6 @@
-**Running RMS app locally**
+**Running LXP app locally**
 
-To run RMS app you need to:
+To run LXP app you need to:
 
 - Install Docker Desktop for Windows
 - Enable drive sharing in Docker -> Settings (you may need to create a local admin account): 

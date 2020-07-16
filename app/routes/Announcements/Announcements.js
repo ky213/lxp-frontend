@@ -7,11 +7,11 @@ import { useAppState } from '@/components/AppState';
 
 const Announcements = () => {
   const [announcements, setAnnouncements] = React.useState(null);  
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const [selectedAnnouncements, setSelectedAnnouncements] = React.useState([]);
 
   React.useEffect(() => {
-    announcementService.getByUserAll(selectedInstitute.instituteId).then(data => {
+    announcementService.getByUserAll(selectedOrganization.organizationId).then(data => {
       setAnnouncements(data);
     });
   }, []);

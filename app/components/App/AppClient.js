@@ -15,14 +15,14 @@ const basePath = process.env.BASE_PATH || '/';
 const AppClient = () => {
     const loggedInUser = JSON.parse(localStorage.getItem('currentUser')) || null;
     
-    const institute = loggedInUser && 
+    const organization = loggedInUser && 
                         loggedInUser.user && 
-                        loggedInUser.user.instituteId && {
-                            instituteId:loggedInUser.user.instituteId, 
-                            name: loggedInUser.user.instituteName,
-                            colorCode: loggedInUser.user.instituteForegroundColor,
-                            backgroundColorCode: loggedInUser.user.instituteBackgroundColor,
-                            logo: loggedInUser.user.instituteLogo
+                        loggedInUser.user.organizationId && {
+                            organizationId:loggedInUser.user.organizationId, 
+                            name: loggedInUser.user.organizationName,
+                            colorCode: loggedInUser.user.organizationForegroundColor,
+                            backgroundColorCode: loggedInUser.user.organizationBackgroundColor,
+                            logo: loggedInUser.user.organizationLogo
                         } || null;
 
     const initialState = {
@@ -30,8 +30,8 @@ const AppClient = () => {
         history: history,
         selectedProgram: null,
         academicYear: null,
-        selectedInstitute: loggedInUser && 
-            loggedInUser.user && loggedInUser.user.role && loggedInUser.user.role != Role.SuperAdmin && institute || null
+        selectedOrganization: loggedInUser && 
+            loggedInUser.user && loggedInUser.user.role && loggedInUser.user.role != Role.SuperAdmin && organization || null
     }
 
     const logout = () => {

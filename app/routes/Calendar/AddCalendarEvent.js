@@ -31,7 +31,7 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
     
     //console.log("Selected resident for calendar:", selectedResident)
     const minDate = moment().toDate();
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [currentSelectedResident, setCurrentSelectedResident] = React.useState(null);
     const [users, setUsers] = React.useState([]);
 
@@ -39,7 +39,7 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
         console.log("Event start, end:", eventStart, eventEnd, selectedResident)
         if(!selectedResident) {
             console.log("Entered get users:")
-            userService.getAllActive(selectedInstitute.instituteId).then(users => {
+            userService.getAllActive(selectedOrganization.organizationId).then(users => {
                 console.log("Got users:", users)
                 setUsers(users);
             });

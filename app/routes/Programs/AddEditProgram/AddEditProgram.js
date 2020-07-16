@@ -45,7 +45,7 @@ const InvalidFeedback = styled.section`
 const AddEditProgram = (props) => {
     const intl = useIntl();
 
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [program, setProgram] = React.useState(null);
     const [users, setUsers] = React.useState([]);
     const [showAlert, setShowAlert] = React.useState(false);
@@ -64,7 +64,7 @@ const AddEditProgram = (props) => {
     }
 
     React.useEffect(() => {       
-        facultyMemberService.getAll(1, 999, null, selectedInstitute.instituteId).then((data) => {  
+        facultyMemberService.getAll(1, 999, null, selectedOrganization.organizationId).then((data) => {  
             console.log("facultyMemberService : ", data); 
             if(data.users) {
                 const usersData = data.users.filter(u => u.role == Role.ProgramDirector).map(u => {  
@@ -82,7 +82,7 @@ const AddEditProgram = (props) => {
 
     React.useEffect(() => {
         if (props.programId) {
-            programService.getById(props.programId, selectedInstitute.instituteId).then((data) => {
+            programService.getById(props.programId, selectedOrganization.organizationId).then((data) => {
                 setProgram(data);
             });
         }
@@ -114,7 +114,7 @@ const AddEditProgram = (props) => {
                             console.log("Program directors:", name, programDirectors )
                             // Updating existing                    
                             if (program) {
-                                programService.update({ name, programId: program.programId, programDirectors, instituteId: selectedInstitute.instituteId }).then(
+                                programService.update({ name, programId: program.programId, programDirectors, organizationId: selectedOrganization.organizationId }).then(
                                     reponse => {
                                         showAlertMessage({
                                             title: intl.formatMessage({ id: 'General.Success'}),
@@ -142,7 +142,7 @@ const AddEditProgram = (props) => {
                                 );
                             }
                             else {
-                                programService.create({ name, programDirectors, instituteId: selectedInstitute.instituteId }).then(
+                                programService.create({ name, programDirectors, organizationId: selectedOrganization.organizationId }).then(
                                     reponse => {
                                         showAlertMessage({
                                             title: intl.formatMessage({ id: 'General.Success'}),

@@ -27,7 +27,7 @@ const ProgramRow = (props) => {
                  {!props.hideDelete && (
                     <CustomInput type="checkbox" 
                         className="p-1" onClick={(e) => props.onSelected(props.props.programId, e)} 
-                        id={`InstituteRow-${ props.props.programId }`} label="" inline 
+                        id={`OrganizationRow-${ props.props.programId }`} label="" inline 
                     />
                  )}
 

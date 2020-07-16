@@ -4,7 +4,7 @@ import { ThemeConsumer } from '@/components/Theme';
 import styled from "styled-components";
 import { useAppState } from '@/components/AppState';
 import { Role } from '@/helpers';
-import PulseLogo from '@/components/PulseLogo';
+import LearnLogo from '@/components/LearnLogo';
 import {
     Responsive,
     isMobileDevice, 
@@ -13,7 +13,7 @@ import {
     isBiggerThanLaptop
   } from "responsive-react";
 
-const InstituteLogo = styled.div`
+const OrganizationLogo = styled.div`
   width: ${props => props.width || '35px'};
   height:${props => props.height || '35px'};
   border-radius: 50%;
@@ -27,7 +27,7 @@ const InstituteLogo = styled.div`
   margin-left:${props => props.marginLeft || '0px'};
 `;
 
-const InstituteLogoGenerated = styled.div`
+const OrganizationLogoGenerated = styled.div`
   width: ${props => props.width || '35px'};
   height:${props => props.height || '35px'};
   border-radius: 50%;
@@ -41,44 +41,44 @@ const InstituteLogoGenerated = styled.div`
   margin-left:${props => props.marginLeft || '0px'};
 `;
 
-const InstituteLogoThemed = ({width, height, marginRight, marginLeft, ...otherProps}) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+const OrganizationLogoThemed = ({width, height, marginRight, marginLeft, ...otherProps}) => {
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const loggedInUser = currentUser && currentUser.user;
     
-    console.log("Got institute logo dimensions:", width, height, marginRight, marginLeft)
+    console.log("Got organization logo dimensions:", width, height, marginRight, marginLeft)
 
     return (
         <ThemeConsumer>
         {
-            ({ style, color, foregroundColor, backgroundColor, instituteLogo, instituteName }) => {
+            ({ style, color, foregroundColor, backgroundColor, organizationLogo, organizationName }) => {
                 //console.log("Selected color:", color, style, foregroundColor, backgroundColor)
                 return (
                     <>
-                        {selectedInstitute && (
+                        {selectedOrganization && (
                             <>
-                                {selectedInstitute.logo && (
-                                    <InstituteLogo 
-                                        title={selectedInstitute.name} 
-                                        src={selectedInstitute.logo} 
-                                        color={selectedInstitute.colorCode} 
-                                        backgroundColor={selectedInstitute.backgroundColorCode} 
+                                {selectedOrganization.logo && (
+                                    <OrganizationLogo 
+                                        title={selectedOrganization.name} 
+                                        src={selectedOrganization.logo} 
+                                        color={selectedOrganization.colorCode} 
+                                        backgroundColor={selectedOrganization.backgroundColorCode} 
                                         width={width} 
                                         height={height} 
                                         marginLeft={marginLeft} 
                                         marginRight={marginRight}
                                     />
                                 )}
-                                {!selectedInstitute.logo && selectedInstitute.name && (
-                                    <InstituteLogoGenerated title={selectedInstitute.name} 
+                                {!selectedOrganization.logo && selectedOrganization.name && (
+                                    <OrganizationLogoGenerated title={selectedOrganization.name} 
                                         width={width} 
                                         height={height} 
                                         marginLeft={marginLeft} 
                                         marginRight={marginRight}
-                                        color={selectedInstitute.colorCode} 
-                                        backgroundColor={selectedInstitute.backgroundColorCode}
+                                        color={selectedOrganization.colorCode} 
+                                        backgroundColor={selectedOrganization.backgroundColorCode}
                                         >
-                                        {selectedInstitute.name[0].toUpperCase()}
-                                    </InstituteLogoGenerated>
+                                        {selectedOrganization.name[0].toUpperCase()}
+                                    </OrganizationLogoGenerated>
                                 )}
                             </>
                         )}
@@ -90,4 +90,4 @@ const InstituteLogoThemed = ({width, height, marginRight, marginLeft, ...otherPr
     );
 }
 
-export {InstituteLogoThemed};
+export {OrganizationLogoThemed};

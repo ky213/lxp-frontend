@@ -31,7 +31,7 @@ const CourseList = ({
 }) => {
   const intl = useIntl();
 
-  const [{ currentUser, selectedInstitute }, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const [selectedCourses, setSelectedCourses] = React.useState([]);  
 
   const onSelected = (courseId, e) => {
@@ -49,7 +49,7 @@ const CourseList = ({
       try {
         await courseService.deleteCourses(
           selectedCourses,
-          selectedInstitute.instituteId
+          selectedOrganization.organizationId
         );
         getAllCourses();
         setSelectedCourses([]);

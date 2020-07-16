@@ -6,9 +6,9 @@ export const employeeRoleService = {
   createEmployeeRole
 };
 
-function getByRoleId(roleId, instituteId) {
+function getByRoleId(roleId, organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({roleId, instituteId});
+  let query = buildQuery({roleId, organizationId});
   return fetch(`${config.apiUrl}/user_roles?${query}`, requestOptions).then(handleResponse);
 }
 

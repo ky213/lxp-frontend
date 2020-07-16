@@ -20,7 +20,7 @@ import { LOGOUT_USER } from '@/actions';
 
 const SidebarTopA = (props) => {
 
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
 
     const firstName = currentUser && currentUser.user && currentUser && currentUser.user.firstName || '';
     const lastName = currentUser && currentUser.user && currentUser && currentUser.user.lastName ||'';
@@ -50,9 +50,9 @@ const SidebarTopA = (props) => {
                 <div className="small sidebar__link--muted">
                     {roleDescription}
                 </div>
-               {selectedInstitute && 
+               {selectedOrganization && 
                     <div className="small sidebar__link">
-                        {selectedInstitute.name}
+                        {selectedOrganization.name}
                     </div>
                }
 

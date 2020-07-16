@@ -16,14 +16,14 @@ import {
     UncontrolledTooltip,
     ButtonToolbar 
 } from '@/components';
-import { InstituteRow } from "./components/InstituteRow";
+import { OrganizationRow } from "./components/OrganizationRow";
 import { Paginations } from "../../components/Paginations";
 
 import {
     HeaderDemo
 } from "../../components/HeaderDemo";
 
-const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearch}) => {
+const ListOrganizations = ({organizations, onOrganizationEdit, onOrganizationCreate, onSearch}) => {
     const intl = useIntl();
 
     return (
@@ -33,8 +33,8 @@ const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearc
                     <Col lg={ 12 }>
                         <HeaderDemo 
                             no={1} 
-                            title="Institutes" 
-                            subTitle="Only for Super Admin, you can edit and enter new institutes from here"
+                            title="Organizations" 
+                            subTitle="Only for Super Admin, you can edit and enter new organizations from here"
                         />
                     </Col>
                 </Row>
@@ -55,11 +55,11 @@ const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearc
                                     </div>
                                     <ButtonToolbar>
                                         <ButtonGroup className="ml-auto ml-lg-0">
-                                            <Button color="primary" className="align-self-center" onClick={() => onInstituteCreate()} id="tooltipAddNew">
+                                            <Button color="primary" className="align-self-center" onClick={() => onOrganizationCreate()} id="tooltipAddNew">
                                                 <i className="fa fa-fw fa-pencil"></i>
                                             </Button>
                                             <UncontrolledTooltip placement="bottom" target="tooltipAddNew">
-                                                Add New Institute
+                                                Add New Organization
                                             </UncontrolledTooltip>
                                         </ButtonGroup>
                                     </ButtonToolbar>
@@ -82,9 +82,9 @@ const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearc
                                 </thead>
                                 <tbody>
                                     {
-                                        institutes && institutes.length > 0 && institutes.map((institute) => <InstituteRow props={institute} 
-                                            onInstituteEdit={onInstituteEdit} key={institute.instituteId} />) || 
-                                            <tr><td colSpan={6}>No institutes yet.</td></tr>
+                                        organizations && organizations.length > 0 && organizations.map((organization) => <OrganizationRow props={organization} 
+                                            onOrganizationEdit={onOrganizationEdit} key={organization.organizationId} />) || 
+                                            <tr><td colSpan={6}>No organizations yet.</td></tr>
                                     } 
                                 </tbody>
                             </Table>
@@ -101,4 +101,4 @@ const ListInstitutes = ({institutes, onInstituteEdit, onInstituteCreate, onSearc
     );
 };
 
-export default ListInstitutes;
+export default ListOrganizations;

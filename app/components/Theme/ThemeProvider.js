@@ -12,8 +12,8 @@ export class ThemeProvider extends React.Component {
         initialColor: PropTypes.string,
         initialForegroundColor: PropTypes.string,
         initialBackgroundColor: PropTypes.string,
-        instituteLogo: PropTypes.string,
-        instituteName: PropTypes.string
+        organizationLogo: PropTypes.string,
+        organizationName: PropTypes.string
     };
 
     constructor(props) {
@@ -24,14 +24,14 @@ export class ThemeProvider extends React.Component {
             color: 'primary',
             foregroundColor: null,
             backgroundColor: null,
-            instituteLogo: null,
-            instituteName: null,
+            organizationLogo: null,
+            organizationName: null,
             darkMode: 'false'
         };
     }
 
     componentDidMount() {
-        const { initialStyle, initialColor, initialForegroundColor, initialBackgroundColor, initialInstituteLogo, initialInstituteName, initialDarkMode } = this.props;
+        const { initialStyle, initialColor, initialForegroundColor, initialBackgroundColor, initialOrganizationLogo, initialOrganizationName, initialDarkMode } = this.props;
 
         if (initialStyle) {
             this.setState({ style: initialStyle });
@@ -48,12 +48,12 @@ export class ThemeProvider extends React.Component {
             this.setState({ backgroundColor: initialBackgroundColor });
         }
 
-        if(initialInstituteLogo) {
-            this.setState({ instituteLogo: initialInstituteLogo });
+        if(initialOrganizationLogo) {
+            this.setState({ organizationLogo: initialOrganizationLogo });
         }
 
-        if(initialInstituteName) {
-            this.setState({ instituteName: initialInstituteName });
+        if(initialOrganizationName) {
+            this.setState({ organizationName: initialOrganizationName });
         }
 
         if(initialDarkMode) {

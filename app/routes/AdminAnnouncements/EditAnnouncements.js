@@ -31,7 +31,7 @@ const EditAnnouncements = ({ announcement, onCancel, editAnnouncement, createAnn
 showAlertMessage, updateAnnouncementInList }) => {
   const intl = useIntl();
   
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
 
   const [files, setFiles] = React.useState([]);
   const [programs, setPrograms] = React.useState([]);
@@ -46,7 +46,7 @@ showAlertMessage, updateAnnouncementInList }) => {
   const [formLoaded, setFormLoaded] = React.useState(false);
 
   React.useEffect(() => {
-    programService.getByCurrentUser(selectedInstitute.instituteId).then(data => {
+    programService.getByCurrentUser(selectedOrganization.organizationId).then(data => {
       setPrograms(data);
       setProgramsLoaded(true);
     });
@@ -175,7 +175,7 @@ showAlertMessage, updateAnnouncementInList }) => {
                 isActive,
                 dateFrom: dutyDateFrom && moment(dutyDateFrom).format() || null,
                 dateTo: dutyDateTo && moment(dutyDateTo).format() || null,
-                instituteId: selectedInstitute.instituteId
+                organizationId: selectedOrganization.organizationId
               };
 
               if (announcement) {

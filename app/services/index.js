@@ -5,7 +5,7 @@ export * from './faculty_member.service';
 export * from './program.service';
 export * from './activity_type.service';
 export * from './calendar.service';
-export * from './institute.service';
+export * from './organization.service';
 export * from './academic_year.service';
 export * from './role.service';
 export * from './employee_role.service';

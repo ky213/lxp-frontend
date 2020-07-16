@@ -20,7 +20,7 @@ import {
 import { useAppState } from '@/components/AppState';
 
 const Programs = () => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const isSuperAdmin = currentUser && currentUser.user && currentUser.user.role == Role.SuperAdmin;
 
     const [programs, setPrograms] = React.useState([]);
@@ -34,7 +34,7 @@ const Programs = () => {
     const [selectedPrograms, setSelectedPrograms] = React.useState([]);
 
     const getPrograms = () => {
-        programService.getAll(selectedInstitute && selectedInstitute.instituteId, pageId, recordsPerPage, searchText).then((data) => {
+        programService.getAll(selectedOrganization && selectedOrganization.organizationId, pageId, recordsPerPage, searchText).then((data) => {
             setPrograms(data.programs);
             setTotalNumberOfRecords(data.totalNumberOfRecords);
         });
@@ -68,7 +68,7 @@ const Programs = () => {
         /* console.log("Handle cancel create"); */
         setSelectedProgramId(null);
         setShowProgramForm(false);
-        //setSelectedProgramId(currentUser && currentUser.user && currentUser.user.instituteId);
+        //setSelectedProgramId(currentUser && currentUser.user && currentUser.user.organizationId);
     }
 
     const handleProgramEdit = (programId) => {

@@ -74,9 +74,9 @@ const AdminSuperAdmins = () => {
     setShowEditForm(true);
   };
 
-  const handleFilterInstitute = (institute) => {
-    //console.log("Selected institute:", institute)
-    setFilterInstituteId(institute && institute.instituteId || null)
+  const handleFilterOrganization = (organization) => {
+    //console.log("Selected Organization:", Organization)
+    setFilterOrganizationId(organization && organization.organizationId || null)
   }
 
   return (

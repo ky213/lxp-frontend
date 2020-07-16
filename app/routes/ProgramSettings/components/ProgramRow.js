@@ -12,7 +12,7 @@ const ColorCode = styled.section`
     background: ${props => props.color || '#fff'};
 `;
 
-const InstituteLogo = styled.div`
+const OrganizationLogo = styled.div`
     width:30px;
     height:30px;
     border-radius: 50%;
@@ -24,7 +24,7 @@ const InstituteLogo = styled.div`
     border:3px solid ${props => props.color || '#fff'};
 `;
 
-const InstituteLogoGenerated = styled.div`
+const OrganizationLogoGenerated = styled.div`
     width:30px;
     height:30px;
     border-radius: 50%;
@@ -42,7 +42,7 @@ const ProgramRow = (props) => {
         <React.Fragment>
             <tr>
                 <td className="align-middle">
-                    <CustomInput type="checkbox" onClick={(e) => props.onSelected(props.props.programId, e)} id={`InstituteRow-${props.props.programId}`} label="" inline />
+                    <CustomInput type="checkbox" onClick={(e) => props.onSelected(props.props.programId, e)} id={`OrganizationRow-${props.props.programId}`} label="" inline />
                 </td>
                 <td className="align-middle">
                     {props.props.name}

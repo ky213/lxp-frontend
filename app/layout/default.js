@@ -38,10 +38,10 @@ class AppLayout extends React.Component {
     render() {
         const { children } = this.props;
         const [{ currentUser }, dispatch] = this.context;
-        const initialForegroundColor = currentUser && currentUser.user && currentUser.user.instituteForegroundColor || '';
-        const initialBackgroundColor = currentUser && currentUser.user && currentUser.user.instituteBackgroundColor || '';
-        const initialInstituteLogo = currentUser && currentUser.user && currentUser.user.instituteLogo || '';
-        const initialInstituteName = currentUser && currentUser.user && currentUser.user.instituteName || '';
+        const initialForegroundColor = currentUser && currentUser.user && currentUser.user.organizationForegroundColor || '';
+        const initialBackgroundColor = currentUser && currentUser.user && currentUser.user.organizationBackgroundColor || '';
+        const initialOrganizationLogo = currentUser && currentUser.user && currentUser.user.organizationLogo || '';
+        const initialOrganizationName = currentUser && currentUser.user && currentUser.user.organizationName || '';
         const initialDarkMode = currentUser && currentUser.user && currentUser.user.darkMode || 'false';
 
         console.log("Got initial user settings:", currentUser)
@@ -50,8 +50,8 @@ class AppLayout extends React.Component {
             <ThemeProvider initialStyle="light" initialColor="primary" 
                 initialForegroundColor={initialForegroundColor} 
                 initialBackgroundColor={initialBackgroundColor}
-                initialInstituteLogo={initialInstituteLogo}
-                initialInstituteName={initialInstituteName}
+                initialOrganizationLogo={initialOrganizationLogo}
+                initialOrganizationName={initialOrganizationName}
                 initialDarkMode={initialDarkMode}
                 >
                 <Layout sidebarSlim favIcons={ favIcons }>

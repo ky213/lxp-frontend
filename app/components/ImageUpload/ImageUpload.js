@@ -89,7 +89,7 @@ class ImageUpload extends Component {
                 <InputGroupAddon addonType="prepend">
                     <i className="fa fa-fw fa-file-picture-o mr-2"></i>
                 </InputGroupAddon>
-                <CustomInput type="file" accept="image/*" id="instituteLogo" onChange={this.handleImageChange} name="customFile" />
+                <CustomInput type="file" accept="image/*" id="organizationLogo" onChange={this.handleImageChange} name="customFile" />
             </InputGroup>
             <ImagePlaceholder image={imagePreviewUrl || this.props.defaultImage} className="figure mr-2" />
             <ToastContainer 

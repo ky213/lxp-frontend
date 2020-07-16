@@ -32,7 +32,7 @@ const localizer = momentLocalizer(moment);
 
 
 export const ActivityCalendar = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
     //const currentProgramId = currentUser && currentUser.user && currentUser.user.programId;
 
@@ -52,7 +52,7 @@ export const ActivityCalendar = (props) => {
     React.useEffect(() => {
         try {
             const fetchData = async () => {
-                const programs = await programService.getByCurrentUser(selectedInstitute.instituteId);
+                const programs = await programService.getByCurrentUser(selectedOrganization.organizationId);
                 setUserPrograms(programs);
                 if(programs && programs.length == 1) {
                     setCurrentProgramId(programs[0].programId);
@@ -88,7 +88,7 @@ export const ActivityCalendar = (props) => {
 			break;
 		}
         
-        const activities = await activityService.getAll(currentProgramId, dateFrom.format('DDMMYYYY'), dateTo && dateTo.format('DDMMYYYY') || dateFrom.format('DDMMYYYY'), selectedInstitute.instituteId);
+        const activities = await activityService.getAll(currentProgramId, dateFrom.format('DDMMYYYY'), dateTo && dateTo.format('DDMMYYYY') || dateFrom.format('DDMMYYYY'), selectedOrganization.organizationId);
         //console.log("Got activities: ", activities);
 
         const calendarEvents = activities.map(ev => {
@@ -177,7 +177,7 @@ export const ActivityCalendar = (props) => {
     const showEvent = async (event) => {
         console.log("Show event:", event)
         if(event.source == "assigned") {
-            const eventDetails = await activityService.getById(event.id, selectedInstitute.instituteId);
+            const eventDetails = await activityService.getById(event.id, selectedOrganization.organizationId);
             console.log("Clicked on show event:", eventDetails)
             /*
             if(eventDetails.repeat) {
@@ -191,7 +191,7 @@ export const ActivityCalendar = (props) => {
             toggleEditEventModal();
         }
         else {
-            const eventDetails = await activityService.getLogActivityById(event.id, selectedInstitute.instituteId);
+            const eventDetails = await activityService.getLogActivityById(event.id, selectedOrganization.organizationId);
             console.log("Got activity:", eventDetails)
             setSelectedLogActivity(eventDetails);
             toggleLogActivityModal();

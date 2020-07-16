@@ -17,28 +17,28 @@ export const announcementService = {
   deleteAnnouncements
 };
 
-function getAll(instituteId) {
+function getAll(organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({instituteId});
+  let query = buildQuery({organizationId});
   return fetch(`${routePrefix}/getAll?${query}`, requestOptions).then(handleResponse);
 }
 
-function getById(announcementId, instituteId) {
+function getById(announcementId, organizationId) {
   console.log('getById', announcementId);
   const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({announcementId, instituteId });
+  let query = buildQuery({announcementId, organizationId });
   return fetch(`${routePrefix}/getById?${query}`, requestOptions).then(handleResponse);
 }
 
-function getByUser(instituteId) {
+function getByUser(organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({instituteId});
+  let query = buildQuery({organizationId});
   return fetch(`${routePrefix}/getByUser?${query}`, requestOptions).then(handleResponse);
 }
 
-function getByUserAll(instituteId) {
+function getByUserAll(organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({instituteId});
+  let query = buildQuery({organizationId});
   return fetch(`${routePrefix}/getByUserAll?${query}`, requestOptions).then(handleResponse);
 }
 

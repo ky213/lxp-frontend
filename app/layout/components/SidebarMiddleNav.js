@@ -7,7 +7,7 @@ import { LOGOUT_USER } from '@/actions';
 import { useHistory  } from 'react-router-dom';
 
 export const SidebarMiddleNav = navbarProps => {
-  const [{ currentUser, selectedInstitute }, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const loggedInUser = (currentUser && currentUser.user) || null;
   const history = useHistory();
 
@@ -38,15 +38,15 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
+        roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
         icon={<i className="fa fa-fw fa-h-square"></i>}
-        title="Institute"
-        to="/admin/institute"
+        title="Organization"
+        to="/admin/organization"
         exact
       />
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
+        roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
         icon={<i className="fa fa-fw fa-medkit"></i>}
         title="Programs"
         to="/programs"
@@ -56,7 +56,7 @@ export const SidebarMiddleNav = navbarProps => {
         roles={[
           Role.Admin,
           Role.SuperAdmin,
-          Role.InstituteManager,
+          Role.OrganizationManager,
           Role.ProgramDirector
         ]}
         icon={<i className="fa fa-fw fa-cog"></i>}
@@ -65,7 +65,7 @@ export const SidebarMiddleNav = navbarProps => {
       />
 */}
       <SidebarMenu.Item
-        roles={[Role.SuperAdmin, Role.Admin, Role.InstituteManager]}
+        roles={[Role.SuperAdmin, Role.Admin, Role.OrganizationManager]}
         icon={<i className="fa fa-fw fa-user-md"></i>}
         title="Users"
         // to="/admin/users"
@@ -88,7 +88,7 @@ export const SidebarMiddleNav = navbarProps => {
 
  {/* 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
+        roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
         icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
         title="Academic Years"
         to="/academic-years"
@@ -96,7 +96,7 @@ export const SidebarMiddleNav = navbarProps => {
       */}
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager]}
+        roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
         icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
         title="Upload Courses"
         to="/admin/courses"
@@ -111,7 +111,7 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.InstituteManager, Role.ProgramDirector]}
+        roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager, Role.ProgramDirector]}
         icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
         title="Learner Reporting"
         to="/reporting"
@@ -121,7 +121,7 @@ export const SidebarMiddleNav = navbarProps => {
           roles={[
             Role.Admin,
             Role.SuperAdmin,
-            Role.InstituteManager,
+            Role.OrganizationManager,
             Role.ProgramDirector
           ]}
           icon={<i className="fa fa-fw fa-tasks"></i>}
@@ -139,7 +139,7 @@ export const SidebarMiddleNav = navbarProps => {
         roles={[
           Role.Admin,
           Role.SuperAdmin,
-          Role.InstituteManager,
+          Role.OrganizationManager,
           Role.ProgramDirector
         ]}
         icon={<i className="fa fa-fw fa-bullhorn"></i>}

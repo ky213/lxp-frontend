@@ -9,9 +9,9 @@ export const notificationService = {
     setRead
 };
 
-function getAll(page, take, selectedInstituteId) {
+function getAll(page, take, selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({page, take, selectedInstituteId});
+    let query = buildQuery({page, take, selectedOrganizationId});
 
     return fetch(`${config.apiUrl}/notifications?${query}`, requestOptions).then(handleResponse);
 
@@ -19,21 +19,21 @@ function getAll(page, take, selectedInstituteId) {
 }
 
 
-function getAllUnread(limit, selectedInstituteId) {
+function getAllUnread(limit, selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({limit, selectedInstituteId});
+    let query = buildQuery({limit, selectedOrganizationId});
     return fetch(`${config.apiUrl}/notifications/unread?${query}`, requestOptions).then(handleResponse);
 }
 
-function getUnreadCount(selectedInstituteId) {
+function getUnreadCount(selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ selectedInstituteId});
+    let query = buildQuery({ selectedOrganizationId});
     return fetch(`${config.apiUrl}/notifications/unread-count?${query}`, requestOptions).then(handleResponse);
 }
 
-function getById(id, selectedInstituteId) {
+function getById(id, selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/notifications/${id}?selectedInstituteId=${selectedInstituteId}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/notifications/${id}?selectedOrganizationId=${selectedOrganizationId}`, requestOptions).then(handleResponse);
 }
 
 

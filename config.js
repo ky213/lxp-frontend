@@ -18,10 +18,10 @@ var config = {
     srcHtmlLayout:          path.join(root, 'app', 'index.html'),
 
     // Site Config ====================================================
-    siteTitle:              process.env.APP_TITLE || 'Pulse',
-    siteDescription:        process.env.APP_DESCRIPTION || 'Resident Management System',
+    siteTitle:              process.env.APP_TITLE || 'Learn',
+    siteDescription:        process.env.APP_DESCRIPTION || 'Learning Experience Provider',
     siteCannonicalUrl:      process.env.APP_CANONICAL_URL || 'http://localhost:4101',
-    siteKeywords:           process.env.APP_KEYWORDS || 'residents engagement timetable management',
+    siteKeywords:           process.env.APP_KEYWORDS || 'learning engagement timetable management',
     scssIncludes:           [],
     apiUrl:                 process.env.API_URL || 'http://localhost:4001/api' 
 }

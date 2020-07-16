@@ -12,12 +12,12 @@ export const currentUserReducer = (state, action) => {
             if(action.user && action.user.user && action.user.user.role != Role.SuperAdmin) {
                 return {
                     ...newState,
-                    selectedInstitute: action.user.user.instituteId && {
-                        instituteId:action.user.user.instituteId, 
-                        name: action.user.user.instituteName,
-                        colorCode: action.user.user.instituteForegroundColor,
-                        backgroundColorCode: action.user.user.instituteBackgroundColor,
-                        logo: action.user.user.instituteLogo
+                    selectedOrganization: action.user.user.organizationId && {
+                        organizationId:action.user.user.organizationId, 
+                        name: action.user.user.organizationName,
+                        colorCode: action.user.user.organizationForegroundColor,
+                        backgroundColorCode: action.user.user.organizationBackgroundColor,
+                        logo: action.user.user.organizationLogo
                     } || null
                 }
             }
@@ -26,7 +26,7 @@ export const currentUserReducer = (state, action) => {
 
         case LOGOUT_USER: 
             console.log("Triggered logout action");
-            return {...state, currentUser: null, selectedInstitute: null, academicYear: null, selectedProgram: null};
+            return {...state, currentUser: null, selectedOrganization: null, academicYear: null, selectedProgram: null};
 
         case USER_CHANGE_PROFILE_PHOTO: 
             

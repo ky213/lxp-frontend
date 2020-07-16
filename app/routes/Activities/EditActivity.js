@@ -62,7 +62,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
         return isOpen && <Loading /> || null;
     }
 
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
     const [users, setUsers] = React.useState([]);
     const [activityTypes, setActivityTypes] = React.useState([]);
@@ -95,7 +95,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
 
             const fetchData = async () => {
                 try {
-                    const activityTypes = await activityService.getActivityTypes(selectedInstitute.instituteId);
+                    const activityTypes = await activityService.getActivityTypes(selectedOrganization.organizationId);
                     setActivityTypes(activityTypes);
                 }
                 catch(error) {
@@ -106,7 +106,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     
            
                     try {
-                        const residents = await residentService.getAllActive(1, 999, null, selectedInstitute.instituteId, selectedActivity.programId);
+                        const residents = await residentService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedActivity.programId);
                         setUsers(residents.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
                     }
                     catch(error) {
@@ -115,7 +115,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                   
                     try {
                         const data = await courseService.getAll(
-                          selectedInstitute.instituteId,
+                          selectedOrganization.organizationId,
                           currentProgramId,
                           1,
                         );
@@ -233,7 +233,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         participants: residents || null,
                         courses: courses || null,
                         rrule: rrule && rrule.toString() || null,
-                        instituteId: selectedInstitute.instituteId, 
+                        organizationId: selectedOrganization.organizationId, 
                         during: during
                     };
                     
@@ -664,7 +664,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                 </>
                             )}
                             
-                            {((currentUserRole == Role.SuperAdmin || currentUserRole == Role.Admin || currentUserRole == Role.InstituteManager ) || 
+                            {((currentUserRole == Role.SuperAdmin || currentUserRole == Role.Admin || currentUserRole == Role.OrganizationManager ) || 
                                 selectedActivity.assignedBy == currentUser.user.employeeId)  && (
                                 <>
                                     <ThemedButton type="submit" color="primary">Edit</ThemedButton>

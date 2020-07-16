@@ -33,7 +33,7 @@ const EditCourse = ({ course,
   onCancel, finishEdit, finishInsert, showAlertMessage, 
   hideAlertMessage, updateCourseList}) => {
   
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
   const [programs, setPrograms] = React.useState([]);
   //const [startingDate, setStartingDate] = React.useState(null);
 
@@ -43,7 +43,7 @@ const EditCourse = ({ course,
   const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
 
   React.useEffect(() => {
-    programService.getByCurrentUser(selectedInstitute.instituteId).then(data => {
+    programService.getByCurrentUser(selectedOrganization.organizationId).then(data => {
       setPrograms(data);
       setProgramsLoaded(true);
     });   
@@ -126,7 +126,7 @@ const EditCourse = ({ course,
               formData.append('programId', programId);
               formData.append('periodDays', periodDays);
               formData.append('startingDate', startingDate);
-              formData.append('selectedInstitute', selectedInstitute.instituteId);              
+              formData.append('selectedOrganization', selectedOrganization.organizationId);              
 
               let httpMethod = '';
               if (course) {

@@ -19,7 +19,7 @@ import { useAppState } from '@/components/AppState';
 const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademicYears }) => {
   const intl = useIntl();
   
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
   const [selectedAcademicYears, setSelectedAcademicYears] = React.useState([]);
 
   const onSelected = (academicYearId, e) => {
@@ -35,7 +35,7 @@ const AcademicYearsList = ({ academicYears, handleEdit, handleAddNew, getAcademi
     const message = selectedAcademicYears.length == 1 ? intl.formatMessage({ id: 'AcademicYears.ThisAcademicYear'}) : intl.formatMessage({ id: 'AcademicYears.ThereAcademicYears'});
     if(confirm(intl.formatMessage({ id: 'General.HandleDeleteConfirm'}) + " " + message + "?")) {
         try {
-            await academicYearService.deleteAcademicYears(selectedInstitute.instituteId, selectedAcademicYears);
+            await academicYearService.deleteAcademicYears(selectedOrganization.organizationId, selectedAcademicYears);
             getAcademicYears();
             setSelectedAcademicYears([]);
         }

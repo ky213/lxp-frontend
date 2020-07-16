@@ -10,10 +10,10 @@ import { authenticationService } from '@/services';
 import { RoleDescription, Role } from '@/helpers';
 import { useAppState, AppStateContext } from '@/components/AppState';
 import { LOGOUT_USER } from '@/actions';
-import InstituteLogoThemed from '@/components/InstituteLogoThemed';
+import OrganizationLogoThemed from '@/components/OrganizationLogoThemed';
 
 const NavbarUser = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     let history = useHistory();
 
     const handleLogoutClick = (e) => {

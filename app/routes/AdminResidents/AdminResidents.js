@@ -20,7 +20,7 @@ import ResidentEdit from "./ResidentEdit";
 import { useAppState } from '@/components/AppState';
 
 const AdminResidents = () => {
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
 
   const recordsPerPage = 15;
@@ -62,7 +62,7 @@ const AdminResidents = () => {
 
   const getUsers = () => {
     residentService
-      .getAll(pageId, recordsPerPage, searchText, selectedInstitute.instituteId)
+      .getAll(pageId, recordsPerPage, searchText, selectedOrganization.organizationId)
       .then(data => {
         // console.log('data', data);
         setUsers(data.users);

@@ -11,15 +11,15 @@ export const programService = {
     deletePrograms
 };
 
-function getAll(instituteId, pageId, recordsPerPage, filter) {    
+function getAll(organizationId, pageId, recordsPerPage, filter) {    
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ instituteId, pageId, recordsPerPage, filter });
+    let query = buildQuery({ organizationId, pageId, recordsPerPage, filter });
     return fetch(`${config.apiUrl}/programs?${query}`, requestOptions).then(handleResponse);    
 }
 
-function getById(id, selectedInstituteId) {
+function getById(id, selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ selectedInstituteId });
+    let query = buildQuery({ selectedOrganizationId });
 
     const routePrefix = `${config.apiUrl}/programs/${id}?`;
     console.log("Client Programs =====> ",  routePrefix , query)
@@ -27,9 +27,9 @@ function getById(id, selectedInstituteId) {
     return fetch(`${config.apiUrl}/programs/${id}?${query}`, requestOptions).then(handleResponse);
 }
 
-function getByCurrentUser(instituteId) {
+function getByCurrentUser(organizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ instituteId });
+    let query = buildQuery({ organizationId });
     return fetch(`${config.apiUrl}/programs/currentuser?${query}`, requestOptions).then(handleResponse);
 }
 

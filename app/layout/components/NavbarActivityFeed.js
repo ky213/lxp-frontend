@@ -68,13 +68,13 @@ const contentInfo = ({ closeToast, notification }) => (
 );
 
 const NavbarActivityFeed = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const loggedInUser = currentUser && currentUser.user || null;
     const [notifications, setNotifications] = React.useState([]);
     const [unreadCount, setUnreadCount] = React.useState(0);
 
     const getNotifications = async () => {
-        const data = await notificationService.getAllUnread(5, selectedInstitute && selectedInstitute.instituteId);
+        const data = await notificationService.getAllUnread(5, selectedOrganization && selectedOrganization.organizationId);
         setUnreadCount(data.totalUnreadCount);
 
         if(data.totalUnreadCount > 0) {

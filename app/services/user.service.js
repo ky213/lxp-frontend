@@ -36,9 +36,9 @@ function validateBulk(users, isResident) {
             });
 }
 
-function getAllActive(instituteId) {
+function getAllActive(organizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ instituteId });
+    let query = buildQuery({ organizationId });
     return fetch(`${routePrefixUsers}/getAllActive?${query}`, requestOptions).then(handleResponse);
 }
 
@@ -90,11 +90,11 @@ function changePassword(oldPassword, newPassword) {
     return fetch(`${routePrefixUsers}/change-password`, requestOptions).then(handleResponse);
 }
 
-function deleteEmployees(instituteId, employees) {
+function deleteEmployees(organizationId, employees) {
     const requestOptions = {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify({instituteId, employees})
+        body: JSON.stringify({organizationId, employees})
     };
  
     return fetch(`${routePrefixUsers}/deleteEmployees`, requestOptions)

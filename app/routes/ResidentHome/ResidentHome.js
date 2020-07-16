@@ -69,7 +69,7 @@ const EventStatusIcon = styled.i`
 `;
 
 const ResidentHome = () => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const user = currentUser && currentUser.user;
     const [todayEvents, setTodayEvents] = React.useState(null);
     const [upcomingEvents, setUpcomingEvents] = React.useState(null);

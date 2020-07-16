@@ -7,7 +7,7 @@ import { useAppState, AppStateContext } from '@/components/AppState';
 import {useInterval} from '@/helpers';
 
 const Announcement = () => {
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user || null;
   const [announcements, setAnnouncements] = React.useState([]);
 
@@ -22,8 +22,8 @@ const Announcement = () => {
   }, 10000);
 
   const getAnnouncements = () => {
-    if (selectedInstitute) {
-      announcementService.getByUser(selectedInstitute.instituteId).then(data => {
+    if (selectedOrganization) {
+      announcementService.getByUser(selectedOrganization.organizationId).then(data => {
         setAnnouncements(data);
       });
     }

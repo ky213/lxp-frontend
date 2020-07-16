@@ -62,7 +62,7 @@ const InvalidFeedback = styled.section`
 `;
 
 const EditProgram = (props) => {
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const today = moment().format('YYYY-MM-DD');
 
   const [program, setProgram] = React.useState(null);
@@ -77,7 +77,7 @@ const EditProgram = (props) => {
     });
 
     if(props.programId) {
-      programService.getById(props.programId, selectedInstitute.instituteId).then(data => {
+      programService.getById(props.programId, selectedOrganization.organizationId).then(data => {
         setProgram(data);
 
         if(data) {

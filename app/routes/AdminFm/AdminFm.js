@@ -20,7 +20,7 @@ import FmEdit from "./FmEdit";
 import { useAppState } from '@/components/AppState';
 
 const AdminFm = () => {
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
   const [showEditForm, setShowEditForm] = React.useState(false);
   const [searchText, setSearchText] = React.useState(null);
   const [employeeId, setEmployeeId] = React.useState(null);
@@ -29,12 +29,12 @@ const AdminFm = () => {
   const [pageId, setPageId] = React.useState(1);
   const [recordsPerPage, setRecordsPerPage] = React.useState(15);
   const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
-  const [filterInstituteId, setFilterInstituteId] = React.useState(null);
+  const [filterOrganizationId, setFilterOrganizationId] = React.useState(null);
 
 
   React.useEffect(() => {
     getUsers();
-  }, [searchText, pageId, selectedInstitute]);
+  }, [searchText, pageId, selectedOrganization]);
 
   React.useEffect(() => {}, [showEditForm]);
 
@@ -58,7 +58,7 @@ const AdminFm = () => {
 
   const getUsers = () => {
     facultyMemberService
-      .getAll(pageId, recordsPerPage, searchText, selectedInstitute.instituteId)
+      .getAll(pageId, recordsPerPage, searchText, selectedOrganization.organizationId)
       .then(data => {
         // console.log('getUsers', data);
         setUsers(data.users);
@@ -88,9 +88,9 @@ const AdminFm = () => {
     setShowEditForm(true);
   };
 
-  const handleFilterInstitute = (institute) => {
-    //console.log("Selected institute:", institute)
-    setFilterInstituteId(institute && institute.instituteId || null)
+  const handleFilterOrganization = (organization) => {
+    //console.log("Selected Organization:", Organization)
+    setFilterOrganizationId(organization && organization.organizationId || null)
   }
 
   return (

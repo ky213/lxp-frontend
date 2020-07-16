@@ -26,7 +26,7 @@ const Profile = ({selectedUser}) => {
                 </div>
                 <div className="text-center">
                     <i className="fa fa-h-square mr-1"></i>
-                    { selectedUser && selectedUser.instituteName }
+                    { selectedUser && selectedUser.organizationName }
                 </div>
             </div>
         </React.Fragment>

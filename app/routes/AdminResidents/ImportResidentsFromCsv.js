@@ -19,7 +19,7 @@ import moment from "moment";
 
 const ImportResidentsFromCsv = () => {
   let history = useHistory();
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const [showLoading, setShowLoading] = React.useState(false);
   const [users, setUsers] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
@@ -31,7 +31,7 @@ const ImportResidentsFromCsv = () => {
   
   const importClick = () => {
     setShowLoading(true);
-    residentService.addBulk(users, selectedInstitute.instituteId)
+    residentService.addBulk(users, selectedOrganization.organizationId)
       .then(() => {
         history.goBack();
       })
@@ -62,14 +62,14 @@ const ImportResidentsFromCsv = () => {
             surname: row.data.Surname,
             email: row.data.Email,gender: row.data.Gender,
             startDate: moment(row.data.StartDate, "YYYYMMDD"),
-            instituteId: selectedInstitute.instituteId,
+            organizationId: selectedOrganization.organizationId,
             error: ""
           };
 
           csvUsers.push(user);
         },
         complete: function() {
-          residentService.validateBulk(csvUsers, selectedInstitute.instituteId)
+          residentService.validateBulk(csvUsers, selectedOrganization.organizationId)
             .then(data => {
               setUsers(data.data);
               setImportDisabled(data.numOfRecordsInvalid > 0);

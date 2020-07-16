@@ -19,29 +19,29 @@ export const activityService = {
     deleteReply
 };
 
-function getAll(programId, from, to, selectedInstituteId) {
+function getAll(programId, from, to, selectedOrganizationId) {
     const requestOptions = { 
         method: 'GET', 
         headers: authHeader(), 
         //credentials: 'include' 
     };
 
-    let query = buildQuery({from, to, selectedInstituteId});
+    let query = buildQuery({from, to, selectedOrganizationId});
     return fetch(`${config.apiUrl}/activities?${query}`, requestOptions).then(handleResponse);
 
     //return fetch(`${config.apiUrl}/activities`, requestOptions).then(handleResponse);
 }
 
-function getActivityTypes(selectedInstituteId) {
+function getActivityTypes(selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({selectedInstituteId});
+    let query = buildQuery({selectedOrganizationId});
     return fetch(`${config.apiUrl}/activities/types?${query}`, requestOptions).then(handleResponse);
 }
 
 
-function getById(id, selectedInstituteId) {
+function getById(id, selectedOrganizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/activities/${id}?selectedInstituteId=${selectedInstituteId}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/activities/${id}?selectedOrganizationId=${selectedOrganizationId}`, requestOptions).then(handleResponse);
 }
 
 function create(activity) {

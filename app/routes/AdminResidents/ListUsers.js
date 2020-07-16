@@ -37,7 +37,7 @@ const ListUsers = ({
 }) => {
   const intl = useIntl();
   
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
   const [selectedEmployees, setSelectedEmployees] = React.useState([]);
 
   let paginationContent = "";
@@ -67,7 +67,7 @@ const ListUsers = ({
     const message = selectedEmployees.length == 1 ? "this resident" : "these residents";
     if(confirm(`Are you sure you want to delete ${message}?`)) {
         try {
-            await userService.deleteEmployees(selectedInstitute.instituteId, selectedEmployees);
+            await userService.deleteEmployees(selectedOrganization.organizationId, selectedEmployees);
             getUsers();
             setSelectedEmployees([]);
         }

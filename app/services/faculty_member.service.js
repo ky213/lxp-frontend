@@ -12,11 +12,11 @@ export const facultyMemberService = {
   validateBulk
 };
 
-function add(user, instituteId) {
+function add(user, organizationId) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
-    body: JSON.stringify({user, instituteId})
+    body: JSON.stringify({user, organizationId})
   };
 
   return fetch(`${routePrefix}/add`, requestOptions)
@@ -26,11 +26,11 @@ function add(user, instituteId) {
     });
 }
 
-function addBulk(users, instituteId) {
+function addBulk(users, organizationId) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
-    body: JSON.stringify({users, instituteId})
+    body: JSON.stringify({users, organizationId})
   };
 
   return fetch(`${routePrefix}/addBulk`, requestOptions)
@@ -40,11 +40,11 @@ function addBulk(users, instituteId) {
     });
 }
 
-function update(user, instituteId) {
+function update(user, organizationId) {
   const requestOptions = {
     method: "PUT",
     headers: { "Content-Type": "application/json", ...authHeader() },
-    body: JSON.stringify({user, instituteId})
+    body: JSON.stringify({user, organizationId})
   };
 
   return fetch(`${routePrefix}/update`, requestOptions)
@@ -57,28 +57,28 @@ function update(user, instituteId) {
     });
 }
 
-function getAll(pageId, recordsPerPage, filterName, filterInstituteId) {
+function getAll(pageId, recordsPerPage, filterName, filterOrganizationId) {
   const requestOptions = { method: "GET", headers: authHeader() };
 
-  const query = buildQuery({ pageId, recordsPerPage, filterName, filterInstituteId});
+  const query = buildQuery({ pageId, recordsPerPage, filterName, filterOrganizationId});
   return fetch(`${routePrefix}/filter?${query}`, requestOptions).then(
     handleResponse
   );
 }
 
-function getAllActive(pageId, recordsPerPage, filterName, filterInstituteId) {
+function getAllActive(pageId, recordsPerPage, filterName, filterOrganizationId) {
   const requestOptions = { method: "GET", headers: authHeader() };
-  const query = buildQuery({ pageId, recordsPerPage, filterName, filterInstituteId});
+  const query = buildQuery({ pageId, recordsPerPage, filterName, filterOrganizationId});
   return fetch(`${routePrefix}/filterActive?${query}`, requestOptions).then(
     handleResponse
   );
 }
 
-function validateBulk(users, instituteId) {
+function validateBulk(users, organizationId) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
-    body: JSON.stringify({users, instituteId})
+    body: JSON.stringify({users, organizationId})
   };
 
   return fetch(`${routePrefix}/validateBulk`, requestOptions)

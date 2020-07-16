@@ -29,7 +29,7 @@ import { Role } from '@/helpers';
 import ThemedButton from "@/components/ThemedButton";
 
 export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, selectedActivity}) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
     const [supervisors, setSupervisors] = React.useState([]);
     const [activityTypes, setActivityTypes] = React.useState([]);
@@ -37,7 +37,7 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
     const [timeDifference, setTimeDifference] = React.useState(30);
 
     React.useEffect(() => {
-        activityService.getActivityTypes(selectedInstitute.instituteId).then(types => {
+        activityService.getActivityTypes(selectedOrganization.organizationId).then(types => {
             console.log("Got activity types:", types)
             setActivityTypes(types);
         });
@@ -47,7 +47,7 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
             setParticipationLevels(levels);
         });
         
-        facultyMemberService.getAllActive(1, 999, null, selectedInstitute.instituteId).then(users => {
+        facultyMemberService.getAllActive(1, 999, null, selectedOrganization.organizationId).then(users => {
             console.log("Got users:", users)
             setSupervisors(users.users.map(usr => {
                 if(usr.employeeId != currentUser.user.employeeId) {

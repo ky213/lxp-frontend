@@ -11,7 +11,7 @@ import { useAppState } from '@/components/AppState';
 const AcademicYears = () => {
   const intl = useIntl();
   
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const [academicYears, setAcademicYears] = React.useState(null);
   const [academicYear, setAcademicYear] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
@@ -24,7 +24,7 @@ const AcademicYears = () => {
   }, []);
 
   const getAcademicYears = () => {
-    academicYearService.getByLoggedInUser(selectedInstitute.instituteId).then(data => {
+    academicYearService.getByLoggedInUser(selectedOrganization.organizationId).then(data => {
       setAcademicYears(data);
     });
   }
@@ -45,7 +45,7 @@ const AcademicYears = () => {
     setEditForm(true);
 
     if (!programs) {
-      programService.getAll(selectedInstitute.instituteId, 1, 999, null).then(data => setPrograms(data.programs));
+      programService.getAll(selectedOrganization.organizationId, 1, 999, null).then(data => setPrograms(data.programs));
     }
   }
 
@@ -54,10 +54,10 @@ const AcademicYears = () => {
     hideAlertMessage();
     
     if (!programs) {
-      programService.getAll(selectedInstitute.instituteId, 1, 999, null).then(data => setPrograms(data.programs));
+      programService.getAll(selectedOrganization.organizationId, 1, 999, null).then(data => setPrograms(data.programs));
     }
 
-    academicYearService.getById(academicYearId, selectedInstitute.instituteId).then(data => {
+    academicYearService.getById(academicYearId, selectedOrganization.organizationId).then(data => {
       setEditForm(true);
       setAcademicYear(data);
     });
@@ -71,7 +71,7 @@ const AcademicYears = () => {
 
   const createAcademicYear = (ay) => {
     academicYearService
-      .create(ay, selectedInstitute.instituteId)
+      .create(ay, selectedOrganization.organizationId)
       .then(data => {
         setEditForm(false);
         setAcademicYear(null);
@@ -87,7 +87,7 @@ const AcademicYears = () => {
 
   const updateAcademicYear = (ay) => {
     academicYearService
-      .update(ay, selectedInstitute.instituteId)
+      .update(ay, selectedOrganization.organizationId)
       .then(data => {
         setEditForm(false);
         setAcademicYear(null);
@@ -102,7 +102,7 @@ const AcademicYears = () => {
   }
 
   const onDelete = () => {
-    academicYearService.deleteAcademicYear(academicYear.academicYearId, selectedInstitute.instituteId)
+    academicYearService.deleteAcademicYear(academicYear.academicYearId, selectedOrganization.organizationId)
       .then(response => {
         setEditForm(false);
         setAcademicYear(null);

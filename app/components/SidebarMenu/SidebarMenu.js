@@ -128,7 +128,7 @@ class SidebarMenu extends React.Component {
     }
 
     render() {
-        const [{ currentUser, selectedInstitute }, dispatch] = this.context;
+        const [{ currentUser, selectedOrganization }, dispatch] = this.context;
 
         const isSlim = this.props.slim || (
             this.props.pageConfig.sidebarSlim &&
@@ -166,7 +166,7 @@ class SidebarMenu extends React.Component {
                                         currentUrl: this.props.location.pathname,
                                         roles: child.props.roles,
                                         currentUser: currentUser && currentUser.user,
-                                        selectedInstitute: selectedInstitute,
+                                        selectedOrganization: selectedOrganization,
                                         slim: isSlim,
                                         themeColor: backgroundColor
                                     })

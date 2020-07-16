@@ -1,64 +1,64 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
-export const instituteService = {
+export const organizationService = {
     getAll,
     getById,
     update,
     create,
-    deleteInstitutes
+    deleteOrganizations
 };
 
 function getAll(pageId, recordsPerPage, filter) {
     const requestOptions = { method: 'GET', headers: authHeader() };
     let query = buildQuery({ pageId, recordsPerPage, filter });
-    return fetch(`${config.apiUrl}/institutes?${query}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/organizations?${query}`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/institutes/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/organizations/${id}`, requestOptions).then(handleResponse);
 }
 
-function create(institute) {
-    console.log("Create institute:", institute)
+function create(organization) {
+    console.log("Create organization:", organization)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(institute)
+        body: JSON.stringify(organization)
     };
 
-    return fetch(`${config.apiUrl}/institutes`, requestOptions)
+    return fetch(`${config.apiUrl}/organizations`, requestOptions)
         .then(handleResponse)
         .then((data) => {
             return data;
         });
 }
 
-function update(institute) {
-    console.log("Update institute:", institute)
+function update(organization) {
+    console.log("Update organization:", organization)
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(institute)
+        body: JSON.stringify(organization)
     };
 
-    return fetch(`${config.apiUrl}/institutes`, requestOptions)
+    return fetch(`${config.apiUrl}/organizations`, requestOptions)
         .then(handleResponse)
         .then((data) => {
             return data;
     });
 }
 
-function deleteInstitutes(institutes) {
-    console.log("Delete institutes:", institutes)
+function deleteOrganizations(organizations) {
+    console.log("Delete organizations:", organizations)
     const requestOptions = {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(institutes)
+        body: JSON.stringify(organizations)
     };
 
-    return fetch(`${config.apiUrl}/institutes`, requestOptions)
+    return fetch(`${config.apiUrl}/organizations`, requestOptions)
         .then(handleResponse)
         .then((data) => {
             return data;

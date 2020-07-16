@@ -20,7 +20,7 @@ import {
 import { useAppState } from '@/components/AppState';
 
 const ActivityTypes = () => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const isSuperAdmin = currentUser && currentUser.user && currentUser.user.role == Role.SuperAdmin;
 
     const [activityTypes, setActivityTypes] = React.useState([]);
@@ -34,7 +34,7 @@ const ActivityTypes = () => {
     const [selectedActivityTypes, setSelectedActivityTypes] = React.useState([]);
 
     const getActivityTypes = () => {        
-        activityTypesService.getAll(selectedInstitute && selectedInstitute.instituteId, pageId, recordsPerPage, searchText).then((data) => {
+        activityTypesService.getAll(selectedOrganization && selectedOrganization.organizationId, pageId, recordsPerPage, searchText).then((data) => {
             //console.log("Got ActivityTypes: ", data)
             setActivityTypes(data.activityTypes);
             setTotalNumberOfRecords(data.totalNumberOfRecords);

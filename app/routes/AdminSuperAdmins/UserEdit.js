@@ -33,7 +33,7 @@ const InvalidFeedback = styled.section`
 const UserEdit = props => {
   const intl = useIntl();
   
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
   
   let history = useHistory();
@@ -79,7 +79,7 @@ const UserEdit = props => {
         role: Yup.array().min(1, 'You have to select Role')
       })}
       onSubmit={(
-        { name, surname, email, role, isActive, institute },
+        { name, surname, email, role, isActive, organization },
         { setStatus, setSubmitting }
       ) => {
         setStatus();

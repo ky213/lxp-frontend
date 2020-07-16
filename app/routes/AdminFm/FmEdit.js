@@ -33,7 +33,7 @@ const InvalidFeedback = styled.section`
 const FmEdit = ({ user, onEdited, onCancel }) => {
   const intl = useIntl();
 
-  const [{ currentUser, selectedInstitute }, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
 
   let history = useHistory();
   const [alertMessage, setAlertMessage] = React.useState(null);
@@ -96,9 +96,9 @@ const FmEdit = ({ user, onEdited, onCancel }) => {
               userId: user.userId,
               employeeId: user.employeeId,
               roleId: userRoleId,
-              instituteId: selectedInstitute.instituteId
+              organizationId: selectedOrganization.organizationId
             },
-              selectedInstitute.instituteId)
+              selectedOrganization.organizationId)
             .then(
               response => {
                 setSubmitting(false);
@@ -130,10 +130,10 @@ const FmEdit = ({ user, onEdited, onCancel }) => {
               surname,
               email,
               gender,
-              instituteId: selectedInstitute.instituteId,
+              organizationId: selectedOrganization.organizationId,
               roleId: userRoleId
             },
-              selectedInstitute.instituteId)
+              selectedOrganization.organizationId)
             .then(
               response => {
                 setSubmitting(false);

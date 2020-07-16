@@ -34,7 +34,7 @@ import { TinCanLaunch } from "@/helpers";
 const recordsPerPage = 20;
 
 const Courses = (props) => {
-  const [{ currentUser, selectedInstitute }] = useAppState();
+  const [{ currentUser, selectedOrganization }] = useAppState();
   const user = currentUser && currentUser.user;
 
   const [deviceIsMobile, setDeviceIsMobile] = React.useState(null);
@@ -61,7 +61,7 @@ const Courses = (props) => {
   React.useEffect(() => {
     setDeviceIsMobile(isMobileDevice());
     programService
-      .getByCurrentUser(selectedInstitute.instituteId)
+      .getByCurrentUser(selectedOrganization.organizationId)
       .then((data) => {
         setPrograms(data);
       })
@@ -103,7 +103,7 @@ const Courses = (props) => {
 
       try {
         const data = await courseService.getAll(
-          selectedInstitute.instituteId,
+          selectedOrganization.organizationId,
           selectedProgramId,
           pageId,
           recordsPerPage,

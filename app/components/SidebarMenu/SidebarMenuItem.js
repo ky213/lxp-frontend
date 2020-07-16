@@ -147,16 +147,16 @@ export class SidebarMenuItem extends React.Component {
         
         const isSignOut = this.props && this.props.icon && this.props.icon.props && this.props.icon.props.className.includes('sign-out');
         
-        if(!this.props.selectedInstitute && (this.props.to != "/home" && this.props.to != "/" 
+        if(!this.props.selectedOrganization && (this.props.to != "/home" && this.props.to != "/" 
             && this.props.to != "/admin/superadmin") && !this.props.href && !isSignOut) {
             visibilityStyle = 'none';
         }
 
-        if(this.props.selectedInstitute && this.props.to == "/admin/superadmin") {
+        if(this.props.selectedOrganization && this.props.to == "/admin/superadmin") {
             visibilityStyle = 'none';
         }
 
-        // console.log("Calculated visibility style:", this.props.href, this.props.to, this.props.selectedInstitute, visibilityStyle )
+        // console.log("Calculated visibility style:", this.props.href, this.props.to, this.props.selectedOrganization, visibilityStyle )
 
         return (
             <li
@@ -172,7 +172,7 @@ export class SidebarMenuItem extends React.Component {
                     onClick={this.props.onClick || null}
                     themeColor={this.props.themeColor}
                     classBase={ classBase }
-                    selectedInstitute={this.props.selectedInstitute}
+                    selectedOrganization={this.props.selectedOrganization}
                 >
                     {
                         this.props.icon && React.cloneElement(this.props.icon, {
@@ -201,7 +201,7 @@ export class SidebarMenuItem extends React.Component {
                                         themeColor: this.props.themeColor,
                                         currentUrl: this.props.currentUrl,
                                         slim: this.props.slim,
-                                        selectedInstitute: this.props.selectedInstitute,
+                                        selectedOrganization: this.props.selectedOrganization,
                                         ...ctx
                                     })
                                 }

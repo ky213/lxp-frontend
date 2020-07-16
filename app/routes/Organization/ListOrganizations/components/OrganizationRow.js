@@ -23,7 +23,7 @@ const ColorCode = styled.section`
     background: ${props => props.color || '#fff'};
 `;
 
-const InstituteLogo = styled.div`
+const OrganizationLogo = styled.div`
     width:30px;
     height:30px;
     border-radius: 50%;
@@ -36,7 +36,7 @@ const InstituteLogo = styled.div`
     border:3px solid ${props => props.backgroundColor || '#fff'};
 `;
 
-const InstituteLogoGenerated = styled.div`
+const OrganizationLogoGenerated = styled.div`
     width:30px;
     height:30px;
     border-radius: 50%;
@@ -48,16 +48,16 @@ const InstituteLogoGenerated = styled.div`
     line-height:30px;
 `;
 
-const InstituteRow = (props) => {
+const OrganizationRow = (props) => {
 
     return (
         <React.Fragment>
             <tr>
              <td className="align-middle">
-                <CustomInput type="checkbox" id={`InstituteRow-${ props.props.instituteId }` } label="" inline />
+                <CustomInput type="checkbox" id={`OrganizationRow-${ props.props.organizationId }` } label="" inline />
              </td>
              <td className="align-middle text-right">
-                <Button type="button" color="link" onClick={() => props.onInstituteEdit(props.props.instituteId)}>
+                <Button type="button" color="link" onClick={() => props.onOrganizationEdit(props.props.organizationId)}>
                     <i className="fa fa-fw fa-pencil mr-2"></i>
                     Edit
                 </Button>
@@ -73,10 +73,10 @@ const InstituteRow = (props) => {
                         <Media left className="d-flex align-self-center mr-3">
                             
                             {
-                                props.props.logo && <InstituteLogo color={props.props.colorCode} backgroundColor={props.props.backgroundColorCode} src={props.props.logo}/> ||
-                                <InstituteLogoGenerated color={props.props.colorCode} backgroundColor={props.props.backgroundColorCode}>
+                                props.props.logo && <OrganizationLogo color={props.props.colorCode} backgroundColor={props.props.backgroundColorCode} src={props.props.logo}/> ||
+                                <OrganizationLogoGenerated color={props.props.colorCode} backgroundColor={props.props.backgroundColorCode}>
                                      {props.props.name[0].toUpperCase()}
-                                </InstituteLogoGenerated>
+                                </OrganizationLogoGenerated>
                             }
                          
                             
@@ -99,11 +99,11 @@ const InstituteRow = (props) => {
         </React.Fragment>
     )
 }
-InstituteRow.propTypes = {
+OrganizationRow.propTypes = {
     id: PropTypes.node
 };
-InstituteRow.defaultProps = {
+OrganizationRow.defaultProps = {
     id: "1"
 };
 
-export { InstituteRow };
+export { OrganizationRow };

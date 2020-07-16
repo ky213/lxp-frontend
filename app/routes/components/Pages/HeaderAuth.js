@@ -13,8 +13,8 @@ const HeaderAuth = (props) => (
         </div>
         <p className="mb-5 text-left header-auth__subtitle">
             Learning<br />
-            Management<br/>
-            System
+            Experience <br/>
+            Provider
         </p>
         <h1 className="text-left mb-3 header-auth__title">
             { props.title }

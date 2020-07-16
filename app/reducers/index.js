@@ -1,7 +1,7 @@
 import { currentUserReducer } from './CurrentUserReducer';
 import { selectedProgramReducer } from './SelectedProgramReducer';
 import { academicYearReducer } from './AcademicYearReducer';
-import { instituteReducer } from './InstituteReducer';
+import { organizationReducer } from './OrganizationReducer';
 import {combineReducers} from '@/helpers';
 
 const reducers = (state, action) => {
@@ -12,20 +12,20 @@ const reducers = (state, action) => {
         ...currentUserReducer(state, action),
         ...selectedProgramReducer(state, action),
         ...academicYearReducer(state, action),
-        ...instituteReducer(state, action)
+        ...organizationReducer(state, action)
     };
     */
 
     const currentUserState = currentUserReducer(state, action);
     const selectedProgramState = selectedProgramReducer(currentUserState, action);
-    const selectedInstituteState = instituteReducer(selectedProgramState, action);
-    const academicYearState = academicYearReducer(selectedInstituteState, action);
+    const selectedOrganizationState = organizationReducer(selectedProgramState, action);
+    const academicYearState = academicYearReducer(selectedOrganizationState, action);
 
          
     const newState = {
         ...currentUserState,
         ...selectedProgramState,
-        ...selectedInstituteState,
+        ...selectedOrganizationState,
         ...academicYearState
     }
     console.log("Finished main reducer:", newState, action)

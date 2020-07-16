@@ -13,7 +13,7 @@ FooterText.propTypes = {
 };
 FooterText.defaultProps = {
     year: "2020",
-    name: "Pulse",
+    name: "Learn",
     desc: "LXP"
 };
 

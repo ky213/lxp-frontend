@@ -14,7 +14,7 @@ const recordsPerPage = 20;
 const AdminCourses = () => {  
   const intl = useIntl();
   
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   
   const [courses, setCourses] = React.useState(null);
   const [course, setCourse] = React.useState(null);  
@@ -48,7 +48,7 @@ const AdminCourses = () => {
 
   const getAllCourses = () => {
     setCourse(null);
-    courseService.getAll(selectedInstitute.instituteId, null, pageId, recordsPerPage).then(data => {
+    courseService.getAll(selectedOrganization.organizationId, null, pageId, recordsPerPage).then(data => {
       console.log('getAllCourses', data);
       setCourses(data);
     });
@@ -58,7 +58,7 @@ const AdminCourses = () => {
     console.log('handleCourseEdit', courseId);
     e.preventDefault();
     hideAlertMessage();
-    courseService.getById(courseId, selectedInstitute.instituteId).then(data => {
+    courseService.getById(courseId, selectedOrganization.organizationId).then(data => {
       setEditForm(true);
       setCourse(data);
     });

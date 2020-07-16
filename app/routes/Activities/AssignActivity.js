@@ -30,7 +30,7 @@ import ThemedButton from "@/components/ThemedButton";
 import RRuleGenerator from 'react-rrule-generator';
 
 export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, currentProgramId, userPrograms}) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
     const [users, setUsers] = React.useState([]);
     const [activityTypes, setActivityTypes] = React.useState([]);
@@ -48,7 +48,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
             const fetchData = async () => {
                 console.log("Nešo test")
                 try {
-                    const activityTypes = await activityService.getActivityTypes(selectedInstitute.instituteId);
+                    const activityTypes = await activityService.getActivityTypes(selectedOrganization.organizationId);
                     setActivityTypes(activityTypes);
                 }
                 catch(error) {
@@ -58,7 +58,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
 
                 try {
                     const data = await courseService.getAll(
-                      selectedInstitute.instituteId,
+                      selectedOrganization.organizationId,
                       currentProgramId,
                       1,
                     );
@@ -75,7 +75,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                 if(currentUser && currentUser.user) {
                     if(currentProgramId) {
                         try {
-                            const residents = await residentService.getAllActive(1, 999, null, selectedInstitute.instituteId, currentProgramId);
+                            const residents = await residentService.getAllActive(1, 999, null, selectedOrganization.organizationId, currentProgramId);
                             setUsers(residents.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
                         }
                         catch(error) {
@@ -177,7 +177,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                         participants: residents,
                         courses: courses,
                         rrule: rrule && rrule.toString() || null,
-                        instituteId: selectedInstitute.instituteId,
+                        organizationId: selectedOrganization.organizationId,
                         during: during
                     };
                     

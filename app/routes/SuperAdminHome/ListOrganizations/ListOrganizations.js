@@ -16,21 +16,21 @@ import {
     UncontrolledTooltip,
     ButtonToolbar 
 } from '@/components';
-import { InstituteRow } from "./components/InstituteRow";
+import { OrganizationRow } from "./components/OrganizationRow";
 import { Paginations } from "../../components/Paginations";
 
 import {
     HeaderDemo
 } from "../../components/HeaderDemo";
 
-const ListInstitutes = ({
-        institutes, 
-        onInstituteEdit, 
-        onInstituteCreate, 
+const ListOrganizations = ({
+        organizations, 
+        onOrganizationEdit, 
+        onOrganizationCreate, 
         onSearch, 
         onSelected,
         onDelete, 
-        selectedInstitutes,
+        selectedOrganizations,
         pageId,
         setPageId,
         recordsPerPage,  
@@ -60,8 +60,8 @@ const ListInstitutes = ({
                     <Col lg={ 12 }>
                         <HeaderDemo 
                             no={1} 
-                            // title={useIntl.formatMessage({ id: 'SuperAdminHome.Institutes'})}
-                            subTitle={intl.formatMessage({ id: 'SuperAdminHome.ListInstitutes.Subtitle'})}
+                            // title={useIntl.formatMessage({ id: 'SuperAdminHome.organizations'})}
+                            subTitle={intl.formatMessage({ id: 'SuperAdminHome.ListOrganizations.Subtitle'})}
                         />
                     </Col>
                 </Row>
@@ -83,7 +83,7 @@ const ListInstitutes = ({
                                     <ButtonToolbar>
                                      
                                         <ButtonGroup className="mr-2">
-                                            {selectedInstitutes && selectedInstitutes.length > 0 && (
+                                            {selectedOrganizations && selectedOrganizations.length > 0 && (
                                                 <>
                                                     <Button color="link" className="text-decoration-none align-self-center" id="tooltipDelete"
                                                         onClick={onDelete}>
@@ -99,11 +99,11 @@ const ListInstitutes = ({
                                         </ButtonGroup>
                                       
                                         <ButtonGroup className="ml-auto ml-lg-0">
-                                            <Button color="primary" className="align-self-center" onClick={() => onInstituteCreate()} id="tooltipAddNew">
+                                            <Button color="primary" className="align-self-center" onClick={() => onOrganizationCreate()} id="tooltipAddNew">
                                                 <i className="fa fa-fw fa-pencil"></i>
                                             </Button>
                                             <UncontrolledTooltip placement="bottom" target="tooltipAddNew">
-                                            {intl.formatMessage({ id: 'SuperAdminHome.ListInstitutes.AddNewInstitute'})}
+                                            {intl.formatMessage({ id: 'SuperAdminHome.ListOrganizations.AddNewOrganization'})}
                                             </UncontrolledTooltip>
                                         </ButtonGroup>
                                     </ButtonToolbar>
@@ -124,9 +124,9 @@ const ListInstitutes = ({
                                 </thead>
                                 <tbody>
                                     {
-                                        institutes && institutes.length > 0 && institutes.map((institute) => <InstituteRow props={institute} 
-                                             key={institute.instituteId} onInstituteEdit={onInstituteEdit} onSelected={onSelected} />) || 
-                                            <tr><td colSpan={5}>{intl.formatMessage({ id: 'SuperAdminHome.ListInstitutes.NoInstitutes'})}</td></tr>
+                                        organizations && organizations.length > 0 && organizations.map((organization) => <OrganizationRow props={organization} 
+                                             key={organization.organizationId} onOrganizationEdit={onOrganizationEdit} onSelected={onSelected} />) || 
+                                            <tr><td colSpan={5}>{intl.formatMessage({ id: 'SuperAdminHome.ListOrganizations.NoOrganizations'})}</td></tr>
                                     } 
                                 </tbody>
                             </Table>
@@ -141,4 +141,4 @@ const ListInstitutes = ({
     );
 };
 
-export default ListInstitutes;
+export default ListOrganizations;

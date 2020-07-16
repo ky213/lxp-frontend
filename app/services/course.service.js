@@ -8,23 +8,23 @@ export const courseService = {
     deleteCourses
 };
 
-function getAll(instituteId, programId, page, take, filter) {    
+function getAll(organizationId, programId, page, take, filter) {    
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ instituteId, programId, page, take, filter });
+    let query = buildQuery({ organizationId, programId, page, take, filter });
     return fetch(`${config.apiUrl}/courses?${query}`, requestOptions).then(handleResponse);    
 }
 
-function getById(courseId, instituteId) {
+function getById(courseId, organizationId) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({courseId, instituteId});
+    let query = buildQuery({courseId, organizationId});
     return fetch(`${routePrefix}/getById?${query}`, requestOptions).then(handleResponse);
 }
 
-function deleteCourses(courseIds, instituteId) {
+function deleteCourses(courseIds, organizationId) {
     const requestOptions = {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify({courseIds, instituteId})
+        body: JSON.stringify({courseIds, organizationId})
     };
     
     return fetch(`${routePrefix}/deleteCourses`, requestOptions).then(handleResponse);

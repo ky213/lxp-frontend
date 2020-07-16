@@ -5,35 +5,35 @@ import {
     Alert
 } from '@/components';
 
-import { instituteService } from '@/services';
+import { organizationService } from '@/services';
 import { HeaderMain } from "@/routes/components/HeaderMain";
-import ListInstitutes from './ListInstitutes';
-import InstituteSettings from './InstituteSettings';
+import ListOrganizations from './ListOrganizations';
+import OrganizationSettings from './OrganizationSettings';
 import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
-import { SUPER_ADMIN_SELECT_INSTITUTE } from "@/actions";
+import { SUPER_ADMIN_SELECT_ORGANIZATION } from "@/actions";
 import { Consumer, ThemeContext } from '@/components/Theme/ThemeContext';
 
 const SuperAdminHome = (props) => {
     const intl = useIntl();
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const theme = React.useContext(ThemeContext);
     //const currentUser = authenticationService.currentUserValue;
     const isSuperAdmin = currentUser && currentUser.user && currentUser.user.role == Role.SuperAdmin;
-    const [institutes, setInstitutes] = React.useState([]);
+    const [organizations, setOrganizations] = React.useState([]);
 
-    const [selectedInstituteId, setSelectedInstituteId] = React.useState(null);
-    const [showInstituteForm, setShowInstituteForm] = React.useState(false);
+    const [selectedOrganizationId, setSelectedOrganizationId] = React.useState(null);
+    const [showOrganizationForm, setShowOrganizationForm] = React.useState(false);
     const [searchText, setSearchText] = React.useState(null);
     const [pageId, setPageId] = React.useState(1);
     const [recordsPerPage, setRecordsPerPage] = React.useState(15);
     const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
-    const [selectedInstitutes, setSelectedInstitutes] = React.useState([]);
+    const [selectedOrganizations, setSelectedOrganizations] = React.useState([]);
 
-    const getInstitutes = () => {
+    const getOrganizations = () => {
         if(isSuperAdmin) {
-            instituteService.getAll(pageId, recordsPerPage, searchText).then((data) => {
-                setInstitutes(data.institutes);
+            organizationService.getAll(pageId, recordsPerPage, searchText).then((data) => {
+                setOrganizations(data.organizations);
                 setTotalNumberOfRecords(data.totalNumberOfRecords);
             });
         }
@@ -43,45 +43,45 @@ const SuperAdminHome = (props) => {
         setSearchText(e.target.value);
     }
 
-    const handleInstituteCreate = () => {
-        setSelectedInstituteId(null);
-        setShowInstituteForm(true);
+    const handleOrganizationCreate = () => {
+        setSelectedOrganizationId(null);
+        setShowOrganizationForm(true);
     }
 
     const handleCancel = () => {
-        setSelectedInstituteId(null);
-        setShowInstituteForm(false);
+        setSelectedOrganizationId(null);
+        setShowOrganizationForm(false);
     }
 
-    const handleInstituteEdit = (instituteId) => {
-        setSelectedInstituteId(instituteId);
-        setShowInstituteForm(true);
+    const handleOrganizationEdit = (organizationId) => {
+        setSelectedOrganizationId(organizationId);
+        setShowOrganizationForm(true);
     }
 
     const handleEdited = () => {
         if(isSuperAdmin) {
-            getInstitutes();
-            setShowInstituteForm(false);
+            getOrganizations();
+            setShowOrganizationForm(false);
         }        
     }
     
-    const handleSelected = (e, institute) => {
+    const handleSelected = (e, Organization) => {
         if(e.target.checked) {
-            setSelectedInstitutes([...selectedInstitutes, institute]);
+            setSelectedOrganizations([...selectedOrganizations, Organization]);
         }
         else {
-            setSelectedInstitutes(selectedInstitutes.filter(i => i.instituteId != institute.instituteId));
+            setSelectedOrganizations(selectedOrganizations.filter(i => i.organizationId != Organization.organizationId));
         }
     }
 
     const handleDelete = async () => {
-        const deleteMessage = `${selectedInstitutes.length > 1 ? 
+        const deleteMessage = `${selectedOrganizations.length > 1 ? 
             intl.formatMessage({ id: 'SuperAdminHome.HandleDeleteTheseInst'}) : intl.formatMessage({ id: 'SuperAdminHome.HandleDeleteThisInst'})}?`;
         if(confirm(intl.formatMessage({ id: 'General.HandleDeleteConfirm'}) + " " + deleteMessage)) {
             try {
-                await instituteService.deleteInstitutes(selectedInstitutes.map(i => i.instituteId));
-                getInstitutes();
-                setSelectedInstitutes([]);
+                await organizationService.deleteOrganizations(selectedOrganizations.map(i => i.organizationId));
+                getOrganizations();
+                setSelectedOrganizations([]);
             }
             catch(error) {
                 alert(intl.formatMessage({ id: 'General.HandleDeleteError'}) + deleteMessage)
@@ -90,18 +90,18 @@ const SuperAdminHome = (props) => {
     }
 
     React.useEffect(() => {
-        getInstitutes();
+        getOrganizations();
         }, [pageId, searchText]
     );
 
     React.useEffect(() => {
-        dispatch({type: SUPER_ADMIN_SELECT_INSTITUTE, selectedInstitute: null});
+        dispatch({type: SUPER_ADMIN_SELECT_ORGANIZATION, selectedOrganization: null});
       
         theme.onChangeTheme({
             backgroundColor: null,
             foregroundColor: null,
-            instituteLogo: null,
-            instituteName: null
+            OrganizationLogo: null,
+            OrganizationName: null
           });
        
     }, [])
@@ -120,21 +120,21 @@ const SuperAdminHome = (props) => {
                 
                 <HeaderMain title={intl.formatMessage({ id: 'SuperAdminHome.Title'}, {name:  currentUser && currentUser.user && currentUser.user.fullName })} />
 
-                {showInstituteForm && (
-                    <InstituteSettings instituteId={selectedInstituteId} onEdited={handleEdited} onCancel={handleCancel} />
+                {showOrganizationForm && (
+                    <OrganizationSettings organizationId={selectedOrganizationId} onEdited={handleEdited} onCancel={handleCancel} />
                 )}
-                {!showInstituteForm && (
-                    <ListInstitutes 
-                        institutes={institutes}
-                        selectedInstitutes={selectedInstitutes}
+                {!showOrganizationForm && (
+                    <ListOrganizations 
+                        organizations={organizations}
+                        selectedOrganizations={selectedOrganizations}
                         pageId={pageId}
                         setPageId={setPageId}
                         onSearch={handleSearch} 
                         recordsPerPage={recordsPerPage}
                         totalNumberOfRecords={totalNumberOfRecords}
                         searchText={searchText}
-                        onInstituteCreate={handleInstituteCreate} 
-                        onInstituteEdit={handleInstituteEdit} 
+                        onOrganizationCreate={handleOrganizationCreate} 
+                        onOrganizationEdit={handleOrganizationEdit} 
                         onSelected={handleSelected}
                         onDelete={handleDelete}
                         />

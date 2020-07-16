@@ -36,7 +36,7 @@ const InvalidFeedback = styled.section`
 const ResidentEdit = props => {
   const intl = useIntl();
   
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
   const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
@@ -103,7 +103,7 @@ const ResidentEdit = props => {
                 userId: user.userId,
                 employeeId: user.employeeId,
               },
-              selectedInstitute.instituteId
+              selectedOrganization.organizationId
             )
             .then(
               response => {
@@ -140,7 +140,7 @@ const ResidentEdit = props => {
                 gender,
                 startDate,
               },
-              selectedInstitute.instituteId
+              selectedOrganization.organizationId
             )
             .then(
               response => {

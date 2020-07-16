@@ -21,7 +21,7 @@ import { Loading } from "@/components";
 import { useAppState } from '@/components/AppState';
 
 const Notifications = () => {
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const recordsPerPage = 15;
   const [showNotification, setShowNotification] = React.useState(false);
   const [searchText, setSearchText] = React.useState(null);
@@ -42,7 +42,7 @@ const Notifications = () => {
 
   const getNotifications = filter => {
     notificationService
-      .getAll(pageId, recordsPerPage, filter, selectedInstitute && selectedInstitute.instituteId)
+      .getAll(pageId, recordsPerPage, filter, selectedOrganization && selectedOrganization.organizationId)
       .then(data => {
         console.log('data', data, data.notifications, data.totalNumberOfRecords);
         setNotifications(data.notifications);

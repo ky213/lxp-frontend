@@ -6,7 +6,7 @@ import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
 export const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
 
     return (
         <Route {...rest} render={props => {
@@ -20,9 +20,9 @@ export const PrivateRoute = ({ component: Component, roles, ...rest }) => {
             }
 
             if(currentUser && currentUser.user && currentUser.user.role == Role.SuperAdmin) {
-                if(!selectedInstitute && props.location && (props.location.pathname != "/" && props.location.pathname != "/home")
+                if(!selectedOrganization && props.location && (props.location.pathname != "/" && props.location.pathname != "/home")
                     && props.location.pathname != "/admin/superadmin") {
-                    return <Redirect to={{ pathname: '/home', state: {from: props.location, message: "You need to select an institute first!"}}} />
+                    return <Redirect to={{ pathname: '/home', state: {from: props.location, message: "You need to select an organization first!"}}} />
                 }
             }
 

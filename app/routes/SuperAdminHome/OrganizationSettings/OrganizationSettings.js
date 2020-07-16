@@ -17,14 +17,14 @@ import {
     Label, 
     Alert
 } from '@/components';
-import { instituteService } from '@/services';
+import { organizationService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import  ImageUpload from '@/components/ImageUpload';
 import {
     HeaderDemo
 } from "@/routes/components/HeaderDemo";
 import { useAppState } from '@/components/AppState';
-import {SUPER_ADMIN_UPDATE_INSTITUTE} from '@/actions';
+import {SUPER_ADMIN_UPDATE_ORGANIZATION} from '@/actions';
 
 const Swatch = styled.section`
     padding: 5px;
@@ -61,10 +61,10 @@ const InvalidFeedback = styled.section`
     color: #ED1C24;
 `;
 
-const InstituteSettings = (props) => {
+const OrganizationSettings = (props) => {
     const intl = useIntl();
     
-    const [institute, setInstitute] = React.useState(null);
+    const [Organization, setOrganization] = React.useState(null);
     const [showAlert, setShowAlert] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState(null);
     const [showColorPicker, setShowColorPicker] = React.useState(false);
@@ -85,23 +85,23 @@ const InstituteSettings = (props) => {
     }
 
     React.useEffect(() => {
-            //const instituteId = queryParams && queryParams.id || currentUser && currentUser.user.instituteId;
-            if(props.instituteId) {
-                //console.log("Edit institute useEffect:", instituteId)
-                instituteService.getById(props.instituteId).then((data) => {
-                    setInstitute(data);
+            //const organizationId = queryParams && queryParams.id || currentUser && currentUser.user.organizationId;
+            if(props.organizationId) {
+                //console.log("Edit Organization useEffect:", organizationId)
+                organizationService.getById(props.organizationId).then((data) => {
+                    setOrganization(data);
                     setSelectedColorCode(data.colorCode || '#FFFFFF');
                     setSelectedBackgroundColorCode(data.backgroundColorCode || '#1EB7FF');
                     setSelectedLogoDataUrl(data.logo || null);
                 });
             } 
             else {
-                setInstitute(null);
+                setOrganization(null);
                 setSelectedColorCode('#FFFFFF');
                 setSelectedBackgroundColorCode('#1EB7FF');
                 setSelectedLogoDataUrl(null);
             }
-        }, [props.instituteId]
+        }, [props.organizationId]
     );
 
     return (
@@ -109,8 +109,8 @@ const InstituteSettings = (props) => {
             <Row> 
                 <Col lg={ 12 }>
                     <HeaderDemo 
-                    title={intl.formatMessage({ id: 'SuperAdminHome.EditInstituteSettingsTitle'})}
-                    subTitle={intl.formatMessage({ id: 'SuperAdminHome.EditInstituteSettingsSubtitle'})}
+                    title={intl.formatMessage({ id: 'SuperAdminHome.EditOrganizationSettingsTitle'})}
+                    subTitle={intl.formatMessage({ id: 'SuperAdminHome.EditOrganizationSettingsSubtitle'})}
                     />
                 </Col>
             </Row>
@@ -121,8 +121,8 @@ const InstituteSettings = (props) => {
             <Formik { ...themeState } { ...props }
                 enableReinitialize={true}
                 initialValues={{
-                    name: institute && institute.name || '',
-                    isActive: institute && institute.isActive  || !institute,
+                    name: Organization && Organization.name || '',
+                    isActive: Organization && Organization.isActive  || !Organization,
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(intl.formatMessage({ id: 'General.NameIsRequired'})),
@@ -132,20 +132,20 @@ const InstituteSettings = (props) => {
                     console.log('onSubmit', name, selectedColorCode, selectedBackgroundColorCode, isActive);
 
                     // Updating existing
-                    if(institute) {
+                    if(Organization) {
                         try {
-                            const updatedInstitute = {
+                            const updatedOrganization = {
                                 name, 
-                                instituteId: institute.instituteId, 
+                                organizationId: Organization.organizationId, 
                                 isActive,
                                 colorCode: selectedColorCode, 
                                 backgroundColorCode: selectedBackgroundColorCode, 
                                 logo: selectedLogoDataUrl
                             };
 
-                            await instituteService.update(updatedInstitute);
+                            await organizationService.update(updatedOrganization);
 
-                            dispatch({type:SUPER_ADMIN_UPDATE_INSTITUTE, institute: updatedInstitute});
+                            dispatch({type:SUPER_ADMIN_UPDATE_ORGANIZATION, Organization: updatedOrganization});
 
                             showAlertMessage({
                                 title: intl.formatMessage({ id: 'General.Success'}),
@@ -168,12 +168,12 @@ const InstituteSettings = (props) => {
                        
                     }
                     else {
-                        instituteService.create({name, colorCode: selectedColorCode, backgroundColorCode: selectedBackgroundColorCode, isActive,
+                        organizationService.create({name, colorCode: selectedColorCode, backgroundColorCode: selectedBackgroundColorCode, isActive,
                             logo: selectedLogoDataUrl}).then(
                             reponse => {
                                 showAlertMessage({
                                     title: intl.formatMessage({ id: 'General.Success'}),
-                                    message: "You have sucessfully created an institute!",
+                                    message: "You have sucessfully created an Organization!",
                                     type: "success"
                                 });
       
@@ -314,9 +314,9 @@ const InstituteSettings = (props) => {
                                                     <Col sm={3} />
                                                     <Col sm={9}>
                                                         <ThemedButton type="submit">
-                                                            {institute && intl.formatMessage({ id: 'General.Update'}) || intl.formatMessage({ id: 'General.Create'})}
+                                                            {Organization && intl.formatMessage({ id: 'General.Update'}) || intl.formatMessage({ id: 'General.Create'})}
                                                         </ThemedButton>{' '}
-                                                        <Button type="button" onClick={() => onCancel()} color="light">{!institute && "Cancel" || "Go back"}</Button>
+                                                        <Button type="button" onClick={() => onCancel()} color="light">{!Organization && "Cancel" || "Go back"}</Button>
                                                     </Col>
                                                 </FormGroup>
                                           </Form>
@@ -338,4 +338,4 @@ const InstituteSettings = (props) => {
     )
 };
 
-export default InstituteSettings;
+export default OrganizationSettings;

@@ -1,7 +1,7 @@
 import React from "react";
 import {useHistory} from "react-router-dom";
 
-export  const PulseLogo = (props) => {
+export  const LearnLogo = (props) => {
   let history = useHistory();
   const currentPathName = history && history.location && history.location.pathname && history.location.pathname.replace("/", "").replace("-"," ") || "";
   const defaultFill = currentPathName == "activities" && "#F4F4F4" || "#0C6CF3";
@@ -28,4 +28,4 @@ export  const PulseLogo = (props) => {
   );
 }
 
-export default PulseLogo;
+export default LearnLogo;

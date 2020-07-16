@@ -18,7 +18,7 @@ import { useAppState } from '@/components/AppState';
 import { Role} from '@/helpers';
 
 const ActivityReplies = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [replies, setReplies] = React.useState(props.selectedActivity && props.selectedActivity.replies || []);
     
     const getReplies = async () => {

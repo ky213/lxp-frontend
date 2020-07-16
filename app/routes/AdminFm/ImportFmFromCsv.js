@@ -18,7 +18,7 @@ import { Loading } from "../../components";
 import Papa from 'papaparse';
 
 const ImportFmFromCsv = () => {
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
   let history = useHistory();
 
@@ -41,7 +41,7 @@ const ImportFmFromCsv = () => {
   
   const importClick = () => {
     setShowLoading(true);
-    facultyMemberService.addBulk(users, selectedInstitute.instituteId)
+    facultyMemberService.addBulk(users, selectedOrganization.organizationId)
       .then(() => history.goBack())
       .catch(err => {
         console.log('userService.addBulk', err);
@@ -75,13 +75,13 @@ const ImportFmFromCsv = () => {
           };
 
           if(loggedInUser && loggedInUser.role == Role.SuperAdmin) {
-            user.instituteId = selectedInstitute.instituteId;
+            user.organizationId = selectedOrganization.organizationId;
           }
 
           csvUsers.push(user);
         },
         complete: function() {
-          facultyMemberService.validateBulk(csvUsers, selectedInstitute.instituteId)
+          facultyMemberService.validateBulk(csvUsers, selectedOrganization.organizationId)
           .then(data => {
             setUsers(data.data);
             setImportDisabled(data.numOfRecordsInvalid > 0);

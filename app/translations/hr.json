@@ -71,21 +71,21 @@
     },
     "SuperAdminHome": {
         "Title": "Hello, {name}",
-        "Institutes": "Institutes",        
-        "HandleDeleteTheseInst": "there institutes",
-        "HandleDeleteThisInst": "this institute",
-        "EditInstituteSettingsTitle": "Edit institute settings",
-        "EditInstituteSettingsSubtitle": "You can change institute settings like institute name, logo, academic months etc. here",        
+        "Organizations": "Organizations",        
+        "HandleDeleteTheseInst": "there organizations",
+        "HandleDeleteThisInst": "this organization",
+        "EditOrganizationSettingsTitle": "Edit organization settings",
+        "EditOrganizationSettingsSubtitle": "You can change organization settings like organization name, logo, academic months etc. here",        
         "ForegroundColor": "Foreground color",
         "BackgroundColor": "Background color",
         "Logo": "Logo",
-        "InstituteRow": {
-            "SelectThis1": "Select this as a working institute"
+        "OrganizationRow": {
+            "SelectThis1": "Select this as a working organization"
         },
-        "ListInstitutes": {
-            "Subtitle": "You can select your working institute, edit existing and enter new institutes from here",
-            "AddNewInstitute": "Add New Institute",
-            "NoInstitutes": "No institutes have been created yet."
+        "ListOrganizations": {
+            "Subtitle": "You can select your working organization, edit existing and enter new organizations from here",
+            "AddNewOrganization": "Add New organization",
+            "NoOrganizations": "No organizations have been created yet."
         }
     }
 }

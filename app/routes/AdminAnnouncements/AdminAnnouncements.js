@@ -11,7 +11,7 @@ import { useAppState } from '@/components/AppState';
 const AdminAnnouncements = () => {  
   const intl = useIntl();
 
-  const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const [announcements, setAnnouncements] = React.useState(null);
   const [announcement, setAnnouncement] = React.useState(null);  
   const [showAlert, setShowAlert] = React.useState(false);
@@ -40,7 +40,7 @@ const AdminAnnouncements = () => {
 
   const getAllAnnouncements = () => {
     setAnnouncement(null);
-    announcementService.getAll(selectedInstitute.instituteId).then(data => {
+    announcementService.getAll(selectedOrganization.organizationId).then(data => {
       setAnnouncements(data);
     });
   }
@@ -54,7 +54,7 @@ const AdminAnnouncements = () => {
   const handleEditAnnouncement = (e, announcementId) => {
     e.preventDefault();
     hideAlertMessage();
-    announcementService.getById(announcementId, selectedInstitute.instituteId).then(data => {
+    announcementService.getById(announcementId, selectedOrganization.organizationId).then(data => {
       setEditForm(true);
       setAnnouncement(data);
     });

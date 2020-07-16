@@ -68,10 +68,10 @@ class Login extends React.Component {
                         dispatch({ type: LOGIN_USER_SUCCESS, user });
 
                         themeState.onChangeTheme({
-                          backgroundColor: user.user.instituteBackgroundColor,
-                          foregroundColor: user.user.instituteForegroundColor,
-                          instituteLogo: user.user.instituteLogo,
-                          instituteName: user.user.instituteName
+                          backgroundColor: user.user.organizationBackgroundColor,
+                          foregroundColor: user.user.organizationForegroundColor,
+                          organizationLogo: user.user.organizationLogo,
+                          organizationName: user.user.organizationName
                         });
 
                         const { from } = this.props.location.state || {

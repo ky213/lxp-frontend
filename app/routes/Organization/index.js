@@ -8,17 +8,17 @@ import {
     Table,
 } from '@/components';
 
-import { instituteService } from '@/services';
+import { organizationService } from '@/services';
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import InstituteSettings from './InstituteSettings';
-import ListInstitutes from './ListInstitutes';
+import OrganizationSettings from './OrganizationSettings';
+import ListOrganizations from './ListOrganizations';
 import { authenticationService } from '@/services';
 import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
-const Institute = () => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+const Organization = () => {
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
 
     const handleEdited = () => {
         //console.log("Handle edited!")
@@ -30,21 +30,21 @@ const Institute = () => {
     return (
         <React.Fragment>
             <Container>
-                <HeaderMain title="Institute" />
+                <HeaderMain title="Organization" />
 
-                {!selectedInstitute && (
+                {!selectedOrganization && (
                     <Row> 
                         <Col lg={ 12 }>
                             <HeaderDemo 
-                            title="Edit institute settings"
-                            subTitle="You need to select an institute first" 
+                            title="Edit organization settings"
+                            subTitle="You need to select an organization first" 
                             />
                         </Col>
                     </Row>
                 )}
                 {
-                    selectedInstitute && (  
-                        <InstituteSettings instituteId={selectedInstitute.instituteId} onEdited={handleEdited} />
+                    selectedOrganization && (  
+                        <OrganizationSettings organizationId={selectedOrganization.organizationId} onEdited={handleEdited} />
                     )
                 }
 
@@ -53,4 +53,4 @@ const Institute = () => {
     );
 };
 
-export default Institute;
+export default Organization;

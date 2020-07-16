@@ -41,7 +41,7 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditActivityType = (props) => {
-    const [{currentUser, selectedInstitute}, dispatch] = useAppState();
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [activityType, setActivityType] = React.useState(null);
 
     const [showAlert, setShowAlert] = React.useState(false);
@@ -61,7 +61,7 @@ const AddEditActivityType = (props) => {
 
     React.useEffect(() => {
         if (props.activityTypeId) {
-            activityTypesService.getById(props.activityTypeId, selectedInstitute.instituteId).then((data) => {                
+            activityTypesService.getById(props.activityTypeId, selectedOrganization.organizationId).then((data) => {                
                 setActivityType(data);
             });
         }
@@ -88,10 +88,10 @@ const AddEditActivityType = (props) => {
                         })}
                         onSubmit={({ name }, { setStatus, setSubmitting }) => {
 
-                            //console.log("Activity Type Update :", name, activityType.activityTypeId, selectedInstitute.instituteId)
+                            //console.log("Activity Type Update :", name, activityType.activityTypeId, selectedOrganization.organizationId)
                             // Updating existing                    
                             if (activityType) {
-                                activityTypesService.update({ name, activityTypeId: activityType.activityTypeId, instituteId: selectedInstitute.instituteId }).then(
+                                activityTypesService.update({ name, activityTypeId: activityType.activityTypeId, organizationId: selectedOrganization.organizationId }).then(
                                     reponse => {
                                         showAlertMessage({
                                             title: intl.formatMessage({ id: 'General.Success'}),
@@ -113,7 +113,7 @@ const AddEditActivityType = (props) => {
                                 );
                             }
                             else {
-                                activityTypesService.create({ name, instituteId: selectedInstitute.instituteId }).then(
+                                activityTypesService.create({ name, organizationId: selectedOrganization.organizationId }).then(
                                     reponse => {
                                         showAlertMessage({
                                             title: intl.formatMessage({ id: 'General.Success'}),

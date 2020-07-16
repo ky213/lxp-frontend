@@ -15,7 +15,7 @@ import { roleService, employeeRoleService } from "@/services";
 import { useAppState } from '@/components/AppState';
 
 const AdminUserRoles = () => {
-  const [{selectedInstitute}] = useAppState();
+  const [{selectedOrganization}] = useAppState();
   const [roles, setRoles] = React.useState([]);
   const [selectedRoleId, setSelectedRoleId] = React.useState();
   const [employeeRoles, setEmployeeRoles] = React.useState(null);
@@ -29,7 +29,7 @@ const AdminUserRoles = () => {
   React.useEffect(() => {
     if (selectedRoleId) {
       employeeRoleService
-        .getByRoleId(selectedRoleId, selectedInstitute.instituteId)
+        .getByRoleId(selectedRoleId, selectedOrganization.organizationId)
         .then(data => {console.log(data);setEmployeeRoles(data)});
     } else {
       setEmployeeRoles(null);

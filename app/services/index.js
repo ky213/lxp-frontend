@@ -1,6 +1,6 @@
 export * from './authentication.service';
 export * from './user.service';
-export * from './resident.service';
+export * from './learner.service';
 export * from './faculty_member.service';
 export * from './program.service';
 export * from './activity_type.service';

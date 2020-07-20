@@ -22,7 +22,7 @@ import {
   Row
 } from "@/components";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { residentService } from "@/services";
+import { learnerService } from "@/services";
 import { useAppState } from '@/components/AppState';
 import moment from "moment";
 
@@ -33,7 +33,7 @@ const InvalidFeedback = styled.section`
     color: #ED1C24;
 `;
 
-const ResidentEdit = props => {
+const LearnerEdit = props => {
   const intl = useIntl();
   
   const [{selectedOrganization}] = useAppState();
@@ -91,7 +91,7 @@ const ResidentEdit = props => {
       ) => {
         setStatus();
         if (user) {
-          residentService
+          learnerService
             .update(
               {
                 name,
@@ -131,7 +131,7 @@ const ResidentEdit = props => {
               }
             );
         } else {
-          residentService
+          learnerService
             .add(
               {
                 name,
@@ -429,4 +429,4 @@ const ResidentEdit = props => {
   );
 };
 
-export default ResidentEdit;
+export default LearnerEdit;

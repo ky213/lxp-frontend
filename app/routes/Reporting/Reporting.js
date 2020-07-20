@@ -23,7 +23,7 @@ import moment from 'moment';
 import { CSVLink } from "react-csv";
  
 
-import { reportingService, programService, residentService } from '@/services';
+import { reportingService, programService, learnerService } from '@/services';
 import {  TinCanLaunch } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 
@@ -70,7 +70,7 @@ const Reporting = () => {
             */
             
             try {
-                const learners = await residentService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedProgram && selectedProgram.programId || null);
+                const learners = await learnerService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedProgram && selectedProgram.programId || null);
                 setLearners(learners.users.map(usr => ({employeeId: usr.employeeId, email: usr.email, fullName: `${usr.name} ${usr.surname}`})));
             }
             catch(error) {

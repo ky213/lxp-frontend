@@ -45,7 +45,7 @@ const ActivityReplyRight = (props) => {
                 </Card>
                 <div className="mb-2 text-right">
                     <span className="text-inverse mr-2">
-                        { props.reply && props.reply.resident } 
+                        { props.reply && props.reply.learner } 
                     </span>
                     <span className="small">
                         {props.reply && props.reply.modifiedAt && moment(props.reply.modifiedAt).format('LLLL')}

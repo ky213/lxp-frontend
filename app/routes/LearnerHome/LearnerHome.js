@@ -68,7 +68,7 @@ const EventStatusIcon = styled.i`
     background: ${props => props.color || '#096BF2'};
 `;
 
-const ResidentHome = () => {
+const LearnerHome = () => {
     const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const user = currentUser && currentUser.user;
     const [todayEvents, setTodayEvents] = React.useState(null);
@@ -79,7 +79,7 @@ const ResidentHome = () => {
     }, [])
     
     return user && (<React.Fragment>
-        <Container className="residents-home">
+        <Container className="learners-home">
             <Responsive displayIn={["laptop"]}>
             <HeaderMain 
                 title={`Hello, ${user.fullName}`}
@@ -164,4 +164,4 @@ const ResidentHome = () => {
     ) || null;
 }
 
-export default ResidentHome;
+export default LearnerHome;

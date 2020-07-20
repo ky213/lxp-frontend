@@ -14,12 +14,12 @@ import { HeaderMain } from "@/routes/components/HeaderMain";
 import ListUsers from "./ListUsers";
 import {
   userService,
-  residentService
+  learnerService
 } from "@/services";
-import ResidentEdit from "./ResidentEdit";
+import LearnerEdit from "./LearnerEdit";
 import { useAppState } from '@/components/AppState';
 
-const AdminResidents = () => {
+const AdminLearners = () => {
   const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
 
@@ -61,7 +61,7 @@ const AdminResidents = () => {
   };
 
   const getUsers = () => {
-    residentService
+    learnerService
       .getAll(pageId, recordsPerPage, searchText, selectedOrganization.organizationId)
       .then(data => {
         // console.log('data', data);
@@ -97,7 +97,7 @@ const AdminResidents = () => {
         <HeaderMain title="Learners" />
         {showEditForm && (
           <Row>
-            <ResidentEdit
+            <LearnerEdit
               user={user}
               setEmployeeId={setEmployeeId}
               onEdited={handleEdited}
@@ -125,4 +125,4 @@ const AdminResidents = () => {
   );
 };
 
-export default AdminResidents;
+export default AdminLearners;

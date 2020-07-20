@@ -10,14 +10,14 @@ import {
   Table
 } from "@/components";
 import { HeaderMain } from "@/routes/components/HeaderMain";
-import { residentService, authenticationService } from "@/services";
+import { learnerService, authenticationService } from "@/services";
 import ThemedButton from "@/components/ThemedButton";
 import Papa from 'papaparse';
 import { useAppState } from '@/components/AppState';
 import { Loading } from "../../components";
 import moment from "moment";
 
-const ImportResidentsFromCsv = () => {
+const ImportLearnersFromCsv = () => {
   let history = useHistory();
   const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const [showLoading, setShowLoading] = React.useState(false);
@@ -31,7 +31,7 @@ const ImportResidentsFromCsv = () => {
   
   const importClick = () => {
     setShowLoading(true);
-    residentService.addBulk(users, selectedOrganization.organizationId)
+    learnerService.addBulk(users, selectedOrganization.organizationId)
       .then(() => {
         history.goBack();
       })
@@ -56,7 +56,7 @@ const ImportResidentsFromCsv = () => {
         header: true,
         skipEmptyLines: true,
         step: function(row) {
-           console.log('Resident row', row);
+           console.log('Learner row', row);
           let user = {
             name: row.data.Name,
             surname: row.data.Surname,
@@ -69,7 +69,7 @@ const ImportResidentsFromCsv = () => {
           csvUsers.push(user);
         },
         complete: function() {
-          residentService.validateBulk(csvUsers, selectedOrganization.organizationId)
+          learnerService.validateBulk(csvUsers, selectedOrganization.organizationId)
             .then(data => {
               setUsers(data.data);
               setImportDisabled(data.numOfRecordsInvalid > 0);
@@ -232,4 +232,4 @@ const ImportResidentsFromCsv = () => {
   );
 };
 
-export default ImportResidentsFromCsv;
+export default ImportLearnersFromCsv;

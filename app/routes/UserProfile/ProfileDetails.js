@@ -104,7 +104,7 @@ const ProfileDetails = ({ currentUser, user, getUserData }) => {
                           )}
                           {currentUser &&
                             currentUser.user &&
-                            currentUser.user.role != "Resident" && (
+                            currentUser.user.role != "Learner" && (
                               <React.Fragment>
                                 <FormGroup row>
                                   <Label for="phoneNumber" sm={3}>

@@ -17,7 +17,7 @@ import {
   UncontrolledTooltip,
   ButtonToolbar
 } from "@/components";
-import { UserRowResident } from "./UserRowResident";
+import { UserRowLearner } from "./UserRowLearner";
 import { Paginations } from "@/routes/components/Paginations";
 import ThemedButton from "@/components/ThemedButton";
 import { useAppState } from '@/components/AppState';
@@ -64,7 +64,7 @@ const ListUsers = ({
   }
 
   const onDelete = async () => {
-    const message = selectedEmployees.length == 1 ? "this resident" : "these residents";
+    const message = selectedEmployees.length == 1 ? "this learner" : "these learners";
     if(confirm(`Are you sure you want to delete ${message}?`)) {
         try {
             await userService.deleteEmployees(selectedOrganization.organizationId, selectedEmployees);
@@ -72,7 +72,7 @@ const ListUsers = ({
             setSelectedEmployees([]);
         }
         catch(error) {
-            console.log("Error while deleting residents:", error);
+            console.log("Error while deleting learners:", error);
             alert(`Something went wrong while deleting ${message}!`)
         }
     }
@@ -113,7 +113,7 @@ const ListUsers = ({
                   <ThemedButton
                     className="align-self-center"
                     tag={Link}
-                    to="/admin/users/csv/residents"
+                    to="/admin/users/csv/learners"
                     id="tooltipImportFromCsv"
                   >
                     <i className="fa fa-fw fa-file-excel-o"></i>                    
@@ -136,7 +136,7 @@ const ListUsers = ({
                     placement="bottom"
                     target="tooltipAddNew"
                   >
-                    Add New Resident
+                    Add New Learner
                   </UncontrolledTooltip>
                 </ButtonToolbar>
               </div>
@@ -162,7 +162,7 @@ const ListUsers = ({
                 <tbody>
                   {(users && users.length > 0 &&
                     users.map(user => (
-                      <UserRowResident
+                      <UserRowLearner
                         props={user}
                         onUserEdit={onUserEdit}
                         key={user.userId}
@@ -170,7 +170,7 @@ const ListUsers = ({
                       />
                     ))) || (
                     <tr>
-                      <td colSpan={8}>There's no residents yet.</td>
+                      <td colSpan={8}>There's no learners yet.</td>
                     </tr>
                   )}
                 </tbody>

@@ -7,8 +7,8 @@ import {
 
 // ----------- Pages Imports ---------------
 import UserProfile from './UserProfile';
-import AdminResidents from './AdminResidents';
-import ImportResidentsFromCsv from './AdminResidents/ImportResidentsFromCsv';
+import AdminLearners from './AdminLearners';
+import ImportLearnersFromCsv from './AdminLearners/ImportLearnersFromCsv';
 import AdminFm from './AdminFm';
 import ImportFmFromCsv from './AdminFm/ImportFmFromCsv';
 import AdminUserRoles from './AdminUserRoles';
@@ -49,7 +49,7 @@ import Organization from './Organization';
 import Programs from './Programs';
 import ProgramSettings from './ProgramSettings';
 import AcademicYears from './AcademicYears';
-import ResidentHome from './ResidentHome';
+import LearnerHome from './LearnerHome';
 import FacultyMemberHome from './FacultyMemberHome';
 import SuperAdminHome from './SuperAdminHome';
 import Notifications from './Notifications';
@@ -75,9 +75,9 @@ export const RoutedContent = (props) => {
           component={
             user && (
               user.role == Role.SuperAdmin && SuperAdminHome || 
-              (user.role != Role.Resident && user.role != Role.SuperAdmin) && FacultyMemberHome 
+              (user.role != Role.Learner && user.role != Role.SuperAdmin) && FacultyMemberHome 
  
-            ) || ResidentHome 
+            ) || LearnerHome 
           }
         />
         <PrivateRoute path="/user/profile" exact component={UserProfile} />
@@ -89,23 +89,23 @@ export const RoutedContent = (props) => {
         />
 
         <PrivateRoute
-          path="/admin/users/residents"
+          path="/admin/users/learners"
           roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
           exact
-          component={AdminResidents}
+          component={AdminLearners}
         />
 
         <PrivateRoute
-          path="/residents"
+          path="/learners"
           roles={[Role.OrganizationManager, Role.ProgramDirector]}
           exact
-          component={AdminResidents}
+          component={AdminLearners}
         />
 
         <PrivateRoute
-          path="/admin/users/csv/residents"
+          path="/admin/users/csv/learners"
           exact
-          component={ImportResidentsFromCsv}
+          component={ImportLearnersFromCsv}
         />
 
         <PrivateRoute

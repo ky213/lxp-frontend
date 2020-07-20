@@ -148,7 +148,7 @@ export const ActivityCalendar = (props) => {
 
         const today = moment().startOf('day');
 
-        if(currentUserRole == Role.Resident) {
+        if(currentUserRole == Role.Learner) {
             toggleLogActivityModal();
         }
         else {
@@ -257,7 +257,7 @@ export const ActivityCalendar = (props) => {
             </Row>
             <AssignActivity 
                 toggle={toggleMeetingsModal} 
-                selectedResident={null}
+                selectedLearner={null}
                 isOpen={meetingsModal}
                 eventStart={eventStart}
                 eventEnd={eventEnd} 

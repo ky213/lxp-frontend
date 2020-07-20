@@ -13,7 +13,7 @@ import {
   DropdownItem
 } from "@/components";
 
-const UserRowResident = props => {
+const UserRowLearner = props => {
   return (
     <React.Fragment>
       <tr key={props.key}>
@@ -59,4 +59,4 @@ const UserRowResident = props => {
   );
 };
 
-export { UserRowResident };
+export { UserRowLearner };

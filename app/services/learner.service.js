@@ -1,9 +1,9 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
-const routePrefix = `${config.apiUrl}/residents`;
+const routePrefix = `${config.apiUrl}/learners`;
 
-export const residentService = {
+export const learnerService = {
     add,
     addBulk,
     getAll,

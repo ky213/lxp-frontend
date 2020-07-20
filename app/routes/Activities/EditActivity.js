@@ -45,7 +45,7 @@ import * as Yup from 'yup';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
 import moment from 'moment';
 import {AddonInput} from '@/routes/Forms/DatePicker/components';
-import {activityService, residentService, subspecialtiesService, expLevelService, programService} from '@/services';
+import {activityService, learnerService, subspecialtiesService, expLevelService, programService} from '@/services';
 import { useAppState } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
@@ -56,7 +56,7 @@ import { RRule, RRuleSet, rrulestr } from 'rrule'
 import { Loading } from "@/components";
 
 export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, onSuccess}) => {
-    //console.log("Selected resident for calendar:", selectedResident)
+    //console.log("Selected learner for calendar:", selectedLearner)
     //const minDate = moment().toDate();
     if (!selectedActivity) {
         return isOpen && <Loading /> || null;
@@ -106,11 +106,11 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     
            
                     try {
-                        const residents = await residentService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedActivity.programId);
-                        setUsers(residents.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
+                        const learners = await learnerService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedActivity.programId);
+                        setUsers(learners.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
                     }
                     catch(error) {
-                        console.log("Error while fetching residents:", error)
+                        console.log("Error while fetching learners:", error)
                     }
                   
                     try {
@@ -150,7 +150,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
     const changePriority = (formikProps, priority) => {
         formikProps.setFieldValue('priority', priority)
         formikProps.setFieldValue('levels', [])
-        formikProps.setFieldValue('residents', [])        
+        formikProps.setFieldValue('learners', [])        
     }
     
     //console.log("Selected activity:", selectedActivity, userPrograms, userPrograms.filter(up => up.programId == selectedActivity.programId))
@@ -168,7 +168,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                     location: selectedActivity.location || '',
                     start: selectedActivity.start && moment(selectedActivity.start).toDate() || '',
                     end: selectedActivity.end && moment(selectedActivity.end).toDate() || '',
-                    residents: selectedActivity.participants || [],
+                    learners: selectedActivity.participants || [],
                     priority: selectedActivity.priority || 1,
                     activityType: selectedActivity.activityTypeId || '',
                     courses: selectedActivity.courses || [],
@@ -186,12 +186,12 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         is: "2",
                         then: Yup.array().min(1, 'You need to select a course')
                     }),
-                    residents: Yup.array().when('priority', {
+                    learners: Yup.array().when('priority', {
                         is: "3",
-                        then: Yup.array().min(1, 'You need to select a resident')
+                        then: Yup.array().min(1, 'You need to select a learner')
                     }) 
                 })}
-                onSubmit={async ({ activityName, description, start, end, priority, program, residents, activityType, 
+                onSubmit={async ({ activityName, description, start, end, priority, program, learners, activityType, 
                     location, courses, during }, { setStatus, setSubmitting }) => {
                     setStatus();
                     setSubmitting(false);  
@@ -199,7 +199,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         return;
                     }
 
-                    console.log('onSubmit', activityName, description, start, end, priority, program, residents, activityType,
+                    console.log('onSubmit', activityName, description, start, end, priority, program, learners, activityType,
                         location, courses);
                    
                     if(!program || program && program.length == 0) {
@@ -207,8 +207,8 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         return;
                     }
                     
-                    if(priority == 3 && residents && residents.length == 0) {
-                        alert(`You need to select some residents first! :)`);
+                    if(priority == 3 && learners && learners.length == 0) {
+                        alert(`You need to select some learners first! :)`);
                         return;
                     }
 
@@ -230,7 +230,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         location: location,
                         repeat: showRepeatOptions,
                         description: description,
-                        participants: residents || null,
+                        participants: learners || null,
                         courses: courses || null,
                         rrule: rrule && rrule.toString() || null,
                         organizationId: selectedOrganization.organizationId, 
@@ -327,7 +327,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                 id="activityName" 
                                                                 className={'bg-white form-control' + (formikProps.errors.activityName && formikProps.touched.activityName ? ' is-invalid' : '')} 
                                                                 placeholder="Activity name..." 
-                                                                disabled={currentUserRole == Role.Resident && selectedActivity.activityTypeId != 11}
+                                                                disabled={currentUserRole == Role.Learner && selectedActivity.activityTypeId != 11}
                                                             />
                                                             <ErrorMessage name="activityName" component="div" className="invalid-feedback" />
                                                         </Col>                                                    
@@ -352,7 +352,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                     formikProps.setFieldValue('start', e);
                                                                     formikProps.setFieldValue('end', moment(e).add(timeDifference, 'minutes').toDate());
                                                                 }}
-                                                                disabled={currentUserRole == Role.Resident && selectedActivity.activityTypeId != 11}
+                                                                disabled={currentUserRole == Role.Learner && selectedActivity.activityTypeId != 11}
                                                             />
                                                             {formikProps.errors.start && formikProps.touched.start && <InvalidFeedback>{formikProps.errors.start}</InvalidFeedback>}     
                                                 
@@ -385,7 +385,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                         const calculatedTimeDifference = Math.round(moment.duration(end.diff(start)).add(remainder, 'minutes').asMinutes());
                                                                         setTimeDifference(calculatedTimeDifference);
                                                                     }}
-                                                                    disabled={currentUserRole == Role.Resident && selectedActivity.activityTypeId != 11}
+                                                                    disabled={currentUserRole == Role.Learner && selectedActivity.activityTypeId != 11}
                                                                     />  
                                                                 {formikProps.errors.end && formikProps.touched.end && <InvalidFeedback>{formikProps.errors.end}</InvalidFeedback>}                                                             
                                                             </Col>
@@ -417,7 +417,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                     </Label>
                                                     <Col sm={9}>
                                                         <CustomInput inline
-                                                                disabled={currentUserRole == Role.Resident}
+                                                                disabled={currentUserRole == Role.Learner}
                                                                 type="radio" 
                                                                 id="repeatYes" 
                                                                 name="repeat"
@@ -434,7 +434,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                             name="repeat"
                                                             label="No"
                                                             value="0"
-                                                            disabled={currentUserRole == Role.Resident}
+                                                            disabled={currentUserRole == Role.Learner}
                                                             defaultChecked={!showRepeatOptions}  
                                                             onChange={(event) => {
                                                                 setShowRepeatOptions(false)
@@ -443,7 +443,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                         
                                                     </Col>                                                    
                                                 </FormGroup>
-                                                    {showRepeatOptions && currentUserRole != Role.Resident && (
+                                                    {showRepeatOptions && currentUserRole != Role.Learner && (
                                                         <FormGroup row>
                                                         
                                                             <Col sm={12} style={{whiteSpace: 'nowrap'}}>
@@ -456,7 +456,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                             </Col>
                                                         </FormGroup>
                                                     )}
-                                                    {showRepeatOptions && currentUserRole == Role.Resident && (
+                                                    {showRepeatOptions && currentUserRole == Role.Learner && (
                                                         <FormGroup row>
                                                             <Label  sm={3}>
                                                                 Repeating
@@ -480,7 +480,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                 name="activityType" 
                                                                 id="activityType" 
                                                                 className={'bg-white form-control' + (formikProps.errors.activityType && formikProps.touched.activityType ? ' is-invalid' : '')} 
-                                                                disabled={currentUserRole == Role.Resident && selectedActivity.activityTypeId != 11}
+                                                                disabled={currentUserRole == Role.Learner && selectedActivity.activityTypeId != 11}
                                                             >
                                                                 <option value="">- choose activity type -</option>
                                                                 {activityTypes.map(at => {
@@ -502,7 +502,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                 type="text" 
                                                                 name="location" 
                                                                 id="location" 
-                                                                disabled={currentUserRole == Role.Resident && selectedActivity.activityTypeId != 11}
+                                                                disabled={currentUserRole == Role.Learner && selectedActivity.activityTypeId != 11}
                                                                 className={'bg-white form-control' + (formikProps.errors.location && formikProps.touched.location ? ' is-invalid' : '')} 
                                                                 placeholder="Location..." 
                                                             /> 
@@ -517,7 +517,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                             <Field component="textarea"
                                                                 name="description" 
                                                                 id="description" 
-                                                                disabled={currentUserRole == Role.Resident && selectedActivity.priority != 3}
+                                                                disabled={currentUserRole == Role.Learner && selectedActivity.priority != 3}
                                                                 className={'bg-white form-control' + (formikProps.errors.description && formikProps.touched.description ? ' is-invalid' : '')} 
                                                                 placeholder="Enter description..." 
                                                             />
@@ -529,7 +529,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                             Assign to
                                                         </Label>
                                                         <Col sm={9}>
-                                                            {currentUserRole != Role.Resident && (
+                                                            {currentUserRole != Role.Learner && (
                                                                 <>
                                                                     <CustomInput inline
                                                                     type="radio" 
@@ -555,9 +555,9 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                     />
                                                                     <CustomInput inline
                                                                         type="radio" 
-                                                                        id="priorityResidents" 
+                                                                        id="priorityLearners" 
                                                                         name="priority"
-                                                                        label="Residents"
+                                                                        label="Learners"
                                                                         value="3"
                                                                         defaultChecked={selectedActivity.priority == 3}
                                                                         onChange={(event) => {
@@ -566,12 +566,12 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                                     />
                                                                 </>
                                                             )}
-                                                            {currentUserRole == Role.Resident && (
+                                                            {currentUserRole == Role.Learner && (
                                                                 <Label className="col-form-label">
                                                                 <strong>{
                                                                     selectedActivity.priority == 1 && "Program" ||
                                                                     selectedActivity.priority == 2 && `Levels` ||
-                                                                    selectedActivity.priority == 3 && `Residents`
+                                                                    selectedActivity.priority == 3 && `Learners`
                                                                 }
                                                                 </strong>
                                                                 </Label>
@@ -603,29 +603,29 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                                     
                                                     {formikProps.values && formikProps.values.priority && formikProps.values.priority == 3 && (
                                                         <FormGroup row>
-                                                            <Label for="residents" sm={3}>
+                                                            <Label for="learners" sm={3}>
                                                                 Learners
                                                             </Label>
                                                             <Col sm={9}>
                                                                     <Typeahead
                                                                         clearButton
-                                                                        id="residents"
+                                                                        id="learners"
                                                                         labelKey="name"
                                                                         options={users}
                                                                         multiple
-                                                                        selected={formikProps.values.residents}
-                                                                        className={(formikProps.errors.residents && formikProps.touched.residents ? ' is-invalid' : '')}
+                                                                        selected={formikProps.values.learners}
+                                                                        className={(formikProps.errors.learners && formikProps.touched.learners ? ' is-invalid' : '')}
                                                                         placeholder="Select learners..."
-                                                                        onChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
-                                                                        onInputChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
+                                                                        onChange={(selectedOptions) =>  formikProps.setFieldValue('learners', selectedOptions)}
+                                                                        onInputChange={(selectedOptions) =>  formikProps.setFieldValue('learners', selectedOptions)}
                                                                     />
                                                                 
-                                                                    <ErrorMessage name="residents" component="div" className="invalid-feedback" />
+                                                                    <ErrorMessage name="learners" component="div" className="invalid-feedback" />
                                                             </Col>                                                    
                                                         </FormGroup>
                                                     )}
                                                     <FormGroup row>
-                                                        <Label for="residents" sm={3}>
+                                                        <Label for="learners" sm={3}>
                                                             Created by
                                                         </Label>
                                                         <Col sm={9}>

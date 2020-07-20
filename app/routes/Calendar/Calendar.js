@@ -130,7 +130,7 @@ export const Calendar = (props) => {
             </Row>
             <AddCalendarEvent 
                 toggle={toggleMeetingsModal} 
-                selectedResident={null}
+                selectedLearner={null}
                 isOpen={meetingsModal}
                 eventStart={eventStart}
                 eventEnd={eventEnd} 

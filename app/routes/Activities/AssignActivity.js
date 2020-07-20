@@ -22,7 +22,7 @@ import * as Yup from 'yup';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
 import moment from 'moment';
 import {AddonInput} from '@/routes/Forms/DatePicker/components';
-import {activityService, residentService, subspecialtiesService, courseService, programService} from '@/services';
+import {activityService, learnerService, subspecialtiesService, courseService, programService} from '@/services';
 import { useAppState } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
@@ -75,11 +75,11 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                 if(currentUser && currentUser.user) {
                     if(currentProgramId) {
                         try {
-                            const residents = await residentService.getAllActive(1, 999, null, selectedOrganization.organizationId, currentProgramId);
-                            setUsers(residents.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
+                            const learners = await learnerService.getAllActive(1, 999, null, selectedOrganization.organizationId, currentProgramId);
+                            setUsers(learners.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
                         }
                         catch(error) {
-                            console.log("Error while fetching residents:", error)
+                            console.log("Error while fetching learners:", error)
                         }
 
                       
@@ -102,7 +102,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
     const changePriority = (formikProps, priority) => {
         formikProps.setFieldValue('priority', priority)
         formikProps.setFieldValue('courses', [])
-        formikProps.setFieldValue('residents', [])        
+        formikProps.setFieldValue('learners', [])        
     }
 
     console.log("Selected program id:", currentProgramId)
@@ -117,7 +117,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                     program: currentProgram || [],
                     start: eventStart && moment().add(remainder, 'minutes').set({ years: eventStartObj.years, months: eventStartObj.months, date: eventStartObj.date }).toDate() || '',
                     end: eventEnd && moment().add(remainder, 'minutes').add(timeDifference, 'minutes').set({ years: eventEndObj.years, months: eventEndObj.months, date: eventEndObj.date }).toDate() || '',
-                    residents: [],
+                    learners: [],
                     priority: 1,
                     activityType: '',
                     courses: []
@@ -134,17 +134,17 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                         is: "2",
                         then: Yup.array().min(1, 'You need to select a course')
                     }),
-                    residents: Yup.array().when('priority', {
+                    learners: Yup.array().when('priority', {
                         is: "3",
-                        then: Yup.array().min(1, 'You need to select a resident')
+                        then: Yup.array().min(1, 'You need to select a learner')
                     }) 
                 })}
-                onSubmit={async ({ activityName, description, start, end, priority, program, residents, activityType, 
+                onSubmit={async ({ activityName, description, start, end, priority, program, learners, activityType, 
                     location, courses, during }, { setStatus, setSubmitting }) => {
                     setStatus();
                     setSubmitting(false);  
                    
-                    console.log('onSubmit', activityName, description, start, end, priority, program, residents, activityType, 
+                    console.log('onSubmit', activityName, description, start, end, priority, program, learners, activityType, 
                         location, courses);
                    
                     if(!program || program && program.length == 0) {
@@ -152,8 +152,8 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                         return;
                     }
                     
-                    if(priority == 3 && residents && residents.length == 0) {
-                        alert(`You need to select some residents first! :)`);
+                    if(priority == 3 && learners && learners.length == 0) {
+                        alert(`You need to select some learners first! :)`);
                         return;
                     }
 
@@ -174,7 +174,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                         location: location,
                         repeat: showRepeatOptions,
                         description: description,
-                        participants: residents,
+                        participants: learners,
                         courses: courses,
                         rrule: rrule && rrule.toString() || null,
                         organizationId: selectedOrganization.organizationId,
@@ -432,7 +432,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                                     Assign to
                                                 </Label>
                                                 <Col sm={9}>
-                                                    {currentUserRole != Role.Resident && (
+                                                    {currentUserRole != Role.Learner && (
                                                         <>
                                                             <CustomInput inline
                                                             type="radio" 
@@ -462,9 +462,9 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
 
                                                     <CustomInput inline
                                                         type="radio" 
-                                                        id="priorityResidents" 
+                                                        id="priorityLearners" 
                                                         name="priority"
-                                                        label={currentUserRole != Role.Resident ? "Residents" : "Residents and supervisors"}
+                                                        label={currentUserRole != Role.Learner ? "Learners" : "Learners and supervisors"}
                                                         value="3"
                                                         checked={formikProps.values.priority == 3}
                                                         onChange={(event) => {
@@ -497,23 +497,23 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                             )}
                                             {formikProps.values && formikProps.values.priority && formikProps.values.priority == 3 && (
                                                 <FormGroup row>
-                                                    <Label for="residents" sm={3}>
+                                                    <Label for="learners" sm={3}>
                                                         Learners
                                                     </Label>
                                                     <Col sm={9}>
                                                             <Typeahead
                                                                 clearButton
-                                                                id="residents"
+                                                                id="learners"
                                                                 labelKey="name"
                                                                 options={users}
                                                                 multiple
-                                                                className={(formikProps.errors.residents && formikProps.touched.residents ? ' is-invalid' : '')}
+                                                                className={(formikProps.errors.learners && formikProps.touched.learners ? ' is-invalid' : '')}
                                                                 placeholder="Select learners..."
-                                                                onChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
-                                                                onInputChange={(selectedOptions) =>  formikProps.setFieldValue('residents', selectedOptions)}
+                                                                onChange={(selectedOptions) =>  formikProps.setFieldValue('learners', selectedOptions)}
+                                                                onInputChange={(selectedOptions) =>  formikProps.setFieldValue('learners', selectedOptions)}
                                                             />
                                                         
-                                                            <ErrorMessage name="residents" component="div" className="invalid-feedback" />
+                                                            <ErrorMessage name="learners" component="div" className="invalid-feedback" />
                                                     </Col>                                                    
                                                 </FormGroup>
                                             )}

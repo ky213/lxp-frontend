@@ -15,7 +15,7 @@ export const userService = {
     updateProfileData
 };
 
-function validateBulk(users, isResident) {
+function validateBulk(users, isLearner) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeader() },
@@ -24,8 +24,8 @@ function validateBulk(users, isResident) {
 
     console.log('validate', JSON.stringify(users));
     let query = '';
-    if (isResident)     
-        query = `${config.apiUrl}/residents/validateBulk`;
+    if (isLearner)     
+        query = `${config.apiUrl}/learners/validateBulk`;
     else
         query = `${config.apiUrl}/fm/validateBulk`;
 

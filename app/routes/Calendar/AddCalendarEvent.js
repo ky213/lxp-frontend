@@ -26,18 +26,18 @@ import {calendarService, userService, activityService} from '@/services';
 import { useAppState, AppStateContext } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
-export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, eventEnd, onSuccess}) => {
+export const AddCalendarEvent = ({toggle, isOpen, selectedLearner, eventStart, eventEnd, onSuccess}) => {
     const intl = useIntl();
     
-    //console.log("Selected resident for calendar:", selectedResident)
+    //console.log("Selected learner for calendar:", selectedLearner)
     const minDate = moment().toDate();
     const [{currentUser, selectedOrganization}, dispatch] = useAppState();
-    const [currentSelectedResident, setCurrentSelectedResident] = React.useState(null);
+    const [currentSelectedLearner, setCurrentSelectedLearner] = React.useState(null);
     const [users, setUsers] = React.useState([]);
 
     React.useEffect(() => {
-        console.log("Event start, end:", eventStart, eventEnd, selectedResident)
-        if(!selectedResident) {
+        console.log("Event start, end:", eventStart, eventEnd, selectedLearner)
+        if(!selectedLearner) {
             console.log("Entered get users:")
             userService.getAllActive(selectedOrganization.organizationId).then(users => {
                 console.log("Got users:", users)
@@ -52,11 +52,11 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
             <Formik
                 enableReinitialize={true}
                 initialValues={{
-                    title: selectedResident && `${selectedResident.residentName} (Meeting)` || '',
+                    title: selectedLearner && `${selectedLearner.learnerName} (Meeting)` || '',
                     description: '',
                     start: eventStart || moment().toDate(),
                     end: eventEnd || null,
-                    resident: ''
+                    learner: ''
                 }}
                 validationSchema={Yup.object().shape({
                     title: Yup.string().required('Title of the meeting is required'),
@@ -64,18 +64,18 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
                     end: Yup.date()
                             .when('start', (start, schema) => schema.min(start, ({min}) => `Ending time must be greater than meeting start time (${moment(min).format('LLLL')})`))
                 })}
-                onSubmit={async ({ title, description, start, end, resident }, { setStatus, setSubmitting }) => {
+                onSubmit={async ({ title, description, start, end, learner }, { setStatus, setSubmitting }) => {
                     setStatus();
                     setSubmitting(false);  
-                    console.log('onSubmit', title, description, start, end, resident);
+                    console.log('onSubmit', title, description, start, end, learner);
 
-                    if((selectedResident && selectedResident.residentId == currentUser.user.employeeId) ||
-                        (resident && resident.length > 0 && resident[0].employeeId == currentUser.user.employeeId)) {
+                    if((selectedLearner && selectedLearner.learnerId == currentUser.user.employeeId) ||
+                        (learner && learner.length > 0 && learner[0].employeeId == currentUser.user.employeeId)) {
                         alert(`You cannot request a meeting with yourself! :)`);
                         return;
                     }
 
-                    const selectedEmployeeName = selectedResident && selectedResident.residentName || resident && resident.length > 0 && resident[0].name || null;
+                    const selectedEmployeeName = selectedLearner && selectedLearner.learnerName || learner && learner.length > 0 && learner[0].name || null;
                     console.log("Selected employee name:", selectedEmployeeName)
 
 
@@ -92,7 +92,7 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
                             repeat: false,
                             description: description,
                             participants: [{
-                                employeeId: selectedResident && selectedResident.residentId || resident && resident.length > 0 && resident[0].employeeId || null
+                                employeeId: selectedLearner && selectedLearner.learnerId || learner && learner.length > 0 && learner[0].employeeId || null
                             }]
                         };
 
@@ -131,11 +131,11 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
                         <Form onSubmit={formikProps.handleSubmit}>
                         <ModalHeader tag="h6">
                         {
-                            selectedResident && (<>
+                            selectedLearner && (<>
                                 <span className="small ml-1 text-muted">
                                 Request a meeting with 
                                 </span>{' '}
-                                {selectedResident && selectedResident.residentName || ''}
+                                {selectedLearner && selectedLearner.learnerName || ''}
                                 </>
                             ) 
                             || "Create a calendar event"
@@ -181,7 +181,7 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
                                                     <ErrorMessage name="description" component="div" className="invalid-feedback" />
                                                 </Col>                                                    
                                             </FormGroup>
-                                            {!selectedResident && (
+                                            {!selectedLearner && (
                                                 <FormGroup row>
                                                     <Label for="title" sm={3}>
                                                         Employee
@@ -189,16 +189,16 @@ export const AddCalendarEvent = ({toggle, isOpen, selectedResident, eventStart, 
                                                     <Col sm={9}>
                                                             <Typeahead
                                                                 clearButton
-                                                                id="resident"
+                                                                id="learner"
                                                                 labelKey="name"
                                                                 options={users}
-                                                                className={(formikProps.errors.resident && formikProps.touched.resident ? ' is-invalid' : '')}
+                                                                className={(formikProps.errors.learner && formikProps.touched.learner ? ' is-invalid' : '')}
                                                                 placeholder="Select employee to request a meeting with..."
-                                                                onChange={(selectedOptions) =>  formikProps.setFieldValue('resident', selectedOptions)}
-                                                                onInputChange={(selectedOptions) =>  formikProps.setFieldValue('resident', selectedOptions)}
+                                                                onChange={(selectedOptions) =>  formikProps.setFieldValue('learner', selectedOptions)}
+                                                                onInputChange={(selectedOptions) =>  formikProps.setFieldValue('learner', selectedOptions)}
                                                             />
                                                         
-                                                        <ErrorMessage name="resident" component="div" className="invalid-feedback" />
+                                                        <ErrorMessage name="learner" component="div" className="invalid-feedback" />
                                                     </Col>                                                    
                                                 </FormGroup>
                                             )}

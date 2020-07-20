@@ -4,7 +4,7 @@ export const Role = {
     OrganizationManager: 'OrganizationManager',
     ProgramDirector: 'ProgramDirector',    
     FacultyMember: 'FacultyMember',
-    Resident: 'Resident'   
+    Learner: 'Learner'   
 }
 
 export const RoleDescription = {
@@ -13,5 +13,5 @@ export const RoleDescription = {
     OrganizationManager: 'Organization Manager',
     ProgramDirector: 'Program Manager',
     FacultyMember: 'Faculty Member',
-    Resident: 'Learner'   
+    Learner: 'Learner'   
 }

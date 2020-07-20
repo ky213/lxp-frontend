@@ -131,7 +131,7 @@ const EditProgram = (props) => {
             blockType: (program && program.blockTypeId) || "",
             minExperienceLevel: program && program.minExperienceLevel || "",
             maxExperienceLevel: program && program.maxExperienceLevel || "",
-            seniorResidentsStartLevel: program && program.seniorResidentsStartLevel || ""
+            seniorLearnersStartLevel: program && program.seniorLearnersStartLevel || ""
           }}
           validationSchema={Yup.object().shape({
             name: Yup.string().required('Name of a program is required'),
@@ -147,10 +147,10 @@ const EditProgram = (props) => {
             blockType: Yup.string().required('You need to select the block type'),
             minExperienceLevel: Yup.number().required(),
             maxExperienceLevel: Yup.number().required(),
-            seniorResidentsStartLevel: Yup.number().required()
+            seniorLearnersStartLevel: Yup.number().required()
           })}
           onSubmit={({ name, description, timeFrom, timeTo, allowedAnnualVacationWeeks, allowedEducationalLeaveDays, allowedEmergencyLeaveDays,
-            totalBlock, totalBlockSenior, totalBlockJunior, blockType, minExperienceLevel, maxExperienceLevel, seniorResidentsStartLevel },
+            totalBlock, totalBlockSenior, totalBlockJunior, blockType, minExperienceLevel, maxExperienceLevel, seniorLearnersStartLevel },
 
             { setStatus, setSubmitting }) => {
 
@@ -172,7 +172,7 @@ const EditProgram = (props) => {
                 blockTypeId: blockType,
                 minExperienceLevel,
                 maxExperienceLevel, 
-                seniorResidentsStartLevel                
+                seniorLearnersStartLevel                
               }).then(
                 reponse => {
                   let alertMessage = { title: intl.formatMessage({ id: 'General.Success'}), message: "You have sucessfully changed the program!", type: "success" }
@@ -414,7 +414,7 @@ const EditProgram = (props) => {
 
                             <FormGroup row>
                               <Label for="senior-block" sm={3}>
-                                Total number of blocks for senior residents
+                                Total number of blocks for senior learners
                               </Label>
                               <Col sm={3}>
                                 <Field
@@ -434,7 +434,7 @@ const EditProgram = (props) => {
 
                             <FormGroup row>
                               <Label for="junior-block" sm={3}>
-                                Total number of blocks for junior residents
+                                Total number of blocks for junior learners
                               </Label>
                               <Col sm={3}>
                                 <Field
@@ -509,17 +509,17 @@ const EditProgram = (props) => {
 
                             <FormGroup row>
                               <Label for="block-type" sm={3}>
-                                Residents are considered seniors from year
+                                Learners are considered seniors from year
                               </Label>
                               <Col sm={2}>
                                 <Field
                                     type="text"
-                                    name="seniorResidentsStartLevel"
-                                    id="seniorResidentsStartLevel"
-                                    className={'bg-white form-control' + (formikProps.errors.seniorResidentsStartLevel && formikProps.touched.seniorResidentsStartLevel ? ' is-invalid' : '')}
+                                    name="seniorLearnersStartLevel"
+                                    id="seniorLearnersStartLevel"
+                                    className={'bg-white form-control' + (formikProps.errors.seniorLearnersStartLevel && formikProps.touched.seniorLearnersStartLevel ? ' is-invalid' : '')}
                                     placeholder="Start level..."
                                   />
-                                <ErrorMessage name="seniorResidentsStartLevel" component="div" className="invalid-feedback" /> 
+                                <ErrorMessage name="seniorLearnersStartLevel" component="div" className="invalid-feedback" /> 
                                 </Col>
                                 <Label className="col-form-label">
                                   {' '} (onwards)

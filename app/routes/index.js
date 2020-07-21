@@ -9,8 +9,8 @@ import {
 import UserProfile from './UserProfile';
 import AdminLearners from './AdminLearners';
 import ImportLearnersFromCsv from './AdminLearners/ImportLearnersFromCsv';
-import AdminFm from './AdminFm';
-import ImportFmFromCsv from './AdminFm/ImportFmFromCsv';
+import AdminCm from './AdminCm';
+import ImportCmFromCsv from './AdminCm/ImportCmFromCsv';
 import AdminUserRoles from './AdminUserRoles';
 import AdminSuperAdmins from './AdminSuperAdmins';
 import Announcements from './Announcements';
@@ -50,7 +50,7 @@ import Programs from './Programs';
 import ProgramSettings from './ProgramSettings';
 import AcademicYears from './AcademicYears';
 import LearnerHome from './LearnerHome';
-import FacultyMemberHome from './FacultyMemberHome';
+import CourseManagerHome from './CourseManagerHome';
 import SuperAdminHome from './SuperAdminHome';
 import Notifications from './Notifications';
 import Courses from './Courses';
@@ -75,7 +75,7 @@ export const RoutedContent = (props) => {
           component={
             user && (
               user.role == Role.SuperAdmin && SuperAdminHome || 
-              (user.role != Role.Learner && user.role != Role.SuperAdmin) && FacultyMemberHome 
+              (user.role != Role.Learner && user.role != Role.SuperAdmin) && CourseManagerHome 
  
             ) || LearnerHome 
           }
@@ -90,14 +90,14 @@ export const RoutedContent = (props) => {
 
         <PrivateRoute
           path="/admin/users/learners"
-          roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
+          roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager]}
           exact
           component={AdminLearners}
         />
 
         <PrivateRoute
           path="/learners"
-          roles={[Role.OrganizationManager, Role.ProgramDirector]}
+          roles={[Role.LearningManager, Role.ProgramDirector]}
           exact
           component={AdminLearners}
         />
@@ -109,16 +109,16 @@ export const RoutedContent = (props) => {
         />
 
         <PrivateRoute
-          path="/admin/users/facultymembers"
-          roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
+          path="/admin/users/coursemanagers"
+          roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager]}
           exact
-          component={AdminFm}
+          component={AdminCm}
         />
         
         <PrivateRoute
-          path="/admin/users/csv/facultymembers"
+          path="/admin/users/csv/coursemanagers"
           exact
-          component={ImportFmFromCsv}
+          component={ImportCmFromCsv}
         />
 
         <PrivateRoute
@@ -129,20 +129,20 @@ export const RoutedContent = (props) => {
         
         <PrivateRoute
           path="/admin/users/roles"
-          roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
+          roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager]}
           exact
           component={AdminUserRoles}
         />
         
         <PrivateRoute
           path="/admin/organization"
-          roles={[Role.Admin, Role.OrganizationManager, Role.SuperAdmin]}
+          roles={[Role.Admin, Role.LearningManager, Role.SuperAdmin]}
           exact
           component={Organization}
         />
         <PrivateRoute
           path="/programs"
-          roles={[Role.Admin, Role.SuperAdmin, Role.OrganizationManager]}
+          roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager]}
           exact
           component={Programs}
         />
@@ -151,7 +151,7 @@ export const RoutedContent = (props) => {
           roles={[
             Role.Admin,
             Role.SuperAdmin,
-            Role.OrganizationManager,
+            Role.LearningManager,
             Role.ProgramDirector
           ]}
           exact
@@ -163,7 +163,7 @@ export const RoutedContent = (props) => {
           roles={[
             Role.Admin,
             Role.SuperAdmin,
-            Role.OrganizationManager,
+            Role.LearningManager,
             Role.ProgramDirector
           ]}
           exact
@@ -175,7 +175,7 @@ export const RoutedContent = (props) => {
           roles={[
             Role.Admin,
             Role.SuperAdmin,
-            Role.OrganizationManager,
+            Role.LearningManager,
             Role.ProgramDirector
           ]}
           exact
@@ -184,7 +184,7 @@ export const RoutedContent = (props) => {
 
         <PrivateRoute
           path="/admin/announcements"
-          roles={[Role.Admin, Role.OrganizationManager, Role.SuperAdmin, Role.ProgramDirector]}
+          roles={[Role.Admin, Role.LearningManager, Role.SuperAdmin, Role.ProgramDirector]}
           exact
           component={AdminAnnouncements}
         />
@@ -214,7 +214,7 @@ export const RoutedContent = (props) => {
           roles={[
             Role.Admin,
             Role.SuperAdmin,
-            Role.OrganizationManager,
+            Role.LearningManager,
             Role.ProgramDirector
           ]}
           exact

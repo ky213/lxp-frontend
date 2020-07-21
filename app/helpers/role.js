@@ -1,17 +1,17 @@
 export const Role = {
-    Admin: 'Admin',
+    Admin: 'Administrator',
     SuperAdmin: 'SuperAdmin',
-    OrganizationManager: 'OrganizationManager',
+    LearningManager: 'LearningManager',
     ProgramDirector: 'ProgramDirector',    
-    FacultyMember: 'FacultyMember',
+    CourseManager: 'CourseManager',
     Learner: 'Learner'   
 }
 
 export const RoleDescription = {
-    Admin: 'Admin',
+    Admin: 'Administrator',
     SuperAdmin: 'Super Admin',
-    OrganizationManager: 'Organization Manager',
+    LearningManager: 'Learning Manager',
     ProgramDirector: 'Program Manager',
-    FacultyMember: 'Faculty Member',
+    CourseManager: 'Course Manager',
     Learner: 'Learner'   
 }

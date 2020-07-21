@@ -35,7 +35,7 @@ const LogoThemed = ({ checkBackground, className, ...otherProps }) => {
                     <>
                     <Aligner>
                        
-                        <LearnLogo className="res-logo" fill={otherProps.fill} style={{height:'30px'}} title="Learning Experience Provider" />
+                        <LearnLogo className="res-logo" fill={otherProps.fill} style={{height:'30px'}} title="Learning Experience Platform" />
                     </Aligner>
                     
                     </>

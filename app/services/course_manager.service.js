@@ -1,9 +1,9 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from "@/helpers";
 
-const routePrefix = `${config.apiUrl}/fm`;
+const routePrefix = `${config.apiUrl}/cm`;
 
-export const facultyMemberService = {
+export const courseManagerService = {
   add,
   addBulk,
   getAll,

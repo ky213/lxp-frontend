@@ -20,7 +20,7 @@ import {
   Row
 } from "@/components";
 import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { facultyMemberService, roleService } from "@/services";
+import { courseManagerService, roleService } from "@/services";
 import { useAppState } from '@/components/AppState';
 
 const InvalidFeedback = styled.section`
@@ -30,7 +30,7 @@ const InvalidFeedback = styled.section`
     color: #ED1C24;
 `;
 
-const FmEdit = ({ user, onEdited, onCancel }) => {
+const CmEdit = ({ user, onEdited, onCancel }) => {
   const intl = useIntl();
 
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
@@ -41,7 +41,7 @@ const FmEdit = ({ user, onEdited, onCancel }) => {
   const [roles, setRoles] = React.useState([]);
 
   React.useEffect(() => {
-    roleService.getFmRoles().then(data => {
+    roleService.getCmRoles().then(data => {
       setRoles(data);
     });
   }, []);
@@ -86,7 +86,7 @@ const FmEdit = ({ user, onEdited, onCancel }) => {
         setStatus();
 
         if (user) {
-          facultyMemberService
+          courseManagerService
             .update({
               name,
               surname,
@@ -124,7 +124,7 @@ const FmEdit = ({ user, onEdited, onCancel }) => {
             )
             .catch(err => console.log("err", err));
         } else {
-          facultyMemberService
+          courseManagerService
             .add({
               name,
               surname,
@@ -394,4 +394,4 @@ const FmEdit = ({ user, onEdited, onCancel }) => {
   );
 };
 
-export default FmEdit;
+export default CmEdit;

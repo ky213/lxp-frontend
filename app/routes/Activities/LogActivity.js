@@ -22,7 +22,7 @@ import * as Yup from 'yup';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
 import moment from 'moment';
 import {AddonInput} from '@/routes/Forms/DatePicker/components';
-import {activityService, facultyMemberService} from '@/services';
+import {activityService, courseManagerService} from '@/services';
 import { useAppState, AppStateContext } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
@@ -47,7 +47,7 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
             setParticipationLevels(levels);
         });
         
-        facultyMemberService.getAllActive(1, 999, null, selectedOrganization.organizationId).then(users => {
+        courseManagerService.getAllActive(1, 999, null, selectedOrganization.organizationId).then(users => {
             console.log("Got users:", users)
             setSupervisors(users.users.map(usr => {
                 if(usr.employeeId != currentUser.user.employeeId) {

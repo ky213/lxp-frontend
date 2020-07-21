@@ -17,7 +17,7 @@ import {
   UncontrolledTooltip,
   ButtonToolbar
 } from "@/components";
-import { UserRowFm } from "./UserRowFm";
+import { UserRowCm } from "./UserRowCm";
 import { Paginations } from "@/routes/components/Paginations";
 import ThemedButton from "@/components/ThemedButton";
 import { useAppState } from '@/components/AppState';
@@ -64,7 +64,7 @@ const ListUsers = ({
   }
 
   const onDelete = async () => {
-    const message = selectedEmployees.length == 1 ? "this faculty member" : "these faculty members";
+    const message = selectedEmployees.length == 1 ? "this course manager" : "these course managers";
     if(confirm(`Are you sure you want to delete ${message}?`)) {
         try {
             await userService.deleteEmployees(selectedOrganization.organizationId, selectedEmployees);
@@ -72,7 +72,7 @@ const ListUsers = ({
             setSelectedEmployees([]);
         }
         catch(error) {
-            console.log("Error while deleting faculty members:", error);
+            console.log("Error while deleting course managers:", error);
             alert(`Something went wrong while deleting ${message}!`)
         }
     }
@@ -113,7 +113,7 @@ const ListUsers = ({
                   <ThemedButton
                     className="align-self-center"
                     tag={Link}
-                    to="/admin/users/csv/facultymembers"
+                    to="/admin/users/csv/coursemanagers"
                     id="tooltipImportFromCsv"
                   >
                     <i className="fa fa-fw fa-file-excel-o"></i>                   
@@ -137,7 +137,7 @@ const ListUsers = ({
                     placement="bottom"
                     target="tooltipAddNew"
                   >
-                    Add New Faculty Member
+                    Add New Course Manager
                   </UncontrolledTooltip>
                 </ButtonToolbar>
               </div>
@@ -164,7 +164,7 @@ const ListUsers = ({
                 <tbody>
                   {(users && users.length > 0 &&
                     users.map(user => (
-                      <UserRowFm
+                      <UserRowCm
                         props={user}
                         onUserEdit={onUserEdit}
                         key={user.userId}
@@ -172,7 +172,7 @@ const ListUsers = ({
                       />
                     ))) || (
                     <tr>
-                      <td colSpan={7}>There's no faculty members yet.</td>
+                      <td colSpan={7}>There's no course managers yet.</td>
                     </tr>
                   )}
                 </tbody>

@@ -27,7 +27,7 @@ import {
     FormText,
     Alert
 } from '@/components';
-import { activityTypesService, authenticationService, userService, facultyMemberService } from '@/services';
+import { activityTypesService, authenticationService, userService, courseManagerService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import ImageUpload from '@/components/ImageUpload';
 import { useAppState } from '@/components/AppState';

@@ -19,7 +19,7 @@ var config = {
 
     // Site Config ====================================================
     siteTitle:              process.env.APP_TITLE || 'Learn',
-    siteDescription:        process.env.APP_DESCRIPTION || 'Learning Experience Provider',
+    siteDescription:        process.env.APP_DESCRIPTION || 'Learning Experience Platform',
     siteCannonicalUrl:      process.env.APP_CANONICAL_URL || 'http://localhost:4101',
     siteKeywords:           process.env.APP_KEYWORDS || 'learning engagement timetable management',
     scssIncludes:           [],

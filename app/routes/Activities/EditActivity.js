@@ -664,7 +664,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                 </>
                             )}
                             
-                            {((currentUserRole == Role.SuperAdmin || currentUserRole == Role.Admin || currentUserRole == Role.OrganizationManager ) || 
+                            {((currentUserRole == Role.SuperAdmin || currentUserRole == Role.Admin || currentUserRole == Role.LearningManager ) || 
                                 selectedActivity.assignedBy == currentUser.user.employeeId)  && (
                                 <>
                                     <ThemedButton type="submit" color="primary">Edit</ThemedButton>

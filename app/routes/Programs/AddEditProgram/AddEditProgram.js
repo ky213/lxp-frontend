@@ -29,7 +29,7 @@ import {
     FormText,
     Alert
 } from '@/components';
-import { programService, authenticationService, userService, facultyMemberService } from '@/services';
+import { programService, authenticationService, userService, courseManagerService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import ImageUpload from '@/components/ImageUpload';
 import { useAppState } from '@/components/AppState';
@@ -64,8 +64,8 @@ const AddEditProgram = (props) => {
     }
 
     React.useEffect(() => {       
-        facultyMemberService.getAll(1, 999, null, selectedOrganization.organizationId).then((data) => {  
-            console.log("facultyMemberService : ", data); 
+        courseManagerService.getAll(1, 999, null, selectedOrganization.organizationId).then((data) => {  
+            console.log("courseManagerService : ", data); 
             if(data.users) {
                 const usersData = data.users.filter(u => u.role == Role.ProgramDirector).map(u => {  
                     return {

@@ -3,7 +3,7 @@ import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
 export const roleService = {
   getAll,
-  getFmRoles
+  getCmRoles
 };
 
 function getAll() {
@@ -11,7 +11,7 @@ function getAll() {
   return fetch(`${config.apiUrl}/roles`, requestOptions).then(handleResponse);
 }
 
-function getFmRoles() {
+function getCmRoles() {
   const requestOptions = { method: 'GET', headers: authHeader() };
-  return fetch(`${config.apiUrl}/roles/getFmRoles`, requestOptions).then(handleResponse);
+  return fetch(`${config.apiUrl}/roles/getCmRoles`, requestOptions).then(handleResponse);
 }

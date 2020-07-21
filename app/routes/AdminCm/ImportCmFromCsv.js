@@ -11,26 +11,26 @@ import {
 } from "@/components";
 import { HeaderMain } from "@/routes/components/HeaderMain";
 import ThemedButton from "@/components/ThemedButton";
-import { facultyMemberService, authenticationService, roleService } from "@/services";
+import { courseManagerService, authenticationService, roleService } from "@/services";
 import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 import { Loading } from "../../components";
 import Papa from 'papaparse';
 
-const ImportFmFromCsv = () => {
+const ImportCmFromCsv = () => {
   const [{currentUser, selectedOrganization}, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
   let history = useHistory();
 
   const [users, setUsers] = React.useState(null);
   const [showLoading, setShowLoading] = React.useState(false);
-  const [fmRoles, setFmRoles] = React.useState(null);
+  const [cmRoles, setCmRoles] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
   const inputFile = React.useRef(null);
 
   React.useEffect(() => {
-      roleService.getFmRoles().then((data) => {
-        setFmRoles(data); 
+      roleService.getCmRoles().then((data) => {
+        setCmRoles(data); 
       });
     }, []
   );
@@ -41,7 +41,7 @@ const ImportFmFromCsv = () => {
   
   const importClick = () => {
     setShowLoading(true);
-    facultyMemberService.addBulk(users, selectedOrganization.organizationId)
+    courseManagerService.addBulk(users, selectedOrganization.organizationId)
       .then(() => history.goBack())
       .catch(err => {
         console.log('userService.addBulk', err);
@@ -81,7 +81,7 @@ const ImportFmFromCsv = () => {
           csvUsers.push(user);
         },
         complete: function() {
-          facultyMemberService.validateBulk(csvUsers, selectedOrganization.organizationId)
+          courseManagerService.validateBulk(csvUsers, selectedOrganization.organizationId)
           .then(data => {
             setUsers(data.data);
             setImportDisabled(data.numOfRecordsInvalid > 0);
@@ -194,7 +194,7 @@ const ImportFmFromCsv = () => {
             <li>
               Gender options: M (male), F (female)
             </li>
-            <li>Valid roles: {fmRoles && fmRoles.map(r => r.roleId).join(', ')}</li>
+            <li>Valid roles: {cmRoles && cmRoles.map(r => r.roleId).join(', ')}</li>
           </ul>
         </Col>
       </Row>
@@ -213,7 +213,7 @@ const ImportFmFromCsv = () => {
 
   return (
     <Container>
-      <HeaderMain title="Import faculty members from csv" />
+      <HeaderMain title="Import course managers from csv" />
       <Card className="mb-3">
         <CardBody>
           <Row>
@@ -242,4 +242,4 @@ const ImportFmFromCsv = () => {
   );
 };
 
-export default ImportFmFromCsv;
+export default ImportCmFromCsv;

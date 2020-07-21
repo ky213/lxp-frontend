@@ -28,7 +28,7 @@ import { DlRowAddress } from "@/routes/components/Profile/DlRowAddress";
 
 import { useAppState, AppStateContext } from '@/components/AppState';
 
-const FacultyMemberHome = () => {
+const CourseManagerHome = () => {
     const [{currentUser}, dispatch] = useAppState();
     const user = currentUser && currentUser.user;
 
@@ -114,4 +114,4 @@ const FacultyMemberHome = () => {
     ) || null;
 }
 
-export default FacultyMemberHome;
+export default CourseManagerHome;

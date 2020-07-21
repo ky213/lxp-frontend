@@ -14,12 +14,12 @@ import { HeaderMain } from "@/routes/components/HeaderMain";
 import ListUsers from "./ListUsers";
 import {
   userService,
-  facultyMemberService  
+  courseManagerService  
 } from "@/services";
-import FmEdit from "./FmEdit";
+import CmEdit from "./CmEdit";
 import { useAppState } from '@/components/AppState';
 
-const AdminFm = () => {
+const AdminCm = () => {
   const [{selectedOrganization}] = useAppState();
   const [showEditForm, setShowEditForm] = React.useState(false);
   const [searchText, setSearchText] = React.useState(null);
@@ -57,7 +57,7 @@ const AdminFm = () => {
   };
 
   const getUsers = () => {
-    facultyMemberService
+    courseManagerService
       .getAll(pageId, recordsPerPage, searchText, selectedOrganization.organizationId)
       .then(data => {
         // console.log('getUsers', data);
@@ -96,10 +96,10 @@ const AdminFm = () => {
   return (
     <React.Fragment>
       <Container>
-        <HeaderMain title="Faculty members" />
+        <HeaderMain title="Course managers" />
         {showEditForm && (
           <Row>
-            <FmEdit
+            <CmEdit
               user={user}
               // setEmployeeId={setEmployeeId}
               onEdited={handleEdited}
@@ -127,4 +127,4 @@ const AdminFm = () => {
   );
 };
 
-export default AdminFm;
+export default AdminCm;

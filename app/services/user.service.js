@@ -27,7 +27,7 @@ function validateBulk(users, isLearner) {
     if (isLearner)     
         query = `${config.apiUrl}/learners/validateBulk`;
     else
-        query = `${config.apiUrl}/fm/validateBulk`;
+        query = `${config.apiUrl}/cm/validateBulk`;
 
     return fetch(query, requestOptions)
             .then(handleResponse)

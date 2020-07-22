@@ -38,8 +38,8 @@ steps:
   - id: 'push to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['-h', 'Cache-Control:no-cache,max-age=0', 'cp', '-a', 'public-read', '-r', './dist/*', 'gs://${_STORAGE}/']
-    waitFor:
-      - 'clear DEMO storage before new release'
+    # waitFor:
+    #   - 'clear DEMO storage before new release'
 
 
   - id: 'create envconfig'

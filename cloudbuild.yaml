@@ -28,11 +28,11 @@ steps:
       - 'npm install'
 
 
-  - id: 'clear DEMO storage before new release'
-    name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-m', '-q', 'rm', '-rf', "gs://${_STORAGE}/**"]
-    waitFor:
-      - 'build release'
+  # - id: 'clear DEMO storage before new release'
+  #   name: 'gcr.io/cloud-builders/gsutil'
+  #   args: ['-m', '-q', 'rm', '-rf', "gs://${_STORAGE}/**"]
+  #   waitFor:
+  #     - 'build release'
 
 
   - id: 'push to DEMO storage'

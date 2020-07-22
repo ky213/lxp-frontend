@@ -37,10 +37,9 @@ steps:
 
   - id: 'push to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './dist/*', 'gs://${_STORAGE}/']
+    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './dist/*', 'gs://${_STORAGE}/lxp/']
     waitFor:
       - 'clear DEMO storage before new release'
-
 
   - id: 'create envconfig'
     name: 'alpine'

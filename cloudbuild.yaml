@@ -56,8 +56,8 @@ steps:
         echo "API_URL=$_BACKEND_BASE_URL" >> env-config.js
         echo "}" >> env-config.js
 
-    waitFor:
-      - 'clear DEMO storage before new release'
+    # waitFor:
+    #   - 'clear DEMO storage before new release'
 
   - id: 'push envconfig to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'

@@ -1,0 +1,66 @@
+steps:
+
+  - id: 'npm install'
+    name: 'node'
+    args: [ "npm","install" ]
+    waitFor:
+      - '-'
+
+  - id: 'prepare env file'
+    name: 'alpine'
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        echo "APP_TITLE=Pulse" >> build/.env.production
+        echo "APP_CANONICAL_URL=$_FRONTEND_BASE_URL" >> build/.env.production
+        echo "APP_DESCRIPTION=Resident Management System" >> build/.env.production
+        echo "APP_KEYWORDS=residents engagement timetable management" >> build/.env.production
+        echo "API_URL=$_BACKEND_BASE_URL" >> build/.env.production
+    waitFor:
+      - '-'
+
+  - id: 'build release'
+    name: 'node'
+    args: [ "npm", "run", "build:prod" ]
+    waitFor:
+      - 'prepare env file'
+      - 'npm install'
+
+
+  - id: 'clear DEMO storage before new release'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-m', '-q', 'rm', '-rf', "gs://${_STORAGE}/**"]
+    waitFor:
+      - 'build release'
+
+
+  - id: 'push to DEMO storage'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-h', 'Cache-Control:no-cache,max-age=0', 'cp', '-a', 'public-read', '-r', './dist/*', 'gs://${_STORAGE}/']
+    waitFor:
+      - 'clear DEMO storage before new release'
+
+
+  - id: 'create envconfig'
+    name: 'alpine'
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        echo "window._env_ = {" >> env-config.js
+        echo "APP_TITLE=Pulse" >> env-config.js
+        echo "APP_CANONICAL_URL=$_FRONTEND_BASE_URL" >> env-config.js
+        echo "APP_DESCRIPTION=Resident Management System" >> env-config.js
+        echo "APP_KEYWORDS=residents engagement timetable management" >> env-config.js
+        echo "API_URL=$_BACKEND_BASE_URL" >> env-config.js
+        echo "}" >> env-config.js
+
+    waitFor:
+      - 'clear DEMO storage before new release'
+
+  - id: 'push envconfig to DEMO storage'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-h', 'Cache-Control:no-cache,max-age=0', 'cp', '-a', 'public-read', 'env-config.js', 'gs://${_STORAGE}/pages/']
+    waitFor:
+      - 'create envconfig'

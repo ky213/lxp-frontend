@@ -28,18 +28,18 @@ steps:
       - 'npm install'
 
 
-  # - id: 'clear DEMO storage before new release'
-  #   name: 'gcr.io/cloud-builders/gsutil'
-  #   args: ['-m', '-q', 'rm', '-rf', "gs://${_STORAGE}/**"]
-  #   waitFor:
-  #     - 'build release'
+  - id: 'clear DEMO storage before new release'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-m', '-q', 'rm', '-rf', "gs://${_STORAGE}/**"]
+    waitFor:
+      - 'build release'
 
 
   - id: 'push to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['-h', 'Cache-Control:no-cache,max-age=0', 'cp', '-a', 'public-read', '-r', './dist/*', 'gs://${_STORAGE}/']
-    # waitFor:
-    #   - 'clear DEMO storage before new release'
+    waitFor:
+      - 'clear DEMO storage before new release'
 
 
   - id: 'create envconfig'
@@ -56,8 +56,8 @@ steps:
         echo "API_URL=$_BACKEND_BASE_URL" >> env-config.js
         echo "}" >> env-config.js
 
-    # waitFor:
-    #   - 'clear DEMO storage before new release'
+    waitFor:
+      - 'clear DEMO storage before new release'
 
   - id: 'push envconfig to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'

@@ -65,7 +65,7 @@ steps:
     waitFor:
       - 'create envconfig'
 
-  - id: 'push to DEMO storage'
+  - id: 'add public access'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['acl', 'ch', '-u', 'AllUsers:R', '-r', 'gs://${_STORAGE}/*']
     waitFor:

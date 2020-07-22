@@ -60,7 +60,7 @@ steps:
 
   - id: 'push envconfig to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/lxp/pages']
+    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/lxp/pages/']
     waitFor:
       - 'create envconfig'
 

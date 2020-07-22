@@ -37,7 +37,7 @@ steps:
 
   - id: 'push to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0', 'cp', '-a', 'public-read', '-r', './dist/*', 'gs://${_STORAGE}/']
+    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './dist/*', 'gs://${_STORAGE}/']
     waitFor:
       - 'clear DEMO storage before new release'
 
@@ -61,6 +61,13 @@ steps:
 
   - id: 'push envconfig to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0', 'cp', '-a', 'public-read', 'env-config.js', 'gs://${_STORAGE}/pages/']
+    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/pages/']
     waitFor:
       - 'create envconfig'
+
+  - id: 'push to DEMO storage'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['acl', 'ch', '-u', 'AllUsers:R', '-r', 'gs://${_STORAGE}/*']
+    waitFor:
+      - 'push to DEMO storage'
+      - 'push envconfig to DEMO storage'

@@ -1,12 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { 
     Container,
     Row,
-    Col
+    Col,
+    Card,
+    CardBody
 } from '@/components';
 import { HeaderMain } from "@/routes/components/HeaderMain";
-
+import { Profile } from "@/routes/components/Profile";
 import { useAppState } from '@/components/AppState';
 import styled from "styled-components";
 import { activityService } from "@/services";
@@ -99,9 +102,19 @@ const LearnerHome = () => {
             </Responsive>
             <Responsive displayIn={["mobile"]}>
                 <h5 className="mb-4 mt-4">{`Hello, ${user.fullName}`}</h5>
-            </Responsive>
-
+            </Responsive>            
+            <br/>
             { /* START Content */}
+            <Row>
+                <Col lg={ 4 }>
+                    <Card>
+                        <CardBody>
+                            <Profile selectedUser={user} tag={ Link } to="/user/profile" />
+                        </CardBody>
+                    </Card>
+                </Col>                
+            </Row>
+            <br/>
             <Row>
                 <Col lg={ 4 }>
                     {todayEvents && (

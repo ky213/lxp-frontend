@@ -92,6 +92,7 @@
 
       function redirect() {
         const url = Object.assign({}, window.location);
+        console.log(url);
         if (url.protocol !== 'https:') {
           url.href = url.href.replace('http:','https:');
           window.location.href = url.href;

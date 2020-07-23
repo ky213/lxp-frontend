@@ -83,8 +83,24 @@
         z-index: 100;
     }
   </style>
+
+
 </head>
 <body>
+  <script>
+    (function () {
+
+      function redirect() {
+        const url = Object.assign({}, window.location);
+        if (url.protocol !== 'https:') {
+          url.href = url.href.replace('http:','https:');
+        }
+        window.location.href = url.href;
+      }
+      redirect();
+    })();
+  </script>
+
   <!-- START Loader -->
   <div class="initial-loader-wrap">
     <div class="initial-loader">

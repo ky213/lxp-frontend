@@ -94,8 +94,9 @@
         const url = Object.assign({}, window.location);
         if (url.protocol !== 'https:') {
           url.href = url.href.replace('http:','https:');
+          window.location.href = url.href;
         }
-        window.location.href = url.href;
+
       }
       redirect();
     })();

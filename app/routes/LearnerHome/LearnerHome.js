@@ -75,7 +75,18 @@ const LearnerHome = () => {
     const [upcomingEvents, setUpcomingEvents] = React.useState(null);
 
     React.useEffect(() => {
-        fetchData();
+        
+            try {
+                const fetchData = async () => {
+                    
+                }
+    
+                fetchData();
+            }
+            catch(error) {
+                console.log("Error while fetching data:", error)
+            }
+
     }, [])
     
     return user && (<React.Fragment>

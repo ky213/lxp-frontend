@@ -338,7 +338,7 @@ const EditCourse = ({ course,
                               </Label>
                               <Col sm={9}>
                                 <input
-                                  type="file"
+                                  type="file" required 
                                   onChange={(f) => formikProps.setFieldValue(
                                     "fileData",
                                     f.target.files[0]

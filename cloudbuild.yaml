@@ -28,18 +28,18 @@ steps:
       - 'npm install'
 
 
-  - id: 'clear DEMO storage before new release'
+  - id: 'clear PROD storage before new release'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['-m', '-q', 'rm', '-rf', "gs://${_STORAGE}/**"]
     waitFor:
       - 'build release'
 
 
-  - id: 'push to DEMO storage'
+  - id: 'push to PROD storage'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './dist/*', 'gs://${_STORAGE}/lxp/']
     waitFor:
-      - 'clear DEMO storage before new release'
+      - 'clear PROD storage before new release'
 
   - id: 'create envconfig'
     name: 'alpine'
@@ -56,15 +56,15 @@ steps:
         echo "}" >> env-config.js
 
     waitFor:
-      - 'clear DEMO storage before new release'
+      - 'clear PROD storage before new release'
 
-  - id: 'push envconfig to DEMO storage'
+  - id: 'push envconfig to PROD storage'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/lxp/pages/']
     waitFor:
       - 'create envconfig'
 
-  - id: 'push envconfig to DEMO storage - 2'
+  - id: 'push envconfig to PROD storage - 2'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/']
     waitFor:
@@ -74,6 +74,6 @@ steps:
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['acl', 'ch', '-u', 'AllUsers:R', '-r', 'gs://${_STORAGE}/*']
     waitFor:
-      - 'push to DEMO storage'
+      - 'push to PROD storage'
       - 'push envconfig to DEMO storage'
       - 'push envconfig to DEMO storage - 2'

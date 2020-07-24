@@ -75,5 +75,5 @@ steps:
     args: ['acl', 'ch', '-u', 'AllUsers:R', '-r', 'gs://${_STORAGE}/*']
     waitFor:
       - 'push to PROD storage'
-      - 'push envconfig to DEMO storage'
-      - 'push envconfig to DEMO storage - 2'
+      - 'push envconfig to PROD storage'
+      - 'push envconfig to PROD storage - 2'

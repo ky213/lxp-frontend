@@ -12,7 +12,7 @@ steps:
     args:
       - '-c'
       - |
-        echo "APP_TITLE=Pulse" >> build/.env.production
+        echo "APP_TITLE=Learn" >> build/.env.production
         echo "APP_CANONICAL_URL=$_FRONTEND_BASE_URL" >> build/.env.production
         echo "APP_DESCRIPTION=Resident Management System" >> build/.env.production
         echo "APP_KEYWORDS=residents engagement timetable management" >> build/.env.production
@@ -48,7 +48,7 @@ steps:
       - '-c'
       - |
         echo "window._env_ = {" >> env-config.js
-        echo "APP_TITLE=Pulse" >> env-config.js
+        echo "APP_TITLE=Learn" >> env-config.js
         echo "APP_CANONICAL_URL=$_FRONTEND_BASE_URL" >> env-config.js
         echo "APP_DESCRIPTION=Resident Management System" >> env-config.js
         echo "APP_KEYWORDS=residents engagement timetable management" >> env-config.js

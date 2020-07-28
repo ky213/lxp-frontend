@@ -8,7 +8,7 @@
         "Error": "Error",
         "ErrorUpdateMessage": "Error while updating: {error}",
         "ErrorInsertMessage": "Error while inserting: {error}",
-        
+        "Delete": "Delete",
         "Dismiss": "Dismiss",        
         "Update": "Update",
         "Create": "Create",

@@ -65,12 +65,12 @@ const SuperAdminHome = (props) => {
         }        
     }
     
-    const handleSelected = (e, Organization) => {
+    const handleSelected = (e, organization) => {
         if(e.target.checked) {
-            setSelectedOrganizations([...selectedOrganizations, Organization]);
+            setSelectedOrganizations([...selectedOrganizations, organization]);
         }
         else {
-            setSelectedOrganizations(selectedOrganizations.filter(i => i.organizationId != Organization.organizationId));
+            setSelectedOrganizations(selectedOrganizations.filter(i => i.organizationId != organization.organizationId));
         }
     }
 
@@ -100,8 +100,8 @@ const SuperAdminHome = (props) => {
         theme.onChangeTheme({
             backgroundColor: null,
             foregroundColor: null,
-            OrganizationLogo: null,
-            OrganizationName: null
+            organizationLogo: null,
+            organizationName: null
           });
        
     }, [])

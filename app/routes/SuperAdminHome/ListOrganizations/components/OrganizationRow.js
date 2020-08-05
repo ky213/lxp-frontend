@@ -71,8 +71,8 @@ const OrganizationRow = (props) => {
                       themeState.onChangeTheme({
                         backgroundColor: props.props.backgroundColorCode,
                         foregroundColor: props.props.colorCode,
-                        OrganizationLogo: props.props.logo,
-                        OrganizationName: props.props.name,
+                        organizationLogo: props.props.logo,
+                        organizationName: props.props.name,
                       });
                     }}
                   >

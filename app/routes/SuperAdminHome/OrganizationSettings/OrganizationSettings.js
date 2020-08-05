@@ -64,7 +64,8 @@ const InvalidFeedback = styled.section`
 const OrganizationSettings = (props) => {
     const intl = useIntl();
     
-    const [Organization, setOrganization] = React.useState(null);
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+    const [organization, setOrganization] = React.useState(null);
     const [showAlert, setShowAlert] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState(null);
     const [showColorPicker, setShowColorPicker] = React.useState(false);
@@ -87,7 +88,7 @@ const OrganizationSettings = (props) => {
     React.useEffect(() => {
             //const organizationId = queryParams && queryParams.id || currentUser && currentUser.user.organizationId;
             if(props.organizationId) {
-                //console.log("Edit Organization useEffect:", organizationId)
+                //console.log("Edit organization useEffect:", organizationId)
                 organizationService.getById(props.organizationId).then((data) => {
                     setOrganization(data);
                     setSelectedColorCode(data.colorCode || '#FFFFFF');
@@ -121,8 +122,8 @@ const OrganizationSettings = (props) => {
             <Formik { ...themeState } { ...props }
                 enableReinitialize={true}
                 initialValues={{
-                    name: Organization && Organization.name || '',
-                    isActive: Organization && Organization.isActive  || !Organization,
+                    name: organization && organization.name || '',
+                    isActive: organization && organization.isActive  || !organization,
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(intl.formatMessage({ id: 'General.NameIsRequired'})),
@@ -132,11 +133,11 @@ const OrganizationSettings = (props) => {
                     console.log('onSubmit', name, selectedColorCode, selectedBackgroundColorCode, isActive);
 
                     // Updating existing
-                    if(Organization) {
+                    if(organization) {
                         try {
                             const updatedOrganization = {
                                 name, 
-                                organizationId: Organization.organizationId, 
+                                organizationId: organization.organizationId, 
                                 isActive,
                                 colorCode: selectedColorCode, 
                                 backgroundColorCode: selectedBackgroundColorCode, 
@@ -145,7 +146,7 @@ const OrganizationSettings = (props) => {
 
                             await organizationService.update(updatedOrganization);
 
-                            dispatch({type:SUPER_ADMIN_UPDATE_ORGANIZATION, Organization: updatedOrganization});
+                            dispatch({type:SUPER_ADMIN_UPDATE_ORGANIZATION, organization: updatedOrganization});
 
                             showAlertMessage({
                                 title: intl.formatMessage({ id: 'General.Success'}),
@@ -174,7 +175,7 @@ const OrganizationSettings = (props) => {
                             reponse => {
                                 showAlertMessage({
                                     title: intl.formatMessage({ id: 'General.Success'}),
-                                    message: "You have sucessfully created an Organization!",
+                                    message: "You have sucessfully created an organization!",
                                     type: "success"
                                 });
       
@@ -315,9 +316,9 @@ const OrganizationSettings = (props) => {
                                                     <Col sm={3} />
                                                     <Col sm={9}>
                                                         <ThemedButton type="submit">
-                                                            {Organization && intl.formatMessage({ id: 'General.Update'}) || intl.formatMessage({ id: 'General.Create'})}
+                                                            {organization && intl.formatMessage({ id: 'General.Update'}) || intl.formatMessage({ id: 'General.Create'})}
                                                         </ThemedButton>{' '}
-                                                        <Button type="button" onClick={() => onCancel()} color="light">{!Organization && "Cancel" || "Go back"}</Button>
+                                                        <Button type="button" onClick={() => onCancel()} color="light">{!organization && "Cancel" || "Go back"}</Button>
                                                     </Col>
                                                 </FormGroup>
                                           </Form>

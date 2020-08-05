@@ -60,7 +60,7 @@ const ListOrganizations = ({
                     <Col lg={ 12 }>
                         <HeaderDemo 
                             no={1} 
-                            // title={useIntl.formatMessage({ id: 'SuperAdminHome.organizations'})}
+                            // title={useIntl.formatMessage({ id: 'SuperAdminHome.Organizations'})}
                             subTitle={intl.formatMessage({ id: 'SuperAdminHome.ListOrganizations.Subtitle'})}
                         />
                     </Col>

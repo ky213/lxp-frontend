@@ -156,7 +156,8 @@ const OrganizationSettings = (props) => {
                             props.onEdited();
                             setSubmitting(false);
                         }
-                        catch(exc) {
+                        catch(error) {
+                            console.log("Got an error while updating the organization:", error)
                             showAlertMessage({
                                 title: intl.formatMessage({ id: 'General.Error'}),
                                 message: intl.formatMessage({ id: 'General.ErrorUpdateMessage'}, {error: error }),

@@ -7,6 +7,7 @@ import moment from 'moment';
 import { SketchPicker } from 'react-color';
 import styled from "styled-components";
 import ThemedButton from "@/components/ThemedButton";
+import { useIntl } from "react-intl";
 
 import { 
     Container,
@@ -71,6 +72,8 @@ const InvalidFeedback = styled.section`
 `;
 
 const OrganizationSettings = (props) => {
+    const intl = useIntl();
+
     const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [organization, setOrganization] = React.useState(null);
     const [showAlert, setShowAlert] = React.useState(false);
@@ -159,7 +162,7 @@ const OrganizationSettings = (props) => {
                             props.onEdited();
                             setSubmitting(false);
                         }
-                        catch(exc) {
+                        catch(error) {
                             showAlertMessage({
                                 title: "Error",
                                 message: `Error while changing organization settings: ${error}`,

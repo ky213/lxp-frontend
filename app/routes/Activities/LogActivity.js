@@ -374,7 +374,7 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
                                                             id="supervisors"
                                                             labelKey="name"
                                                             options={supervisors}
-                                                            selected={selectedActivity && selectedActivity.supervisors || []}
+                                                            selected={formikProps.values.supervisors}
                                                             className={(formikProps.errors.supervisor && formikProps.touched.supervisor ? ' is-invalid' : '')}
                                                             placeholder="Select a supervisor..."
                                                             onChange={(selectedOptions) =>  formikProps.setFieldValue('supervisors', selectedOptions)}

@@ -5,7 +5,8 @@ const routePrefix = `${config.apiUrl}/courses`;
 export const courseService = {
     getAll,
     getById,
-    deleteCourses
+    deleteCourses,
+    getAllJoinedCourses
 };
 
 function getAll(organizationId, programId, page, take, filter) {    
@@ -28,4 +29,10 @@ function deleteCourses(courseIds, organizationId) {
     };
     
     return fetch(`${routePrefix}/deleteCourses`, requestOptions).then(handleResponse);
+}
+
+function getAllJoinedCourses(organizationId, page, take, filter)  {
+    const requestOptions = { method: 'GET', headers: authHeader() };
+    let query = buildQuery({ organizationId, page, take, filter });
+    return fetch(`${routePrefix}/allJoinedCourses?${query}`, requestOptions).then(handleResponse);  
 }

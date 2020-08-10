@@ -23,29 +23,12 @@ import {
     UncontrolledTabs
   } from "@/components";
 
-  /*
-  Container,
-  Row,
-  Col,
-  CardHeader,
-  DropdownToggle,
-  DropdownItem,
-  DropdownMenu,
-  UncontrolledButtonDropdown,
-  Card,
-  ButtonGroup,
-  Button,
-  CardBody,
-  CardFooter,
-  CardGroup,
-  */
-
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
 import moment from 'moment';
 import {AddonInput} from '@/routes/Forms/DatePicker/components';
-import {activityService, learnerService, subspecialtiesService, expLevelService, programService} from '@/services';
+import {activityService, learnerService, courseService, expLevelService, programService} from '@/services';
 import { useAppState } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
@@ -53,15 +36,17 @@ import ThemedButton from "@/components/ThemedButton";
 import ActivityReplies from "./components/ActivityReplies";
 import RRuleGenerator from 'react-rrule-generator';
 import { RRule, RRuleSet, rrulestr } from 'rrule'
-import { Loading } from "@/components";
+import { Loading, FileList } from "@/components";
 
-export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, onSuccess}) => {
+export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, currentProgramId, onSuccess}) => {
     //console.log("Selected learner for calendar:", selectedLearner)
     //const minDate = moment().toDate();
     if (!selectedActivity) {
         return isOpen && <Loading /> || null;
     }
 
+    const [files, setFiles] = React.useState([]);
+    const [urls, setUrls] = React.useState([]);
     const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
     const [users, setUsers] = React.useState([]);
@@ -70,10 +55,11 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
     const [timeDifference, setTimeDifference] = React.useState(30);
     const [remainder, setRemainder] = React.useState(selectedActivity && (30 - moment(selectedActivity.start).minute() % 30) || 0);
     const [courses, setCourses] = React.useState([]);
+    const [experienceLevels, setExperienceLevels] = React.useState([]);
     const [rrule, setRRule] = React.useState(selectedActivity.rrule);
     const [showRepeatOptions, setShowRepeatOptions] = React.useState(selectedActivity.repeat);
+    const [selectedProgram, setSelectedProgram] = React.useState(null);
     const currentProgram = selectedActivity && selectedActivity.programId && userPrograms && userPrograms.filter(p => p.programId == selectedActivity.programId) || [];
-
 
     const updateActivityStatus = async (status) => {
         try {
@@ -103,8 +89,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                 }
 
                 if(currentUser && currentUser.user) {
-                    
-           
+                               
                     try {
                         const learners = await learnerService.getAllActive(1, 999, null, selectedOrganization.organizationId, selectedActivity.programId);
                         setUsers(learners.users.map(usr => ({employeeId: usr.employeeId, name: `${usr.name} ${usr.surname}`})));
@@ -117,7 +102,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         const data = await courseService.getAll(
                           selectedOrganization.organizationId,
                           currentProgramId,
-                          1,
+                          1
                         );
                 
                         console.log("Courses data:", data)
@@ -127,8 +112,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                         }
                     } catch (err) {
                         console.log("Error while fetching courses:", err)
-                    }
-                
+                    }               
                     
                 }
             }
@@ -141,7 +125,8 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
             setSelectedPriority(selectedActivity.priority);
             setShowRepeatOptions(selectedActivity.repeat);
             setRRule(selectedActivity.rrule);
-
+            setFiles(selectedActivity.files);
+            setUrls(selectedActivity.links);
         }
 
     }, [selectedActivity]);
@@ -152,6 +137,105 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
         formikProps.setFieldValue('levels', [])
         formikProps.setFieldValue('learners', [])        
     }
+
+    const handleUploadFile = async (file) => {    
+        console.log('uploading file', file);
+        file = {...file, activityId: selectedActivity.activityId, status: 'uploaded'};
+
+        activityService.addActivityFile(file)
+            .then((activityFileId) => {
+            //updateAnnouncementInList(files.length + 1);
+            console.log('file uploaded', activityFileId);
+            file = {...file, activityFileId: activityFileId, status: 'uploaded'};
+            setFiles(z => z.map(f => {
+                if (f.name != file.name)
+                return f;
+                
+                return file;
+            }));
+
+            alert("The file has been uploaded")
+            })
+            .catch((error) => {
+            file = {...file, status: 'error'};
+            setFiles(z => z.map(f => {
+                if (f.name != file.name)
+                return f;
+                
+                return file;
+            }));
+            alert(`Error while uploading the file`, error);
+            });
+    }
+    
+    const handleDownloadFile = async (file) => {
+        return await activityService.downloadActivityFile(file.activityFileId)
+    }
+
+    const handleRemoveFile = async (file) => {
+        if(file) {
+            if (file.activityFileId) {
+                await activityService.deleteActivityFile(file.activityFileId)
+                //updateAnnouncementInList(files.length - 1);
+                setFiles(z =>
+                  z.filter(f => f.activityFileId != file.activityFileId)
+                );
+        
+                alert("The file has been deleted");
+              
+            } else {
+              setFiles(z => z.filter(f => f.name != file.name));
+            }
+        }
+        
+    };
+
+    const handleRemoveLink = async (link) => {
+        if(link) {
+            if (link.activityLinkId) {
+                await activityService.deleteActivityLink(link.activityLinkId)
+
+                setUrls(z =>
+                  z.filter(f => f.activityLinkId != link.activityLinkId)
+                );
+        
+                alert("The link has been deleted");
+              
+            } else {
+                setUrls(z => z.filter(f => f.url != link.url));
+            }
+        }
+    }
+
+    const handleAddLink = async (url) => {    
+        console.log('Adding url', url);
+        let link = {url: url, activityId: selectedActivity.activityId};
+
+        activityService.addActivityLink(link)
+            .then((activityLinkId) => {
+                console.log('link added', activityLinkId);
+                link = {...link, activityLinkId: activityLinkId, status: "uploaded"};
+
+                setUrls(oldUrls => oldUrls.concat(link));
+       
+                console.log(urls);
+
+                alert("The link has sucessfully been added!");
+                return link;
+            })
+            .catch((error) => {
+                link = {...link, status: 'error'};
+                setUrls(z => z.map(f => {
+                    if (f.url != link.url)
+                    return f;
+                    
+                    return link;
+                }));
+
+                alert(`Error while adding the link to the activity!`, error);
+            });
+    }
+
     
     //console.log("Selected activity:", selectedActivity, userPrograms, userPrograms.filter(up => up.programId == selectedActivity.programId))
 
@@ -274,6 +358,11 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                 <NavItem>
                                     <UncontrolledTabs.NavLink tabId="details">
                                         Details
+                                    </UncontrolledTabs.NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <UncontrolledTabs.NavLink tabId="files">
+                                        Links & Files
                                     </UncontrolledTabs.NavLink>
                                 </NavItem>
                             </Nav>
@@ -651,6 +740,19 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, on
                                 <ActivityReplies 
                                     selectedActivity={selectedActivity}
                                     currentUser={currentUser && currentUser.user} 
+                                />
+                            </TabPane>
+                            <TabPane tabId="files">
+                                <FileList
+                                  files={files}
+                                  urls={urls}
+                                  setFiles={setFiles}
+                                  setUrls={setUrls}
+                                  onUploadFile={handleUploadFile}
+                                  onDownloadFile={handleDownloadFile}
+                                  onRemoveFile={handleRemoveFile}
+                                  onAddLink={handleAddLink}
+                                  onRemoveLink={handleRemoveLink}
                                 />
                             </TabPane>
                             </UncontrolledTabs.TabContent>

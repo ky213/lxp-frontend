@@ -27,8 +27,11 @@ import { useAppState, AppStateContext } from '@/components/AppState';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
 import ThemedButton from "@/components/ThemedButton";
+import { Loading, FileList } from "@/components";
 
 export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, selectedActivity}) => {
+    const [files, setFiles] = React.useState([]);
+    const [urls, setUrls] = React.useState([]);
     const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const currentUserRole = currentUser && currentUser.user && currentUser.user.role;
     const [supervisors, setSupervisors] = React.useState([]);
@@ -63,6 +66,9 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
             const calculatedTimeDifference = Math.round(moment.duration(moment(selectedActivity.end).diff(moment(selectedActivity.start))).add(remainder, 'minutes').asMinutes());
             console.log("Initial time diff:", calculatedTimeDifference)
             setTimeDifference(calculatedTimeDifference);
+
+            setFiles(selectedActivity.files)
+            setUrls(selectedActivity.urls)
         }
 
     }, [selectedActivity]);
@@ -86,6 +92,107 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
             toggle();
         }
     }
+
+    const handleUploadFile = async (file) => {    
+        console.log('uploading file', file);
+        file = {...file, logActivityId: selectedActivity.activityId, status: 'uploaded'};
+    
+        activityService.addLogActivityFile(file)
+          .then((logActivityFileId) => {
+            //updateAnnouncementInList(files.length + 1);
+            console.log('file uploaded', logActivityFileId);
+            file = {...file, logActivityFileId: logActivityFileId, status: 'uploaded'};
+            setFiles(z => z.map(f => {
+              if (f.name != file.name)
+                return f;
+              
+              return file;
+            }));
+
+            alert("The file has been uploaded")
+          })
+          .catch((error) => {
+            console.log("Error while uploading the file:", error)
+            file = {...file, status: 'error'};
+            setFiles(z => z.map(f => {
+              if (f.name != file.name)
+                return f;
+              
+              return file;
+            }));
+            alert(`Error while uploading the file`);
+          });
+      }
+    
+    const handleDownloadFile = async (file) => {
+        return await activityService.downloadLogActivityFile(file.logActivityFileId)
+    }
+
+    const handleRemoveFile = async (file) => {
+        if(file) {
+            if (file.logActivityFileId) {
+                await activityService.deleteLogActivityFile(file.logActivityFileId)
+                //updateAnnouncementInList(files.length - 1);
+                setFiles(z =>
+                  z.filter(f => f.logActivityFileId != file.logActivityFileId)
+                );
+        
+                alert("The file has been deleted");
+              
+            } else {
+              setFiles(z => z.filter(f => f.name != file.name));
+            }
+        }
+        
+    }
+
+    const handleRemoveLink = async (link) => {
+        if(link) {
+            if (link.logActivityLinkId) {
+                await activityService.deleteLogActivityLink(link.logActivityLinkId)
+                //updateAnnouncementInList(files.length - 1);
+                setUrls(z =>
+                  z.filter(f => f.logActivityLinkId != link.logActivityLinkId)
+                );
+        
+                alert("The link has been deleted");
+              
+            } else {
+                setUrls(z => z.filter(f => f.url != link.url));
+            }
+        }
+    }
+
+    const handleAddLink = async (url) => {    
+        console.log('Adding url', url);
+        let link = {url: url, logActivityId: selectedActivity.activityId};
+
+        activityService.addLogActivityLink(link)
+            .then((logActivityLinkId) => {
+                console.log('link added', logActivityLinkId);
+                link = {...link, logActivityLinkId: logActivityLinkId, status: "uploaded"};
+
+                setUrls(oldUrls => oldUrls.concat(link))
+
+       
+                console.log(urls);
+
+                alert("The link has sucessfully been added!")
+                return link;
+            })
+            .catch((error) => {
+                link = {...link, status: 'error'};
+                setUrls(z => z.map(f => {
+                    if (f.url != link.url)
+                    return f;
+                    
+                    return link;
+                }));
+
+                alert(`Error while adding the link to the activity!`);
+            });
+    }
+
 
 
     return (
@@ -352,7 +459,25 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
                                                 </FormGroup>
                                             )}
 
-                                  
+                                            {selectedActivity && (
+                                                <Row>
+                                                    <Label sm={3}>Files</Label>
+                                                    <Col sm={9}>
+                                                        <FileList
+                                                            files={files}
+                                                            setFiles={setFiles}
+                                                            urls={urls}
+                                                            setUrls={setUrls}
+                                                            onUploadFile={handleUploadFile}
+                                                            onDownloadFile={handleDownloadFile}
+                                                            onRemoveFile={handleRemoveFile}
+                                                            onAddLink={handleAddLink}
+                                                            onRemoveLink={handleRemoveLink}
+                                                        />
+
+                                                    </Col>
+                                                </Row>
+                                            )}
                                         { /* END Form */}
                                     </CardBody>
                                 </Card>                  

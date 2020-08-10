@@ -60,7 +60,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                     const data = await courseService.getAll(
                       selectedOrganization.organizationId,
                       currentProgramId,
-                      1,
+                      1
                     );
             
                     console.log("Courses data:", data)
@@ -96,7 +96,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
     }, [isOpen]);
 
     const eventStartObj = eventStart && moment(eventStart).toObject() || null;
-    const eventEndObj = eventStart && moment(eventEnd).toObject() || null;
+    const eventEndObj = eventEnd && moment(eventEnd).toObject() || null;
     const remainder = 30 - (moment().minute() % 30);
 
     const changePriority = (formikProps, priority) => {
@@ -106,6 +106,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
     }
 
     console.log("Selected program id:", currentProgramId)
+    console.log("Event start/end:", eventStartObj, eventEndObj)
 
     return (
         <Modal toggle={toggle} isOpen={isOpen} className="modal-outline-primary" size="lg">

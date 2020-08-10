@@ -16,7 +16,17 @@ export const activityService = {
     getReplies,
     addReply,
     updateReply,
-    deleteReply
+    deleteReply,
+    addActivityFile,
+    addLogActivityFile,
+    deleteActivityFile,
+    deleteLogActivityFile,
+    downloadActivityFile,
+    downloadLogActivityFile,
+    addActivityLink,
+    addLogActivityLink,
+    deleteActivityLink,
+    deleteLogActivityLink
 };
 
 function getAll(programId, from, to, selectedOrganizationId) {
@@ -193,3 +203,137 @@ function deleteReply(replyId) {
             return data;
     });
 }
+
+function addActivityFile(file) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify(file)
+    };
+  
+    return fetch(`${config.apiUrl}/activities/addActivityFile`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+  
+  function deleteActivityFile(activityFileId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+    };
+  
+    return fetch(`${config.apiUrl}/activities/deleteActivityFile/${activityFileId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+  
+  function downloadActivityFile(activityFileId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+    };
+  
+    return fetch(`${config.apiUrl}/activities/downloadActivityFile/${activityFileId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+
+  function addLogActivityFile(file) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify(file)
+    };
+  
+    return fetch(`${config.apiUrl}/activities/addLogActivityFile`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+  
+  function deleteLogActivityFile(logActivityFileId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+    };
+  
+    return fetch(`${config.apiUrl}/activities/deleteLogActivityFile/${logActivityFileId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+  
+  function downloadLogActivityFile(logActivityFileId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+    };
+  
+    return fetch(`${config.apiUrl}/activities/downloadLogActivityFile/${logActivityFileId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+
+  function addActivityLink(link) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify(link)
+    };
+  
+    return fetch(`${config.apiUrl}/activities/addActivityLink`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+  
+  function deleteActivityLink(activityLinkId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+    };
+  
+    return fetch(`${config.apiUrl}/activities/deleteActivityLink/${activityLinkId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+
+  function addLogActivityLink(link) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify(link)
+    };
+  
+    return fetch(`${config.apiUrl}/activities/addLogActivityLink`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }
+  
+  function deleteLogActivityLink(logActivityLinkId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+    };
+  
+    return fetch(`${config.apiUrl}/activities/deleteLogActivityLink/${logActivityLinkId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+  }

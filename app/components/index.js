@@ -41,6 +41,7 @@ import UncontrolledPopover from './UncontrolledPopover';
 import UncontrolledTabs from './UncontrolledTabs';
 import Wizard from './Wizard';
 import {InvalidFeedback} from './InvalidFeedback';
+import {FileList} from './FileList';
 // Export non overriden Reactstrap components
 export {
     Alert,
@@ -157,5 +158,6 @@ export {
     UncontrolledModal,
     Wizard,
     InvalidFeedback,
-    ThemedButton
+    ThemedButton,
+    FileList
 };

@@ -18,7 +18,8 @@ import {
 } from '@/components';
 import { ProgramRow } from "./components/ProgramRow";
 import { Paginations } from "@/routes/components/Paginations";
-
+import { useAppState } from '@/components/AppState';
+import { Role } from '@/helpers';
 import {
     HeaderDemo
 } from "@/routes/components/HeaderDemo";
@@ -32,7 +33,13 @@ const ListPrograms = ({ programs, onProgramEdit, onProgramCreate, onSearch, onSe
     searchText,
     hideCreateButton }) => {
 
+    const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+    const isProgramDirector = currentUser && currentUser.user && currentUser.user.role == Role.ProgramDirector;
+
     const intl = useIntl();
+
+    if (isProgramDirector)
+        hideCreateButton = true;
 
     let paginationContent = "";
     if (totalNumberOfRecords > 0) {

@@ -142,7 +142,7 @@ export const RoutedContent = (props) => {
         />
         <PrivateRoute
           path="/programs"
-          roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager]}
+          roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager, Role.ProgramDirector]}
           exact
           component={Programs}
         />

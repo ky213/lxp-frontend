@@ -17,6 +17,7 @@ import ThemedButton from "@/components/ThemedButton";
 import { Paginations } from "@/routes/components/Paginations";
 import { courseService } from "@/services";
 import { useAppState } from "@/components/AppState";
+import { Role } from '@/helpers';
 
 const CourseList = ({
   courses,
@@ -27,12 +28,17 @@ const CourseList = ({
   totalNumberOfRecords,
   recordsPerPage,
   pageId,
-  setPageId
+  setPageId,
+  hideCheckBox
 }) => {
   const intl = useIntl();
 
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const [selectedCourses, setSelectedCourses] = React.useState([]);  
+  const isProgramDirector = currentUser && currentUser.user && currentUser.user.role == Role.ProgramDirector;
+
+  if (isProgramDirector)
+    hideCheckBox = true;
 
   const onSelected = (courseId, e) => {
     if (e.target.checked) {
@@ -124,6 +130,7 @@ const CourseList = ({
                       {courses.map((item) => {
                         return (
                           <tr key={item.courseId}>
+                            {!hideCheckBox && (
                             <td>
                               <CustomInput
                                 type="checkbox"
@@ -131,6 +138,7 @@ const CourseList = ({
                                 id={`CourseCheckbox-${item.courseId}`}
                               />
                             </td>
+                            )}
                             <td>
                               <a
                                 href="#"

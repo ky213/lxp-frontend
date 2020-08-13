@@ -228,7 +228,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                                         name="program"
                                                         labelKey="name"
                                                         options={userPrograms || []}
-                                                        selected={formikProps.values.program}
+                                                        //selected={formikProps.values.program}
                                                         className={(formikProps.errors.program && formikProps.touched.program ? ' is-invalid' : '')}
                                                         placeholder="Select a program..."
                                                         onChange={(selectedOptions) => {

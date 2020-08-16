@@ -20,22 +20,28 @@ import { Role} from '@/helpers';
 const ActivityReplies = (props) => {
     const [{currentUser, selectedOrganization}, dispatch] = useAppState();
     const [replies, setReplies] = React.useState(props.selectedActivity && props.selectedActivity.replies || []);
+    const {destination} = props;
     
     const getReplies = async () => {
-        const replies = await activityService.getReplies(props.selectedActivity && props.selectedActivity.activityId);
+        const replies = destination && destination == "log-activity" && await activityService.getLogActivityReplies(props.selectedActivity && props.selectedActivity.activityId) || 
+            await activityService.getReplies(props.selectedActivity && props.selectedActivity.activityId);
+
         setReplies(replies);
     }
 
     const handleSendReply = async (reply) => {
         //console.log("Triggered send reply:", {text:reply, activityId: props.selectedActivity && props.selectedActivity.activityId || null})
-        await activityService.addReply({text:reply, activityId: props.selectedActivity && props.selectedActivity.activityId || null});
+        destination && destination == "log-activity" && await activityService.addLogActivityReply({text:reply, activityId: props.selectedActivity && props.selectedActivity.activityId || null}) || 
+            await activityService.addReply({text:reply, activityId: props.selectedActivity && props.selectedActivity.activityId || null});
         await getReplies();
     }
 
     const handleDeleteReply = async (replyId) => {
         //console.log("Delete reply:", replyId)
         try {
-            await activityService.deleteReply(replyId);
+            destination && destination == "log-activity" && await activityService.deleteLogActivityReply(replyId) ||
+                await activityService.deleteReply(replyId);
+
             await getReplies();
         }
         catch(error) {

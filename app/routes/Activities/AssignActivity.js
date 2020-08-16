@@ -46,7 +46,6 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
         if(isOpen) {
 
             const fetchData = async () => {
-                console.log("Nešo test")
                 try {
                     const activityTypes = await activityService.getActivityTypes(selectedOrganization.organizationId);
                     setActivityTypes(activityTypes);
@@ -92,7 +91,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
 
         setRRule(false);
         setShowRepeatOptions(false);
-
+        console.log("Got user programs:", userPrograms, currentProgramId && userPrograms && userPrograms.filter(p => p.programId == currentProgramId) || [])
     }, [isOpen]);
 
     const eventStartObj = eventStart && moment(eventStart).toObject() || null;
@@ -115,9 +114,9 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                 initialValues={{
                     activityName: '',
                     description: '',
-                    program: currentProgram || [],
-                    start: eventStart && moment().add(remainder, 'minutes').set({ years: eventStartObj.years, months: eventStartObj.months, date: eventStartObj.date }).toDate() || '',
-                    end: eventEnd && moment().add(remainder, 'minutes').add(timeDifference, 'minutes').set({ years: eventEndObj.years, months: eventEndObj.months, date: eventEndObj.date }).toDate() || '',
+                    program: currentProgramId && userPrograms && userPrograms.filter(p => p.programId == currentProgramId) || [{name:""}],
+                    start: eventStart || eventStartObj && moment().add(remainder, 'minutes').set({ years: eventStartObj.years, months: eventStartObj.months, date: eventStartObj.date }).toDate()  || '',
+                    end: eventEnd || eventEndObj && moment().add(remainder, 'minutes').add(timeDifference, 'minutes').set({ years: eventEndObj.years, months: eventEndObj.months, date: eventEndObj.date }).toDate()  || '',
                     learners: [],
                     priority: 1,
                     activityType: '',
@@ -183,8 +182,12 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                     };
                     
                     try {
-                        await activityService.create(activity);
+                        const response = await activityService.create(activity);
+                        console.log("Got activity response:", response)
                         alert(`You have successfully assigned an activity!`);
+                        if(response.warning) {
+                            alert(response.warning)
+                        }
 
                         toggle();
                         if(onSuccess) {
@@ -227,7 +230,7 @@ export const AssignActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess,
                                                         id="program"
                                                         name="program"
                                                         labelKey="name"
-                                                        options={userPrograms || []}
+                                                        options={userPrograms}
                                                         //selected={formikProps.values.program}
                                                         className={(formikProps.errors.program && formikProps.touched.program ? ' is-invalid' : '')}
                                                         placeholder="Select a program..."

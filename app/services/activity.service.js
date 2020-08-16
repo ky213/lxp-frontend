@@ -26,7 +26,11 @@ export const activityService = {
     addActivityLink,
     addLogActivityLink,
     deleteActivityLink,
-    deleteLogActivityLink
+    deleteLogActivityLink,
+    getLogActivityReplies,
+    addLogActivityReply,
+    updateLogActivityReply,
+    deleteLogActivityReply,
 };
 
 function getAll(programId, from, to, selectedOrganizationId) {
@@ -337,3 +341,51 @@ function addActivityFile(file) {
             return data;
         });
   }
+
+  function getLogActivityReplies(activityId) {
+    const requestOptions = { method: 'GET', headers: authHeader() };
+    return fetch(`${config.apiUrl}/activities/${activityId}/log-activity/replies`, requestOptions).then(handleResponse);
+}
+
+function addLogActivityReply(reply) {
+    //console.log("Create calendar activity:", activity)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify(reply)
+    };
+
+    return fetch(`${config.apiUrl}/activities/log-activity/reply`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
+}
+
+function updateLogActivityReply(replyId, message) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify({text:message})
+    };
+
+    return fetch(`${config.apiUrl}/activities/log-activity/reply/${replyId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+    });
+}
+
+function deleteLogActivityReply(replyId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: null
+    };
+
+    return fetch(`${config.apiUrl}/activities/log-activity/reply/${replyId}`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            return data;
+    });
+}

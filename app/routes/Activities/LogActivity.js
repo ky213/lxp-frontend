@@ -14,7 +14,11 @@ import {
     CustomInput,
     InputGroup,
     InputGroupAddon,
-    InvalidFeedback
+    InvalidFeedback,
+    TabPane,
+    Nav,
+    NavItem,
+    UncontrolledTabs
   } from "@/components";
 
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -28,6 +32,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
 import ThemedButton from "@/components/ThemedButton";
 import { Loading, FileList } from "@/components";
+import ActivityReplies from "./components/ActivityReplies";
 
 export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, selectedActivity}) => {
     const [files, setFiles] = React.useState([]);
@@ -68,7 +73,7 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
             setTimeDifference(calculatedTimeDifference);
 
             setFiles(selectedActivity.files)
-            setUrls(selectedActivity.urls)
+            setUrls(selectedActivity.links)
         }
 
     }, [selectedActivity]);
@@ -276,213 +281,247 @@ export const LogActivity = ({toggle, isOpen, eventStart, eventEnd, onSuccess, se
                         <Form onSubmit={formikProps.handleSubmit}>
                         <ModalHeader tag="h6" toggle={toggle}>{selectedActivity && "Edit logged activity" || "Log an activity"}</ModalHeader>
                         <ModalBody>
-
-                        <Row>
-                            <Col lg={ 12 }>
-                                <Card className="mb-3">
-                                    <CardBody>
-                                        { /* START Form */}
-                                        
-                                            { /* START Input */}
-            
-                                            <FormGroup row>
-                                                <Label for="name" sm={3}>
-                                                    Activity name
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <Field 
-                                                        type="text" 
-                                                        name="activityName" 
-                                                        id="activityName" 
-                                                        className={'bg-white form-control' + (formikProps.errors.activityName && formikProps.touched.activityName ? ' is-invalid' : '')} 
-                                                        placeholder="Activity name..." 
-                                                    />
-                                                    <ErrorMessage name="activityName" component="div" className="invalid-feedback" />
-                                                </Col>                                                    
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="start" sm={3}>
-                                                    From
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <DatePicker
-                                                        customInput={ <AddonInput /> }
-                                                        dateFormat="dd/MM/yyyy h:mm aa"
-                                                        showTimeSelect
-                                                        showMonthDropdown
-                                                        autoComplete="off"
-                                                        showYearDropdown
-                                                        name="start"
-                                                        id="start"
-                                                        className={(formikProps.errors.start && formikProps.touched.start ? ' is-invalid' : '')}
-                                                        selected={formikProps.values.start}
-                                                        onChange={e => {
-                                                            formikProps.setFieldValue('start', e);
-                                                            formikProps.setFieldValue('end', moment(e).add(timeDifference, 'minutes').toDate());
-                                                        }}
-                                                    />
-                                                    {formikProps.errors.start && formikProps.touched.start && <InvalidFeedback>{formikProps.errors.start}</InvalidFeedback>}                                  
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="end" sm={3}>
-                                                    To
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <DatePicker
-                                                        customInput={ <AddonInput /> }
-                                                        dateFormat="dd/MM/yyyy h:mm aa"
-                                                        name="end"
-                                                        id="end"
-                                                        showTimeSelect
-                                                        autoComplete="off"
-                                                        showMonthDropdown
-                                                        showYearDropdown
-                                                        className={ (formikProps.errors.end && formikProps.touched.end ? ' is-invalid' : '')}
-                                                        selected={formikProps.values.end}
-                                                        onChange={e => {
-                                                            formikProps.setFieldValue('end', e);
-                                                            const calculatedTimeDifference = moment.duration(moment(e).diff(moment(formikProps.values.start))).asMinutes();
-                                                            setTimeDifference(calculatedTimeDifference)
-                                                        }}
-                                                        />  
-                                                    {formikProps.errors.end && formikProps.touched.end && <InvalidFeedback>{formikProps.errors.end}</InvalidFeedback>}                                                             
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="location" sm={3}>
-                                                    Location
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <Field 
-                                                        type="text" 
-                                                        name="location" 
-                                                        id="location" 
-                                                        className={'bg-white form-control' + (formikProps.errors.location && formikProps.touched.location ? ' is-invalid' : '')} 
-                                                        placeholder="Location..." 
-                                                    /> 
-                                                    <ErrorMessage name="location" component="div" className="invalid-feedback" />                                                           
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="supervisors" sm={3}>
-                                                    Supervisor
-                                                </Label>
-                                                <Col sm={9}>
-                                                        <Typeahead
-                                                            clearButton
-                                                            id="supervisors"
-                                                            labelKey="name"
-                                                            options={supervisors}
-                                                            selected={formikProps.values.supervisors}
-                                                            className={(formikProps.errors.supervisor && formikProps.touched.supervisor ? ' is-invalid' : '')}
-                                                            placeholder="Select a supervisor..."
-                                                            onChange={(selectedOptions) =>  formikProps.setFieldValue('supervisors', selectedOptions)}
-                                                            onInputChange={(selectedOptions) =>  formikProps.setFieldValue('supervisors', selectedOptions)}
-                                                        />
+                        <UncontrolledTabs initialActiveTabId={selectedActivity && "replies" || "details"}>
+                            { /* START Pills Nav */}
+                            {selectedActivity && (
+                            <Nav pills className="mb-4 flex-column flex-md-row mt-4 mt-lg-0">
+                                {selectedActivity && (
+                                    <NavItem>
+                                        <UncontrolledTabs.NavLink tabId="replies">
+                                            Replies
+                                        </UncontrolledTabs.NavLink>
+                                    </NavItem>
+                                )}
+                                <NavItem>
+                                    <UncontrolledTabs.NavLink tabId="details">
+                                        Details
+                                    </UncontrolledTabs.NavLink>
+                                </NavItem>
+                                {selectedActivity && (
+                                    <NavItem>
+                                        <UncontrolledTabs.NavLink tabId="files">
+                                            Links & Files
+                                        </UncontrolledTabs.NavLink>
+                                    </NavItem>
+                                )}
+                            </Nav>
+                            )}
+                            { /* END Pills Nav */}
+                            <UncontrolledTabs.TabContent>
+                                <TabPane tabId="details">
+                                    <Row>
+                                        <Col lg={ 12 }>
+                                            <Card className="mb-3">
+                                                <CardBody>
+                                                    { /* START Form */}
                                                     
-                                                        <ErrorMessage name="supervisors" component="div" className="invalid-feedback" />
-                                                </Col>                                                    
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="activityType" sm={3}>
-                                                    Activity type
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <Field 
-                                                        component="select" 
-                                                        name="activityType" 
-                                                        id="activityType" 
-                                                        className={'bg-white form-control' + (formikProps.errors.activityType && formikProps.touched.activityType ? ' is-invalid' : '')} 
-                                                        placeholder="Activity type..." 
-                                                    >
-                                                        <option key={9999} value="">Activity type...</option>
-                                                        {activityTypes.map(at => {
-                                                            //console.log("Map each at:", at)
-                                                            return (
-                                                            <option key={at.activityTypeId} value={at.activityTypeId}>{at.activityTypeName}</option>
-                                                            );
-                                                        })} 
-                                                    </Field> 
-                                                    <ErrorMessage name="activityType" component="div" className="invalid-feedback" />                                                           
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="participationLevel" sm={3}>
-                                                    Participation level
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <Field 
-                                                        component="select" 
-                                                        name="participationLevel" 
-                                                        id="participationLevel" 
-                                                        className={'bg-white form-control' + (formikProps.errors.participationLevel && formikProps.touched.participationLevel ? ' is-invalid' : '')} 
-                                                        placeholder="Participation level..." 
-                                                    >
-                                                        <option key={8959} value="">Participation Level...</option>
-                                                        {participationLevels.map(at => {
-                                                            //console.log("Map each at:", at)
-                                                            return (
-                                                            <option key={at.participationLevel} value={at.participationLevel}>{at.type}</option>
-                                                            );
-                                                        })} 
-                                                    </Field> 
-                                                    <ErrorMessage name="participationLevel" component="div" className="invalid-feedback" />                                                           
-                                                </Col>
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <Label for="details" sm={3}>
-                                                    Details
-                                                </Label>
-                                                <Col sm={9}>
-                                                    <Field component="textarea"
-                                                        name="details" 
-                                                        id="details" 
-                                                        className={'bg-white form-control' + (formikProps.errors.details && formikProps.touched.details ? ' is-invalid' : '')} 
-                                                        placeholder="Enter activity details..." 
-                                                    />
-                                                    <ErrorMessage name="details" component="div" className="invalid-feedback" />
-                                                </Col>                                                    
-                                            </FormGroup>
-                                            {selectedActivity && (
-                                                <FormGroup row>
-                                                    <Label for="createdBy" sm={3}>
-                                                        Created by
-                                                    </Label>
-                                                    <Col sm={9}>
-                                                        <Label  className="col-form-label">
-                                                            <strong>{`${selectedActivity.loggedByFirstName} ${selectedActivity.loggedByLastName}`} 
-                                                            {currentUser && currentUser.user && selectedActivity.loggedBy == currentUser.user.employeeId && " (You)"}</strong>
-                                                        </Label>
-                                                        
-                                                    </Col>                                                    
-                                                </FormGroup>
-                                            )}
-
-                                            {selectedActivity && (
-                                                <Row>
-                                                    <Label sm={3}>Files</Label>
-                                                    <Col sm={9}>
-                                                        <FileList
-                                                            files={files}
-                                                            setFiles={setFiles}
-                                                            urls={urls}
-                                                            setUrls={setUrls}
-                                                            onUploadFile={handleUploadFile}
-                                                            onDownloadFile={handleDownloadFile}
-                                                            onRemoveFile={handleRemoveFile}
-                                                            onAddLink={handleAddLink}
-                                                            onRemoveLink={handleRemoveLink}
-                                                        />
-
-                                                    </Col>
-                                                </Row>
-                                            )}
-                                        { /* END Form */}
-                                    </CardBody>
-                                </Card>                  
-                            </Col>                
-                        </Row>
+                                                        { /* START Input */}
+                        
+                                                        <FormGroup row>
+                                                            <Label for="name" sm={3}>
+                                                                Activity name
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <Field 
+                                                                    type="text" 
+                                                                    name="activityName" 
+                                                                    id="activityName" 
+                                                                    className={'bg-white form-control' + (formikProps.errors.activityName && formikProps.touched.activityName ? ' is-invalid' : '')} 
+                                                                    placeholder="Activity name..." 
+                                                                />
+                                                                <ErrorMessage name="activityName" component="div" className="invalid-feedback" />
+                                                            </Col>                                                    
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="start" sm={3}>
+                                                                From
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <DatePicker
+                                                                    customInput={ <AddonInput /> }
+                                                                    dateFormat="dd/MM/yyyy h:mm aa"
+                                                                    showTimeSelect
+                                                                    showMonthDropdown
+                                                                    autoComplete="off"
+                                                                    showYearDropdown
+                                                                    name="start"
+                                                                    id="start"
+                                                                    className={(formikProps.errors.start && formikProps.touched.start ? ' is-invalid' : '')}
+                                                                    selected={formikProps.values.start}
+                                                                    onChange={e => {
+                                                                        formikProps.setFieldValue('start', e);
+                                                                        formikProps.setFieldValue('end', moment(e).add(timeDifference, 'minutes').toDate());
+                                                                    }}
+                                                                />
+                                                                {formikProps.errors.start && formikProps.touched.start && <InvalidFeedback>{formikProps.errors.start}</InvalidFeedback>}                                  
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="end" sm={3}>
+                                                                To
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <DatePicker
+                                                                    customInput={ <AddonInput /> }
+                                                                    dateFormat="dd/MM/yyyy h:mm aa"
+                                                                    name="end"
+                                                                    id="end"
+                                                                    showTimeSelect
+                                                                    autoComplete="off"
+                                                                    showMonthDropdown
+                                                                    showYearDropdown
+                                                                    className={ (formikProps.errors.end && formikProps.touched.end ? ' is-invalid' : '')}
+                                                                    selected={formikProps.values.end}
+                                                                    onChange={e => {
+                                                                        formikProps.setFieldValue('end', e);
+                                                                        const calculatedTimeDifference = moment.duration(moment(e).diff(moment(formikProps.values.start))).asMinutes();
+                                                                        setTimeDifference(calculatedTimeDifference)
+                                                                    }}
+                                                                    />  
+                                                                {formikProps.errors.end && formikProps.touched.end && <InvalidFeedback>{formikProps.errors.end}</InvalidFeedback>}                                                             
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="location" sm={3}>
+                                                                Location
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <Field 
+                                                                    type="text" 
+                                                                    name="location" 
+                                                                    id="location" 
+                                                                    className={'bg-white form-control' + (formikProps.errors.location && formikProps.touched.location ? ' is-invalid' : '')} 
+                                                                    placeholder="Location..." 
+                                                                /> 
+                                                                <ErrorMessage name="location" component="div" className="invalid-feedback" />                                                           
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="supervisors" sm={3}>
+                                                                Supervisor
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                    <Typeahead
+                                                                        clearButton
+                                                                        id="supervisors"
+                                                                        labelKey="name"
+                                                                        options={supervisors}
+                                                                        selected={formikProps.values.supervisors}
+                                                                        className={(formikProps.errors.supervisor && formikProps.touched.supervisor ? ' is-invalid' : '')}
+                                                                        placeholder="Select a supervisor..."
+                                                                        onChange={(selectedOptions) =>  formikProps.setFieldValue('supervisors', selectedOptions)}
+                                                                        onInputChange={(selectedOptions) =>  formikProps.setFieldValue('supervisors', selectedOptions)}
+                                                                    />
+                                                                
+                                                                    <ErrorMessage name="supervisors" className="invalid-feedback" />
+                                                            </Col>                                                    
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="activityType" sm={3}>
+                                                                Activity type
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <Field 
+                                                                    component="select" 
+                                                                    name="activityType" 
+                                                                    id="activityType" 
+                                                                    className={'bg-white form-control' + (formikProps.errors.activityType && formikProps.touched.activityType ? ' is-invalid' : '')} 
+                                                                    placeholder="Activity type..." 
+                                                                >
+                                                                    <option key={9999} value="">Activity type...</option>
+                                                                    {activityTypes.map(at => {
+                                                                        //console.log("Map each at:", at)
+                                                                        return (
+                                                                        <option key={at.activityTypeId} value={at.activityTypeId}>{at.activityTypeName}</option>
+                                                                        );
+                                                                    })} 
+                                                                </Field> 
+                                                                <ErrorMessage name="activityType" component="div" className="invalid-feedback" />                                                           
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="participationLevel" sm={3}>
+                                                                Participation level
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <Field 
+                                                                    component="select" 
+                                                                    name="participationLevel" 
+                                                                    id="participationLevel" 
+                                                                    className={'bg-white form-control' + (formikProps.errors.participationLevel && formikProps.touched.participationLevel ? ' is-invalid' : '')} 
+                                                                    placeholder="Participation level..." 
+                                                                >
+                                                                    <option key={8959} value="">Participation Level...</option>
+                                                                    {participationLevels.map(at => {
+                                                                        //console.log("Map each at:", at)
+                                                                        return (
+                                                                        <option key={at.participationLevel} value={at.participationLevel}>{at.type}</option>
+                                                                        );
+                                                                    })} 
+                                                                </Field> 
+                                                                <ErrorMessage name="participationLevel" component="div" className="invalid-feedback" />                                                           
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup row>
+                                                            <Label for="details" sm={3}>
+                                                                Details
+                                                            </Label>
+                                                            <Col sm={9}>
+                                                                <Field component="textarea"
+                                                                    name="details" 
+                                                                    id="details" 
+                                                                    className={'bg-white form-control' + (formikProps.errors.details && formikProps.touched.details ? ' is-invalid' : '')} 
+                                                                    placeholder="Enter activity details..." 
+                                                                />
+                                                                <ErrorMessage name="details" component="div" className="invalid-feedback" />
+                                                            </Col>                                                    
+                                                        </FormGroup>
+                                                        {selectedActivity && (
+                                                            <FormGroup row>
+                                                                <Label for="createdBy" sm={3}>
+                                                                    Created by
+                                                                </Label>
+                                                                <Col sm={9}>
+                                                                    <Label  className="col-form-label">
+                                                                        <strong>{`${selectedActivity.loggedByFirstName} ${selectedActivity.loggedByLastName}`} 
+                                                                        {currentUser && currentUser.user && selectedActivity.loggedBy == currentUser.user.employeeId && " (You)"}</strong>
+                                                                    </Label>
+                                                                    
+                                                                </Col>                                                    
+                                                            </FormGroup>
+                                                        )}
+                                                    { /* END Form */}
+                                                </CardBody>
+                                            </Card>                  
+                                        </Col>                
+                                    </Row>
+                                </TabPane>
+                                {selectedActivity && (
+                                    <>
+                                        <TabPane tabId="replies">
+                                            <ActivityReplies 
+                                                destination="log-activity"
+                                                selectedActivity={selectedActivity}
+                                                currentUser={currentUser && currentUser.user} 
+                                            />
+                                        </TabPane>
+                                        <TabPane tabId="files">
+                                            <FileList
+                                                files={files}
+                                                urls={urls}
+                                                setFiles={setFiles}
+                                                setUrls={setUrls}
+                                                onUploadFile={handleUploadFile}
+                                                onDownloadFile={handleDownloadFile}
+                                                onRemoveFile={handleRemoveFile}
+                                                onAddLink={handleAddLink}
+                                                onRemoveLink={handleRemoveLink}
+                                            />
+                                        </TabPane>
+                                    </>
+                                )}
+                            </UncontrolledTabs.TabContent>
+                        </UncontrolledTabs>
                         </ModalBody>
                         <ModalFooter>
                             {!selectedActivity && (

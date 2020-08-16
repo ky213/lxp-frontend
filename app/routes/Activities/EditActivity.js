@@ -136,6 +136,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, cu
         formikProps.setFieldValue('priority', priority)
         formikProps.setFieldValue('levels', [])
         formikProps.setFieldValue('learners', [])        
+        formikProps.setFieldValue('courses', [])
     }
 
     const handleUploadFile = async (file) => {    
@@ -216,11 +217,12 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, cu
                 console.log('link added', activityLinkId);
                 link = {...link, activityLinkId: activityLinkId, status: "uploaded"};
 
-                setUrls(oldUrls => oldUrls.concat(link));
+                setUrls(oldUrls => oldUrls.concat(link))
+
        
                 console.log(urls);
 
-                alert("The link has sucessfully been added!");
+                alert("The link has sucessfully been added!")
                 return link;
             })
             .catch((error) => {
@@ -386,6 +388,7 @@ export const EditActivity = ({toggle, isOpen, selectedActivity, userPrograms, cu
                                                             id="program"
                                                             name="program"
                                                             labelKey="name"
+                                                            disabled
                                                             options={userPrograms || []}
                                                             selected={formikProps.values.program}
                                                             className={(formikProps.errors.program && formikProps.touched.program ? ' is-invalid' : '')}

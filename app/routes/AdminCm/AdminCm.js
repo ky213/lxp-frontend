@@ -96,7 +96,7 @@ const AdminCm = () => {
   return (
     <React.Fragment>
       <Container>
-        <HeaderMain title="Course managers" />
+        <HeaderMain title="Managers" />
         {showEditForm && (
           <Row>
             <CmEdit

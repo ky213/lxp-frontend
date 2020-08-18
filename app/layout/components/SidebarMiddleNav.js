@@ -105,6 +105,19 @@ export const SidebarMiddleNav = (navbarProps) => {
         title="Learner Reporting"
         to="/reporting"
       />
+      <SidebarMenu.Item
+        roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager, Role.ProgramDirector]}
+        icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
+        title="Dashboard"
+        to="/dashboard"
+      />
+
+      <SidebarMenu.Item
+        roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager, Role.ProgramDirector]}
+        icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
+        title="DashboardNew"
+        to="/dashboardNew"
+      />
 
       <SidebarMenu.Item
         roles={[

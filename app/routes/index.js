@@ -49,6 +49,7 @@ import ActivityTypes from './ActivityTypes';
 import Reporting from './Reporting';
 import GroupTypes from './GroupTypes';
 import Groups from './Groups';
+import Dashboard from './Dashboard';
 
 import { useAppState, AppStateContext } from '@/components/AppState';
 
@@ -195,6 +196,10 @@ export const RoutedContent = (props) => {
       <PrivateRoute path="/courses" exact component={Courses} />
 
       <PrivateRoute path="/reporting" exact component={Reporting} />
+
+      <PrivateRoute path="/dashboard" exact component={Dashboard} />
+
+      <PrivateRoute path="/dashboardNew" exact component={DashboardNew} />
 
       <PrivateRoute path="/activities" exact component={ActivityCalendar} />
 

@@ -16,3 +16,5 @@ export * from './notification.service';
 export * from './super_admin.service';
 export * from './course.service';
 export * from './reporting.service';
+export * from './group_type.service';
+export * from './groups.service';

@@ -113,6 +113,18 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
+          roles={[
+            Role.Admin,
+            Role.SuperAdmin,
+            Role.LearningManager,
+            Role.ProgramDirector
+          ]}
+          icon={<i className="fa fa-fw fa-tasks"></i>}
+          title="Group Types"
+          to="/group-types"
+        />
+
+      <SidebarMenu.Item
         roles={[
           Role.Admin,
           Role.SuperAdmin,

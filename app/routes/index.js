@@ -56,6 +56,7 @@ import Notifications from './Notifications';
 import Courses from './Courses';
 import ActivityTypes from './ActivityTypes';
 import Reporting from './Reporting';
+import GroupTypes from './GroupTypes';
 
 import { useAppState, AppStateContext } from '@/components/AppState';
 
@@ -219,6 +220,18 @@ export const RoutedContent = (props) => {
           ]}
           exact
           component={ActivityTypes}
+        />
+
+        <PrivateRoute
+          path="/group-types"
+          roles={[
+            Role.Admin,
+            Role.SuperAdmin,
+            Role.LearningManager,
+            Role.ProgramDirector
+          ]}
+          exact
+          component={GroupTypes}
         />
 
         {/*    Pages Routes    */}

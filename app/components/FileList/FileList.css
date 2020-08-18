@@ -22,6 +22,8 @@
     background-color: #CCEEFF!important;
     color:#668796;
     font-size: 1.1em;
+    word-wrap: break-word;
+    overflow: hidden;
   }
   
   .fileContainer:hover {

@@ -58,7 +58,7 @@ export const SidebarMiddleNav = navbarProps => {
         title="Users"
       >
         <SidebarMenu.Item
-          title="Course managers"
+          title="Managers"
           to="/admin/users/coursemanagers"
         />
         <SidebarMenu.Item title="Learners" to="/admin/users/learners" />

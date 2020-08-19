@@ -120,7 +120,7 @@ const EditCourse = ({ course,
               if (fileData)
                 formData.append('file', fileData);
               if (logoImage)
-                formData.append('logo', logoImage);
+                  formData.append('logo', logoImage);
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
@@ -208,9 +208,9 @@ const EditCourse = ({ course,
                                 Logo
                               </Label>
                               <Col sm={9}>
-                                <ImageUpload name="logoImage" maxFileSizeKB={200} defaultImage={formikProps.values.logoImage} onSelectedImage={(imageDataUrl) => {
+                                <ImageUpload name="logoImage" maxFileSizeKB={200} defaultImage={selectedLogoDataUrl} onSelectedImage={(imageDataUrl) => {
                                   //console.log("Selected image:", imageDataUrl)
-                                  setFieldValue('logoImage', imageDataUrl);
+                                  //setFieldValue('logoImage', imageDataUrl);
                                   setSelectedLogoDataUrl(imageDataUrl);
                                 }} />
                               </Col>

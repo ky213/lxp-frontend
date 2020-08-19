@@ -177,7 +177,8 @@ export const RoutedContent = (props) => {
             Role.Admin,
             Role.SuperAdmin,
             Role.LearningManager,
-            Role.ProgramDirector
+            Role.ProgramDirector,
+            Role.CourseManager
           ]}
           exact
           component={AdminCourses}

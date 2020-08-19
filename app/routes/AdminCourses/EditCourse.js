@@ -118,9 +118,10 @@ const EditCourse = ({ course,
 
               const formData = new FormData();
               if (fileData)
-                formData.append('file', fileData);
+                formData.append('tincan', fileData.name);
               if (logoImage)
-                formData.append('logo', logoImage);
+                formData.append('logo', logoImage.name);
+
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
@@ -142,27 +143,47 @@ const EditCourse = ({ course,
               axios({
                 method: httpMethod,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    // 'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                     ...authHeader()
                 },
                 data: formData,
                 url: config.apiUrl + "/courses",
-                onUploadProgress: (ev) => {
-                    const progress = ev.loaded / ev.total * 100;
-                    setUploadProgress(Math.round(progress));
-                },
               })
               .then((resp) => {
-                  // our mocked response will always return true
-                  // in practice, you would want to use the actual response object
-                  //setUploadStatus(true);
-                  setSubmitting(false);
-                  if (course) {
-                    finishEdit();
-                  }
-                  else {
-                    finishInsert();
-                  }
+
+                if (fileData){
+                  let uploadUrl = resp.data.uploadUrl;
+
+                  axios({
+                    method: 'PUT',
+                    headers: {
+                      "Content-Type": fileData.type,
+                    },
+                    body: fileData.data,
+                    url: uploadUrl ,
+                    onUploadProgress: (ev) => {
+                      const progress = ev.loaded / ev.total * 100;
+                      setUploadProgress(Math.round(progress));
+                    }
+                }).then((resp) => {
+                    // our mocked response will always return true
+                    // in practice, you would want to use the actual response object
+                    //setUploadStatus(true);
+                    setSubmitting(false);
+                    if (course) {
+                      finishEdit();
+                    }
+                    else {
+                      finishInsert();
+                    }
+                  }).catch((err) => {
+                    console.error(err);
+                    throw err;
+                  });
+
+                }
+
               })
               .catch((err) => console.error(err));
             }}

@@ -143,6 +143,18 @@ export const SidebarMiddleNav = (navbarProps) => {
           Role.LearningManager,
           Role.ProgramDirector,
         ]}
+        icon={<i className="fa fa-fw fa-groups"></i>}
+        title="Groups"
+        to="/groups"
+      />
+
+      <SidebarMenu.Item
+        roles={[
+          Role.Admin,
+          Role.SuperAdmin,
+          Role.LearningManager,
+          Role.ProgramDirector,
+        ]}
         icon={<i className="fa fa-fw fa-bullhorn"></i>}
         title="Announcements"
         to="/admin/announcements"

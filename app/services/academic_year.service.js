@@ -1,5 +1,5 @@
 import config from '@/config';
-import { authHeader, handleResponse, buildQuery } from "@/helpers";
+import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
 const routePrefix = `${config.apiUrl}/academic_years`;
 
@@ -11,7 +11,7 @@ export const academicYearService = {
   create,
   update,
   deleteAcademicYear,
-  deleteAcademicYears
+  deleteAcademicYears,
 };
 
 function getByOrganizationId() {
@@ -19,65 +19,66 @@ function getByOrganizationId() {
 }
 
 function getByLoggedInUser(filterOrganizationId) {
-  const requestOptions = { method: "GET", headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() };
   let query = buildQuery({ filterOrganizationId });
   return fetch(`${routePrefix}?${query}`, requestOptions).then(handleResponse);
 }
 
 function getByProgramId(programId, organizationId) {
-  console.log('front getByProgramId', programId, organizationId);
-  const requestOptions = { method: "GET", headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() };
   let query = buildQuery({ programId, organizationId });
-  return fetch(`${routePrefix}/getByProgramId?${query}`, requestOptions).then(handleResponse);
+  return fetch(`${routePrefix}/getByProgramId?${query}`, requestOptions).then(
+    handleResponse
+  );
 }
 
-
 function getById(academicYearId, organizationId) {
-  const requestOptions = { method: "GET", headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() };
   let query = buildQuery({ academicYearId, organizationId });
-  return fetch(`${routePrefix}/getById?${query}`, requestOptions).then(handleResponse);
+  return fetch(`${routePrefix}/getById?${query}`, requestOptions).then(
+    handleResponse
+  );
 }
 
 function create(academicYear, organizationId) {
   const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...authHeader() },
-    body: JSON.stringify({academicYear, organizationId})
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify({ academicYear, organizationId }),
   };
 
   return fetch(`${routePrefix}`, requestOptions)
     .then(handleResponse)
-    .then(data => {
+    .then((data) => {
       return data;
     });
 }
 
 function update(academicYear, organizationId) {
-  console.log('client service update', academicYear);
   const requestOptions = {
-    method: "PUT",
-    headers: { "Content-Type": "application/json", ...authHeader() },
-    body: JSON.stringify({academicYear, organizationId})
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify({ academicYear, organizationId }),
   };
 
   return fetch(`${routePrefix}`, requestOptions)
     .then(handleResponse)
-    .then(data => {
+    .then((data) => {
       return data;
     });
 }
 
 function deleteAcademicYear(academicYearId, organizationId) {
   const requestOptions = {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json", ...authHeader() }
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
   };
-  
+
   let query = buildQuery({ academicYearId, organizationId });
-  
+
   return fetch(`${routePrefix}?${query}`, requestOptions)
     .then(handleResponse)
-    .then(data => {
+    .then((data) => {
       return data;
     });
 }
@@ -86,12 +87,12 @@ function deleteAcademicYears(organizationId, academicYears) {
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify({organizationId, academicYears})
-  };  
-  
+    body: JSON.stringify({ organizationId, academicYears }),
+  };
+
   return fetch(`${routePrefix}/deleteAcademicYears`, requestOptions)
     .then(handleResponse)
-    .then(data => {
+    .then((data) => {
       return data;
     });
 }

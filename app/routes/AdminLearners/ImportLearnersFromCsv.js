@@ -1,5 +1,5 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -7,138 +7,146 @@ import {
   Col,
   Container,
   Row,
-  Table
-} from "@/components";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import { learnerService, authenticationService } from "@/services";
-import ThemedButton from "@/components/ThemedButton";
+  Table,
+} from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import { learnerService, authenticationService } from '@/services';
+import ThemedButton from '@/components/ThemedButton';
 import Papa from 'papaparse';
 import { useAppState } from '@/components/AppState';
-import { Loading } from "../../components";
-import moment from "moment";
+import { Loading } from '../../components';
+import moment from 'moment';
 
 const ImportLearnersFromCsv = () => {
   let history = useHistory();
-  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const [showLoading, setShowLoading] = React.useState(false);
   const [users, setUsers] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
   const inputFile = React.useRef(null);
 
-  const goBack = event => {
+  const goBack = (event) => {
     history.goBack();
   };
-  
+
   const importClick = () => {
     setShowLoading(true);
-    learnerService.addBulk(users, selectedOrganization.organizationId)
+    learnerService
+      .addBulk(users, selectedOrganization.organizationId)
       .then(() => {
         history.goBack();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('userService.addBulk', err);
         setShowLoading(false);
-      });    
+      });
   };
 
-  const importFromCsv = event => {
+  const importFromCsv = (event) => {
     inputFile.current.click();
   };
 
-  const showFile = async e => {
+  const showFile = async (e) => {
     e.preventDefault();
     setShowLoading(true);
     const reader = new FileReader();
-    reader.onload = async e => {
+    reader.onload = async (e) => {
       let csvUsers = [];
       const text = e.target.result;
       var data = Papa.parse(text, {
         header: true,
         skipEmptyLines: true,
-        step: function(row) {
-           console.log('Learner row', row);
+        step: function (row) {
           let user = {
             name: row.data.Name,
             surname: row.data.Surname,
-            email: row.data.Email,gender: row.data.Gender,
-            startDate: moment(row.data.StartDate, "YYYYMMDD"),
+            email: row.data.Email,
+            gender: row.data.Gender,
+            startDate: moment(row.data.StartDate, 'YYYYMMDD'),
             organizationId: selectedOrganization.organizationId,
-            error: ""
+            error: '',
           };
 
           csvUsers.push(user);
         },
-        complete: function() {
-          learnerService.validateBulk(csvUsers, selectedOrganization.organizationId)
-            .then(data => {
+        complete: function () {
+          learnerService
+            .validateBulk(csvUsers, selectedOrganization.organizationId)
+            .then((data) => {
               setUsers(data.data);
               setImportDisabled(data.numOfRecordsInvalid > 0);
               setShowLoading(false);
             });
-        }
-      });      
+        },
+      });
     };
 
     reader.readAsText(e.target.files[0]);
     e.target.value = '';
   };
 
-  let usersContent = "";
+  let usersContent = '';
 
   if (users != null) {
     usersContent = (
       <Row>
         <Col lg={12}>
-            {/* START Table */}
-            <div className="table-responsive-xl">
-              <Table className="mb-0" hover>
-                <thead>
-                  <tr>
-                    {/* <th className="align-middle bt-0"></th> */}
-                    <th className="align-middle bt-0">Line</th>
-                    <th className="align-middle bt-0">Name</th>
-                    <th className="align-middle bt-0">Surname</th>
-                    <th className="align-middle bt-0">Email</th>
-                    <th className="align-middle bt-0">Gender</th>
-                    <th className="align-middle bt-0">StartDate</th>
-                    <th className="align-middle bt-0">Error</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user, index) => {
-                    
-                    return (
+          {/* START Table */}
+          <div className="table-responsive-xl">
+            <Table className="mb-0" hover>
+              <thead>
+                <tr>
+                  {/* <th className="align-middle bt-0"></th> */}
+                  <th className="align-middle bt-0">Line</th>
+                  <th className="align-middle bt-0">Name</th>
+                  <th className="align-middle bt-0">Surname</th>
+                  <th className="align-middle bt-0">Email</th>
+                  <th className="align-middle bt-0">Gender</th>
+                  <th className="align-middle bt-0">StartDate</th>
+                  <th className="align-middle bt-0">Error</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, index) => {
+                  return (
                     <tr key={user.email}>
                       <td>{index + 1}</td>
                       <td>{user.name}</td>
                       <td>{user.surname}</td>
                       <td>{user.email}</td>
-                      <td>{user.gender == 'M' && 'Male' || user.gender == 'F' && 'Female' || user.gender}</td>
+                      <td>
+                        {(user.gender == 'M' && 'Male') ||
+                          (user.gender == 'F' && 'Female') ||
+                          user.gender}
+                      </td>
                       <td>{moment(user.startDate).format('L')}</td>
-                      <td><span style={{color:'red'}}>{user.error}</span></td>
+                      <td>
+                        <span style={{ color: 'red' }}>{user.error}</span>
+                      </td>
                     </tr>
-                  )})}
-                  <tr>
-                    <td colSpan="9">
-                      <ThemedButton
-                        type="button"
-                        onClick={importClick}
-                        disabled={importDisabled}
-                      >
-                        Import
-                      </ThemedButton>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={goBack}
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>          
+                  );
+                })}
+                <tr>
+                  <td colSpan="9">
+                    <ThemedButton
+                      type="button"
+                      onClick={importClick}
+                      disabled={importDisabled}
+                    >
+                      Import
+                    </ThemedButton>
+                    <button
+                      className="btn btn-link"
+                      type="button"
+                      onClick={goBack}
+                    >
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
         </Col>
       </Row>
     );
@@ -157,7 +165,7 @@ const ImportLearnersFromCsv = () => {
                 <th className="align-middle bt-0">Surname</th>
                 <th className="align-middle bt-0">Email</th>
                 <th className="align-middle bt-0">Gender</th>
-                <th className="align-middle bt-0">StartDate</th>                
+                <th className="align-middle bt-0">StartDate</th>
               </tr>
             </thead>
             <tbody>
@@ -174,17 +182,14 @@ const ImportLearnersFromCsv = () => {
           Other rules:
           <ul>
             <li>
-              First line in the file contains header titles and not user data!              
-            </li>
-            <li>            
-              Header titles have to match (case sensitive) the titles in the table above (Name, Surname, Email, Program and Level).
+              First line in the file contains header titles and not user data!
             </li>
             <li>
-              Start date format: yyyyMMdd (example: 20200128)
+              Header titles have to match (case sensitive) the titles in the
+              table above (Name, Surname, Email, Program and Level).
             </li>
-            <li>
-              Gender options: M (male), F (female)
-            </li>
+            <li>Start date format: yyyyMMdd (example: 20200128)</li>
+            <li>Gender options: M (male), F (female)</li>
           </ul>
         </Col>
       </Row>
@@ -216,7 +221,7 @@ const ImportLearnersFromCsv = () => {
                 id="file"
                 ref={inputFile}
                 onChange={showFile}
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
               />
             </Col>
           </Row>
@@ -225,7 +230,7 @@ const ImportLearnersFromCsv = () => {
           </Row>
           {!showLoading && !usersContent && fileExample}
           {!showLoading && usersContent}
-          {showLoading && (<Loading />)}
+          {showLoading && <Loading />}
         </CardBody>
       </Card>
     </Container>

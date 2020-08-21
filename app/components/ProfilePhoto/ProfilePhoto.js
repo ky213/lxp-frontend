@@ -1,13 +1,13 @@
-import React from "react";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { Button } from "@/components";
-import { useAppState } from "@/components/AppState";
-import { userService } from "@/services";
-import { USER_CHANGE_PROFILE_PHOTO } from "@/actions";
-import Avatar from "react-avatar-edit";
-import styles from "./ProfilePhoto.css";
-import ThemedButton from "@/components/ThemedButton";
-import defaultUser from "@/images/avatars/default-user.png";
+import React from 'react';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button } from '@/components';
+import { useAppState } from '@/components/AppState';
+import { userService } from '@/services';
+import { USER_CHANGE_PROFILE_PHOTO } from '@/actions';
+import Avatar from 'react-avatar-edit';
+import styles from './ProfilePhoto.css';
+import ThemedButton from '@/components/ThemedButton';
+import defaultUser from '@/images/avatars/default-user.png';
 
 const ProfilePhoto = ({
   profilePhoto,
@@ -16,9 +16,8 @@ const ProfilePhoto = ({
   size,
   showEditButon = true,
   showProfilePhoto = true,
-  profilePhotoUpdated
+  profilePhotoUpdated,
 }) => {
-
   const [{ currentUser }, dispatch] = useAppState();
 
   const [imgClassName, setImgClassName] = React.useState(null);
@@ -27,7 +26,7 @@ const ProfilePhoto = ({
   const [preview, setPreview] = React.useState(null);
   const [
     showUpdateProfilePhotoModal,
-    setShowUpdateProfilePhotoModal
+    setShowUpdateProfilePhotoModal,
   ] = React.useState(false);
 
   React.useEffect(() => {
@@ -44,32 +43,31 @@ const ProfilePhoto = ({
     setImgClassName(imgCN);
   }, [size]);
 
-  const getImgSizeClassName = size => {
+  const getImgSizeClassName = (size) => {
     switch (size) {
-      case "size32":
+      case 'size32':
         return styles.size32;
-      case "size64":
+      case 'size64':
         return styles.size64;
-      case "size92":
+      case 'size92':
         return styles.size99;
-      case "size128":
+      case 'size128':
         return styles.size128;
-      case "size192":
+      case 'size192':
         return styles.size192;
-      case "size256":
+      case 'size256':
         return styles.size256;
     }
   };
 
-  const onClose = event => {
-    console.log("onClose");
+  const onClose = (event) => {
     setPreview(null);
   };
-  const onCrop = croppedImage => {
+  const onCrop = (croppedImage) => {
     setPreview(croppedImage);
   };
 
-  const onBeforeFileLoad = loadedImage => {
+  const onBeforeFileLoad = (loadedImage) => {
     setSrc(loadedImage);
   };
 
@@ -83,8 +81,8 @@ const ProfilePhoto = ({
         setShowUpdateProfilePhotoModal(false);
         profilePhotoUpdated();
       })
-      .catch(error => {
-        console.log("err", error);
+      .catch((error) => {
+        console.log('err', error);
       });
   };
 
@@ -117,7 +115,7 @@ const ProfilePhoto = ({
       )}
       <Modal isOpen={showUpdateProfilePhotoModal} unmountOnClose={false}>
         <ModalHeader>Update profile photo</ModalHeader>
-        <ModalBody style={{ overflow: "hidden" }}>
+        <ModalBody style={{ overflow: 'hidden' }}>
           <div align="center">
             <Avatar
               width={256}
@@ -126,7 +124,7 @@ const ProfilePhoto = ({
               onClose={onClose}
               onBeforeFileLoad={onBeforeFileLoad}
               disableBoundaryChecks={false}
-              style={{ overflow: "hidden" }}
+              style={{ overflow: 'hidden' }}
               src={src}
             />
           </div>

@@ -1,41 +1,29 @@
-import React from "react";
-import moment from "moment";
-import {
-  Row,
-  Col,
-  Card,  
-  CardBody,
-  Table
-} from "@/components";
+import React from 'react';
+import moment from 'moment';
+import { Row, Col, Card, CardBody, Table } from '@/components';
 import AnnouncementDetailsModal from './AnnouncementDetailsModal';
 import styles from './Announcements.css';
 
-const AnnouncementList = ({
-  announcements,
-  files
-}) => {
+const AnnouncementList = ({ announcements, files }) => {
   const [announcement, setAnnouncement] = React.useState(null);
   const [announcementFiles, setAnnouncementFiles] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
-  
+
   React.useEffect(() => {
-    if (announcement)
-      setIsOpen(true);
-    else
-      setIsOpen(false);
+    if (announcement) setIsOpen(true);
+    else setIsOpen(false);
   }, announcement);
 
   const showAnnouncementDetails = (announcementId) => {
-    let x = announcements.find(a => a.announcementId == announcementId);
-    let f = files.filter(b => b.announcementId == announcementId);
-    console.log('x', x);
+    let x = announcements.find((a) => a.announcementId == announcementId);
+    let f = files.filter((b) => b.announcementId == announcementId);
     setAnnouncement(x);
     setAnnouncementFiles(f);
-  }
+  };
 
   const closeAnnouncementDetails = () => {
     setAnnouncement(null);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -53,10 +41,10 @@ const AnnouncementList = ({
                     </tr>
                   </thead>
                   <tbody>
-                    {announcements.map(item => {
+                    {announcements.map((item) => {
                       return (
                         <tr
-                        className={styles.announcementTr}
+                          className={styles.announcementTr}
                           key={item.announcementId}
                           onClick={() =>
                             showAnnouncementDetails(item.announcementId)
@@ -64,10 +52,10 @@ const AnnouncementList = ({
                         >
                           <td>{item.title}</td>
                           <td className="text-center">
-                            {item.dateFrom && moment(item.dateFrom).format("L")}
+                            {item.dateFrom && moment(item.dateFrom).format('L')}
                           </td>
                           <td className="text-center">
-                            {item.dateTo && moment(item.dateTo).format("L")}
+                            {item.dateTo && moment(item.dateTo).format('L')}
                           </td>
                         </tr>
                       );

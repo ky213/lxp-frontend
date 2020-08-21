@@ -1,26 +1,26 @@
-import React from "react";
-import { useIntl } from "react-intl";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import { Container, Button, Alert } from "@/components";
-import { courseService } from "@/services";
-import { Loading } from "@/components";
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import { Container, Button, Alert } from '@/components';
+import { courseService } from '@/services';
+import { Loading } from '@/components';
 import { useAppState } from '@/components/AppState';
 
-import CourseList from "./CourseList";
-import EditCourse from "./EditCourse";
+import CourseList from './CourseList';
+import EditCourse from './EditCourse';
 
 const recordsPerPage = 20;
 
-const AdminCourses = () => {  
+const AdminCourses = () => {
   const intl = useIntl();
-  
-  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
-  
+
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+
   const [courses, setCourses] = React.useState(null);
-  const [course, setCourse] = React.useState(null);  
+  const [course, setCourse] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
-  const [editForm, setEditForm] = React.useState(false);  
+  const [editForm, setEditForm] = React.useState(false);
   const [pageId, setPageId] = React.useState(1);
 
   React.useEffect(() => {
@@ -48,26 +48,28 @@ const AdminCourses = () => {
 
   const getAllCourses = () => {
     setCourse(null);
-    courseService.getAll(selectedOrganization.organizationId, null, pageId, recordsPerPage).then(data => {
-      console.log('getAllCourses', data);
-      setCourses(data);
-    });
-  }
+    courseService
+      .getAll(selectedOrganization.organizationId, null, pageId, recordsPerPage)
+      .then((data) => {
+        setCourses(data);
+      });
+  };
 
   const handleCourseEdit = (e, courseId) => {
-    console.log('handleCourseEdit', courseId);
     e.preventDefault();
     hideAlertMessage();
-    courseService.getById(courseId, selectedOrganization.organizationId).then(data => {
-      setEditForm(true);
-      setCourse(data);
-    });
-  }
+    courseService
+      .getById(courseId, selectedOrganization.organizationId)
+      .then((data) => {
+        setEditForm(true);
+        setCourse(data);
+      });
+  };
 
   const addNewClick = () => {
-    setEditForm(true);  
+    setEditForm(true);
     setCourse(null);
-  }
+  };
 
   const handleCancel = () => {
     hideAlertMessage();
@@ -80,11 +82,11 @@ const AdminCourses = () => {
     setCourse(null);
     getAllCourses();
     showAlertMessage({
-      title: intl.formatMessage({ id: 'General.Success'}),
-      message: "You have sucessfully updated the course",
-      type: "success"
+      title: intl.formatMessage({ id: 'General.Success' }),
+      message: 'You have sucessfully updated the course',
+      type: 'success',
     });
-  }
+  };
 
   const finishInsert = () => {
     setEditForm(false);
@@ -92,63 +94,61 @@ const AdminCourses = () => {
     getAllCourses();
 
     showAlertMessage({
-      title: intl.formatMessage({ id: 'General.Success'}),
-      message: "You have sucessfully created a course",
-      type: "success"
+      title: intl.formatMessage({ id: 'General.Success' }),
+      message: 'You have sucessfully created a course',
+      type: 'success',
     });
-  }
+  };
 
   // refresh num of files after add/delete on Edit
   const updateCourseList = (fileNum) => {
-    
-    let x = courses.courses.map(c => {
+    let x = courses.courses.map((c) => {
       if (c.course_id == course.courseId)
         return {
-          ...c, 
-          fileNum
-        }
-      else
-        return c;
+          ...c,
+          fileNum,
+        };
+      else return c;
     });
     setCourses(x);
-  }
+  };
 
   return (
     <React.Fragment>
-        <Container>
-      {showAlert && alertMessage && (
-        <Alert color={alertMessage.type}>
-          <h6 className="mb-1 alert-heading">{alertMessage.title}</h6>
-          {alertMessage.message}
-          <div className="mt-2">
-            <Button color={alertMessage.type} onClick={dismissAlert}>
-              Dismiss
-            </Button>
-          </div>
-        </Alert>
-      )}
+      <Container>
+        {showAlert && alertMessage && (
+          <Alert color={alertMessage.type}>
+            <h6 className="mb-1 alert-heading">{alertMessage.title}</h6>
+            {alertMessage.message}
+            <div className="mt-2">
+              <Button color={alertMessage.type} onClick={dismissAlert}>
+                Dismiss
+              </Button>
+            </div>
+          </Alert>
+        )}
 
-      {!editForm && (
-        <React.Fragment>
+        {!editForm && (
+          <React.Fragment>
             <HeaderMain title="Courses administration" />
             {(courses && courses.courses && (
               <CourseList
-              courses={courses.courses}
-              handleCourseEdit={handleCourseEdit}
-              addNewClick={addNewClick}
-              getAllCourses={getAllCourses}
-              showAlertMessage={showAlertMessage}
-              pageId={pageId}
-              setPageId={setPageId}
-              recordsPerPage={recordsPerPage}
-              totalNumberOfRecords={courses.totalNumberOfRecords}              
+                courses={courses.courses}
+                handleCourseEdit={handleCourseEdit}
+                addNewClick={addNewClick}
+                getAllCourses={getAllCourses}
+                showAlertMessage={showAlertMessage}
+                pageId={pageId}
+                setPageId={setPageId}
+                recordsPerPage={recordsPerPage}
+                totalNumberOfRecords={courses.totalNumberOfRecords}
               />
             )) || <Loading />}
-        </React.Fragment>
-      )}
-    
-      {editForm && (
-        <React.Fragment>
+          </React.Fragment>
+        )}
+
+        {editForm && (
+          <React.Fragment>
             <HeaderMain title="Course administration" />
             <EditCourse
               course={course}
@@ -159,8 +159,8 @@ const AdminCourses = () => {
               hideAlertMessage={hideAlertMessage}
               updateCourseList={updateCourseList}
             />
-        </React.Fragment>
-      )}
+          </React.Fragment>
+        )}
       </Container>
     </React.Fragment>
   );

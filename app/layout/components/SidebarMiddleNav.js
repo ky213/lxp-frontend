@@ -1,12 +1,12 @@
-import React from "react";
-import { SidebarMenu } from "@/components";
-import { Role } from "@/helpers";
-import { useAppState } from "@/components/AppState";
+import React from 'react';
+import { SidebarMenu } from '@/components';
+import { Role } from '@/helpers';
+import { useAppState } from '@/components/AppState';
 import { authenticationService } from '@/services';
 import { LOGOUT_USER } from '@/actions';
-import { useHistory  } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-export const SidebarMiddleNav = navbarProps => {
+export const SidebarMiddleNav = (navbarProps) => {
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const loggedInUser = (currentUser && currentUser.user) || null;
   const history = useHistory();
@@ -46,7 +46,12 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager, Role.ProgramDirector]}
+        roles={[
+          Role.Admin,
+          Role.SuperAdmin,
+          Role.LearningManager,
+          Role.ProgramDirector,
+        ]}
         icon={<i className="fa fa-fw fa-medkit"></i>}
         title="Programs"
         to="/programs"
@@ -57,10 +62,7 @@ export const SidebarMiddleNav = navbarProps => {
         icon={<i className="fa fa-fw fa-user-md"></i>}
         title="Users"
       >
-        <SidebarMenu.Item
-          title="Managers"
-          to="/admin/users/coursemanagers"
-        />
+        <SidebarMenu.Item title="Managers" to="/admin/users/coursemanagers" />
         <SidebarMenu.Item title="Learners" to="/admin/users/learners" />
         <SidebarMenu.Item title="User roles" to="/admin/users/roles" />
       </SidebarMenu.Item>
@@ -74,12 +76,17 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager, Role.ProgramDirector, Role.CourseManager]}
+        roles={[
+          Role.Admin,
+          Role.SuperAdmin,
+          Role.LearningManager,
+          Role.ProgramDirector,
+          Role.CourseManager,
+        ]}
         icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
         title="Upload Courses"
         to="/admin/courses"
       />
-
 
       <SidebarMenu.Item
         icon={<i className="fa fa-fw fa-calendar"></i>}
@@ -88,24 +95,29 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
-        roles={[Role.Admin, Role.SuperAdmin, Role.LearningManager, Role.ProgramDirector]}
+        roles={[
+          Role.Admin,
+          Role.SuperAdmin,
+          Role.LearningManager,
+          Role.ProgramDirector,
+        ]}
         icon={<i className="fa fa-fw fa-calendar-plus-o"></i>}
         title="Learner Reporting"
         to="/reporting"
       />
-      
+
       <SidebarMenu.Item
-          roles={[
-            Role.Admin,
-            Role.SuperAdmin,
-            Role.LearningManager,
-            Role.ProgramDirector
-          ]}
-          icon={<i className="fa fa-fw fa-tasks"></i>}
-          title="Activity Types"
-          to="/activity-types"
-        />
-        
+        roles={[
+          Role.Admin,
+          Role.SuperAdmin,
+          Role.LearningManager,
+          Role.ProgramDirector,
+        ]}
+        icon={<i className="fa fa-fw fa-tasks"></i>}
+        title="Activity Types"
+        to="/activity-types"
+      />
+
       <SidebarMenu.Item
         icon={<i className="fa fa-fw fa-calendar"></i>}
         title="Activities"
@@ -113,23 +125,23 @@ export const SidebarMiddleNav = navbarProps => {
       />
 
       <SidebarMenu.Item
-          roles={[
-            Role.Admin,
-            Role.SuperAdmin,
-            Role.LearningManager,
-            Role.ProgramDirector
-          ]}
-          icon={<i className="fa fa-fw fa-tasks"></i>}
-          title="Group Types"
-          to="/group-types"
-        />
+        roles={[
+          Role.Admin,
+          Role.SuperAdmin,
+          Role.LearningManager,
+          Role.ProgramDirector,
+        ]}
+        icon={<i className="fa fa-fw fa-tasks"></i>}
+        title="Group Types"
+        to="/group-types"
+      />
 
       <SidebarMenu.Item
         roles={[
           Role.Admin,
           Role.SuperAdmin,
           Role.LearningManager,
-          Role.ProgramDirector
+          Role.ProgramDirector,
         ]}
         icon={<i className="fa fa-fw fa-bullhorn"></i>}
         title="Announcements"
@@ -142,26 +154,21 @@ export const SidebarMiddleNav = navbarProps => {
         to="/notifications"
       />
 
-
-
       <SidebarMenu.Item
         icon={<i className="fa fa-fw fa-power-off sign-out"></i>}
         className="sign-out"
         title="Sign Out"
         onClick={() => {
-          console.log("Click na sign out");
           //ev.preventDefault();
-          if(confirm('Are you sure you want to logout the application?')) {
-              //console.log("Zovem logout sidebar click")
-              dispatch({type: LOGOUT_USER});                          
-              authenticationService.logout();
-              //return <Redirect to='/pages/login' />
-              history.push('/pages/login');
+          if (confirm('Are you sure you want to logout the application?')) {
+            //console.log("Zovem logout sidebar click")
+            dispatch({ type: LOGOUT_USER });
+            authenticationService.logout();
+            //return <Redirect to='/pages/login' />
+            history.push('/pages/login');
           }
         }}
       />
-
-
     </SidebarMenu>
   );
 };

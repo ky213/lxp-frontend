@@ -1,16 +1,16 @@
-import React from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import React from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import ReactQuill from 'react-quill';
-import DatePicker from "react-datepicker";
-import moment from "moment";
-import styled from "styled-components";
-import ThemedButton from "@/components/ThemedButton";
-import { Typeahead } from "react-bootstrap-typeahead";
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import styled from 'styled-components';
+import ThemedButton from '@/components/ThemedButton';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import axios from 'axios';
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
-import  ImageUpload from '@/components/ImageUpload';
+import ImageUpload from '@/components/ImageUpload';
 
 import {
   Row,
@@ -23,17 +23,22 @@ import {
   CustomInput,
   FormGroup,
   Label,
-  Loading
-} from "@/components";
-import { programService } from "@/services";
-import { Consumer } from "@/components/Theme/ThemeContext";
+  Loading,
+} from '@/components';
+import { programService } from '@/services';
+import { Consumer } from '@/components/Theme/ThemeContext';
 import { useAppState } from '@/components/AppState';
 
-const EditCourse = ({ course,
-  onCancel, finishEdit, finishInsert, showAlertMessage, 
-  hideAlertMessage, updateCourseList}) => {
-  
-  const [{selectedOrganization}] = useAppState();
+const EditCourse = ({
+  course,
+  onCancel,
+  finishEdit,
+  finishInsert,
+  showAlertMessage,
+  hideAlertMessage,
+  updateCourseList,
+}) => {
+  const [{ selectedOrganization }] = useAppState();
   const [programs, setPrograms] = React.useState([]);
   //const [startingDate, setStartingDate] = React.useState(null);
 
@@ -43,10 +48,12 @@ const EditCourse = ({ course,
   const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
 
   React.useEffect(() => {
-    programService.getByCurrentUser(selectedOrganization.organizationId).then(data => {
-      setPrograms(data);
-      setProgramsLoaded(true);
-    });   
+    programService
+      .getByCurrentUser(selectedOrganization.organizationId)
+      .then((data) => {
+        setPrograms(data);
+        setProgramsLoaded(true);
+      });
   }, []);
 
   React.useEffect(() => {
@@ -56,8 +63,7 @@ const EditCourse = ({ course,
   React.useEffect(() => {
     if (course) {
       setSelectedLogoDataUrl(course.image);
-    }
-    else {
+    } else {
       setSelectedLogoDataUrl(null);
     }
   }, [course]);
@@ -75,58 +81,81 @@ const EditCourse = ({ course,
 
   const modules = {
     toolbar: [
-        [{ 'header': [1, 2, false] }],
-        ['bold', 'italic', 'underline','strike', 'blockquote'],
-        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-        ['clean']
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['clean'],
     ],
-  }
+  };
 
   const formats = [
-      'header',
-      'bold', 'italic', 'underline', 'strike', 'blockquote',
-      'list', 'bullet', 'indent'
-  ]
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+  ];
 
   return (
     (formLoaded && (
       <Consumer>
-        {themeState => (
+        {(themeState) => (
           <Formik
             {...themeState}
             enableReinitialize={true}
             initialValues={{
-              name: (course && course.name) || "",
-              logoImage: (course && course.image) || "",
-              description: (course && course.description) || "",
+              name: (course && course.name) || '',
+              logoImage: (course && course.image) || '',
+              description: (course && course.description) || '',
               programId: (course && course.programId) || '',
               periodDays: (course && course.periodDays) || 0,
-              startingDate: (course && course.startingDate && moment(course.startingDate).toDate()) || '',
-              fileData: ""
+              startingDate:
+                (course &&
+                  course.startingDate &&
+                  moment(course.startingDate).toDate()) ||
+                '',
+              fileData: '',
             }}
             validationSchema={Yup.object().shape({
-              name: Yup.string().required("Name is required"),
-              description: Yup.string().required("Description is required"),
+              name: Yup.string().required('Name is required'),
+              description: Yup.string().required('Description is required'),
               periodDays: Yup.number(),
             })}
             onSubmit={(
-              { name, description, programId, periodDays, fileData, startingDate, logoImage },
+              {
+                name,
+                description,
+                programId,
+                periodDays,
+                fileData,
+                startingDate,
+                logoImage,
+              },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
-
               setSubmitting(true);
 
               const formData = new FormData();
-              if (fileData)
-                formData.append('tincan', fileData.name);
-              if (logoImage)
-                formData.append('logo', logoImage.name);
+              if (fileData) formData.append('tincan', fileData.name);
+              if (logoImage) formData.append('logo', logoImage.name);
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
               formData.append('periodDays', periodDays);
               formData.append('startingDate', startingDate);
-              formData.append('selectedOrganization', selectedOrganization.organizationId);              
+              formData.append(
+                'selectedOrganization',
+                selectedOrganization.organizationId
+              );
 
               let httpMethod = '';
               if (course) {
@@ -137,58 +166,53 @@ const EditCourse = ({ course,
                 httpMethod = 'POST';
               }
 
-              console.log("Submitting")
-
               axios({
                 method: httpMethod,
                 headers: {
-                    // 'Content-Type': 'multipart/form-data',
-                    'Content-Type': 'application/json',
-                    ...authHeader()
+                  // 'Content-Type': 'multipart/form-data',
+                  'Content-Type': 'application/json',
+                  ...authHeader(),
                 },
                 data: formData,
-                url: config.apiUrl + "/courses",
+                url: config.apiUrl + '/courses',
               })
-              .then((resp) => {
+                .then((resp) => {
+                  if (fileData) {
+                    let uploadUrl = resp.data.uploadUrl;
 
-                if (fileData){
-                  let uploadUrl = resp.data.uploadUrl;
-
-                  axios({
-                    method: 'PUT',
-                    headers: {
-                      "Content-Type": fileData.type,
-                    },
-                    body: fileData.data,
-                    url: uploadUrl ,
-                    onUploadProgress: (ev) => {
-                      const progress = ev.loaded / ev.total * 100;
-                      setUploadProgress(Math.round(progress));
-                    }
-                }).then((resp) => {
-                    // our mocked response will always return true
-                    // in practice, you would want to use the actual response object
-                    //setUploadStatus(true);
-                    setSubmitting(false);
-                    if (course) {
-                      finishEdit();
-                    }
-                    else {
-                      finishInsert();
-                    }
-                  }).catch((err) => {
-                    console.error(err);
-                    throw err;
-                  });
-
-                }
-
-              })
-              .catch((err) => console.error(err));
+                    axios({
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': fileData.type,
+                      },
+                      body: fileData.data,
+                      url: uploadUrl,
+                      onUploadProgress: (ev) => {
+                        const progress = (ev.loaded / ev.total) * 100;
+                        setUploadProgress(Math.round(progress));
+                      },
+                    })
+                      .then((resp) => {
+                        // our mocked response will always return true
+                        // in practice, you would want to use the actual response object
+                        //setUploadStatus(true);
+                        setSubmitting(false);
+                        if (course) {
+                          finishEdit();
+                        } else {
+                          finishInsert();
+                        }
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                        throw err;
+                      });
+                  }
+                })
+                .catch((err) => console.error(err));
             }}
           >
-            {formikProps => {
-              console.log("props", formikProps);
+            {(formikProps) => {
               return (
                 <React.Fragment>
                   <Row>
@@ -208,10 +232,11 @@ const EditCourse = ({ course,
                                   name="name"
                                   id="name"
                                   className={
-                                    "bg-white form-control" +
-                                    (formikProps.errors.name && formikProps.touched.name
-                                      ? " is-invalid"
-                                      : "")
+                                    'bg-white form-control' +
+                                    (formikProps.errors.name &&
+                                    formikProps.touched.name
+                                      ? ' is-invalid'
+                                      : '')
                                   }
                                   placeholder="Enter Name..."
                                 />
@@ -228,11 +253,16 @@ const EditCourse = ({ course,
                                 Logo
                               </Label>
                               <Col sm={9}>
-                                <ImageUpload name="logoImage" maxFileSizeKB={200} defaultImage={selectedLogoDataUrl} onSelectedImage={(imageDataUrl) => {
-                                  //console.log("Selected image:", imageDataUrl)
-                                  //setFieldValue('logoImage', imageDataUrl);
-                                  setSelectedLogoDataUrl(imageDataUrl);
-                                }} />
+                                <ImageUpload
+                                  name="logoImage"
+                                  maxFileSizeKB={200}
+                                  defaultImage={selectedLogoDataUrl}
+                                  onSelectedImage={(imageDataUrl) => {
+                                    //console.log("Selected image:", imageDataUrl)
+                                    //setFieldValue('logoImage', imageDataUrl);
+                                    setSelectedLogoDataUrl(imageDataUrl);
+                                  }}
+                                />
                               </Col>
                             </FormGroup>
 
@@ -244,24 +274,24 @@ const EditCourse = ({ course,
                                 <ReactQuill
                                   value={formikProps.values.description}
                                   name="text"
-                                  onChange={ x => formikProps.setFieldValue(
-                                    "description",
-                                    x
-                                  )}
+                                  onChange={(x) =>
+                                    formikProps.setFieldValue('description', x)
+                                  }
                                   modules={modules}
                                   formats={formats}
                                   className={
-                                    "bg-white form-control" +
-                                    (formikProps.errors.description && formikProps.touched.description
-                                      ? " is-invalid"
-                                      : "")
+                                    'bg-white form-control' +
+                                    (formikProps.errors.description &&
+                                    formikProps.touched.description
+                                      ? ' is-invalid'
+                                      : '')
                                   }
                                   placeholder="Enter Description..."
                                   style={{
-                                    minHeight: "180px"
+                                    minHeight: '180px',
                                   }}
                                 />
-                              
+
                                 <ErrorMessage
                                   name="description"
                                   component="div"
@@ -283,21 +313,25 @@ const EditCourse = ({ course,
                                   <DatePicker
                                     id="startingDate"
                                     name="startingDate"
-                                    
                                     showMonthDropdown
                                     showYearDropdown
                                     autoComplete="off"
                                     className={
-                                      "bg-white form-control zIndex100" +
+                                      'bg-white form-control zIndex100' +
                                       (formikProps.errors.startingDate &&
-                                        formikProps.touched.startingDate
-                                        ? " is-invalid"
-                                        : "")
+                                      formikProps.touched.startingDate
+                                        ? ' is-invalid'
+                                        : '')
                                     }
                                     selected={formikProps.values.startingDate}
                                     showMonthDropdown
                                     showYearDropdown
-                                    onChange={date => formikProps.setFieldValue('startingDate', date)}
+                                    onChange={(date) =>
+                                      formikProps.setFieldValue(
+                                        'startingDate',
+                                        date
+                                      )
+                                    }
                                   />
                                   {formikProps.errors.startingDate &&
                                     formikProps.touched.startingDate && (
@@ -306,7 +340,7 @@ const EditCourse = ({ course,
                                       </InvalidFeedback>
                                     )}
                                 </InputGroup>
-                              </Col>                            
+                              </Col>
                             </FormGroup>
 
                             <FormGroup row>
@@ -318,10 +352,20 @@ const EditCourse = ({ course,
                                   type="text"
                                   name="periodDays"
                                   id="periodDays"
-                                  className={'bg-white form-control' + (formikProps.errors.periodDays && formikProps.touched.periodDays ? ' is-invalid' : '')}
+                                  className={
+                                    'bg-white form-control' +
+                                    (formikProps.errors.periodDays &&
+                                    formikProps.touched.periodDays
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
                                   placeholder="Min level..."
                                 />
-                                <ErrorMessage name="periodDays" component="div" className="invalid-feedback" />
+                                <ErrorMessage
+                                  name="periodDays"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
                               </Col>
                             </FormGroup>
 
@@ -330,25 +374,33 @@ const EditCourse = ({ course,
                                 Program
                               </Label>
                               <Col sm={9}>
-                                <Field 
-                                  component="select" 
-                                  name="programId" 
-                                  id="programId" 
-                                  className={'bg-white form-control' + (formikProps.errors.programId && formikProps.touched.programId ? ' is-invalid' : '')}                                   
+                                <Field
+                                  component="select"
+                                  name="programId"
+                                  id="programId"
+                                  className={
+                                    'bg-white form-control' +
+                                    (formikProps.errors.programId &&
+                                    formikProps.touched.programId
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
                                 >
-                                    <option value="">Select a program</option>
-                                    {programs.map(p => {
-                                        return (
-                                          <option value={p.programId}>{p.name}</option>
-                                        );
-                                    })} 
-                                </Field> 
+                                  <option value="">Select a program</option>
+                                  {programs.map((p) => {
+                                    return (
+                                      <option value={p.programId}>
+                                        {p.name}
+                                      </option>
+                                    );
+                                  })}
+                                </Field>
                                 {formikProps.errors.programId &&
-                                    formikProps.touched.programId && (
-                                      <InvalidFeedback>
-                                        {formikProps.errors.programId}
-                                      </InvalidFeedback>
-                                    )}
+                                  formikProps.touched.programId && (
+                                    <InvalidFeedback>
+                                      {formikProps.errors.programId}
+                                    </InvalidFeedback>
+                                  )}
                               </Col>
                             </FormGroup>
 
@@ -358,18 +410,21 @@ const EditCourse = ({ course,
                               </Label>
                               <Col sm={9}>
                                 <input
-                                  type="file" required 
-                                  onChange={(f) => formikProps.setFieldValue(
-                                    "fileData",
-                                    f.target.files[0]
-                                  )}
-                                  accept=".zip" />
+                                  type="file"
+                                  required
+                                  onChange={(f) =>
+                                    formikProps.setFieldValue(
+                                      'fileData',
+                                      f.target.files[0]
+                                    )
+                                  }
+                                  accept=".zip"
+                                />
                                 {/* {props.errors.programId && (
                                   <InvalidFeedback>
                                     {props.errors.programId}
                                   </InvalidFeedback>
                                 )} */}
-
                                 Uploading: {uploadProgress}/100%
                               </Col>
                             </FormGroup>
@@ -378,8 +433,8 @@ const EditCourse = ({ course,
                               <Col sm={3} />
                               <Col sm={9}>
                                 <ThemedButton type="submit">
-                                  {(course && "Update") || "Create"}
-                                </ThemedButton>{" "}
+                                  {(course && 'Update') || 'Create'}
+                                </ThemedButton>{' '}
                                 <Button
                                   type="button"
                                   onClick={cancel}

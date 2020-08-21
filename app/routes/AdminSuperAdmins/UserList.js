@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Container,
   Card,
@@ -14,17 +14,12 @@ import {
   InputGroup,
   InputGroupAddon,
   UncontrolledTooltip,
-  ButtonToolbar
-} from "@/components";
-import { UserRow } from "./UserRow";
-import ThemedButton from "@/components/ThemedButton";
+  ButtonToolbar,
+} from '@/components';
+import { UserRow } from './UserRow';
+import ThemedButton from '@/components/ThemedButton';
 
-const UserList = ({
-  users,
-  onUserEdit,
-  onAddNew
-}) => {
-  console.log('users', users);
+const UserList = ({ users, onUserEdit, onAddNew }) => {
   return (
     <React.Fragment>
       <Card className="mb-3">
@@ -59,14 +54,15 @@ const UserList = ({
                     <th className="align-middle bt-0"></th>
                     <th className="align-middle bt-0 text-center"></th>
                     <th className="align-middle bt-0">Last name</th>
-                    <th className="align-middle bt-0">First name</th>                    
+                    <th className="align-middle bt-0">First name</th>
                     <th className="align-middle bt-0">Email</th>
                     <th className="align-middle bt-0">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {(users && users.length > 0 &&
-                    users.map(user => (
+                  {(users &&
+                    users.length > 0 &&
+                    users.map((user) => (
                       <UserRow
                         props={user}
                         onUserEdit={onUserEdit}

@@ -2,65 +2,66 @@ import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
 export const organizationService = {
-    getAll,
-    getById,
-    update,
-    create,
-    deleteOrganizations
+  getAll,
+  getById,
+  update,
+  create,
+  deleteOrganizations,
 };
 
 function getAll(pageId, recordsPerPage, filter) {
-    const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ pageId, recordsPerPage, filter });
-    return fetch(`${config.apiUrl}/organizations?${query}`, requestOptions).then(handleResponse);
+  const requestOptions = { method: 'GET', headers: authHeader() };
+  let query = buildQuery({ pageId, recordsPerPage, filter });
+  return fetch(`${config.apiUrl}/organizations?${query}`, requestOptions).then(
+    handleResponse
+  );
 }
 
 function getById(id) {
-    const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/organizations/${id}`, requestOptions).then(handleResponse);
+  const requestOptions = { method: 'GET', headers: authHeader() };
+  return fetch(`${config.apiUrl}/organizations/${id}`, requestOptions).then(
+    handleResponse
+  );
 }
 
 function create(organization) {
-    console.log("Create organization:", organization)
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(organization)
-    };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(organization),
+  };
 
-    return fetch(`${config.apiUrl}/organizations`, requestOptions)
-        .then(handleResponse)
-        .then((data) => {
-            return data;
-        });
+  return fetch(`${config.apiUrl}/organizations`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
 }
 
 function update(organization) {
-    console.log("Update organization:", organization)
-    const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(organization)
-    };
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(organization),
+  };
 
-    return fetch(`${config.apiUrl}/organizations`, requestOptions)
-        .then(handleResponse)
-        .then((data) => {
-            return data;
+  return fetch(`${config.apiUrl}/organizations`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
     });
 }
 
 function deleteOrganizations(organizations) {
-    console.log("Delete organizations:", organizations)
-    const requestOptions = {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', ...authHeader() },
-        body: JSON.stringify(organizations)
-    };
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(organizations),
+  };
 
-    return fetch(`${config.apiUrl}/organizations`, requestOptions)
-        .then(handleResponse)
-        .then((data) => {
-            return data;
+  return fetch(`${config.apiUrl}/organizations`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
     });
 }

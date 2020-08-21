@@ -1,12 +1,12 @@
-import React from "react";
-import { useIntl } from "react-intl";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import styled from "styled-components";
-import ThemedButton from "@/components/ThemedButton";
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import styled from 'styled-components';
+import ThemedButton from '@/components/ThemedButton';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 import {
   Alert,
   Container,
@@ -19,24 +19,24 @@ import {
   InputGroupAddon,
   FormGroup,
   Label,
-  Row
-} from "@/components";
-import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { learnerService } from "@/services";
+  Row,
+} from '@/components';
+import { HeaderDemo } from '@/routes/components/HeaderDemo';
+import { learnerService } from '@/services';
 import { useAppState } from '@/components/AppState';
-import moment from "moment";
+import moment from 'moment';
 
 const InvalidFeedback = styled.section`
-    width: 100%;
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: #ED1C24;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ed1c24;
 `;
 
-const LearnerEdit = props => {
+const LearnerEdit = (props) => {
   const intl = useIntl();
-  
-  const [{selectedOrganization}] = useAppState();
+
+  const [{ selectedOrganization }] = useAppState();
   const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
@@ -44,7 +44,7 @@ const LearnerEdit = props => {
   React.useEffect(() => {
     setUser(props.user);
   }, [props.user]);
-  
+
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);
@@ -64,29 +64,23 @@ const LearnerEdit = props => {
       {...props}
       enableReinitialize={true}
       initialValues={{
-        name: (user && user.name) || "",
-        surname: (user && user.surname) || "",
-        email: (user && user.email) || "",
-        gender: (user && user.gender) || "",
-        startDate: (user && user.startDate && moment(user.startDate).toDate()) || new Date(),
-        isActive: (!user && true) || user.isActive
+        name: (user && user.name) || '',
+        surname: (user && user.surname) || '',
+        email: (user && user.email) || '',
+        gender: (user && user.gender) || '',
+        startDate:
+          (user && user.startDate && moment(user.startDate).toDate()) ||
+          new Date(),
+        isActive: (!user && true) || user.isActive,
       }}
       validationSchema={Yup.object().shape({
-        name: Yup.string().required("Name is required"),
-        surname: Yup.string().required("Surname is required"),
-        email: Yup.string().required("Email is required"),
-        gender: Yup.string().required("Gender is required"),
-        
+        name: Yup.string().required('Name is required'),
+        surname: Yup.string().required('Surname is required'),
+        email: Yup.string().required('Email is required'),
+        gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        {
-          name,
-          surname,
-          email,
-          gender,
-          startDate,
-          isActive
-        },
+        { name, surname, email, gender, startDate, isActive },
         { setStatus, setSubmitting }
       ) => {
         setStatus();
@@ -106,26 +100,26 @@ const LearnerEdit = props => {
               selectedOrganization.organizationId
             )
             .then(
-              response => {
+              (response) => {
                 setSubmitting(false);
                 if (response.isValid) {
                   props.onEdited();
 
                   showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success'}),
-                    message: "You have sucessfully created an user!",
-                    type: "success"
+                    title: intl.formatMessage({ id: 'General.Success' }),
+                    message: 'You have sucessfully created an user!',
+                    type: 'success',
                   });
                 } else {
                   showAlertMessage({
-                    title: "Error",
+                    title: 'Error',
                     message: response.errorDetails,
-                    type: "danger"
+                    type: 'danger',
                   });
                 }
               },
-              error => {
-                console.log("error", error);
+              (error) => {
+                console.log('error', error);
                 setSubmitting(false);
                 setStatus(error);
               }
@@ -143,26 +137,26 @@ const LearnerEdit = props => {
               selectedOrganization.organizationId
             )
             .then(
-              response => {
+              (response) => {
                 setSubmitting(false);
 
                 if (response.isValid) {
                   props.onEdited();
 
                   showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success'}),
-                    message: "You have sucessfully created an user!",
-                    type: "success"
+                    title: intl.formatMessage({ id: 'General.Success' }),
+                    message: 'You have sucessfully created an user!',
+                    type: 'success',
                   });
                 } else {
                   showAlertMessage({
-                    title: "Error",
+                    title: 'Error',
                     message: response.errorDetails,
-                    type: "danger"
+                    type: 'danger',
                   });
                 }
               },
-              error => {
+              (error) => {
                 setSubmitting(false);
                 setStatus(error);
               }
@@ -170,9 +164,8 @@ const LearnerEdit = props => {
         }
       }}
     >
-      {props => (
+      {(props) => (
         <React.Fragment>
-          {console.log("Formik props", props)}
           <Container>
             {showAlert && alertMessage && (
               <Alert color={alertMessage.type}>
@@ -222,10 +215,10 @@ const LearnerEdit = props => {
                             name="name"
                             id="name"
                             className={
-                              "bg-white form-control" +
+                              'bg-white form-control' +
                               (props.errors.name && props.touched.name
-                                ? " is-invalid"
-                                : "")
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Name..."
                           />
@@ -247,10 +240,10 @@ const LearnerEdit = props => {
                             name="surname"
                             id="surname"
                             className={
-                              "bg-white form-control" +
+                              'bg-white form-control' +
                               (props.errors.surname && props.touched.surname
-                                ? " is-invalid"
-                                : "")
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Surname..."
                           />
@@ -272,10 +265,10 @@ const LearnerEdit = props => {
                             name="email"
                             id="email"
                             className={
-                              "bg-white form-control" +
+                              'bg-white form-control' +
                               (props.errors.email && props.touched.email
-                                ? " is-invalid"
-                                : "")
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Email..."
                           />
@@ -298,10 +291,10 @@ const LearnerEdit = props => {
                             id="genderMale"
                             name="gender"
                             label="Male"
-                            checked={props.values.gender == "M"}
+                            checked={props.values.gender == 'M'}
                             value="M"
-                            onChange={event => {
-                              props.setFieldValue("gender", event.target.value);
+                            onChange={(event) => {
+                              props.setFieldValue('gender', event.target.value);
                             }}
                           />
                           <CustomInput
@@ -311,18 +304,16 @@ const LearnerEdit = props => {
                             name="gender"
                             label="Female"
                             value="F"
-                            checked={props.values.gender == "F"}
-                            onChange={event => {
-                              props.setFieldValue("gender", event.target.value);
+                            checked={props.values.gender == 'F'}
+                            onChange={(event) => {
+                              props.setFieldValue('gender', event.target.value);
                             }}
-                          />{" "}
-
-                          {props.errors.gender &&
-                            props.touched.gender && (
-                              <InvalidFeedback>
-                                {props.errors.gender}
-                              </InvalidFeedback>
-                            )}
+                          />{' '}
+                          {props.errors.gender && props.touched.gender && (
+                            <InvalidFeedback>
+                              {props.errors.gender}
+                            </InvalidFeedback>
+                          )}
                         </Col>
                       </FormGroup>
 
@@ -333,7 +324,7 @@ const LearnerEdit = props => {
                         <Col sm={9}>
                           <InputGroup>
                             <InputGroupAddon addonType="prepend">
-                              <i className="fa fa-fw fa-calendar"></i>                              
+                              <i className="fa fa-fw fa-calendar"></i>
                             </InputGroupAddon>
                             <DatePicker
                               id="startDate"
@@ -342,15 +333,16 @@ const LearnerEdit = props => {
                               showMonthDropdown
                               showYearDropdown
                               className={
-                                "bg-white form-control zIndex100" +
-                                (props.errors.startDate && props.touched.startDate
-                                  ? " is-invalid"
-                                  : "")
+                                'bg-white form-control zIndex100' +
+                                (props.errors.startDate &&
+                                props.touched.startDate
+                                  ? ' is-invalid'
+                                  : '')
                               }
                               selected={props.values.startDate}
-                              onChange={date => {
-                                props.setFieldValue("startDate", date);
-                              }}                             
+                              onChange={(date) => {
+                                props.setFieldValue('startDate', date);
+                              }}
                             />
                             {props.errors.startDate &&
                               props.touched.startDate && (
@@ -364,7 +356,7 @@ const LearnerEdit = props => {
 
                       <FormGroup row>
                         <Label for="email" sm={3}>
-                        {intl.formatMessage({ id: 'General.Status'})}
+                          {intl.formatMessage({ id: 'General.Status' })}
                         </Label>
                         <Col sm={9}>
                           <CustomInput
@@ -375,11 +367,8 @@ const LearnerEdit = props => {
                             label="Active"
                             checked={props.values.isActive}
                             value={true}
-                            onChange={event => {
-                              props.setFieldValue(
-                                "isActive",
-                                true
-                              );
+                            onChange={(event) => {
+                              props.setFieldValue('isActive', true);
                             }}
                           />
                           <CustomInput
@@ -390,13 +379,10 @@ const LearnerEdit = props => {
                             label="Inactive"
                             value={false}
                             checked={!props.values.isActive}
-                            onChange={event => {
-                              props.setFieldValue(
-                                "isActive",
-                                false
-                              );
+                            onChange={(event) => {
+                              props.setFieldValue('isActive', false);
                             }}
-                          />{" "}
+                          />{' '}
                         </Col>
                       </FormGroup>
 
@@ -404,8 +390,8 @@ const LearnerEdit = props => {
                         <Col sm={3}></Col>
                         <Col sm={9}>
                           <ThemedButton type="submit">
-                            {(user && "Update") || "Create"}
-                          </ThemedButton>{" "}
+                            {(user && 'Update') || 'Create'}
+                          </ThemedButton>{' '}
                           <Button
                             type="button"
                             onClick={() => cancel()}

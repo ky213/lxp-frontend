@@ -7,17 +7,16 @@ class CustomCalendarToolBar extends React.PureComponent {
     this.props.onView(event.target.value);
   };
 
-  view = view => {
-    this.props.onView(view)
-  }
+  view = (view) => {
+    this.props.onView(view);
+  };
 
   viewNamesGroup(messages) {
-    let viewNames = this.props.views
-    const view = this.props.view
-    console.log("View:", view)
+    let viewNames = this.props.views;
+    const view = this.props.view;
 
     if (viewNames.length > 1) {
-      return viewNames.map(name => (
+      return viewNames.map((name) => (
         <button
           type="button"
           key={name}
@@ -26,27 +25,41 @@ class CustomCalendarToolBar extends React.PureComponent {
         >
           {messages[name]}
         </button>
-      ))
+      ));
     }
   }
 
   render() {
-    const { view, views, onNavigate, label, onAddNew, localizer: { messages } } = this.props;
-    console.log("View:", view, this.props)
+    const {
+      view,
+      views,
+      onNavigate,
+      label,
+      onAddNew,
+      localizer: { messages },
+    } = this.props;
 
     return (
-        <div className="rbc-toolbar">
-            <span className="rbc-btn-group">
-                <span className="title">Activities</span>
-                <button type="button" onClick={() => onNavigate('TODAY')}>Today</button>
-                <button type="button" onClick={() => onNavigate('PREV')}>Back</button>
-                <button type="button" onClick={() => onNavigate('NEXT')}>Next</button>
-                <button type="button" className="add-new-event" onClick={onAddNew}>+</button>
-            </span>
-            <span className="rbc-toolbar-label">{label}</span>
-            <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
-        </div>
-    )
+      <div className="rbc-toolbar">
+        <span className="rbc-btn-group">
+          <span className="title">Activities</span>
+          <button type="button" onClick={() => onNavigate('TODAY')}>
+            Today
+          </button>
+          <button type="button" onClick={() => onNavigate('PREV')}>
+            Back
+          </button>
+          <button type="button" onClick={() => onNavigate('NEXT')}>
+            Next
+          </button>
+          <button type="button" className="add-new-event" onClick={onAddNew}>
+            +
+          </button>
+        </span>
+        <span className="rbc-toolbar-label">{label}</span>
+        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
+      </div>
+    );
   }
 }
 
@@ -56,7 +69,6 @@ CustomCalendarToolBar.propTypes = {
   label: PropTypes.string,
   view: PropTypes.string,
   views: PropTypes.array,
-
 };
 
 export default CustomCalendarToolBar;

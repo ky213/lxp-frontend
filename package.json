@@ -24,7 +24,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-imports": "^2.0.0",
-    "babel-plugin-universal-import": "^4.0.0",
+    "babel-plugin-universal-import": "^4.0.2",
     "circular-dependency-plugin": "^5.0.2",
     "commander": "^2.20.0",
     "css-loader": "^3.1.0",

@@ -1,11 +1,11 @@
-import React from "react";
-import { useIntl } from "react-intl";
-import { useHistory } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import styled from "styled-components";
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import styled from 'styled-components';
 import ProfilePhoto from '@/components/ProfilePhoto';
-import ThemedButton from "@/components/ThemedButton";
+import ThemedButton from '@/components/ThemedButton';
 import { Role } from '@/helpers';
 import {
   Alert,
@@ -17,17 +17,17 @@ import {
   CustomInput,
   FormGroup,
   Label,
-  Row
-} from "@/components";
-import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { courseManagerService, roleService } from "@/services";
+  Row,
+} from '@/components';
+import { HeaderDemo } from '@/routes/components/HeaderDemo';
+import { courseManagerService, roleService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
 const InvalidFeedback = styled.section`
-    width: 100%;
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: #ED1C24;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ed1c24;
 `;
 
 const CmEdit = ({ user, onEdited, onCancel }) => {
@@ -41,7 +41,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
   const [roles, setRoles] = React.useState([]);
 
   React.useEffect(() => {
-    roleService.getCmRoles().then(data => {
+    roleService.getCmRoles().then((data) => {
       setRoles(data);
     });
   }, []);
@@ -64,78 +64,76 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
     <Formik
       enableReinitialize={true}
       initialValues={{
-        name: (user && user.name) || "",
-        surname: (user && user.surname) || "",
-        email: (user && user.email) || "",
-        gender: (user && user.gender) || "",
-        userRoleId: (user && user.roleId) || "",
-        isActive: (!user && true) || user.isActive
+        name: (user && user.name) || '',
+        surname: (user && user.surname) || '',
+        email: (user && user.email) || '',
+        gender: (user && user.gender) || '',
+        userRoleId: (user && user.roleId) || '',
+        isActive: (!user && true) || user.isActive,
       }}
       validationSchema={Yup.object().shape({
-        name: Yup.string().required("Name is required"),
-        surname: Yup.string().required("Surname is required"),
-        email: Yup.string().required("Email is required"),
+        name: Yup.string().required('Name is required'),
+        surname: Yup.string().required('Surname is required'),
+        email: Yup.string().required('Email is required'),
         userRoleId: Yup.string().required('You have to select Role'),
-        gender: Yup.string().required('Gender is required')
+        gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender,
-          userRoleId, isActive },
+        { name, surname, email, gender, userRoleId, isActive },
         { setStatus, setSubmitting }
       ) => {
         setStatus();
 
         if (user) {
           courseManagerService
-            .update({
-              name,
-              surname,
-              email,
-              gender,
-              isActive,
-              userId: user.userId,
-              employeeId: user.employeeId,
-              roleId: userRoleId,
-              organizationId: selectedOrganization.organizationId
-            },
-              selectedOrganization.organizationId)
-            .then(
-              response => {
-                setSubmitting(false);
-                console.log('response', response);
-                if (response.isValid) {
-                  onEdited();
-
-                  showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success' }),
-                    message: "You have sucessfully created an user!",
-                    type: "success"
-                  });
-
-                }
-                else {
-                  showAlertMessage({
-                    title: "Error",
-                    message: response.errorDetails,
-                    type: "danger"
-                  });
-                }
-              }
+            .update(
+              {
+                name,
+                surname,
+                email,
+                gender,
+                isActive,
+                userId: user.userId,
+                employeeId: user.employeeId,
+                roleId: userRoleId,
+                organizationId: selectedOrganization.organizationId,
+              },
+              selectedOrganization.organizationId
             )
-            .catch(err => console.log("err", err));
+            .then((response) => {
+              setSubmitting(false);
+              if (response.isValid) {
+                onEdited();
+
+                showAlertMessage({
+                  title: intl.formatMessage({ id: 'General.Success' }),
+                  message: 'You have sucessfully created an user!',
+                  type: 'success',
+                });
+              } else {
+                showAlertMessage({
+                  title: 'Error',
+                  message: response.errorDetails,
+                  type: 'danger',
+                });
+              }
+            })
+            .catch((err) => console.log('err', err));
         } else {
           courseManagerService
-            .add({
-              name,
-              surname,
-              email,
-              gender,
-              organizationId: selectedOrganization.organizationId,
-              roleId: userRoleId
-            },
-              selectedOrganization.organizationId)
+            .add(
+              {
+                name,
+                surname,
+                email,
+                gender,
+                organizationId: selectedOrganization.organizationId,
+                roleId: userRoleId,
+              },
+              selectedOrganization.organizationId
+            )
             .then(
-              response => {
+              (response) => {
                 setSubmitting(false);
 
                 if (response.isValid) {
@@ -143,19 +141,18 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
 
                   showAlertMessage({
                     title: intl.formatMessage({ id: 'General.Success' }),
-                    message: "You have sucessfully created an user!",
-                    type: "success"
+                    message: 'You have sucessfully created an user!',
+                    type: 'success',
                   });
-                }
-                else {
+                } else {
                   showAlertMessage({
-                    title: "Error",
+                    title: 'Error',
                     message: response.errorDetails,
-                    type: "danger"
+                    type: 'danger',
                   });
                 }
               },
-              error => {
+              (error) => {
                 setSubmitting(false);
                 setStatus(error);
               }
@@ -163,9 +160,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         }
       }}
     >
-      {props => (
+      {(props) => (
         <React.Fragment>
-          {console.log('formik props', props)}
           <Container>
             {showAlert && alertMessage && (
               <Alert color={alertMessage.type}>
@@ -196,10 +192,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                         <Col sm={3}></Col>
                         <Col sm={9}>
                           <ProfilePhoto
-                            profilePhoto={user && user.profilePhoto || null}
+                            profilePhoto={(user && user.profilePhoto) || null}
                             enableEdit={true}
                             userId={user && user.userId}
-                            size='size128'
+                            size="size128"
                           />
                         </Col>
                       </FormGroup>
@@ -214,10 +210,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             name="name"
                             id="name"
                             className={
-                              "bg-white form-control" +
+                              'bg-white form-control' +
                               (props.errors.name && props.touched.name
-                                ? " is-invalid"
-                                : "")
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Name..."
                           />
@@ -239,10 +235,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             name="surname"
                             id="surname"
                             className={
-                              "bg-white form-control" +
+                              'bg-white form-control' +
                               (props.errors.surname && props.touched.surname
-                                ? " is-invalid"
-                                : "")
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Surname..."
                           />
@@ -264,10 +260,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             name="email"
                             id="email"
                             className={
-                              "bg-white form-control" +
+                              'bg-white form-control' +
                               (props.errors.email && props.touched.email
-                                ? " is-invalid"
-                                : "")
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Email..."
                           />
@@ -290,10 +286,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             id="genderMale"
                             name="gender"
                             label="Male"
-                            checked={props.values.gender == "M"}
+                            checked={props.values.gender == 'M'}
                             value="M"
-                            onChange={event => {
-                              props.setFieldValue("gender", event.target.value);
+                            onChange={(event) => {
+                              props.setFieldValue('gender', event.target.value);
                             }}
                           />
                           <CustomInput
@@ -303,12 +299,16 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             name="gender"
                             label="Female"
                             value="F"
-                            checked={props.values.gender == "F"}
-                            onChange={event => {
-                              props.setFieldValue("gender", event.target.value);
+                            checked={props.values.gender == 'F'}
+                            onChange={(event) => {
+                              props.setFieldValue('gender', event.target.value);
                             }}
-                          />{" "}
-                          {props.errors.gender && <InvalidFeedback>{props.errors.gender}</InvalidFeedback>}
+                          />{' '}
+                          {props.errors.gender && (
+                            <InvalidFeedback>
+                              {props.errors.gender}
+                            </InvalidFeedback>
+                          )}
                         </Col>
                       </FormGroup>
 
@@ -325,8 +325,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             label="Active"
                             checked={props.values.isActive}
                             value={true}
-                            onChange={event => {
-                              props.setFieldValue("isActive", true);
+                            onChange={(event) => {
+                              props.setFieldValue('isActive', true);
                             }}
                           />
                           <CustomInput
@@ -337,10 +337,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             label="Inactive"
                             value={false}
                             checked={!props.values.isActive}
-                            onChange={event => {
-                              props.setFieldValue("isActive", false);
+                            onChange={(event) => {
+                              props.setFieldValue('isActive', false);
                             }}
-                          />{" "}
+                          />{' '}
                         </Col>
                       </FormGroup>
 
@@ -353,24 +353,39 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             component="select"
                             name="userRoleId"
                             id="userRoleId"
-                            className={'bg-white form-control' + (props.errors.userRoleId && props.touched.userRoleId ? ' is-invalid' : '')}
+                            className={
+                              'bg-white form-control' +
+                              (props.errors.userRoleId &&
+                              props.touched.userRoleId
+                                ? ' is-invalid'
+                                : '')
+                            }
                           >
                             <option value="">Select user role...</option>
-                            {roles.map(r => {
+                            {roles.map((r) => {
                               return (
-                                <option value={r.roleId} selected={user && r.roleId == user.roleId}>{r.name}</option>
+                                <option
+                                  value={r.roleId}
+                                  selected={user && r.roleId == user.roleId}
+                                >
+                                  {r.name}
+                                </option>
                               );
                             })}
                           </Field>
-                          {props.errors.userRoleId && <InvalidFeedback>{props.errors.userRoleId}</InvalidFeedback>}
+                          {props.errors.userRoleId && (
+                            <InvalidFeedback>
+                              {props.errors.userRoleId}
+                            </InvalidFeedback>
+                          )}
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col sm={3}></Col>
                         <Col sm={9}>
                           <ThemedButton type="submit">
-                            {(user && "Update") || "Create"}
-                          </ThemedButton>{" "}
+                            {(user && 'Update') || 'Create'}
+                          </ThemedButton>{' '}
                           <Button
                             type="button"
                             onClick={() => goBack()}

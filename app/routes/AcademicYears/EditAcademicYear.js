@@ -1,11 +1,11 @@
 import React from 'react';
-import { useIntl } from "react-intl";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import DatePicker from "react-datepicker";
-import moment from "moment";
-import styled from "styled-components";
-import ThemedButton from "@/components/ThemedButton";
+import { useIntl } from 'react-intl';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import styled from 'styled-components';
+import ThemedButton from '@/components/ThemedButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import {
   Row,
@@ -18,17 +18,22 @@ import {
   CustomInput,
   FormGroup,
   Label,
-  Loading
-} from "@/components";
-import { Consumer } from "@/components/Theme/ThemeContext";
+  Loading,
+} from '@/components';
+import { Consumer } from '@/components/Theme/ThemeContext';
 import AcademicYearDeletionModal from './AcademicYearDeletionModal';
 
-const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear, createAcademicYear,
-  programs }) => {  
+const EditAcademicYear = ({
+  academicYear,
+  onCancel,
+  onDelete,
+  updateAcademicYear,
+  createAcademicYear,
+  programs,
+}) => {
   const intl = useIntl();
 
   const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState(false);
-  console.log('academicYear', academicYear, programs);
 
   const InvalidFeedback = styled.section`
     width: 100%;
@@ -39,54 +44,61 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
 
   const showDeletionModal = () => {
     setIsDeletionModalOpen(true);
-  }
+  };
 
   const hideDeletionModal = () => {
     setIsDeletionModalOpen(false);
-  }
+  };
 
   return (
     (programs && (
       <Consumer>
-        {themeState => (
+        {(themeState) => (
           <Formik
             {...themeState}
             enableReinitialize={true}
             initialValues={{
-              name: (academicYear && academicYear.academicYearName) || "",
+              name: (academicYear && academicYear.academicYearName) || '',
               dateFrom: (academicYear && academicYear.startDate) || '',
               dateTo: (academicYear && academicYear.endDate) || '',
-              programs: (academicYear && programs.filter(p => p.programId == academicYear.programId)) || [],
+              programs:
+                (academicYear &&
+                  programs.filter(
+                    (p) => p.programId == academicYear.programId
+                  )) ||
+                [],
             }}
             validationSchema={Yup.object().shape({
-              name: Yup.string().required("Name is required"),
-              dateFrom: Yup.date().required("Date From is required"),
-              dateTo: Yup.date().required("Date To is required"),
-              programs: Yup.array().min(1, 'You need to select at least one program')
+              name: Yup.string().required('Name is required'),
+              dateFrom: Yup.date().required('Date From is required'),
+              dateTo: Yup.date().required('Date To is required'),
+              programs: Yup.array().min(
+                1,
+                'You need to select at least one program'
+              ),
             })}
-
             onSubmit={(
               { name, dateFrom, dateTo, programs },
               { setStatus, setSubmitting }
             ) => {
-              
               let ay = {
                 name,
                 startDate: dateFrom,
                 endDate: dateTo,
-                programs
+                programs,
               };
 
-              console.log('Academic year', ay);
-
               if (academicYear) {
-                updateAcademicYear({ ...ay, academicYearId: academicYear.academicYearId });
+                updateAcademicYear({
+                  ...ay,
+                  academicYearId: academicYear.academicYearId,
+                });
               } else {
                 createAcademicYear(ay);
               }
             }}
           >
-            {props => {
+            {(props) => {
               //console.log("props", props);
               return (
                 <React.Fragment>
@@ -107,10 +119,10 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                                   name="name"
                                   id="name"
                                   className={
-                                    "bg-white form-control" +
+                                    'bg-white form-control' +
                                     (props.errors.name && props.touched.name
-                                      ? " is-invalid"
-                                      : "")
+                                      ? ' is-invalid'
+                                      : '')
                                   }
                                   placeholder="Enter Name..."
                                 />
@@ -137,20 +149,20 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                                   className={
                                     props.errors.programs &&
                                     props.touched.programs
-                                      ? " is-invalid"
-                                      : ""
+                                      ? ' is-invalid'
+                                      : ''
                                   }
                                   options={programs}
                                   placeholder="Choose a program..."
-                                  onChange={selectedOptions =>
+                                  onChange={(selectedOptions) =>
                                     props.setFieldValue(
-                                      "programs",
+                                      'programs',
                                       selectedOptions
                                     )
                                   }
-                                  onInputChange={selectedOptions =>
+                                  onInputChange={(selectedOptions) =>
                                     props.setFieldValue(
-                                      "programs",
+                                      'programs',
                                       selectedOptions
                                     )
                                   }
@@ -160,7 +172,7 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                                     {props.errors.programs}
                                   </InvalidFeedback>
                                 )}
-                              </Col>                              
+                              </Col>
                             </FormGroup>
 
                             <FormGroup row>
@@ -181,30 +193,30 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                                     showYearDropdown
                                     autoComplete="off"
                                     className={
-                                      "bg-white form-control zIndex100" +
+                                      'bg-white form-control zIndex100' +
                                       (props.errors.dateFrom &&
                                       props.touched.dateFrom
-                                        ? " is-invalid"
-                                        : "")
+                                        ? ' is-invalid'
+                                        : '')
                                     }
                                     value={
                                       (props.values.dateFrom &&
                                         moment(
                                           props.values.dateFrom
                                         ).toDate()) ||
-                                      ""
+                                      ''
                                     }
                                     selected={
                                       (props.values.dateFrom &&
                                         moment(
                                           props.values.dateFrom
                                         ).toDate()) ||
-                                      ""
+                                      ''
                                     }
-                                    onChange={date => {
+                                    onChange={(date) => {
                                       props.setFieldValue(
-                                        "dateFrom",
-                                        (date && moment(date).toDate()) || ""
+                                        'dateFrom',
+                                        (date && moment(date).toDate()) || ''
                                       );
                                     }}
                                   />
@@ -230,26 +242,26 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                                     showYearDropdown
                                     disabled={academicYear}
                                     className={
-                                      "bg-white form-control zIndex100" +
+                                      'bg-white form-control zIndex100' +
                                       (props.errors.dateTo &&
                                       props.touched.dateTo
-                                        ? " is-invalid"
-                                        : "")
+                                        ? ' is-invalid'
+                                        : '')
                                     }
                                     value={
                                       (props.values.dateTo &&
                                         moment(props.values.dateTo).toDate()) ||
-                                      ""
+                                      ''
                                     }
                                     selected={
                                       (props.values.dateTo &&
                                         moment(props.values.dateTo).toDate()) ||
-                                      ""
+                                      ''
                                     }
-                                    onChange={date => {
+                                    onChange={(date) => {
                                       props.setFieldValue(
-                                        "dateTo",
-                                        (date && moment(date).toDate()) || ""
+                                        'dateTo',
+                                        (date && moment(date).toDate()) || ''
                                       );
                                     }}
                                   />
@@ -267,26 +279,27 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
                               <Col sm={3} />
                               <Col sm={9}>
                                 <ThemedButton type="submit">
-                                  {(academicYear && "Update") || "Create"}
+                                  {(academicYear && 'Update') || 'Create'}
                                 </ThemedButton>
-                                
                                 {academicYear && (
                                   <React.Fragment>
-                                    {" "}
+                                    {' '}
                                     <Button
                                       onClick={showDeletionModal}
                                       type="button"
-                                      color="danger">
-                                      {intl.formatMessage({ id: 'General.Delete'})}
+                                      color="danger"
+                                    >
+                                      {intl.formatMessage({
+                                        id: 'General.Delete',
+                                      })}
                                     </Button>
-                                    <AcademicYearDeletionModal 
-                                      isOpen={isDeletionModalOpen} 
-                                      handleDeletion={onDelete} 
-                                      cancelDeletion={hideDeletionModal} />
-                                  </React.Fragment>                               
-                                )}
-
-                                {" "}
+                                    <AcademicYearDeletionModal
+                                      isOpen={isDeletionModalOpen}
+                                      handleDeletion={onDelete}
+                                      cancelDeletion={hideDeletionModal}
+                                    />
+                                  </React.Fragment>
+                                )}{' '}
                                 <Button
                                   type="button"
                                   onClick={onCancel}
@@ -307,7 +320,7 @@ const EditAcademicYear = ({ academicYear, onCancel, onDelete, updateAcademicYear
               );
             }}
           </Formik>
-        )}        
+        )}
       </Consumer>
     )) || <Loading />
   );

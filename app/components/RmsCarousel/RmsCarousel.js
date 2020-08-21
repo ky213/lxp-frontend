@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./RmsCarousel.css";
-import RmsCarouselFile from "./RmsCarouselFile";
-import { announcementService } from "@/services";
+import React from 'react';
+import styles from './RmsCarousel.css';
+import RmsCarouselFile from './RmsCarouselFile';
+import { announcementService } from '@/services';
 
 /*
   data: {
@@ -16,7 +16,7 @@ const RmsCarousel = ({ data, getAnnouncements }) => {
   const [selectedItem, setSelectedItem] = React.useState(null);
   const [selectedItemFiles, setSelectedItemFiles] = React.useState([]);
   const [to, setTo] = React.useState(null);
-    
+
   React.useEffect(() => {
     setSelectedItem(data.announcements[activeIndex]);
   }, []);
@@ -24,11 +24,10 @@ const RmsCarousel = ({ data, getAnnouncements }) => {
   React.useEffect(() => {
     clearTimeout(to);
     setActiveIndex(0);
-    if (activeIndex == 0)
-    {
+    if (activeIndex == 0) {
       setSelectedItem(data.announcements[activeIndex]);
       loopRmsCarousel();
-    }      
+    }
   }, [data]);
 
   React.useEffect(() => {
@@ -38,44 +37,44 @@ const RmsCarousel = ({ data, getAnnouncements }) => {
   }, [activeIndex]);
 
   const loopRmsCarousel = () => {
-    if (to)
-    {
+    if (to) {
       clearTimeout(to);
     }
 
     let t = setTimeout(
-      function() {
+      function () {
         let x = (activeIndex + 1) % data.announcements.length;
         setActiveIndex(x);
       }.bind(this),
       timeSecond * 1000
     );
     setTo(t);
-  }
+  };
 
   React.useEffect(() => {
     if (selectedItem)
       setSelectedItemFiles(
-        data.files.filter(f => f.announcementId == selectedItem.announcementId)
+        data.files.filter(
+          (f) => f.announcementId == selectedItem.announcementId
+        )
       );
   }, [selectedItem]);
 
-  const handleClick = i => {
+  const handleClick = (i) => {
     setActiveIndex(i);
   };
 
   function createMarkup(html) {
-    return {__html: html};
+    return { __html: html };
   }
 
   const markAsRead = () => {
     announcementService
       .markAnnouncementAsRead(selectedItem.announcementId)
-      .then(data => {
-        console.log('markAsRead', data);
+      .then((data) => {
         getAnnouncements();
       });
-  }
+  };
 
   return (
     selectedItem && (
@@ -83,7 +82,9 @@ const RmsCarousel = ({ data, getAnnouncements }) => {
         <div className={styles.rmsCarousel}>
           <h6 className={styles.title}>
             {selectedItem.title}
-            <span onClick={markAsRead} className={styles.markAsRead}>Dismiss</span>
+            <span onClick={markAsRead} className={styles.markAsRead}>
+              Dismiss
+            </span>
           </h6>
           <div
             className={styles.text}
@@ -103,7 +104,7 @@ const RmsCarousel = ({ data, getAnnouncements }) => {
             {data.announcements.map((x, i) => {
               if (activeIndex == i)
                 return (
-                  <div className={[styles.page, styles.active].join(" ")}></div>
+                  <div className={[styles.page, styles.active].join(' ')}></div>
                 );
               else
                 return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Alert,
   Col,
@@ -13,23 +13,23 @@ import {
   Row,
   UncontrolledTooltip,
   CardColumns,
-} from "@/components";
-import { Button } from "reactstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
-import ThemedButton from "@/components/ThemedButton";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import { Paginations } from "@/routes/components/Paginations";
-import { programService, courseService } from "@/services";
+} from '@/components';
+import { Button } from 'reactstrap';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import ThemedButton from '@/components/ThemedButton';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import { Paginations } from '@/routes/components/Paginations';
+import { programService, courseService } from '@/services';
 
-import { useAppState } from "@/components/AppState";
+import { useAppState } from '@/components/AppState';
 
-import styles from "./Courses.css";
-import Loading from "@/components/Loading";
-import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { isMobileDevice } from "responsive-react";
+import styles from './Courses.css';
+import Loading from '@/components/Loading';
+import { HeaderDemo } from '@/routes/components/HeaderDemo';
+import { isMobileDevice } from 'responsive-react';
 
-import { CourseCard } from "./components/CourseCard";
-import { TinCanLaunch } from "@/helpers";
+import { CourseCard } from './components/CourseCard';
+import { TinCanLaunch } from '@/helpers';
 
 const recordsPerPage = 20;
 
@@ -65,7 +65,7 @@ const Courses = (props) => {
       .then((data) => {
         setPrograms(data);
       })
-      .catch((err) => console.log("programService.getByCurrentUser", err));
+      .catch((err) => console.log('programService.getByCurrentUser', err));
   }, []);
 
   React.useEffect(() => {
@@ -110,16 +110,14 @@ const Courses = (props) => {
           filter
         );
 
-        console.log("Courses data:", data)
-
         if (data) {
           setCoursesData(data);
         }
       } catch (err) {
         showAlertMessage({
-          title: "Error",
+          title: 'Error',
           message: err,
-          type: "danger",
+          type: 'danger',
         });
       }
 
@@ -145,7 +143,6 @@ const Courses = (props) => {
   };
 
   const handleLaunch = (course) => {
-    console.log("Got course before launch:", course)
     TinCanLaunch.launchContent(
       user,
       selectedProgramId,
@@ -157,15 +154,7 @@ const Courses = (props) => {
   };
 
   const handleKeyDownSearch = (ev) => {
-    console.log(
-      "Typing:",
-      ev.target.value,
-      ev.target.value.length,
-      ev.target.value == " ",
-      ev.key
-    );
-
-    if (ev.key === "Enter" || ev.key === "Space") {
+    if (ev.key === 'Enter' || ev.key === 'Space') {
       ev.preventDefault();
       ev.stopPropagation();
 
@@ -184,7 +173,7 @@ const Courses = (props) => {
             {alertMessage.message}
             <div className="mt-2">
               <Button color={alertMessage.type} onClick={dismissAlert}>
-                {intl.formatMessage({ id: "General.Dismiss" })}
+                {intl.formatMessage({ id: 'General.Dismiss' })}
               </Button>
             </div>
           </Alert>
@@ -203,7 +192,7 @@ const Courses = (props) => {
           <div className={styles.cardBody} ref={rowContent}>
             <Row>
               <Col lg={12}>
-                <Form className={!deviceIsMobile ? "form-inline" : ""}>
+                <Form className={!deviceIsMobile ? 'form-inline' : ''}>
                   <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                     <Typeahead
                       clearButton
@@ -234,7 +223,7 @@ const Courses = (props) => {
                               id="btnRefresh"
                               type="button"
                               onClick={loadCourses}
-                              className={deviceIsMobile ? "btn-block" : ""}
+                              className={deviceIsMobile ? 'btn-block' : ''}
                             >
                               Search
                             </ThemedButton>
@@ -261,14 +250,14 @@ const Courses = (props) => {
           <>
             <CardBody
               style={{
-                width: `${contentWidth && contentWidth - 30}px` || "99%",
+                width: `${contentWidth && contentWidth - 30}px` || '99%',
               }}
             >
               <Row>
                 <Col lg={12}>
                   {displayFilterControls && (
                     <React.Fragment>
-                      <Form className={!deviceIsMobile ? "form-inline" : ""}>
+                      <Form className={!deviceIsMobile ? 'form-inline' : ''}>
                         <InputGroup>
                           <Input
                             onKeyDown={handleKeyDownSearch}

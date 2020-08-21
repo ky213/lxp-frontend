@@ -1,5 +1,5 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -7,18 +7,22 @@ import {
   Col,
   Container,
   Row,
-  Table
-} from "@/components";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import ThemedButton from "@/components/ThemedButton";
-import { courseManagerService, authenticationService, roleService } from "@/services";
+  Table,
+} from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import ThemedButton from '@/components/ThemedButton';
+import {
+  courseManagerService,
+  authenticationService,
+  roleService,
+} from '@/services';
 import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
-import { Loading } from "../../components";
+import { Loading } from '../../components';
 import Papa from 'papaparse';
 
 const ImportCmFromCsv = () => {
-  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
   let history = useHistory();
 
@@ -29,128 +33,134 @@ const ImportCmFromCsv = () => {
   const inputFile = React.useRef(null);
 
   React.useEffect(() => {
-      roleService.getCmRoles().then((data) => {
-        setCmRoles(data); 
-      });
-    }, []
-  );
+    roleService.getCmRoles().then((data) => {
+      setCmRoles(data);
+    });
+  }, []);
 
-  const goBack = event => {
+  const goBack = (event) => {
     history.goBack();
   };
-  
+
   const importClick = () => {
     setShowLoading(true);
-    courseManagerService.addBulk(users, selectedOrganization.organizationId)
+    courseManagerService
+      .addBulk(users, selectedOrganization.organizationId)
       .then(() => history.goBack())
-      .catch(err => {
+      .catch((err) => {
         console.log('userService.addBulk', err);
         setShowLoading(false);
-      });  
+      });
   };
 
-  const importFromCsv = event => {
+  const importFromCsv = (event) => {
     inputFile.current.click();
   };
 
-  const showFile = async e => {
+  const showFile = async (e) => {
     e.preventDefault();
     setShowLoading(true);
     const reader = new FileReader();
-    reader.onload = async e => {
+    reader.onload = async (e) => {
       let csvUsers = [];
       const text = e.target.result;
       var data = Papa.parse(text, {
         header: true,
         skipEmptyLines: true,
-        step: function(row) {
-          console.log('row', row);
+        step: function (row) {
           let user = {
             name: row.data.Name,
             surname: row.data.Surname,
             email: row.data.Email,
             roleId: row.data.Role,
-            gender: row.data.Gender,            
-            error: ""
+            gender: row.data.Gender,
+            error: '',
           };
 
-          if(loggedInUser && loggedInUser.role == Role.SuperAdmin) {
+          if (loggedInUser && loggedInUser.role == Role.SuperAdmin) {
             user.organizationId = selectedOrganization.organizationId;
           }
 
           csvUsers.push(user);
         },
-        complete: function() {
-          courseManagerService.validateBulk(csvUsers, selectedOrganization.organizationId)
-          .then(data => {
-            setUsers(data.data);
-            setImportDisabled(data.numOfRecordsInvalid > 0);
-            setShowLoading(false);
-          });
-        }
+        complete: function () {
+          courseManagerService
+            .validateBulk(csvUsers, selectedOrganization.organizationId)
+            .then((data) => {
+              setUsers(data.data);
+              setImportDisabled(data.numOfRecordsInvalid > 0);
+              setShowLoading(false);
+            });
+        },
       });
     };
 
-    reader.readAsText(e.target.files[0]);    
+    reader.readAsText(e.target.files[0]);
     e.target.value = '';
   };
-  
-  let usersContent = "";
+
+  let usersContent = '';
 
   if (users != null) {
     usersContent = (
       <Row>
         <Col lg={12}>
-            {/* START Table */}
-            <div className="table-responsive-xl">
-              <Table className="mb-0" hover>
-                <thead>
-                  <tr>
-                    {/* <th className="align-middle bt-0"></th> */}
-                    <th className="align-middle bt-0">Line</th>
-                    <th className="align-middle bt-0">Name</th>
-                    <th className="align-middle bt-0">Surname</th>
-                    <th className="align-middle bt-0">Email</th>
-                    <th className="align-middle bt-0">Gender</th>
-                    <th className="align-middle bt-0">Role</th>
-                    <th className="align-middle bt-0">Error</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user, index) => {
-                    
-                    return (
+          {/* START Table */}
+          <div className="table-responsive-xl">
+            <Table className="mb-0" hover>
+              <thead>
+                <tr>
+                  {/* <th className="align-middle bt-0"></th> */}
+                  <th className="align-middle bt-0">Line</th>
+                  <th className="align-middle bt-0">Name</th>
+                  <th className="align-middle bt-0">Surname</th>
+                  <th className="align-middle bt-0">Email</th>
+                  <th className="align-middle bt-0">Gender</th>
+                  <th className="align-middle bt-0">Role</th>
+                  <th className="align-middle bt-0">Error</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, index) => {
+                  return (
                     <tr key={user.email}>
                       <td>{index + 1}</td>
                       <td>{user.name}</td>
                       <td>{user.surname}</td>
                       <td>{user.email}</td>
-                      <td>{user.gender == 'M' && 'Male' || user.gender == 'F' && 'Female' || user.gender}</td>
+                      <td>
+                        {(user.gender == 'M' && 'Male') ||
+                          (user.gender == 'F' && 'Female') ||
+                          user.gender}
+                      </td>
                       <td>{user.roleId}</td>
-                      <td><span style={{color:'red'}}>{user.error}</span></td>
+                      <td>
+                        <span style={{ color: 'red' }}>{user.error}</span>
+                      </td>
                     </tr>
-                  )})}
-                  <tr>
-                    <td colSpan="7">
-                      <ThemedButton
-                        type="button"
-                        onClick={importClick}
-                        disabled={importDisabled}
-                      >
-                        Import
-                      </ThemedButton>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={goBack}
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>          
+                  );
+                })}
+                <tr>
+                  <td colSpan="7">
+                    <ThemedButton
+                      type="button"
+                      onClick={importClick}
+                      disabled={importDisabled}
+                    >
+                      Import
+                    </ThemedButton>
+                    <button
+                      className="btn btn-link"
+                      type="button"
+                      onClick={goBack}
+                    >
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
         </Col>
       </Row>
     );
@@ -169,7 +179,7 @@ const ImportCmFromCsv = () => {
                 <th className="align-middle bt-0">Surname</th>
                 <th className="align-middle bt-0">Email</th>
                 <th className="align-middle bt-0">Gender</th>
-                <th className="align-middle bt-0">Role</th>             
+                <th className="align-middle bt-0">Role</th>
               </tr>
             </thead>
             <tbody>
@@ -177,7 +187,7 @@ const ImportCmFromCsv = () => {
                 <td>Name</td>
                 <td>Surname</td>
                 <td>Email</td>
-                <td>M or F</td>                
+                <td>M or F</td>
                 <td>Role name</td>
               </tr>
             </tbody>
@@ -186,15 +196,16 @@ const ImportCmFromCsv = () => {
           Other rules:
           <ul>
             <li>
-              First line in the file contains header titles and not user data!              
+              First line in the file contains header titles and not user data!
             </li>
             <li>
-              Header titles have to match (case sensitive) the titles in the table above (Name, Surname, Email, Gender and Role).
+              Header titles have to match (case sensitive) the titles in the
+              table above (Name, Surname, Email, Gender and Role).
             </li>
+            <li>Gender options: M (male), F (female)</li>
             <li>
-              Gender options: M (male), F (female)
+              Valid roles: {cmRoles && cmRoles.map((r) => r.roleId).join(', ')}
             </li>
-            <li>Valid roles: {cmRoles && cmRoles.map(r => r.roleId).join(', ')}</li>
           </ul>
         </Col>
       </Row>
@@ -226,7 +237,7 @@ const ImportCmFromCsv = () => {
                 id="file"
                 ref={inputFile}
                 onChange={showFile}
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
               />
             </Col>
           </Row>
@@ -235,7 +246,7 @@ const ImportCmFromCsv = () => {
           </Row>
           {!showLoading && !usersContent && fileExample}
           {!showLoading && usersContent}
-          {showLoading && (<Loading />)}
+          {showLoading && <Loading />}
         </CardBody>
       </Card>
     </Container>

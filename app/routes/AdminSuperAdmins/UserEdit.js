@@ -1,11 +1,11 @@
-import React from "react";
-import { useIntl } from "react-intl";
-import { Link, useHistory } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import styled from "styled-components";
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { Link, useHistory } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import styled from 'styled-components';
 import ProfilePhoto from '@/components/ProfilePhoto';
-import ThemedButton from "@/components/ThemedButton";
+import ThemedButton from '@/components/ThemedButton';
 
 import {
   Alert,
@@ -17,36 +17,33 @@ import {
   CustomInput,
   FormGroup,
   Label,
-  Row
-} from "@/components";
-import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { superAdminService } from "@/services";
+  Row,
+} from '@/components';
+import { HeaderDemo } from '@/routes/components/HeaderDemo';
+import { superAdminService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
 const InvalidFeedback = styled.section`
-    width: 100%;
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: #ED1C24;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ed1c24;
 `;
 
-const UserEdit = props => {
+const UserEdit = (props) => {
   const intl = useIntl();
-  
-  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
-  
+
   let history = useHistory();
   const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
-  const [showAlert, setShowAlert] = React.useState(false);  
+  const [showAlert, setShowAlert] = React.useState(false);
+
+  React.useEffect(() => {}, []);
 
   React.useEffect(() => {
-    
-  }, []);
-
-  React.useEffect(() => {
-    console.log('props.user', props.user);
     setUser(props.user);
   }, [props.user]);
 
@@ -68,15 +65,15 @@ const UserEdit = props => {
     <Formik
       enableReinitialize={true}
       initialValues={{
-        name: (user && user.name) || "",
-        surname: (user && user.surname) || "",
-        email: (user && user.email) || "",
-        isActive: user ? (user.isActive ? 1 : 0) : 1
+        name: (user && user.name) || '',
+        surname: (user && user.surname) || '',
+        email: (user && user.email) || '',
+        isActive: user ? (user.isActive ? 1 : 0) : 1,
       }}
       validationSchema={Yup.object().shape({
-        name: Yup.string().required("Name is required"),
-        surname: Yup.string().required("Surname is required"),
-        role: Yup.array().min(1, 'You have to select Role')
+        name: Yup.string().required('Name is required'),
+        surname: Yup.string().required('Surname is required'),
+        role: Yup.array().min(1, 'You have to select Role'),
       })}
       onSubmit={(
         { name, surname, email, role, isActive, organization },
@@ -90,26 +87,24 @@ const UserEdit = props => {
               surname,
               email,
               isActive,
-              userId: user.userId
+              userId: user.userId,
             })
-            .then(
-              response => {
-                setSubmitting(false);
-                
-                props.onEdited();
+            .then((response) => {
+              setSubmitting(false);
 
-                  showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success'}),
-                    message: "You have sucessfully created an user!",
-                    type: "success"
-                  });
-              }
-            )
-            .catch(err => {
+              props.onEdited();
+
               showAlertMessage({
-                title: "Error",
+                title: intl.formatMessage({ id: 'General.Success' }),
+                message: 'You have sucessfully created an user!',
+                type: 'success',
+              });
+            })
+            .catch((err) => {
+              showAlertMessage({
+                title: 'Error',
                 message: err,
-                type: "danger"
+                type: 'danger',
               });
             });
         } else {
@@ -117,35 +112,32 @@ const UserEdit = props => {
             .add({
               name,
               surname,
-              email            
+              email,
             })
-            .then(
-              response => {
-                setSubmitting(false);
-                
-                props.onEdited();
+            .then((response) => {
+              setSubmitting(false);
 
-                showAlertMessage({
-                  title: intl.formatMessage({ id: 'General.Success'}),
-                  message: "You have sucessfully created an user!",
-                  type: "success"
-                });
-              }
-            )
-            .catch(err => {
+              props.onEdited();
+
+              showAlertMessage({
+                title: intl.formatMessage({ id: 'General.Success' }),
+                message: 'You have sucessfully created an user!',
+                type: 'success',
+              });
+            })
+            .catch((err) => {
               console.log('err', err);
               showAlertMessage({
-                title: "Error",
+                title: 'Error',
                 message: err,
-                type: "danger"
+                type: 'danger',
               });
             });
         }
       }}
     >
-      {formikProps => (
+      {(formikProps) => (
         <React.Fragment>
-          {console.log('formikProps', formikProps)}
           <Container>
             {showAlert && alertMessage && (
               <Alert color={alertMessage.type}>
@@ -153,7 +145,7 @@ const UserEdit = props => {
                 {alertMessage.message}
                 <div className="mt-2">
                   <Button color={alertMessage.type} onClick={dismissAlert}>
-                  {intl.formatMessage({ id: 'General.Dismiss'})}
+                    {intl.formatMessage({ id: 'General.Dismiss' })}
                   </Button>
                 </div>
               </Alert>
@@ -176,10 +168,10 @@ const UserEdit = props => {
                         <Col sm={3}></Col>
                         <Col sm={9}>
                           <ProfilePhoto
-                            profilePhoto={user && user.profilePhoto || null}
+                            profilePhoto={(user && user.profilePhoto) || null}
                             enableEdit={true}
                             userId={user && user.userId}
-                            size='size128'
+                            size="size128"
                           />
                         </Col>
                       </FormGroup>
@@ -194,10 +186,11 @@ const UserEdit = props => {
                             name="name"
                             id="name"
                             className={
-                              "bg-white form-control" +
-                              (formikProps.errors.name && formikProps.touched.name
-                                ? " is-invalid"
-                                : "")
+                              'bg-white form-control' +
+                              (formikProps.errors.name &&
+                              formikProps.touched.name
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Name..."
                           />
@@ -219,10 +212,11 @@ const UserEdit = props => {
                             name="surname"
                             id="surname"
                             className={
-                              "bg-white form-control" +
-                              (formikProps.errors.surname && formikProps.touched.surname
-                                ? " is-invalid"
-                                : "")
+                              'bg-white form-control' +
+                              (formikProps.errors.surname &&
+                              formikProps.touched.surname
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Surname..."
                           />
@@ -244,10 +238,11 @@ const UserEdit = props => {
                             name="email"
                             id="email"
                             className={
-                              "bg-white form-control" +
-                              (formikProps.errors.email && formikProps.touched.email
-                                ? " is-invalid"
-                                : "")
+                              'bg-white form-control' +
+                              (formikProps.errors.email &&
+                              formikProps.touched.email
+                                ? ' is-invalid'
+                                : '')
                             }
                             placeholder="Enter Email..."
                           />
@@ -261,7 +256,7 @@ const UserEdit = props => {
 
                       <FormGroup row>
                         <Label for="email" sm={3}>
-                        {intl.formatMessage({ id: 'General.Status'})}
+                          {intl.formatMessage({ id: 'General.Status' })}
                         </Label>
                         <Col sm={9}>
                           <CustomInput
@@ -272,8 +267,11 @@ const UserEdit = props => {
                             label="Active"
                             checked={formikProps.values.isActive == 1}
                             value={1}
-                            onChange={event => {
-                              formikProps.setFieldValue("isActive", event.target.value);
+                            onChange={(event) => {
+                              formikProps.setFieldValue(
+                                'isActive',
+                                event.target.value
+                              );
                             }}
                           />
                           <CustomInput
@@ -284,20 +282,22 @@ const UserEdit = props => {
                             label="Inactive"
                             value={0}
                             checked={formikProps.values.isActive == 0}
-                            onChange={event => {
-                              console.log('event.target.value', event.target.value);
-                              formikProps.setFieldValue("isActive", event.target.value);
+                            onChange={(event) => {
+                              formikProps.setFieldValue(
+                                'isActive',
+                                event.target.value
+                              );
                             }}
-                          />{" "}
+                          />{' '}
                         </Col>
                       </FormGroup>
-                      
+
                       <FormGroup row>
                         <Col sm={3}></Col>
                         <Col sm={9}>
                           <ThemedButton type="submit">
-                            {(user && "Update") || "Create"}
-                          </ThemedButton>{" "}
+                            {(user && 'Update') || 'Create'}
+                          </ThemedButton>{' '}
                           <Button
                             type="button"
                             onClick={() => goBack()}

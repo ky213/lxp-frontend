@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Avatar,
   Button,
@@ -7,30 +7,33 @@ import {
   Card,
   CardBody,
   Row,
-  Table
-} from "@/components";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import { Typeahead } from "react-bootstrap-typeahead";
-import { roleService, employeeRoleService } from "@/services";
+  Table,
+} from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { roleService, employeeRoleService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
 const AdminUserRoles = () => {
-  const [{selectedOrganization}] = useAppState();
+  const [{ selectedOrganization }] = useAppState();
   const [roles, setRoles] = React.useState([]);
   const [selectedRoleId, setSelectedRoleId] = React.useState();
   const [employeeRoles, setEmployeeRoles] = React.useState(null);
-  const [pageContent, setPageContent] = React.useState("");
+  const [pageContent, setPageContent] = React.useState('');
 
   React.useEffect(() => {
-    roleService.getAll().then(data => {
-      setRoles(data)});
+    roleService.getAll().then((data) => {
+      setRoles(data);
+    });
   }, []);
 
   React.useEffect(() => {
     if (selectedRoleId) {
       employeeRoleService
         .getByRoleId(selectedRoleId, selectedOrganization.organizationId)
-        .then(data => {console.log(data);setEmployeeRoles(data)});
+        .then((data) => {
+          setEmployeeRoles(data);
+        });
     } else {
       setEmployeeRoles(null);
     }
@@ -49,11 +52,11 @@ const AdminUserRoles = () => {
               <th className="align-middle bt-0"></th>
               <th className="align-middle bt-0">Last name</th>
               <th className="align-middle bt-0">First name</th>
-              <th className="align-middle bt-0">Email</th>              
+              <th className="align-middle bt-0">Email</th>
             </tr>
           </thead>
           <tbody>
-            {employeeRoles.employee_roles.map(er => (
+            {employeeRoles.employee_roles.map((er) => (
               <tr key={er.employeeId}>
                 <td className="align-middle">
                   <Avatar.Image
@@ -63,7 +66,7 @@ const AdminUserRoles = () => {
                 </td>
                 <td className="align-middle">{er.surname}</td>
                 <td className="align-middle">{er.name}</td>
-                <td className="align-middle">{er.email}</td>                
+                <td className="align-middle">{er.email}</td>
               </tr>
             ))}
           </tbody>
@@ -73,12 +76,12 @@ const AdminUserRoles = () => {
       setPageContent(pc);
     } else {
       if (selectedRoleId)
-        setPageContent("There are no users assigned with the role");
-      else setPageContent("");
+        setPageContent('There are no users assigned with the role');
+      else setPageContent('');
     }
   }, [employeeRoles]);
 
-  const onChange = e => {
+  const onChange = (e) => {
     if (e && e.length > 0) {
       let roleId = e[0].role_id;
       setSelectedRoleId(roleId);
@@ -101,7 +104,7 @@ const AdminUserRoles = () => {
                   labelKey="name"
                   options={roles}
                   placeholder="Select role..."
-                  onChange={e => onChange(e)}
+                  onChange={(e) => onChange(e)}
                 />
               </Col>
             </Row>

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Button,
   ButtonToolbar,
@@ -8,14 +8,12 @@ import {
   Card,
   CardFooter,
   Row,
-  Table
-} from "@/components";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import ListUsers from "./UserList";
-import {
-  superAdminService
-} from "@/services";
-import UserEdit from "./UserEdit";
+  Table,
+} from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import ListUsers from './UserList';
+import { superAdminService } from '@/services';
+import UserEdit from './UserEdit';
 import { useAppState } from '@/components/AppState';
 
 const AdminSuperAdmins = () => {
@@ -23,7 +21,7 @@ const AdminSuperAdmins = () => {
   const [userId, setUserId] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [users, setUsers] = React.useState(null);
-  
+
   React.useEffect(() => {
     getUsers();
   }, []);
@@ -34,10 +32,10 @@ const AdminSuperAdmins = () => {
     if (userId) {
       superAdminService
         .getByUserId(userId)
-        .then(data => {
+        .then((data) => {
           setUser(data);
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     } else {
       setUser(null);
     }
@@ -46,14 +44,13 @@ const AdminSuperAdmins = () => {
   const getUsers = () => {
     superAdminService
       .getAll()
-      .then(data => {
-        console.log('getUsers', data);
+      .then((data) => {
         setUsers(data);
       })
-      .catch(err => console.log("getAll", err));
+      .catch((err) => console.log('getAll', err));
   };
 
-  const handleUserEdit = userId => {
+  const handleUserEdit = (userId) => {
     setShowEditForm(true);
     setUserId(userId);
   };
@@ -76,8 +73,10 @@ const AdminSuperAdmins = () => {
 
   const handleFilterOrganization = (organization) => {
     //console.log("Selected Organization:", Organization)
-    setFilterOrganizationId(organization && organization.organizationId || null)
-  }
+    setFilterOrganizationId(
+      (organization && organization.organizationId) || null
+    );
+  };
 
   return (
     <React.Fragment>

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Button,
   ButtonToolbar,
@@ -8,20 +8,17 @@ import {
   Card,
   CardFooter,
   Row,
-  Table
-} from "@/components";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import ListNotifications from "./ListNotifications";
-import {
-  notificationService,
-  authenticationService
-} from "@/services";
-import {ShowNotification}  from "./ShowNotification";
-import { Loading } from "@/components";
+  Table,
+} from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import ListNotifications from './ListNotifications';
+import { notificationService, authenticationService } from '@/services';
+import { ShowNotification } from './ShowNotification';
+import { Loading } from '@/components';
 import { useAppState } from '@/components/AppState';
 
 const Notifications = () => {
-  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const recordsPerPage = 15;
   const [showNotification, setShowNotification] = React.useState(false);
   const [searchText, setSearchText] = React.useState(null);
@@ -34,59 +31,67 @@ const Notifications = () => {
     getNotifications(searchText);
   }, [searchText, pageId]);
 
-
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     const searchTerm = e.target.value;
     setSearchText(searchTerm);
   };
 
-  const getNotifications = filter => {
+  const getNotifications = (filter) => {
     notificationService
-      .getAll(pageId, recordsPerPage, filter, selectedOrganization && selectedOrganization.organizationId)
-      .then(data => {
-        console.log('data', data, data.notifications, data.totalNumberOfRecords);
+      .getAll(
+        pageId,
+        recordsPerPage,
+        filter,
+        selectedOrganization && selectedOrganization.organizationId
+      )
+      .then((data) => {
         setNotifications(data.notifications);
         setTotalNumberOfRecords(data.totalNumberOfRecords);
       })
-      .catch(err => console.log("getAll", err));
+      .catch((err) => console.log('getAll', err));
   };
 
   const toggleShowNotification = () => {
     setShowNotification(!showNotification);
-  }
+  };
 
-  const handleShowNotification = notification => {
+  const handleShowNotification = (notification) => {
     setSelectedNotification(notification);
     toggleShowNotification();
   };
 
   const handleEditedNotification = () => {
     getNotifications();
-  }
+  };
 
   const handleChangeIsRead = async (notificationId, checked) => {
     try {
-      await notificationService.setRead({notificationId:notificationId, isRead: checked});
+      await notificationService.setRead({
+        notificationId: notificationId,
+        isRead: checked,
+      });
       getNotifications();
+    } catch (error) {
+      console.log(
+        'Error while updating read status of the notification:',
+        error
+      );
     }
-    catch(error) {
-        console.log("Error while updating read status of the notification:", error)
-    }
-  }
+  };
 
   return (
     <React.Fragment>
       <Container>
         <HeaderMain title="Notifications" />
 
-        <ShowNotification 
-          toggle={toggleShowNotification} 
+        <ShowNotification
+          toggle={toggleShowNotification}
           selectedNotification={selectedNotification}
           isOpen={showNotification}
           onSuccess={handleEditedNotification}
         />
 
-        {notifications && (
+        {(notifications && (
           <ListNotifications
             notifications={notifications}
             onShowNotification={handleShowNotification}
@@ -98,9 +103,7 @@ const Notifications = () => {
             searchText={searchText}
             onChangeIsRead={handleChangeIsRead}
           />
-        ) || <Loading/>}
-
-
+        )) || <Loading />}
       </Container>
     </React.Fragment>
   );

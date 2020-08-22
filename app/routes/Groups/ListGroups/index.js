@@ -23,7 +23,7 @@ import {
 
 const ListPrograms = ({
   groups,
-  onGroupEdit,
+  showGroupForm,
   onGroupCreate,
   onSearch,
   onSelected,
@@ -88,7 +88,7 @@ const ListPrograms = ({
                         <Button
                           color="primary"
                           className="align-self-center"
-                          onClick={onGroupCreate}
+                          onClick={() => showGroupForm(true)}
                           id="tooltipAddNew"
                         >
                           <i className="fa fa-fw fa-pencil"></i>

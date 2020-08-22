@@ -25,11 +25,11 @@ function getById(id, selectedOrganizationId) {
   );
 }
 
-function create(groupType) {
+function create(groupData) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify(groupType),
+    body: JSON.stringify(groupData),
   };
 
   return fetch(`${routePrefix}`, requestOptions)
@@ -39,11 +39,11 @@ function create(groupType) {
     });
 }
 
-function update(groupType) {
+function update(groupData) {
   const requestOptions = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify(groupType),
+    body: JSON.stringify(groupData),
   };
 
   return fetch(`${routePrefix}`, requestOptions)

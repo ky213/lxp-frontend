@@ -28,11 +28,12 @@ import {
 import { programService } from "@/services";
 import { Consumer } from "@/components/Theme/ThemeContext";
 import { useAppState } from '@/components/AppState';
+import {connectableObservableDescriptor} from "rxjs/internal/observable/ConnectableObservable";
 
 const EditCourse = ({ course,
-  onCancel, finishEdit, finishInsert, showAlertMessage, 
+  onCancel, finishEdit, finishInsert, showAlertMessage,
   hideAlertMessage, updateCourseList}) => {
-  
+
   const [{selectedOrganization}] = useAppState();
   const [programs, setPrograms] = React.useState([]);
   //const [startingDate, setStartingDate] = React.useState(null);
@@ -46,7 +47,7 @@ const EditCourse = ({ course,
     programService.getByCurrentUser(selectedOrganization.organizationId).then(data => {
       setPrograms(data);
       setProgramsLoaded(true);
-    });   
+    });
   }, []);
 
   React.useEffect(() => {
@@ -109,7 +110,7 @@ const EditCourse = ({ course,
               description: Yup.string().required("Description is required"),
               periodDays: Yup.number(),
             })}
-            onSubmit={(
+            onSubmit={async (
               { name, description, programId, periodDays, fileData, startingDate, logoImage },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
@@ -119,6 +120,7 @@ const EditCourse = ({ course,
               const formData = new FormData();
               if (fileData)
                 formData.append('tincan', fileData.name);
+
               if (logoImage)
                 formData.append('logo', logoImage.name);
               formData.append('name', name);
@@ -126,7 +128,7 @@ const EditCourse = ({ course,
               formData.append('programId', programId);
               formData.append('periodDays', periodDays);
               formData.append('startingDate', startingDate);
-              formData.append('selectedOrganization', selectedOrganization.organizationId);              
+              formData.append('selectedOrganization', selectedOrganization.organizationId);
 
               let httpMethod = '';
               if (course) {
@@ -139,10 +141,9 @@ const EditCourse = ({ course,
 
               console.log("Submitting")
 
-              axios({
+              await axios({
                 method: httpMethod,
                 headers: {
-                    // 'Content-Type': 'multipart/form-data',
                     'Content-Type': 'application/json',
                     ...authHeader()
                 },
@@ -156,16 +157,16 @@ const EditCourse = ({ course,
 
                   axios({
                     method: 'PUT',
+                    url: uploadUrl,
+                    data: fileData,
                     headers: {
                       "Content-Type": fileData.type,
                     },
-                    body: fileData.data,
-                    url: uploadUrl ,
                     onUploadProgress: (ev) => {
                       const progress = ev.loaded / ev.total * 100;
                       setUploadProgress(Math.round(progress));
                     }
-                }).then((resp) => {
+                  }).then((resp) => {
                     // our mocked response will always return true
                     // in practice, you would want to use the actual response object
                     //setUploadStatus(true);
@@ -261,7 +262,7 @@ const EditCourse = ({ course,
                                     minHeight: "180px"
                                   }}
                                 />
-                              
+
                                 <ErrorMessage
                                   name="description"
                                   component="div"
@@ -283,7 +284,7 @@ const EditCourse = ({ course,
                                   <DatePicker
                                     id="startingDate"
                                     name="startingDate"
-                                    
+
                                     showMonthDropdown
                                     showYearDropdown
                                     autoComplete="off"
@@ -306,7 +307,7 @@ const EditCourse = ({ course,
                                       </InvalidFeedback>
                                     )}
                                 </InputGroup>
-                              </Col>                            
+                              </Col>
                             </FormGroup>
 
                             <FormGroup row>
@@ -330,19 +331,19 @@ const EditCourse = ({ course,
                                 Program
                               </Label>
                               <Col sm={9}>
-                                <Field 
-                                  component="select" 
-                                  name="programId" 
-                                  id="programId" 
-                                  className={'bg-white form-control' + (formikProps.errors.programId && formikProps.touched.programId ? ' is-invalid' : '')}                                   
+                                <Field
+                                  component="select"
+                                  name="programId"
+                                  id="programId"
+                                  className={'bg-white form-control' + (formikProps.errors.programId && formikProps.touched.programId ? ' is-invalid' : '')}
                                 >
                                     <option value="">Select a program</option>
                                     {programs.map(p => {
                                         return (
                                           <option value={p.programId}>{p.name}</option>
                                         );
-                                    })} 
-                                </Field> 
+                                    })}
+                                </Field>
                                 {formikProps.errors.programId &&
                                     formikProps.touched.programId && (
                                       <InvalidFeedback>
@@ -358,7 +359,7 @@ const EditCourse = ({ course,
                               </Label>
                               <Col sm={9}>
                                 <input
-                                  type="file" required 
+                                  type="file" required
                                   onChange={(f) => formikProps.setFieldValue(
                                     "fileData",
                                     f.target.files[0]

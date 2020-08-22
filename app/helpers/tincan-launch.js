@@ -93,7 +93,7 @@ const readXML = (filename, user, callback) => {
 } */
 
 function launchContent(user, registration, course, launcher) {
-    const launchUrlBase = `${config.apiUrl}/static${!course.contentPath.startsWith('/') && '/' || ''}${course.contentPath}${!course.contentPath.endsWith('/') && '/' || ''}`;
+    const launchUrlBase = `${process.env.UPLOADS_URL}/${course.contentPath}${!course.contentPath.endsWith('/') && '/' || ''}`;
 
     console.log("xml url:", launchUrlBase + 'tincan.xml')
     const requestOptions = { method: 'GET', headers: { "Content-Type": "application/xml" } };

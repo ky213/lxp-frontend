@@ -15,7 +15,7 @@ const fs = require('fs'); // to check if the file exists
 module.exports = (env) => {
     // Get the root path (assuming your webpack config is in the root of your project!)
     const currentPath = path.join(__dirname);
-    
+
     // Create the fallback path (the production .env)
     const basePath = currentPath + '/.env';
 
@@ -28,8 +28,8 @@ module.exports = (env) => {
     console.log("Got env file", finalPath)
 
     // Set the path parameter in the dotenv config
-    const fileEnv = dotenv.config({ path: finalPath }).parsed;
-    
+    const fileEnv = dotenv.config({path: finalPath}).parsed;
+
     // reduce it to a nice object, the same as before (but with the variables from the file)
     const envKeys = Object.keys(fileEnv).reduce((prev, next) => {
         prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
@@ -58,7 +58,7 @@ module.exports = (env) => {
                 'environment': config.rootDir + '/config.js',
                 Components: config.srcDir + '/components',
                 Services: config.srcDir + '/services',
-                Routes: config.srcDir +  '/routes',
+                Routes: config.srcDir + '/routes',
                 Images: config.srcDir + '/images',
                 Layout: config.srcDir + '/layout',
                 Helpers: config.srcDir + '/helpers'
@@ -103,23 +103,7 @@ module.exports = (env) => {
                 {
                     test: /\.css$/,
                     use: [
-                        { loader: 'style-loader' },
-                        { 
-                            loader: 'css-loader',
-                            options: {
-                                modules: true,
-                                importLoaders: 1,
-                            }
-                        },
-                        { loader: 'postcss-loader' }
-                    ],
-                    exclude: [path.resolve(config.srcDir, 'styles')],
-                    include: [config.srcDir]
-                },
-                {
-                    test: /\.scss$/,
-                    use: [
-                        { loader: 'style-loader' },
+                        {loader: 'style-loader'},
                         {
                             loader: 'css-loader',
                             options: {
@@ -127,7 +111,23 @@ module.exports = (env) => {
                                 importLoaders: 1,
                             }
                         },
-                        { loader: 'postcss-loader' },
+                        {loader: 'postcss-loader'}
+                    ],
+                    exclude: [path.resolve(config.srcDir, 'styles')],
+                    include: [config.srcDir]
+                },
+                {
+                    test: /\.scss$/,
+                    use: [
+                        {loader: 'style-loader'},
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: true,
+                                importLoaders: 1,
+                            }
+                        },
+                        {loader: 'postcss-loader'},
                         {
                             loader: 'sass-loader',
                             options: {

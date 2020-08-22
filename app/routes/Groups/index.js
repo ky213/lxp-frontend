@@ -3,8 +3,17 @@ import { Container, Card, CardFooter, Col, Row, Table } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import ListGroups from './ListGroups';
+import AddEditGroup from './AddEditGroups';
 
 const Groups = (props) => {
+  const [selectedGroupId, setSelectedGroupId] = React.useState(null);
+  const [showGroupForm, setShowGroupForm] = React.useState(false);
+
+  const handleGroupCreate = () => {
+    setSelectedGroupId(null);
+    setShowGroupForm(true);
+  };
+
   return (
     <Container>
       <HeaderMain title={'Groups'} />
@@ -17,7 +26,8 @@ const Groups = (props) => {
         </Col>
       </Row>
       <Row>
-        <ListGroups groupId={1} onEdited={() => {}} onCancelCreate={() => {}} />
+        {/* <ListGroups groupId={1} onEdited={() => {}} onCancelCreate={() => {}} /> */}
+        <AddEditGroup />
       </Row>
     </Container>
   );

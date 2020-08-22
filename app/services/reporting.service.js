@@ -1,7 +1,7 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
-const xapiUrl = `${config.apiUrl.replace('\/api', '\/xapi')}`;
+const xapiUrl = process.env.XAPI_URL;
 
 export const reportingService = {
     getAll,

@@ -24,6 +24,7 @@ var config = {
     siteKeywords:           process.env.APP_KEYWORDS || 'learning engagement timetable management',
     scssIncludes:           [],
     apiUrl:                 process.env.API_URL || 'http://localhost:4001/api',
+    xapiUrl:                process.env.XAPI_URL || 'http://localhost:4001/xapi',
     uploadsUrl:             process.env.UPLOADS_URL || 'https://static.dev.lxpia.com'
 }
 

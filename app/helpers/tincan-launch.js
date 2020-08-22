@@ -7,7 +7,7 @@ export const TinCanLaunch = {
 }
 
 const lrsConfig = {
-    endpoint: config.apiUrl.replace('\/api', '\/xapi'),
+    endpoint: process.env.XAPI_URL,
     username: "test",
     password: "test",
 }

@@ -143,7 +143,7 @@ export const SidebarMiddleNav = (navbarProps) => {
           Role.LearningManager,
           Role.ProgramDirector,
         ]}
-        icon={<i className="fa fa-fw fa-groups"></i>}
+        icon={<i className="fa fa-fw fa-group"></i>}
         title="Groups"
         to="/groups"
       />

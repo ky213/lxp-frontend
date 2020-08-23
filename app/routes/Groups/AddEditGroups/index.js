@@ -93,12 +93,14 @@ const AddEditGroup = (props) => {
   };
 
   const createGroup = (data, { setStatus, setSubmitting }) => {
-    const groupType = groupTypes.find(({ name }) => name === data.type[0]);
+    const { groupTypeId } = groupTypes.find(
+      ({ name }) => name === data.type[0]
+    );
 
     groupsService
       .create({
         organizationId,
-        groupTypeId,
+        typeId: groupTypeId,
         ...data,
       })
       .then(
@@ -173,8 +175,9 @@ const AddEditGroup = (props) => {
   };
 
   const initialValues = {
-    name: (group && group.name) || '',
-    groupDirectors: (group && group.groupDirectors) || [],
+    name: '',
+    type: [],
+    description: '',
   };
 
   const validationSchema = Yup.object().shape({

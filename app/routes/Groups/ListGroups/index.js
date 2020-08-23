@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GroupRow } from './components/GroupRow';
 import { Paginations } from '@/routes/components/Paginations';
-import { useAppState } from '@/components/AppState';
-import { Role } from '@/helpers';
+import { groupsService } from '@/services';
 import {
   Container,
   Card,
@@ -21,8 +20,7 @@ import {
   ButtonToolbar,
 } from '@/components';
 
-const ListPrograms = ({
-  groups,
+const ListGroups = ({
   showGroupForm,
   onSearch,
   onGroupEdit,
@@ -31,11 +29,47 @@ const ListPrograms = ({
   setPageId,
   recordsPerPage,
   totalNumberOfRecords,
-  selectedGroups,
+  isSuperAdmin,
   searchText,
-  hideCreateButton,
+  organizationId,
 }) => {
   const intl = useIntl();
+  const [groups, setGroups] = useState([]);
+  const [selectedGroups, setSelectedGroups] = useState([]);
+
+  const getAllGroups = () => {
+    groupsService
+      .getAll(organizationId)
+      .then((response) => setGroups(response.groups));
+  };
+
+  useEffect(() => {
+    getAllGroups();
+  }, []);
+
+  const handleGroupSelect = (group) => {
+    const newGroupList = [...selectedGroups];
+    const groupIndex = newGroupList.findIndex(
+      ({ groupId }) => groupId === group.groupId
+    );
+
+    if (groupIndex == -1) {
+      newGroupList.push(group);
+      setSelectedGroups(newGroupList);
+    } else {
+      newGroupList.splice(groupIndex, 1);
+      setSelectedGroups(newGroupList);
+    }
+  };
+
+  const handleDelete = () => {
+    groupsService
+      .deleteGroups(selectedGroups.map(({ groupId }) => groupId))
+      .then((response) => {
+        setSelectedGroups([]);
+        getAllGroups();
+      });
+  };
 
   return (
     <React.Fragment>
@@ -60,26 +94,28 @@ const ListPrograms = ({
                     </InputGroup>
                   </div>
                   <ButtonToolbar>
-                    {selectedGroups && selectedGroups.length > 0 && (
-                      <ButtonGroup className="mr-2">
-                        <Button
-                          color="link"
-                          onClick={onDelete}
-                          className="text-decoration-none align-self-center"
-                          id="tooltipDelete"
-                        >
-                          <i className="fa fa-fw fa-trash"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                          placement="bottom"
-                          target="tooltipDelete"
-                        >
-                          {intl.formatMessage({ id: 'General.Delete' })}
-                        </UncontrolledTooltip>
-                      </ButtonGroup>
-                    )}
+                    {isSuperAdmin &&
+                      selectedGroups &&
+                      selectedGroups.length > 0 && (
+                        <ButtonGroup className="mr-2">
+                          <Button
+                            color="secondary"
+                            onClick={handleDelete}
+                            className="text-decoration-none align-self-center"
+                            id="tooltipDelete"
+                          >
+                            <i className="fa fa-fw fa-trash"></i>
+                          </Button>
+                          <UncontrolledTooltip
+                            placement="bottom"
+                            target="tooltipDelete"
+                          >
+                            {intl.formatMessage({ id: 'General.Delete' })}
+                          </UncontrolledTooltip>
+                        </ButtonGroup>
+                      )}
 
-                    {!hideCreateButton && (
+                    {isSuperAdmin && (
                       <ButtonGroup className="ml-auto ml-lg-0">
                         <Button
                           color="primary"
@@ -116,10 +152,10 @@ const ListPrograms = ({
                     groups.map((group) => (
                       <GroupRow
                         props={group}
-                        onSelected={(params) => {}}
+                        onSelected={() => handleGroupSelect(group)}
                         onGroupEdit={() => onGroupEdit(group)}
                         key={group.groupId}
-                        hideDelete={(params) => {}}
+                        hideDelete={false}
                       />
                     ))) || (
                     <tr>
@@ -147,4 +183,4 @@ const ListPrograms = ({
   );
 };
 
-export default ListPrograms;
+export default ListGroups;

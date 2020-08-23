@@ -33,7 +33,7 @@ const AddEditGroup = (props) => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     groupTypesService
       .getAll(organizationId)
       .then((response) => setGroupTypes(response.groupTypes));

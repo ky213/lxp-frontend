@@ -42,10 +42,8 @@ const GroupRow = (props) => {
           </Button>
         </td>
         <td className="align-middle text-left">{props.props.name}</td>
-        <td className="align-middle text-left">
-          {props.props.programDirectors &&
-            props.props.programDirectors.map((pd) => pd.name).join(', ')}
-        </td>
+        <td className="align-middle text-left">{props.props.groupTypesName}</td>
+        <td className="align-middle text-left">{props.props.description}</td>
       </tr>
     </React.Fragment>
   );

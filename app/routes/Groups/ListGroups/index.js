@@ -24,9 +24,8 @@ import {
 const ListPrograms = ({
   groups,
   showGroupForm,
-  onGroupCreate,
   onSearch,
-  onSelected,
+  onGroupEdit,
   onDelete,
   pageId,
   setPageId,
@@ -36,9 +35,6 @@ const ListPrograms = ({
   searchText,
   hideCreateButton,
 }) => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const isProgramDirector = currentUser && currentUser.user;
-
   const intl = useIntl();
 
   return (
@@ -120,10 +116,10 @@ const ListPrograms = ({
                     groups.map((group) => (
                       <GroupRow
                         props={group}
-                        onSelected={onSelected}
-                        onGroupEdit={onGroupsEdit}
+                        onSelected={(params) => {}}
+                        onGroupEdit={() => onGroupEdit(group)}
                         key={group.groupId}
-                        hideDelete={hideCreateButton}
+                        hideDelete={(params) => {}}
                       />
                     ))) || (
                     <tr>

@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAppState } from '@/components/AppState';
 import { Container, Card, CardFooter, Col, Row, Table } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import ListGroups from './ListGroups';
 import AddEditGroup from './AddEditGroups';
+import { groupsService } from '@/services';
 
 const Groups = (props) => {
   const [showGroupForm, setShowGroupForm] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState({});
+  const [
+    {
+      currentUser,
+      selectedOrganization: { organizationId },
+    },
+    dispatch,
+  ] = useAppState();
+
+  useEffect(() => {
+    groupsService
+      .getAll(organizationId)
+      .then((response) => setGroups(response.groups));
+  }, []);
+
+  const handleGroupEdit = (groupData) => {
+    setGroup(groupData);
+    setShowGroupForm(true);
+  };
 
   return (
     <Container>
@@ -21,9 +43,18 @@ const Groups = (props) => {
       </Row>
       <Row>
         {showGroupForm ? (
-          <AddEditGroup showGroupForm={setShowGroupForm} />
+          <AddEditGroup
+            showGroupForm={(e) => setShowGroupForm(e)}
+            group={group}
+            onGroupEdit={handleGroupEdit}
+            organizationId={organizationId}
+          />
         ) : (
-          <ListGroups groupId={1} showGroupForm={setShowGroupForm} />
+          <ListGroups
+            groups={groups}
+            showGroupForm={setShowGroupForm}
+            onGroupEdit={handleGroupEdit}
+          />
         )}
       </Row>
     </Container>

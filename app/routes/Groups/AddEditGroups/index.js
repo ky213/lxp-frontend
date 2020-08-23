@@ -1,43 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import moment from 'moment';
-import { SketchPicker } from 'react-color';
 import styled from 'styled-components';
 import ThemedButton from '@/components/ThemedButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { Role } from '@/helpers';
+import { groupsService, groupTypesService } from '@/services';
+import { Consumer } from '@/components/Theme/ThemeContext';
 import {
   Container,
   Row,
   Col,
   Card,
-  CardTitle,
   CardBody,
   Button,
-  InputGroup,
-  InputGroupAddon,
-  CustomInput,
   FormGroup,
   Label,
-  Media,
-  Input,
-  FormText,
   Alert,
 } from '@/components';
-import {
-  groupsService,
-  groupTypesService,
-  authenticationService,
-  userService,
-  courseManagerService,
-} from '@/services';
-import { Consumer } from '@/components/Theme/ThemeContext';
-import ImageUpload from '@/components/ImageUpload';
-import { useAppState } from '@/components/AppState';
 
 const InvalidFeedback = styled.section`
   width: 100%;
@@ -47,44 +27,22 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditGroup = (props) => {
-  const { showGroupForm } = props;
+  const { showGroupForm, organizationId, group } = props;
   const intl = useIntl();
-  const [group, setGroup] = useState(null);
   const [groupTypes, setGroupTypes] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
-  const inputEl = useRef(null);
-  const [
-    {
-      currentUser,
-      selectedOrganization: { organizationId },
-    },
-    dispatch,
-  ] = useAppState();
 
   useEffect(async () => {
-    const response = await groupTypesService.getAll(organizationId);
-    setGroupTypes(response.groupTypes);
+    groupTypesService
+      .getAll(organizationId)
+      .then((response) => setGroupTypes(response.groupTypes));
   }, []);
-
-  useEffect(() => {
-    if (props.groupId) {
-      groupsService
-        .getById(props.groupId, selectedOrganization.organizationId)
-        .then((data) => {
-          setGroup(data);
-        });
-    } else {
-      setGroup(null);
-    }
-    if (inputEl && inputEl.current) {
-      inputEl.current.focus();
-    }
-  }, [props.groupId]);
 
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);
+    showGroupForm(false);
   };
 
   const showAlertMessage = ({ message, type, title }) => {
@@ -110,7 +68,6 @@ const AddEditGroup = (props) => {
             message: 'You have sucessfully created a groups!',
             type: 'success',
           });
-          props.onEdited();
           setSubmitting(false);
         },
         (error) => {
@@ -144,7 +101,6 @@ const AddEditGroup = (props) => {
             message: 'You have sucessfully changed the group!',
             type: 'success',
           });
-          props.onEdited();
           setSubmitting(false);
         },
         (error) => {
@@ -167,7 +123,7 @@ const AddEditGroup = (props) => {
 
   const handleSubmit = (data, actions) => {
     // Updating existing
-    if (group) {
+    if (group && group.groupId) {
       updateGroup(data, actions);
     } else {
       createGroup(data, actions);
@@ -175,9 +131,9 @@ const AddEditGroup = (props) => {
   };
 
   const initialValues = {
-    name: '',
-    type: [],
-    description: '',
+    name: group.name,
+    type: group.groupType,
+    description: group.description,
   };
 
   const validationSchema = Yup.object().shape({
@@ -228,7 +184,6 @@ const AddEditGroup = (props) => {
                             <Col sm={9}>
                               <Field
                                 type="text"
-                                ref={inputEl}
                                 name="name"
                                 id="name"
                                 className={
@@ -255,7 +210,7 @@ const AddEditGroup = (props) => {
                                 id="type"
                                 name="type"
                                 clearButton
-                                selected={props.values.groupsDirectors}
+                                selected={[group.groupTypesName]}
                                 labelKey="name"
                                 multiple
                                 className={
@@ -284,7 +239,6 @@ const AddEditGroup = (props) => {
                               <Field
                                 as="textarea"
                                 row={15}
-                                ref={inputEl}
                                 name="description"
                                 id="description"
                                 className={

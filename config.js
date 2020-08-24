@@ -23,7 +23,9 @@ var config = {
     siteCannonicalUrl:      process.env.APP_CANONICAL_URL || 'http://localhost:4101',
     siteKeywords:           process.env.APP_KEYWORDS || 'learning engagement timetable management',
     scssIncludes:           [],
-    apiUrl:                 process.env.API_URL || 'http://localhost:4001/api' 
+    apiUrl:                 process.env.API_URL || 'http://localhost:4001/api',
+    xapiUrl:                process.env.XAPI_URL || 'http://localhost:4001/xapi',
+    uploadsUrl:             process.env.UPLOADS_URL || 'https://static.dev.lxpia.com'
 }
 
 module.exports = config;

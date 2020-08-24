@@ -28,6 +28,7 @@ import {
 import { programService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import { useAppState } from '@/components/AppState';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 const EditCourse = ({
   course,

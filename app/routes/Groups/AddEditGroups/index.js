@@ -27,7 +27,7 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditGroup = (props) => {
-  const { showGroupForm, organizationId, group } = props;
+  const { hideGroupForm, organizationId, group } = props;
   const intl = useIntl();
   const [groupTypes, setGroupTypes] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
@@ -42,7 +42,7 @@ const AddEditGroup = (props) => {
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);
-    showGroupForm(false);
+    hideGroupForm(false);
   };
 
   const showAlertMessage = ({ message, type, title }) => {
@@ -210,7 +210,11 @@ const AddEditGroup = (props) => {
                                 id="type"
                                 name="type"
                                 clearButton
-                                selected={[group.groupTypesName]}
+                                selected={
+                                  group.groupTypesName
+                                    ? [group.groupTypesName]
+                                    : []
+                                }
                                 labelKey="name"
                                 multiple
                                 className={
@@ -263,7 +267,7 @@ const AddEditGroup = (props) => {
                               <ThemedButton type="submit">Save</ThemedButton>
                               <Button
                                 type="button"
-                                onClick={() => showGroupForm(false)}
+                                onClick={() => hideGroupForm(false)}
                                 color="light"
                               >
                                 Cancel

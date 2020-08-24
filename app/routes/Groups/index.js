@@ -24,6 +24,11 @@ const Groups = (props) => {
     setShowGroupForm(true);
   };
 
+  const hideGroupForm = () => {
+    setShowGroupForm(false);
+    setGroup({});
+  };
+
   return (
     <Container>
       <HeaderMain title={'Groups'} />
@@ -38,7 +43,7 @@ const Groups = (props) => {
       <Row>
         {showGroupForm ? (
           <AddEditGroup
-            showGroupForm={setShowGroupForm}
+            hideGroupForm={hideGroupForm}
             group={group}
             onGroupEdit={handleGroupEdit}
             organizationId={organizationId}

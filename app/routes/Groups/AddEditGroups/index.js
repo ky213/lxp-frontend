@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -17,6 +17,7 @@ import {
   FormGroup,
   Label,
   Alert,
+  CustomInput,
 } from '@/components';
 
 const InvalidFeedback = styled.section`
@@ -32,8 +33,10 @@ const AddEditGroup = (props) => {
   const [groupTypes, setGroupTypes] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    setIsActive(group.isActive);
     groupTypesService
       .getAll(organizationId)
       .then((response) => setGroupTypes(response.groupTypes));
@@ -59,6 +62,7 @@ const AddEditGroup = (props) => {
       .create({
         organizationId,
         typeId: groupTypeId,
+        isActive,
         ...data,
       })
       .then(
@@ -93,6 +97,7 @@ const AddEditGroup = (props) => {
       .update({
         ...group,
         ...data,
+        isActive,
       })
       .then(
         (reponse) => {
@@ -257,6 +262,31 @@ const AddEditGroup = (props) => {
                                 name="description"
                                 component="div"
                                 className="invalid-feedback"
+                              />
+                            </Col>
+                          </FormGroup>
+                          <FormGroup row>
+                            <Label for="description" sm={3}>
+                              Status
+                            </Label>
+                            <Col sm={9} className="mt-2">
+                              <CustomInput
+                                inline
+                                type="radio"
+                                id="active"
+                                name="active"
+                                label="Active"
+                                checked={isActive}
+                                onChange={() => setIsActive(true)}
+                              />
+                              <CustomInput
+                                inline
+                                type="radio"
+                                id="notActive"
+                                name="notActive"
+                                label="Not Active"
+                                checked={!isActive}
+                                onChange={() => setIsActive(false)}
                               />
                             </Col>
                           </FormGroup>

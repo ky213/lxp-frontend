@@ -42,7 +42,7 @@ const AddEditGroup = (props) => {
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);
-    hideGroupForm(false);
+    hideGroupForm();
   };
 
   const showAlertMessage = ({ message, type, title }) => {
@@ -122,7 +122,6 @@ const AddEditGroup = (props) => {
   };
 
   const handleSubmit = (data, actions) => {
-    // Updating existing
     if (group && group.groupId) {
       updateGroup(data, actions);
     } else {

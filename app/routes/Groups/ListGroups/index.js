@@ -63,12 +63,13 @@ const ListGroups = ({
   };
 
   const handleDelete = () => {
-    groupsService
-      .deleteGroups(selectedGroups.map(({ groupId }) => groupId))
-      .then((response) => {
-        setSelectedGroups([]);
-        getAllGroups();
-      });
+    if (confirm('Confirm group delete ?'))
+      groupsService
+        .deleteGroups(selectedGroups.map(({ groupId }) => groupId))
+        .then((response) => {
+          setSelectedGroups([]);
+          getAllGroups();
+        });
   };
 
   return (

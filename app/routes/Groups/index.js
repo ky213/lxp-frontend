@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAppState } from '@/components/AppState';
-import { Container, Card, CardFooter, Col, Row, Table } from '@/components';
+import { Container, Col, Row } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import ListGroups from './ListGroups';
 import AddEditGroup from './AddEditGroups';
-import { groupsService } from '@/services';
+import { Role } from '@/helpers';
 
 const Groups = (props) => {
   const [showGroupForm, setShowGroupForm] = useState(false);
-  const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState({});
   const [
     {
       currentUser,
       selectedOrganization: { organizationId },
     },
-    dispatch,
   ] = useAppState();
-
-  useEffect(() => {
-    groupsService
-      .getAll(organizationId)
-      .then((response) => setGroups(response.groups));
-  }, []);
+  const isSuperAdmin =
+    currentUser && currentUser.user && currentUser.user.role == Role.SuperAdmin;
 
   const handleGroupEdit = (groupData) => {
     setGroup(groupData);
     setShowGroupForm(true);
+  };
+
+  const hideGroupForm = () => {
+    setShowGroupForm(false);
+    setGroup({});
   };
 
   return (
@@ -44,16 +43,17 @@ const Groups = (props) => {
       <Row>
         {showGroupForm ? (
           <AddEditGroup
-            showGroupForm={(e) => setShowGroupForm(e)}
+            hideGroupForm={hideGroupForm}
             group={group}
             onGroupEdit={handleGroupEdit}
             organizationId={organizationId}
           />
         ) : (
           <ListGroups
-            groups={groups}
             showGroupForm={setShowGroupForm}
             onGroupEdit={handleGroupEdit}
+            organizationId={organizationId}
+            isSuperAdmin={isSuperAdmin}
           />
         )}
       </Row>

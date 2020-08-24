@@ -27,13 +27,13 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditGroup = (props) => {
-  const { showGroupForm, organizationId, group } = props;
+  const { hideGroupForm, organizationId, group } = props;
   const intl = useIntl();
   const [groupTypes, setGroupTypes] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     groupTypesService
       .getAll(organizationId)
       .then((response) => setGroupTypes(response.groupTypes));
@@ -42,7 +42,7 @@ const AddEditGroup = (props) => {
   const dismissAlert = () => {
     setAlertMessage(null);
     setShowAlert(false);
-    showGroupForm(false);
+    hideGroupForm();
   };
 
   const showAlertMessage = ({ message, type, title }) => {
@@ -122,7 +122,6 @@ const AddEditGroup = (props) => {
   };
 
   const handleSubmit = (data, actions) => {
-    // Updating existing
     if (group && group.groupId) {
       updateGroup(data, actions);
     } else {
@@ -210,7 +209,11 @@ const AddEditGroup = (props) => {
                                 id="type"
                                 name="type"
                                 clearButton
-                                selected={[group.groupTypesName]}
+                                selected={
+                                  group.groupTypesName
+                                    ? [group.groupTypesName]
+                                    : []
+                                }
                                 labelKey="name"
                                 multiple
                                 className={
@@ -263,7 +266,7 @@ const AddEditGroup = (props) => {
                               <ThemedButton type="submit">Save</ThemedButton>
                               <Button
                                 type="button"
-                                onClick={() => showGroupForm(false)}
+                                onClick={() => hideGroupForm(false)}
                                 color="light"
                               >
                                 Cancel

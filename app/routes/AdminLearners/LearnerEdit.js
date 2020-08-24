@@ -22,7 +22,7 @@ import {
   Row,
 } from '@/components';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { learnerService } from '@/services';
+import { learnerService, groupsService } from '@/services';
 import { useAppState } from '@/components/AppState';
 import moment from 'moment';
 
@@ -40,10 +40,17 @@ const LearnerEdit = (props) => {
   const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
+  const [groups, setGroups] = React.useState([]);
 
   React.useEffect(() => {
     setUser(props.user);
   }, [props.user]);
+
+  React.useEffect(() => {
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups));
+  }, []);
 
   const dismissAlert = () => {
     setAlertMessage(null);
@@ -68,6 +75,7 @@ const LearnerEdit = (props) => {
         surname: (user && user.surname) || '',
         email: (user && user.email) || '',
         gender: (user && user.gender) || '',
+        groupId: (user && user.groupId) || '',
         startDate:
           (user && user.startDate && moment(user.startDate).toDate()) ||
           new Date(),
@@ -78,9 +86,10 @@ const LearnerEdit = (props) => {
         surname: Yup.string().required('Surname is required'),
         email: Yup.string().required('Email is required'),
         gender: Yup.string().required('Gender is required'),
+        groupId: Yup.string().required('Group is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, startDate, isActive },
+        { name, surname, email, gender, startDate, isActive, groupId },
         { setStatus, setSubmitting }
       ) => {
         setStatus();
@@ -96,6 +105,7 @@ const LearnerEdit = (props) => {
                 startDate,
                 userId: user.userId,
                 employeeId: user.employeeId,
+                groupId,
               },
               selectedOrganization.organizationId
             )
@@ -133,6 +143,7 @@ const LearnerEdit = (props) => {
                 email,
                 gender,
                 startDate,
+                groupId,
               },
               selectedOrganization.organizationId
             )
@@ -178,19 +189,15 @@ const LearnerEdit = (props) => {
                 </div>
               </Alert>
             )}
-
-            {/* START Header 1 */}
             <Row>
               <Col lg={12}>
                 <HeaderDemo title="Edit user details" subTitle="" />
               </Col>
             </Row>
-            {/* START Section 1 */}
             <Row>
               <Col lg={12}>
                 <Card className="mb-3">
                   <CardBody>
-                    {/* START Form */}
                     <Form>
                       <FormGroup row>
                         <Col sm={3}></Col>
@@ -203,8 +210,6 @@ const LearnerEdit = (props) => {
                           />
                         </Col>
                       </FormGroup>
-                      {/* START Input */}
-
                       <FormGroup row>
                         <Label for="name" sm={3}>
                           First name
@@ -229,7 +234,6 @@ const LearnerEdit = (props) => {
                           />
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="surname" sm={3}>
                           Last name
@@ -254,7 +258,6 @@ const LearnerEdit = (props) => {
                           />
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="email" sm={3}>
                           Email
@@ -279,7 +282,6 @@ const LearnerEdit = (props) => {
                           />
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="gender" sm={3}>
                           Gender
@@ -316,7 +318,6 @@ const LearnerEdit = (props) => {
                           )}
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="startDate" sm={3}>
                           Start date
@@ -353,7 +354,44 @@ const LearnerEdit = (props) => {
                           </InputGroup>
                         </Col>
                       </FormGroup>
-
+                      <FormGroup row>
+                        <Label for="group" sm={3}>
+                          Group
+                        </Label>
+                        <Col sm={9}>
+                          <Field
+                            component="select"
+                            name="groupId"
+                            id="groupId"
+                            className={
+                              'bg-white form-control' +
+                              (props.errors.userGroupId &&
+                              props.touched.userGroupId
+                                ? ' is-invalid'
+                                : '')
+                            }
+                          >
+                            <option value="">Select user group...</option>
+                            {groups.map((group) => {
+                              return (
+                                <option
+                                  value={group.groupId}
+                                  selected={
+                                    user && group.groupId == user.groupId
+                                  }
+                                >
+                                  {group.name}
+                                </option>
+                              );
+                            })}
+                          </Field>
+                          {props.errors.userGroupId && (
+                            <InvalidFeedback>
+                              {props.errors.userGroupId}
+                            </InvalidFeedback>
+                          )}
+                        </Col>
+                      </FormGroup>
                       <FormGroup row>
                         <Label for="email" sm={3}>
                           {intl.formatMessage({ id: 'General.Status' })}

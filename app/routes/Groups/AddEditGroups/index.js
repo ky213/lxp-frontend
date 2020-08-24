@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -17,6 +17,7 @@ import {
   FormGroup,
   Label,
   Alert,
+  CustomInput,
 } from '@/components';
 
 const InvalidFeedback = styled.section`
@@ -27,13 +28,20 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditGroup = (props) => {
-  const { hideGroupForm, organizationId, group } = props;
-  const intl = useIntl();
   const [groupTypes, setGroupTypes] = useState([]);
+  const [selectedGroupTypes, setSelectedGroupTypes] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+  const { hideGroupForm, organizationId, group } = props;
+  const intl = useIntl();
 
   useEffect(() => {
+    setIsActive(group?.isActive);
+
+    if (group && group.groupTypesName)
+      setSelectedGroupTypes([group.groupTypesName]);
+
     groupTypesService
       .getAll(organizationId)
       .then((response) => setGroupTypes(response.groupTypes));
@@ -52,13 +60,14 @@ const AddEditGroup = (props) => {
 
   const createGroup = (data, { setStatus, setSubmitting }) => {
     const { groupTypeId } = groupTypes.find(
-      ({ name }) => name === data.type[0]
+      ({ name }) => name === data.groupType[0]
     );
 
     groupsService
       .create({
         organizationId,
         typeId: groupTypeId,
+        isActive,
         ...data,
       })
       .then(
@@ -89,10 +98,15 @@ const AddEditGroup = (props) => {
   };
 
   const updateGroup = (data, { setStatus, setSubmitting }) => {
+    const { groupTypeId } = groupTypes.find(
+      ({ name }) => name === data.groupType[0]
+    );
     groupsService
       .update({
         ...group,
         ...data,
+        typeId: groupTypeId,
+        isActive,
       })
       .then(
         (reponse) => {
@@ -133,6 +147,7 @@ const AddEditGroup = (props) => {
     name: group.name,
     type: group.groupType,
     description: group.description,
+    groupType: selectedGroupTypes,
   };
 
   const validationSchema = Yup.object().shape({
@@ -141,6 +156,7 @@ const AddEditGroup = (props) => {
       .min(1, 'You need to select at least one group')
       .typeError('Invalid entry'),
     description: Yup.string().required('Description is required'),
+    groupType: Yup.array(),
   });
 
   return (
@@ -154,7 +170,7 @@ const AddEditGroup = (props) => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {(props) => {
+          {({ errors, touched }) => {
             return (
               <Container>
                 {showAlert && alertMessage && (
@@ -174,7 +190,7 @@ const AddEditGroup = (props) => {
                     <Card className="mb-3">
                       <CardBody>
                         {/* START Form */}
-                        <Form onSubmit={props.handleSubmit}>
+                        <Form>
                           {/* START Input */}
                           <FormGroup row>
                             <Label for="name" sm={3}>
@@ -187,7 +203,7 @@ const AddEditGroup = (props) => {
                                 id="name"
                                 className={
                                   'bg-white form-control' +
-                                  (props.errors.name && props.touched.name
+                                  (errors.name && touched.name
                                     ? ' is-invalid'
                                     : '')
                                 }
@@ -201,34 +217,30 @@ const AddEditGroup = (props) => {
                             </Col>
                           </FormGroup>
                           <FormGroup row>
-                            <Label for="type" sm={3}>
+                            <Label for="groupType" sm={3}>
                               Type
                             </Label>
                             <Col sm={9}>
                               <Typeahead
-                                id="type"
-                                name="type"
+                                id="groupType"
+                                name="groupType"
                                 clearButton
-                                selected={
-                                  group.groupTypesName
-                                    ? [group.groupTypesName]
-                                    : []
-                                }
-                                labelKey="name"
+                                selected={selectedGroupTypes}
+                                labelKey="groupType"
                                 multiple
                                 className={
-                                  props.errors.type && props.touched.type
+                                  errors.type && touched.type
                                     ? ' is-invalid'
                                     : ''
                                 }
                                 options={groupTypes.map(({ name }) => name)}
                                 placeholder="Choose a groups type..."
-                                onChange={(selectedOptions) =>
-                                  props.setFieldValue('type', selectedOptions)
-                                }
+                                onChange={(selectedOptions) => {
+                                  setSelectedGroupTypes(selectedOptions);
+                                }}
                               />
                               <ErrorMessage
-                                name="type"
+                                name="grouType"
                                 component="div"
                                 className="invalid-feedback"
                               />
@@ -246,8 +258,7 @@ const AddEditGroup = (props) => {
                                 id="description"
                                 className={
                                   'bg-white form-control' +
-                                  (props.errors.description &&
-                                  props.touched.description
+                                  (errors.description && touched.description
                                     ? ' is-invalid'
                                     : '')
                                 }
@@ -261,11 +272,38 @@ const AddEditGroup = (props) => {
                             </Col>
                           </FormGroup>
                           <FormGroup row>
+                            <Label for="description" sm={3}>
+                              Status
+                            </Label>
+                            <Col sm={9} className="mt-2">
+                              <CustomInput
+                                inline
+                                type="radio"
+                                id="active"
+                                name="active"
+                                label="Active"
+                                checked={isActive}
+                                onChange={() => setIsActive(true)}
+                              />
+                              <CustomInput
+                                inline
+                                type="radio"
+                                id="notActive"
+                                name="notActive"
+                                label="Not Active"
+                                checked={!isActive}
+                                onChange={() => setIsActive(false)}
+                              />
+                            </Col>
+                          </FormGroup>
+                          <FormGroup row>
                             <Col sm={3} />
                             <Col sm={9}>
-                              <ThemedButton type="submit">Save</ThemedButton>
+                              <Button type="submit" color="primary mr-2">
+                                Save
+                              </Button>
                               <Button
-                                type="button"
+                                type="cancel"
                                 onClick={() => hideGroupForm(false)}
                                 color="light"
                               >

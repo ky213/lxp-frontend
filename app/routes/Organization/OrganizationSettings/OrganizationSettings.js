@@ -134,6 +134,7 @@ const OrganizationSettings = (props) => {
             enableReinitialize={true}
             initialValues={{
               name: (organization && organization.name) || '',
+              defaultGroupId: organization?.defaultGroupId || '',
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required('Name is required'),

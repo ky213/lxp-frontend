@@ -227,7 +227,6 @@ const AddEditGroup = (props) => {
                                 clearButton
                                 selected={selectedGroupTypes}
                                 labelKey="groupType"
-                                multiple
                                 className={
                                   errors.type && touched.type
                                     ? ' is-invalid'

@@ -17,7 +17,7 @@ import {
   Label,
   Alert,
 } from '@/components';
-import { organizationService } from '@/services';
+import { organizationService, groupsService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import ImageUpload from '@/components/ImageUpload';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
@@ -77,6 +77,8 @@ const OrganizationSettings = (props) => {
     setSelectedBackgroundColorCode,
   ] = React.useState('#1EB7FF');
   const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
+  const [groups, setGroups] = React.useState([]);
+
   const { onCancel } = props;
 
   const dismissAlert = () => {
@@ -107,6 +109,12 @@ const OrganizationSettings = (props) => {
     }
   }, [props.organizationId]);
 
+  React.useEffect((params) => {
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups));
+  }, []);
+
   return (
     <React.Fragment>
       <Row>
@@ -121,7 +129,6 @@ const OrganizationSettings = (props) => {
           />
         </Col>
       </Row>
-
       <Consumer>
         {(themeState) => (
           <Formik
@@ -132,14 +139,18 @@ const OrganizationSettings = (props) => {
               name: (organization && organization.name) || '',
               isActive:
                 (organization && organization.isActive) || !organization,
+              defaultGroupId: organization?.defaultGroupId || '',
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required(
                 intl.formatMessage({ id: 'General.NameIsRequired' })
               ),
+              defaultGroupId: Yup.string().required(
+                'Default group is required'
+              ),
             })}
             onSubmit={async (
-              { name, isActive },
+              { name, isActive, defaultGroupId },
               { setStatus, setSubmitting }
             ) => {
               setStatus();
@@ -154,6 +165,7 @@ const OrganizationSettings = (props) => {
                     colorCode: selectedColorCode,
                     backgroundColorCode: selectedBackgroundColorCode,
                     logo: selectedLogoDataUrl,
+                    defaultGroupId,
                   };
 
                   await organizationService.update(updatedOrganization);
@@ -170,7 +182,6 @@ const OrganizationSettings = (props) => {
                     }),
                     type: 'success',
                   });
-
                   props.onEdited();
                   setSubmitting(false);
                 } catch (error) {
@@ -197,6 +208,7 @@ const OrganizationSettings = (props) => {
                     backgroundColorCode: selectedBackgroundColorCode,
                     isActive,
                     logo: selectedLogoDataUrl,
+                    defaultGroupId,
                   })
                   .then(
                     (reponse) => {
@@ -250,10 +262,7 @@ const OrganizationSettings = (props) => {
                     <Col lg={12}>
                       <Card className="mb-3">
                         <CardBody>
-                          {/* START Form */}
                           <Form onSubmit={formikProps.handleSubmit}>
-                            {/* START Input */}
-
                             <FormGroup row>
                               <Label for="name" sm={3}>
                                 {intl.formatMessage({ id: 'General.Name' })}
@@ -398,6 +407,46 @@ const OrganizationSettings = (props) => {
                               </Col>
                             </FormGroup>
                             <FormGroup row>
+                              <Label for="group" sm={3}>
+                                Default Group
+                              </Label>
+                              <Col sm={9}>
+                                <Field
+                                  component="select"
+                                  name="defaultGroupId"
+                                  id="defaultGroupId"
+                                  className={
+                                    'bg-white form-control' +
+                                    (formikProps.errors.defaultGroupId &&
+                                    formikProps.touched.defaultGroupId
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
+                                >
+                                  <option value="">Select user group...</option>
+                                  {groups.map((group) => {
+                                    return (
+                                      <option
+                                        value={group.groupId}
+                                        selected={
+                                          organization &&
+                                          group.groupId ==
+                                            organization.defaultGroupId
+                                        }
+                                      >
+                                        {group.name}
+                                      </option>
+                                    );
+                                  })}
+                                </Field>
+                                {formikProps.errors.defaultGroupId && (
+                                  <InvalidFeedback>
+                                    {formikProps.errors.defaultGroupId}
+                                  </InvalidFeedback>
+                                )}
+                              </Col>
+                            </FormGroup>
+                            <FormGroup row>
                               <Col sm={3} />
                               <Col sm={9}>
                                 <ThemedButton type="submit">
@@ -419,7 +468,6 @@ const OrganizationSettings = (props) => {
                               </Col>
                             </FormGroup>
                           </Form>
-                          {/* END Form */}
                         </CardBody>
                       </Card>
                     </Col>

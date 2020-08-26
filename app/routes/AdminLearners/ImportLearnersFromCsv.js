@@ -10,7 +10,7 @@ import {
   Table,
 } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
-import { learnerService, authenticationService } from '@/services';
+import { learnerService, groupsService } from '@/services';
 import ThemedButton from '@/components/ThemedButton';
 import Papa from 'papaparse';
 import { useAppState } from '@/components/AppState';
@@ -23,7 +23,14 @@ const ImportLearnersFromCsv = () => {
   const [showLoading, setShowLoading] = React.useState(false);
   const [users, setUsers] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
+  const [groups, setGroups] = React.useState([]);
   const inputFile = React.useRef(null);
+
+  React.useEffect(() => {
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups));
+  }, []);
 
   const goBack = (event) => {
     history.goBack();
@@ -169,6 +176,7 @@ const ImportLearnersFromCsv = () => {
                 <th className="align-middle bt-0">Email</th>
                 <th className="align-middle bt-0">Gender</th>
                 <th className="align-middle bt-0">StartDate</th>
+                <th className="align-middle bt-0">Groups</th>
               </tr>
             </thead>
             <tbody>
@@ -178,6 +186,7 @@ const ImportLearnersFromCsv = () => {
                 <td>Email</td>
                 <td>M or F</td>
                 <td>yyyyMMdd</td>
+                <td>Group1, Grou2, ...</td>
               </tr>
             </tbody>
           </Table>
@@ -193,6 +202,9 @@ const ImportLearnersFromCsv = () => {
             </li>
             <li>Start date format: yyyyMMdd (example: 20200128)</li>
             <li>Gender options: M (male), F (female)</li>
+            <li>
+              Valid groups names:{groups.map(({ name }) => name).join(', ')}
+            </li>
           </ul>
         </Col>
       </Row>

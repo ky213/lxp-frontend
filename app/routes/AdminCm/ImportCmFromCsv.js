@@ -11,11 +11,7 @@ import {
 } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import ThemedButton from '@/components/ThemedButton';
-import {
-  courseManagerService,
-  authenticationService,
-  roleService,
-} from '@/services';
+import { courseManagerService, groupsService, roleService } from '@/services';
 import { Role } from '@/helpers';
 import { useAppState } from '@/components/AppState';
 import { Loading } from '../../components';
@@ -30,12 +26,17 @@ const ImportCmFromCsv = () => {
   const [showLoading, setShowLoading] = React.useState(false);
   const [cmRoles, setCmRoles] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
+  const [groups, setGroups] = React.useState([]);
   const inputFile = React.useRef(null);
 
   React.useEffect(() => {
     roleService.getCmRoles().then((data) => {
       setCmRoles(data);
     });
+
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups));
   }, []);
 
   const goBack = (event) => {
@@ -74,6 +75,7 @@ const ImportCmFromCsv = () => {
             email: row.data.Email,
             roleId: row.data.Role,
             gender: row.data.Gender,
+            groupIds: row.data.Groups.split(','),
             error: '',
           };
 
@@ -117,6 +119,7 @@ const ImportCmFromCsv = () => {
                   <th className="align-middle bt-0">Email</th>
                   <th className="align-middle bt-0">Gender</th>
                   <th className="align-middle bt-0">Role</th>
+                  <th className="align-middle bt-0">Groups</th>
                   <th className="align-middle bt-0">Error</th>
                 </tr>
               </thead>
@@ -134,6 +137,7 @@ const ImportCmFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{user.roleId}</td>
+                      <td>{user.groupIds.join(', ')}</td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>
@@ -180,6 +184,7 @@ const ImportCmFromCsv = () => {
                 <th className="align-middle bt-0">Email</th>
                 <th className="align-middle bt-0">Gender</th>
                 <th className="align-middle bt-0">Role</th>
+                <th className="align-middle bt-0">Groups</th>
               </tr>
             </thead>
             <tbody>
@@ -189,6 +194,7 @@ const ImportCmFromCsv = () => {
                 <td>Email</td>
                 <td>M or F</td>
                 <td>Role name</td>
+                <td>Groups names</td>
               </tr>
             </tbody>
           </Table>
@@ -205,6 +211,9 @@ const ImportCmFromCsv = () => {
             <li>Gender options: M (male), F (female)</li>
             <li>
               Valid roles: {cmRoles && cmRoles.map((r) => r.roleId).join(', ')}
+            </li>
+            <li>
+              Valid groups names: {groups.map(({ name }) => name).join(', ')}
             </li>
           </ul>
         </Col>

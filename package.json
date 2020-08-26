@@ -108,7 +108,7 @@
     "reactstrap": "^8.4.1",
     "recharts": "^1.6.2",
     "responsive-react": "^3.0.2",
-    "rrule": "^2.6.4",
+    "rrule": "2.6.4",
     "rxjs": "^6.5.4",
     "styled-components": "^4.4.1",
     "text-mask-addons": "^3.8.0",

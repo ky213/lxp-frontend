@@ -63,6 +63,7 @@ const ImportLearnersFromCsv = () => {
             email: row.data.Email,
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
+            groupIds: row.data.Groups,
             organizationId: selectedOrganization.organizationId,
             error: '',
           };
@@ -103,6 +104,7 @@ const ImportLearnersFromCsv = () => {
                   <th className="align-middle bt-0">Email</th>
                   <th className="align-middle bt-0">Gender</th>
                   <th className="align-middle bt-0">StartDate</th>
+                  <th className="align-middle bt-0">Groups</th>
                   <th className="align-middle bt-0">Error</th>
                 </tr>
               </thead>
@@ -120,6 +122,7 @@ const ImportLearnersFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
+                      <td>{user.groupIds}</td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

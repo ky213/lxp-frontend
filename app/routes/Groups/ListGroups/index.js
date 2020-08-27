@@ -145,6 +145,7 @@ const ListGroups = ({
                     <th className="align-middle bt-0 text-left">Name</th>
                     <th className="align-middle bt-0 text-left">type</th>
                     <th className="align-middle bt-0 text-left">Description</th>
+                    <th className="align-middle bt-0 text-left">Status</th>
                   </tr>
                 </thead>
                 <tbody>

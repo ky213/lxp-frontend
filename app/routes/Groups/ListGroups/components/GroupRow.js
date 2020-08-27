@@ -27,6 +27,9 @@ const GroupRow = (props) => {
       <td className="align-middle text-left">{props.props.name}</td>
       <td className="align-middle text-left">{props.props.groupTypesName}</td>
       <td className="align-middle text-left">{props.props.description}</td>
+      <td className="align-middle text-left">
+        {props.props.isActive ? 'Active' : ' Not Active'}
+      </td>
     </tr>
   );
 };

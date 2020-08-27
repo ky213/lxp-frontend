@@ -213,7 +213,7 @@ const AddEditGroup = (props) => {
                                 defaultValue={group.group_type_id}
                                 className={
                                   'bg-white form-control' +
-                                  (errors.groupTypeId && touched.groupTypeId
+                                  (errors.typeId && touched.typeId
                                     ? ' is-invalid'
                                     : '')
                                 }

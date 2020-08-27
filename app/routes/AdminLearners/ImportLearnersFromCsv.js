@@ -16,6 +16,7 @@ import Papa from 'papaparse';
 import { useAppState } from '@/components/AppState';
 import { Loading } from '../../components';
 import moment from 'moment';
+import { isString } from 'lodash';
 
 const ImportLearnersFromCsv = () => {
   let history = useHistory();
@@ -75,9 +76,11 @@ const ImportLearnersFromCsv = () => {
             error: '',
           };
 
-          user.groupIds = groups.map(({ name, groupId }) => {
-            if (user.groupNames.includes(name)) return groupId;
-          });
+          user.groupIds = groups
+            .map(({ name, groupId }) => {
+              if (user.groupNames.includes(name)) return groupId;
+            })
+            .filter((g) => isString(g));
 
           csvUsers.push(user);
         },
@@ -138,6 +141,7 @@ const ImportLearnersFromCsv = () => {
                           .map(({ name, groupId }) => {
                             if (user.groupIds.includes(groupId)) return name;
                           })
+                          .filter((g) => isString(g))
                           .join(', ')}
                       </td>
                       <td>

@@ -385,9 +385,12 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                         </Label>
                         <Col sm={9}>
                           <Field
-                            component="select"
-                            name="userGroupId"
                             id="userGroupId"
+                            name="userGroupId"
+                            component="select"
+                            multiple
+                            defaultValue={user?.groupIds}
+                            value={groups?.map(({ groupId }) => groupId)}
                             className={
                               'bg-white form-control' +
                               (props.errors.userGroupId &&
@@ -396,14 +399,11 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                                 : '')
                             }
                           >
-                            <option value="">Select user group...</option>
                             {groups.map((group) => {
                               return (
                                 <option
+                                  key={group.groupId}
                                   value={group.groupId}
-                                  selected={
-                                    user && group.groupId == user.groupId
-                                  }
                                 >
                                   {group.name}
                                 </option>

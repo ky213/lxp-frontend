@@ -37,7 +37,7 @@ const AddEditGroup = (props) => {
   const intl = useIntl();
 
   useEffect(() => {
-    setIsActive(group?.isActive);
+    if (group && group.groupId) setIsActive(group?.isActive);
 
     if (group && group.groupTypesName)
       setSelectedGroupTypes([group.groupTypesName]);

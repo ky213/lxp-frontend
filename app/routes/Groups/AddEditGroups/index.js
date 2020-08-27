@@ -32,7 +32,7 @@ const AddEditGroup = (props) => {
   const [selectedGroupTypes, setSelectedGroupTypes] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const { hideGroupForm, organizationId, group } = props;
   const intl = useIntl();
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { isString } from 'lodash';
 import {
   Button,
   Card,
@@ -83,9 +84,11 @@ const ImportCmFromCsv = () => {
             user.organizationId = selectedOrganization.organizationId;
           }
 
-          user.groupIds = groups.map(({ name, groupId }) => {
-            if (user.groupNames.includes(name)) return groupId;
-          });
+          user.groupIds = groups
+            .map(({ name, groupId }) => {
+              if (user.groupNames.includes(name)) return groupId;
+            })
+            .filter((g) => isString(g));
 
           csvUsers.push(user);
         },
@@ -147,6 +150,7 @@ const ImportCmFromCsv = () => {
                           .map(({ name, groupId }) => {
                             if (user.groupIds.includes(groupId)) return name;
                           })
+                          .filter((g) => isString(g))
                           .join(', ')}
                       </td>
                       <td>

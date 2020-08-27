@@ -145,9 +145,6 @@ const OrganizationSettings = (props) => {
               name: Yup.string().required(
                 intl.formatMessage({ id: 'General.NameIsRequired' })
               ),
-              defaultGroupId: Yup.string().required(
-                'Default group is required'
-              ),
             })}
             onSubmit={async (
               { name, isActive, defaultGroupId },
@@ -208,7 +205,6 @@ const OrganizationSettings = (props) => {
                     backgroundColorCode: selectedBackgroundColorCode,
                     isActive,
                     logo: selectedLogoDataUrl,
-                    defaultGroupId,
                   })
                   .then(
                     (reponse) => {
@@ -406,46 +402,50 @@ const OrganizationSettings = (props) => {
                                 />
                               </Col>
                             </FormGroup>
-                            <FormGroup row>
-                              <Label for="group" sm={3}>
-                                Default Group
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  component="select"
-                                  name="defaultGroupId"
-                                  id="defaultGroupId"
-                                  className={
-                                    'bg-white form-control' +
-                                    (formikProps.errors.defaultGroupId &&
-                                    formikProps.touched.defaultGroupId
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                >
-                                  <option value="">Select user group...</option>
-                                  {groups.map((group) => {
-                                    return (
-                                      <option
-                                        value={group.groupId}
-                                        selected={
-                                          organization &&
-                                          group.groupId ==
-                                            organization.defaultGroupId
-                                        }
-                                      >
-                                        {group.name}
-                                      </option>
-                                    );
-                                  })}
-                                </Field>
-                                {formikProps.errors.defaultGroupId && (
-                                  <InvalidFeedback>
-                                    {formikProps.errors.defaultGroupId}
-                                  </InvalidFeedback>
-                                )}
-                              </Col>
-                            </FormGroup>
+                            {groups.length && (
+                              <FormGroup row>
+                                <Label for="group" sm={3}>
+                                  Default Group
+                                </Label>
+                                <Col sm={9}>
+                                  <Field
+                                    component="select"
+                                    name="defaultGroupId"
+                                    id="defaultGroupId"
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.defaultGroupId &&
+                                      formikProps.touched.defaultGroupId
+                                        ? ' is-invalid'
+                                        : '')
+                                    }
+                                  >
+                                    <option value="">
+                                      Select user group...
+                                    </option>
+                                    {groups.map((group) => {
+                                      return (
+                                        <option
+                                          value={group.groupId}
+                                          selected={
+                                            organization &&
+                                            group.groupId ==
+                                              organization.defaultGroupId
+                                          }
+                                        >
+                                          {group.name}
+                                        </option>
+                                      );
+                                    })}
+                                  </Field>
+                                  {formikProps.errors.defaultGroupId && (
+                                    <InvalidFeedback>
+                                      {formikProps.errors.defaultGroupId}
+                                    </InvalidFeedback>
+                                  )}
+                                </Col>
+                              </FormGroup>
+                            )}
                             <FormGroup row>
                               <Col sm={3} />
                               <Col sm={9}>

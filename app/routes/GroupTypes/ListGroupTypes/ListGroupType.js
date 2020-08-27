@@ -25,6 +25,7 @@ const ListGroupTypes = ({
   onGroupTypeCreate,
   onSearch,
   onSelected,
+  onDeleteGroupType,
   pageId,
   setPageId,
   recordsPerPage,
@@ -77,6 +78,7 @@ const ListGroupTypes = ({
                         color="link"
                         className="text-decoration-none align-self-center"
                         id="tooltipDelete"
+                        onClick={() => onDeleteGroupType(selectedGroupTypes)}
                       >
                         <i className="fa fa-fw fa-trash"></i>
                       </Button>

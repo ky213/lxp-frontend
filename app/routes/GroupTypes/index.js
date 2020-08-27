@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Card, CardFooter, Col, Row, Table } from '@/components';
-
+import { Container, Col, Row } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import AddEditGroupType from './AddEditGroupType';
 import ListGroupTypes from './ListGroupTypes';
@@ -9,6 +8,7 @@ import { Role } from '@/helpers';
 
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import { useAppState } from '@/components/AppState';
+import { Button, Alert } from '@/components';
 
 const GroupTypes = () => {
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
@@ -24,6 +24,12 @@ const GroupTypes = () => {
   const [recordsPerPage, setRecordsPerPage] = React.useState(15);
   const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
   const [selectedGroupTypes, setSelectedGroupTypes] = React.useState([]);
+  const [alert, setAlert] = React.useState({
+    type: '',
+    title: '',
+    message: '',
+    show: false,
+  });
 
   const getGroupTypes = () => {
     groupTypesService
@@ -34,7 +40,6 @@ const GroupTypes = () => {
         searchText
       )
       .then((data) => {
-        //console.log("Got GroupTypes: ", data)
         setGroupTypes(data.groupTypes);
         setTotalNumberOfRecords(data.totalNumberOfRecords);
       });
@@ -79,6 +84,30 @@ const GroupTypes = () => {
     /* console.log("Selected Group Types", selectedGroupTypes) */
   };
 
+  const handleDeleteGroupType = async (groupTypeIds) => {
+    if (confirm('Confirm delete group type?'))
+      groupTypesService
+        .deleteGroupTypes(groupTypeIds)
+        .then(() => {
+          getGroupTypes();
+          setAlert({
+            type: 'success',
+            title: 'Success',
+            message: 'group type deleted',
+            show: true,
+          });
+        })
+        .catch((error) =>
+          setAlert({
+            type: 'danger',
+            title: 'Error',
+            message: error,
+            show: true,
+          })
+        );
+    setSelectedGroupTypes([]);
+  };
+
   React.useEffect(() => {
     getGroupTypes();
   }, [pageId, searchText]);
@@ -86,10 +115,27 @@ const GroupTypes = () => {
   return (
     <React.Fragment>
       <Container>
-        <HeaderMain
-          title={`${(showGroupTypeForm && 'Group Types') || 'Group Types'}`}
-        />
-
+        <Row>
+          <Col lg={12}>
+            <HeaderMain
+              title={`${(showGroupTypeForm && 'Group Types') || 'Group Types'}`}
+            />
+            {alert.show && (
+              <Alert color={alert.type}>
+                <h6 className="mb-1 alert-heading">{alert.title}</h6>
+                {alert.message}
+                <div className="mt-2">
+                  <Button
+                    color={alert.type}
+                    onClick={() => setAlert({ show: false })}
+                  >
+                    Dismiss
+                  </Button>
+                </div>
+              </Alert>
+            )}
+          </Col>
+        </Row>
         {showGroupTypeForm && (
           <>
             <Row>
@@ -128,6 +174,7 @@ const GroupTypes = () => {
                 onSelected={handleSelected}
                 onGroupTypeCreate={handleGroupTypeCreate}
                 onGroupTypeEdit={handleGroupTypeEdit}
+                onDeleteGroupType={handleDeleteGroupType}
                 pageId={pageId}
                 setPageId={setPageId}
                 onSearch={handleSearch}

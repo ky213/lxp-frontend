@@ -83,6 +83,10 @@ const ImportCmFromCsv = () => {
             user.organizationId = selectedOrganization.organizationId;
           }
 
+          user.groupIds = groups.map(({ name, groupId }) => {
+            if (user.groupNames.includes(name)) return groupId;
+          });
+
           csvUsers.push(user);
         },
         complete: function () {
@@ -138,6 +142,13 @@ const ImportCmFromCsv = () => {
                       </td>
                       <td>{user.roleId}</td>
                       <td>{user.groupIds.join(', ')}</td>
+                      <td>
+                        {groups
+                          .map(({ name, groupId }) => {
+                            if (user.groupIds.includes(groupId)) return name;
+                          })
+                          .join(', ')}
+                      </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

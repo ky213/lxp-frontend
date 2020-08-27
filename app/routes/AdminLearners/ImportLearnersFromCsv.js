@@ -75,6 +75,10 @@ const ImportLearnersFromCsv = () => {
             error: '',
           };
 
+          user.groupIds = groups.map(({ name, groupId }) => {
+            if (user.groupNames.includes(name)) return groupId;
+          });
+
           csvUsers.push(user);
         },
         complete: function () {
@@ -130,6 +134,13 @@ const ImportLearnersFromCsv = () => {
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
                       <td>{user.groupIds}</td>
+                      <td>
+                        {groups
+                          .map(({ name, groupId }) => {
+                            if (user.groupIds.includes(groupId)) return name;
+                          })
+                          .join(', ')}
+                      </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

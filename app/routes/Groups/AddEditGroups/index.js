@@ -59,14 +59,9 @@ const AddEditGroup = (props) => {
   };
 
   const createGroup = (data, { setStatus, setSubmitting }) => {
-    const { groupTypeId } = groupTypes.find(
-      ({ name }) => name === data.groupType[0]
-    );
-
     groupsService
       .create({
         organizationId,
-        typeId: groupTypeId,
         isActive,
         ...data,
       })
@@ -98,14 +93,10 @@ const AddEditGroup = (props) => {
   };
 
   const updateGroup = (data, { setStatus, setSubmitting }) => {
-    const { groupTypeId } = groupTypes.find(
-      ({ name }) => name === data.groupType[0]
-    );
     groupsService
       .update({
         ...group,
         ...data,
-        typeId: groupTypeId,
         isActive,
       })
       .then(
@@ -145,18 +136,14 @@ const AddEditGroup = (props) => {
 
   const initialValues = {
     name: group.name,
-    type: group.groupType,
+    typeId: group.group_type_id,
     description: group.description,
-    groupType: selectedGroupTypes,
   };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    type: Yup.array()
-      .min(1, 'You need to select at least one group')
-      .typeError('Invalid entry'),
+    typeId: Yup.string().required('Group type is requires'),
     description: Yup.string().required('Description is required'),
-    groupType: Yup.array(),
   });
 
   return (
@@ -189,9 +176,7 @@ const AddEditGroup = (props) => {
                   <Col lg={12}>
                     <Card className="mb-3">
                       <CardBody>
-                        {/* START Form */}
                         <Form>
-                          {/* START Input */}
                           <FormGroup row>
                             <Label for="name" sm={3}>
                               Name
@@ -217,29 +202,36 @@ const AddEditGroup = (props) => {
                             </Col>
                           </FormGroup>
                           <FormGroup row>
-                            <Label for="groupType" sm={3}>
-                              Type
+                            <Label for="group" sm={3}>
+                              Group type
                             </Label>
                             <Col sm={9}>
-                              <Typeahead
+                              <Field
+                                as="select"
+                                name="typeId"
                                 id="groupType"
-                                name="groupType"
-                                clearButton
-                                selected={selectedGroupTypes}
-                                labelKey="groupType"
+                                defaultValue={group.group_type_id}
                                 className={
-                                  errors.type && touched.type
+                                  'bg-white form-control' +
+                                  (errors.groupTypeId && touched.groupTypeId
                                     ? ' is-invalid'
-                                    : ''
+                                    : '')
                                 }
-                                options={groupTypes.map(({ name }) => name)}
-                                placeholder="Choose a groups type..."
-                                onChange={(selectedOptions) => {
-                                  setSelectedGroupTypes(selectedOptions);
-                                }}
-                              />
+                              >
+                                <option value="">Select group type...</option>
+                                {groupTypes.map((groupType) => {
+                                  return (
+                                    <option
+                                      key={groupType.groupTypeId}
+                                      value={groupType.groupTypeId}
+                                    >
+                                      {groupType.name}
+                                    </option>
+                                  );
+                                })}
+                              </Field>
                               <ErrorMessage
-                                name="grouType"
+                                name="typeId"
                                 component="div"
                                 className="invalid-feedback"
                               />

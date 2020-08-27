@@ -76,7 +76,7 @@ const ImportCmFromCsv = () => {
             email: row.data.Email,
             roleId: row.data.Role,
             gender: row.data.Gender,
-            groupIds: row.data.Groups.split(','),
+            groupNames: row.data.Groups.split(','),
             error: '',
           };
 
@@ -144,7 +144,6 @@ const ImportCmFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{user.roleId}</td>
-                      <td>{user.groupIds.join(', ')}</td>
                       <td>
                         {groups
                           .map(({ name, groupId }) => {

@@ -71,7 +71,7 @@ const ImportLearnersFromCsv = () => {
             email: row.data.Email,
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
-            groupIds: row.data.Groups,
+            groupNames: row.data.Groups,
             organizationId: selectedOrganization.organizationId,
             error: '',
           };
@@ -136,7 +136,6 @@ const ImportLearnersFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
-                      <td>{user.groupIds}</td>
                       <td>
                         {groups
                           .map(({ name, groupId }) => {

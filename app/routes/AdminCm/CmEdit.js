@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -20,7 +20,7 @@ import {
   Row,
 } from '@/components';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { courseManagerService, roleService } from '@/services';
+import { courseManagerService, roleService, groupsService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
 const InvalidFeedback = styled.section`
@@ -31,19 +31,24 @@ const InvalidFeedback = styled.section`
 `;
 
 const CmEdit = ({ user, onEdited, onCancel }) => {
-  const intl = useIntl();
-
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-
-  let history = useHistory();
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
   const [roles, setRoles] = React.useState([]);
+  const [groups, setGroups] = useState([]);
+  const intl = useIntl();
+
+  const [{ selectedOrganization }] = useAppState();
+
+  let history = useHistory();
 
   React.useEffect(() => {
     roleService.getCmRoles().then((data) => {
       setRoles(data);
     });
+
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups));
   }, []);
 
   const dismissAlert = () => {
@@ -69,17 +74,19 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         email: (user && user.email) || '',
         gender: (user && user.gender) || '',
         userRoleId: (user && user.roleId) || '',
+        userGroupId: (user && user.groupId) || '',
         isActive: (!user && true) || user.isActive,
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required('Name is required'),
         surname: Yup.string().required('Surname is required'),
         email: Yup.string().required('Email is required'),
-        userRoleId: Yup.string().required('You have to select Role'),
+        userRoleId: Yup.string().required('You have to select a role'),
+        userGroupId: Yup.string().required('You have to select a group'),
         gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, userRoleId, isActive },
+        { name, surname, email, gender, userRoleId, userGroupId, isActive },
         { setStatus, setSubmitting }
       ) => {
         setStatus();
@@ -96,6 +103,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 userId: user.userId,
                 employeeId: user.employeeId,
                 roleId: userRoleId,
+                groupId: userGroupId,
                 organizationId: selectedOrganization.organizationId,
               },
               selectedOrganization.organizationId
@@ -129,6 +137,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 gender,
                 organizationId: selectedOrganization.organizationId,
                 roleId: userRoleId,
+                groupId: userGroupId,
               },
               selectedOrganization.organizationId
             )
@@ -174,19 +183,15 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 </div>
               </Alert>
             )}
-
-            {/* START Header 1 */}
             <Row>
               <Col lg={12}>
                 <HeaderDemo title="Edit user details" subTitle="" />
               </Col>
             </Row>
-            {/* START Section 1 */}
             <Row>
               <Col lg={12}>
                 <Card className="mb-3">
                   <CardBody>
-                    {/* START Form */}
                     <Form>
                       <FormGroup row>
                         <Col sm={3}></Col>
@@ -199,7 +204,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           />
                         </Col>
                       </FormGroup>
-                      {/* START Input */}
                       <FormGroup row>
                         <Label for="name" sm={3}>
                           First name
@@ -224,7 +228,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           />
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="surname" sm={3}>
                           Last name
@@ -249,7 +252,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           />
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="email" sm={3}>
                           Email
@@ -274,7 +276,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           />
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="gender" sm={3}>
                           Gender
@@ -311,7 +312,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           )}
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="email" sm={3}>
                           {intl.formatMessage({ id: 'General.Status' })}
@@ -343,7 +343,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           />{' '}
                         </Col>
                       </FormGroup>
-
                       <FormGroup row>
                         <Label for="role" sm={3}>
                           Role
@@ -376,6 +375,44 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           {props.errors.userRoleId && (
                             <InvalidFeedback>
                               {props.errors.userRoleId}
+                            </InvalidFeedback>
+                          )}
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label for="group" sm={3}>
+                          Group
+                        </Label>
+                        <Col sm={9}>
+                          <Field
+                            component="select"
+                            name="userGroupId"
+                            id="userGroupId"
+                            className={
+                              'bg-white form-control' +
+                              (props.errors.userGroupId &&
+                              props.touched.userGroupId
+                                ? ' is-invalid'
+                                : '')
+                            }
+                          >
+                            <option value="">Select user group...</option>
+                            {groups.map((group) => {
+                              return (
+                                <option
+                                  value={group.groupId}
+                                  selected={
+                                    user && group.groupId == user.groupId
+                                  }
+                                >
+                                  {group.name}
+                                </option>
+                              );
+                            })}
+                          </Field>
+                          {props.errors.userGroupId && (
+                            <InvalidFeedback>
+                              {props.errors.userGroupId}
                             </InvalidFeedback>
                           )}
                         </Col>

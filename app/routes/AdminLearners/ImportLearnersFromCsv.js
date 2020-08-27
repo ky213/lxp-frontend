@@ -10,7 +10,7 @@ import {
   Table,
 } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
-import { learnerService, authenticationService } from '@/services';
+import { learnerService, groupsService } from '@/services';
 import ThemedButton from '@/components/ThemedButton';
 import Papa from 'papaparse';
 import { useAppState } from '@/components/AppState';
@@ -23,7 +23,14 @@ const ImportLearnersFromCsv = () => {
   const [showLoading, setShowLoading] = React.useState(false);
   const [users, setUsers] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
+  const [groups, setGroups] = React.useState([]);
   const inputFile = React.useRef(null);
+
+  React.useEffect(() => {
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups));
+  }, []);
 
   const goBack = (event) => {
     history.goBack();
@@ -63,9 +70,14 @@ const ImportLearnersFromCsv = () => {
             email: row.data.Email,
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
+            groupNames: row.data.Groups,
             organizationId: selectedOrganization.organizationId,
             error: '',
           };
+
+          user.groupIds = groups.map(({ name, groupId }) => {
+            if (user.groupNames.includes(name)) return groupId;
+          });
 
           csvUsers.push(user);
         },
@@ -103,6 +115,7 @@ const ImportLearnersFromCsv = () => {
                   <th className="align-middle bt-0">Email</th>
                   <th className="align-middle bt-0">Gender</th>
                   <th className="align-middle bt-0">StartDate</th>
+                  <th className="align-middle bt-0">Groups</th>
                   <th className="align-middle bt-0">Error</th>
                 </tr>
               </thead>
@@ -120,6 +133,13 @@ const ImportLearnersFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
+                      <td>
+                        {groups
+                          .map(({ name, groupId }) => {
+                            if (user.groupIds.includes(groupId)) return name;
+                          })
+                          .join(', ')}
+                      </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>
@@ -166,6 +186,7 @@ const ImportLearnersFromCsv = () => {
                 <th className="align-middle bt-0">Email</th>
                 <th className="align-middle bt-0">Gender</th>
                 <th className="align-middle bt-0">StartDate</th>
+                <th className="align-middle bt-0">Groups</th>
               </tr>
             </thead>
             <tbody>
@@ -175,6 +196,7 @@ const ImportLearnersFromCsv = () => {
                 <td>Email</td>
                 <td>M or F</td>
                 <td>yyyyMMdd</td>
+                <td>Group1, Grou2, ...</td>
               </tr>
             </tbody>
           </Table>
@@ -190,6 +212,9 @@ const ImportLearnersFromCsv = () => {
             </li>
             <li>Start date format: yyyyMMdd (example: 20200128)</li>
             <li>Gender options: M (male), F (female)</li>
+            <li>
+              Valid groups names:{groups.map(({ name }) => name).join(', ')}
+            </li>
           </ul>
         </Col>
       </Row>

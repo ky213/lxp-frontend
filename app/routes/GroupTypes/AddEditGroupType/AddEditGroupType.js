@@ -46,13 +46,11 @@ const InvalidFeedback = styled.section`
 `;
 
 const AddEditGroupType = (props) => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const [groupType, setGroupType] = React.useState(null);
-
+  const { groupType } = props;
+  const [{ selectedOrganization }] = useAppState();
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const { onCancelCreate } = props;
-  const inputEl = React.useRef(null);
   const intl = useIntl();
 
   const dismissAlert = () => {
@@ -65,21 +63,6 @@ const AddEditGroupType = (props) => {
     setShowAlert(true);
   };
 
-  React.useEffect(() => {
-    if (props.groupTypeId) {
-      groupTypesService
-        .getById(props.groupTypeId, selectedOrganization.organizationId)
-        .then((data) => {
-          setGroupType(data);
-        });
-    } else {
-      setGroupType(null);
-    }
-    if (inputEl && inputEl.current) {
-      inputEl.current.focus();
-    }
-  }, [props.groupTypeId]);
-
   return (
     <Consumer>
       {(themeState) => (
@@ -88,30 +71,19 @@ const AddEditGroupType = (props) => {
           {...props}
           enableReinitialize={true}
           initialValues={{
-            name: (groupType && groupType.name) || '',
+            name: groupType?.name,
           }}
           validationSchema={Yup.object().shape({
             name: Yup.string().required('Name is required'),
           })}
           onSubmit={({ name }, { setStatus, setSubmitting }) => {
-            console.log(
-              'Group Type Update s:',
-              groupType.name,
-              groupType.groupTypeId
-            );
             setStatus();
-            console.log(
-              'Group Type Update :',
-              name,
-              props.groupTypeId,
-              selectedOrganization.organizationId
-            );
-            // Updating existing
+
             if (groupType) {
               groupTypesService
                 .update({
                   name,
-                  groupTypeId: props.groupTypeId,
+                  groupTypeId: groupType.groupTypeId,
                   organizationId: selectedOrganization.organizationId,
                 })
                 .then(
@@ -165,82 +137,74 @@ const AddEditGroupType = (props) => {
         >
           {(props) => {
             return (
-              <React.Fragment>
-                <Container>
-                  {showAlert && alertMessage && (
-                    <Alert color={alertMessage.type}>
-                      <h6 className="mb-1 alert-heading">
-                        {alertMessage.title}
-                      </h6>
-                      {alertMessage.message}
-                      <div className="mt-2">
-                        <Button
-                          color={alertMessage.type}
-                          onClick={dismissAlert}
-                        >
-                          Dismiss
-                        </Button>
-                      </div>
-                    </Alert>
-                  )}
+              <Container>
+                {showAlert && alertMessage && (
+                  <Alert color={alertMessage.type}>
+                    <h6 className="mb-1 alert-heading">{alertMessage.title}</h6>
+                    {alertMessage.message}
+                    <div className="mt-2">
+                      <Button color={alertMessage.type} onClick={dismissAlert}>
+                        Dismiss
+                      </Button>
+                    </div>
+                  </Alert>
+                )}
 
-                  <Row>
-                    <Col lg={12}>
-                      <Card className="mb-3">
-                        <CardBody>
-                          {/* START Form */}
-                          <Form onSubmit={props.handleSubmit}>
-                            {/* START Input */}
-                            <FormGroup row>
-                              <Label for="name" sm={3}>
-                                Name
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  type="text"
-                                  ref={inputEl}
-                                  name="name"
-                                  id="name"
-                                  className={
-                                    'bg-white form-control' +
-                                    (props.errors.name && props.touched.name
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  placeholder="Enter Name..."
-                                />
-                                <ErrorMessage
-                                  name="name"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </Col>
-                            </FormGroup>
+                <Row>
+                  <Col lg={12}>
+                    <Card className="mb-3">
+                      <CardBody>
+                        {/* START Form */}
+                        <Form onSubmit={props.handleSubmit}>
+                          {/* START Input */}
+                          <FormGroup row>
+                            <Label for="name" sm={3}>
+                              Name
+                            </Label>
+                            <Col sm={9}>
+                              <Field
+                                type="text"
+                                name="name"
+                                id="name"
+                                className={
+                                  'bg-white form-control' +
+                                  (props.errors.name && props.touched.name
+                                    ? ' is-invalid'
+                                    : '')
+                                }
+                                placeholder="Enter Name..."
+                              />
+                              <ErrorMessage
+                                name="name"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+                            </Col>
+                          </FormGroup>
 
-                            <FormGroup row>
-                              <Col sm={3} />
-                              <Col sm={9}>
-                                <ThemedButton type="submit">
-                                  {(groupType && 'Update') || 'Create'}
-                                </ThemedButton>{' '}
-                                <Button
-                                  type="button"
-                                  onClick={onCancelCreate}
-                                  color="light"
-                                >
-                                  Cancel
-                                </Button>
-                              </Col>
-                            </FormGroup>
-                          </Form>
-                          {/* END Form */}
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                  {/* END Section 2 */}
-                </Container>
-              </React.Fragment>
+                          <FormGroup row>
+                            <Col sm={3} />
+                            <Col sm={9}>
+                              <ThemedButton type="submit">
+                                {(groupType && 'Update') || 'Create'}
+                              </ThemedButton>{' '}
+                              <Button
+                                type="button"
+                                onClick={onCancelCreate}
+                                color="light"
+                              >
+                                Cancel
+                              </Button>
+                            </Col>
+                          </FormGroup>
+                        </Form>
+                        {/* END Form */}
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+                {/* END Section 2 */}
+              </Container>
             );
           }}
         </Formik>

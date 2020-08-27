@@ -75,13 +75,17 @@ const ImportCmFromCsv = () => {
             email: row.data.Email,
             roleId: row.data.Role,
             gender: row.data.Gender,
-            groupIds: row.data.Groups.split(','),
+            groupNames: row.data.Groups.split(','),
             error: '',
           };
 
           if (loggedInUser && loggedInUser.role == Role.SuperAdmin) {
             user.organizationId = selectedOrganization.organizationId;
           }
+
+          user.groupIds = groups.map(({ name, groupId }) => {
+            if (user.groupNames.includes(name)) return groupId;
+          });
 
           csvUsers.push(user);
         },
@@ -137,7 +141,13 @@ const ImportCmFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{user.roleId}</td>
-                      <td>{user.groupIds.join(', ')}</td>
+                      <td>
+                        {groups
+                          .map(({ name, groupId }) => {
+                            if (user.groupIds.includes(groupId)) return name;
+                          })
+                          .join(', ')}
+                      </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

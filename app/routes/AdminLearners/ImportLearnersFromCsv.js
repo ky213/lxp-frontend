@@ -70,10 +70,14 @@ const ImportLearnersFromCsv = () => {
             email: row.data.Email,
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
-            groupIds: row.data.Groups,
+            groupNames: row.data.Groups,
             organizationId: selectedOrganization.organizationId,
             error: '',
           };
+
+          user.groupIds = groups.map(({ name, groupId }) => {
+            if (user.groupNames.includes(name)) return groupId;
+          });
 
           csvUsers.push(user);
         },
@@ -129,7 +133,13 @@ const ImportLearnersFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
-                      <td>{user.groupIds}</td>
+                      <td>
+                        {groups
+                          .map(({ name, groupId }) => {
+                            if (user.groupIds.includes(groupId)) return name;
+                          })
+                          .join(', ')}
+                      </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

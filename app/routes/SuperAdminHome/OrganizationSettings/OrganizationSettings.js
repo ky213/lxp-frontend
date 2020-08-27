@@ -402,7 +402,7 @@ const OrganizationSettings = (props) => {
                                 />
                               </Col>
                             </FormGroup>
-                            {groups.length > 0 && (
+                            {selectedOrganization && (
                               <FormGroup row>
                                 <Label for="group" sm={3}>
                                   Default Group

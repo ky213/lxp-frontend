@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
+import { isString } from 'lodash';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import ThemedButton from '@/components/ThemedButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -37,6 +38,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
   const [roles, setRoles] = React.useState([]);
   const [groups, setGroups] = useState([]);
   const intl = useIntl();
+  let selectedGroupNames = [];
 
   const [{ selectedOrganization }] = useAppState();
 
@@ -49,7 +51,9 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
 
     groupsService
       .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups));
+      .then((response) => {
+        setGroups(response.groups);
+      });
   }, []);
 
   const dismissAlert = () => {
@@ -83,13 +87,18 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         surname: Yup.string().required('Surname is required'),
         email: Yup.string().required('Email is required'),
         userRoleId: Yup.string().required('You have to select a role'),
-        groupIds: Yup.array().required('You have to select a group'),
         gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, userRoleId, groupIds, isActive },
+        { name, surname, email, gender, userRoleId, isActive },
         { setStatus, setSubmitting }
       ) => {
+        const groupIds = groups
+          .map((group) => {
+            if (selectedGroupNames.includes(group.name)) return group.groupId;
+          })
+          .filter((g) => isString(g));
+
         setStatus();
 
         if (user) {
@@ -113,7 +122,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
               setSubmitting(false);
               if (response.isValid) {
                 onEdited();
-
                 showAlertMessage({
                   title: intl.formatMessage({ id: 'General.Success' }),
                   message: 'You have sucessfully created an user!',
@@ -127,7 +135,13 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 });
               }
             })
-            .catch((err) => console.log('err', err));
+            .catch((err) =>
+              showAlertMessage({
+                title: 'Error',
+                message: JSON.stringify(err),
+                type: 'danger',
+              })
+            );
         } else {
           courseManagerService
             .add(
@@ -142,31 +156,34 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
               },
               selectedOrganization.organizationId
             )
-            .then(
-              (response) => {
-                setSubmitting(false);
+            .then((response) => {
+              setSubmitting(false);
 
-                if (response.isValid) {
-                  onEdited();
+              if (response.isValid) {
+                onEdited();
 
-                  showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success' }),
-                    message: 'You have sucessfully created an user!',
-                    type: 'success',
-                  });
-                } else {
-                  showAlertMessage({
-                    title: 'Error',
-                    message: response.errorDetails,
-                    type: 'danger',
-                  });
-                }
-              },
-              (error) => {
-                setSubmitting(false);
-                setStatus(error);
+                showAlertMessage({
+                  title: intl.formatMessage({ id: 'General.Success' }),
+                  message: 'You have sucessfully created an user!',
+                  type: 'success',
+                });
+              } else {
+                showAlertMessage({
+                  title: 'Error',
+                  message: JSON.stringify(response.errorDetails),
+                  type: 'danger',
+                });
               }
-            );
+            })
+            .catch((e) => {
+              showAlertMessage({
+                title: 'Error',
+                message: 'error',
+                type: 'danger',
+              });
+              setSubmitting(false);
+              setStatus(e);
+            });
         }
       }}
     >
@@ -179,7 +196,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 {alertMessage.message}
                 <div className="mt-2">
                   <Button color={alertMessage.type} onClick={dismissAlert}>
-                    {intl.formatMessage({ id: 'General.Dismiss' })}
+                    Dismiss
                   </Button>
                 </div>
               </Alert>
@@ -383,35 +400,29 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                       </FormGroup>
                       <FormGroup row>
                         <Label for="group" sm={3}>
-                          Group
+                          Groups
                         </Label>
                         <Col sm={9}>
                           <Typeahead
                             id="groupIds"
                             name="groupIds"
-                            component="select"
+                            options={groups.map(({ name }) => name)}
                             multiple
-                            className={
-                              'bg-white form-control' +
-                              (props.errors.groupIds && props.touched.groupIds
-                                ? ' is-invalid'
-                                : '')
+                            defaultSelected={groups
+                              .map(({ groupId, name }) => {
+                                if (user?.groupIds.includes(groupId))
+                                  return name;
+                              })
+                              .filter((g) => isString(g))}
+                            onChange={(selectedOptions) =>
+                              (selectedGroupNames = selectedOptions)
                             }
-                          >
-                            {groups.map((group) => {
-                              return (
-                                <option
-                                  key={group.groupId}
-                                  value={group.groupId}
-                                  selected={user?.groupIds.includes(
-                                    group.groupId
-                                  )}
-                                >
-                                  {group.name}
-                                </option>
-                              );
-                            })}
-                          </Typeahead>
+                            className={
+                              props.errors.groupIds && props.touched.groupIds
+                                ? ' is-invalid'
+                                : ''
+                            }
+                          />
                           {props.errors.groupIds && (
                             <InvalidFeedback>
                               {props.errors.groupIds}

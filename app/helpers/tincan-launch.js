@@ -7,7 +7,7 @@ export const TinCanLaunch = {
 };
 
 const lrsConfig = {
-  endpoint: config.apiUrl.replace('/api', '/xapi'),
+  endpoint: process.env.XAPI_URL,
   username: 'test',
   password: 'test',
 };
@@ -94,9 +94,7 @@ const readXML = (filename, user, callback) => {
 } */
 
 function launchContent(user, registration, course, launcher) {
-  const launchUrlBase = `${config.apiUrl}/static${
-    (!course.contentPath.startsWith('/') && '/') || ''
-  }${course.contentPath}${(!course.contentPath.endsWith('/') && '/') || ''}`;
+    const launchUrlBase = `${process.env.UPLOADS_URL}/${course.contentPath}${!course.contentPath.endsWith('/') && '/' || ''}`;
 
   const requestOptions = {
     method: 'GET',

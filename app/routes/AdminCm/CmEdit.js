@@ -4,9 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import { isString } from 'lodash';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import ThemedButton from '@/components/ThemedButton';
+import { isString } from 'lodash';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
 import {

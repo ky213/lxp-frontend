@@ -25,6 +25,7 @@ import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import { learnerService, groupsService } from '@/services';
 import { useAppState } from '@/components/AppState';
 import moment from 'moment';
+import { isString } from 'lodash';
 
 const InvalidFeedback = styled.section`
   width: 100%;
@@ -34,17 +35,14 @@ const InvalidFeedback = styled.section`
 `;
 
 const LearnerEdit = (props) => {
+  const { user } = props;
   const intl = useIntl();
 
   const [{ selectedOrganization }] = useAppState();
-  const [user, setUser] = React.useState(null);
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
   const [groups, setGroups] = React.useState([]);
-
-  React.useEffect(() => {
-    setUser(props.user);
-  }, [props.user]);
+  let selectedGroupNames = [];
 
   React.useEffect(() => {
     groupsService
@@ -75,7 +73,7 @@ const LearnerEdit = (props) => {
         surname: (user && user.surname) || '',
         email: (user && user.email) || '',
         gender: (user && user.gender) || '',
-        groupId: (user && user.groupId) || '',
+        groupIds: (user && user.groupIds) || [],
         startDate:
           (user && user.startDate && moment(user.startDate).toDate()) ||
           new Date(),
@@ -86,12 +84,17 @@ const LearnerEdit = (props) => {
         surname: Yup.string().required('Surname is required'),
         email: Yup.string().required('Email is required'),
         gender: Yup.string().required('Gender is required'),
-        groupId: Yup.string().required('Group is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, startDate, isActive, groupId },
+        { name, surname, email, gender, startDate, isActive },
         { setStatus, setSubmitting }
       ) => {
+        const groupIds = groups
+          .map((group) => {
+            if (selectedGroupNames.includes(group.name)) return group.groupId;
+          })
+          .filter((g) => isString(g));
+
         setStatus();
         if (user) {
           learnerService
@@ -105,35 +108,37 @@ const LearnerEdit = (props) => {
                 startDate,
                 userId: user.userId,
                 employeeId: user.employeeId,
-                groupId,
+                groupIds,
               },
               selectedOrganization.organizationId
             )
-            .then(
-              (response) => {
-                setSubmitting(false);
-                if (response.isValid) {
-                  props.onEdited();
+            .then((response) => {
+              setSubmitting(false);
+              if (response.isValid) {
+                props.onEdited();
 
-                  showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success' }),
-                    message: 'You have sucessfully created an user!',
-                    type: 'success',
-                  });
-                } else {
-                  showAlertMessage({
-                    title: 'Error',
-                    message: response.errorDetails,
-                    type: 'danger',
-                  });
-                }
-              },
-              (error) => {
-                console.log('error', error);
-                setSubmitting(false);
-                setStatus(error);
+                showAlertMessage({
+                  title: intl.formatMessage({ id: 'General.Success' }),
+                  message: 'You have sucessfully created an user!',
+                  type: 'success',
+                });
+              } else {
+                showAlertMessage({
+                  title: 'Error',
+                  message: JSON.stringify(response.errorDetails),
+                  type: 'danger',
+                });
               }
-            );
+            })
+            .catch((e) => {
+              showAlertMessage({
+                title: 'Error',
+                message: JSON.stringify(e),
+                type: 'danger',
+              });
+              setSubmitting(false);
+              setStatus(e);
+            });
         } else {
           learnerService
             .add(
@@ -143,35 +148,38 @@ const LearnerEdit = (props) => {
                 email,
                 gender,
                 startDate,
-                groupId,
+                groupIds,
               },
               selectedOrganization.organizationId
             )
-            .then(
-              (response) => {
-                setSubmitting(false);
+            .then((response) => {
+              setSubmitting(false);
 
-                if (response.isValid) {
-                  props.onEdited();
+              if (response.isValid) {
+                props.onEdited();
 
-                  showAlertMessage({
-                    title: intl.formatMessage({ id: 'General.Success' }),
-                    message: 'You have sucessfully created an user!',
-                    type: 'success',
-                  });
-                } else {
-                  showAlertMessage({
-                    title: 'Error',
-                    message: response.errorDetails,
-                    type: 'danger',
-                  });
-                }
-              },
-              (error) => {
-                setSubmitting(false);
-                setStatus(error);
+                showAlertMessage({
+                  title: intl.formatMessage({ id: 'General.Success' }),
+                  message: 'You have sucessfully created an user!',
+                  type: 'success',
+                });
+              } else {
+                showAlertMessage({
+                  title: 'Error',
+                  message: response.errorDetails,
+                  type: 'danger',
+                });
               }
-            );
+            })
+            .catch((err) => {
+              showAlertMessage({
+                title: 'Error',
+                message: JSON.stringify(err),
+                type: 'danger',
+              });
+              setSubmitting(false);
+              setStatus(err);
+            });
         }
       }}
     >
@@ -356,38 +364,32 @@ const LearnerEdit = (props) => {
                       </FormGroup>
                       <FormGroup row>
                         <Label for="group" sm={3}>
-                          Group
+                          Groups
                         </Label>
                         <Col sm={9}>
-                          <Field
-                            component="select"
-                            name="groupId"
-                            id="groupId"
-                            className={
-                              'bg-white form-control' +
-                              (props.errors.userGroupId &&
-                              props.touched.userGroupId
-                                ? ' is-invalid'
-                                : '')
+                          <Typeahead
+                            id="groupIds"
+                            name="groupIds"
+                            options={groups.map(({ name }) => name)}
+                            multiple
+                            defaultSelected={groups
+                              .map(({ groupId, name }) => {
+                                if (user?.groupIds.includes(groupId))
+                                  return name;
+                              })
+                              .filter((g) => isString(g))}
+                            onChange={(selectedOptions) =>
+                              (selectedGroupNames = selectedOptions)
                             }
-                          >
-                            <option value="">Select user group...</option>
-                            {groups.map((group) => {
-                              return (
-                                <option
-                                  value={group.groupId}
-                                  selected={
-                                    user && group.groupId == user.groupId
-                                  }
-                                >
-                                  {group.name}
-                                </option>
-                              );
-                            })}
-                          </Field>
-                          {props.errors.userGroupId && (
+                            className={
+                              props.errors.groupIds && props.touched.groupIds
+                                ? ' is-invalid'
+                                : ''
+                            }
+                          />
+                          {props.errors.groupIds && (
                             <InvalidFeedback>
-                              {props.errors.userGroupId}
+                              {props.errors.groupIds}
                             </InvalidFeedback>
                           )}
                         </Col>

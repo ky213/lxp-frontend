@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import styled from 'styled-components';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import ThemedButton from '@/components/ThemedButton';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
 import {
   Alert,
@@ -74,7 +75,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         email: (user && user.email) || '',
         gender: (user && user.gender) || '',
         userRoleId: (user && user.roleId) || '',
-        userGroupId: (user && user.groupId) || '',
+        groupIds: (user && user.groupIds) || [],
         isActive: (!user && true) || user.isActive,
       }}
       validationSchema={Yup.object().shape({
@@ -82,11 +83,11 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         surname: Yup.string().required('Surname is required'),
         email: Yup.string().required('Email is required'),
         userRoleId: Yup.string().required('You have to select a role'),
-        userGroupId: Yup.string().required('You have to select a group'),
+        groupIds: Yup.array().required('You have to select a group'),
         gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, userRoleId, userGroupId, isActive },
+        { name, surname, email, gender, userRoleId, groupIds, isActive },
         { setStatus, setSubmitting }
       ) => {
         setStatus();
@@ -100,10 +101,10 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 email,
                 gender,
                 isActive,
+                groupIds,
                 userId: user.userId,
                 employeeId: user.employeeId,
                 roleId: userRoleId,
-                groupId: userGroupId,
                 organizationId: selectedOrganization.organizationId,
               },
               selectedOrganization.organizationId
@@ -135,9 +136,9 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 surname,
                 email,
                 gender,
+                groupIds,
                 organizationId: selectedOrganization.organizationId,
                 roleId: userRoleId,
-                groupId: userGroupId,
               },
               selectedOrganization.organizationId
             )
@@ -364,6 +365,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             {roles.map((r) => {
                               return (
                                 <option
+                                  key={r.roleId}
                                   value={r.roleId}
                                   selected={user && r.roleId == user.roleId}
                                 >
@@ -384,17 +386,14 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           Group
                         </Label>
                         <Col sm={9}>
-                          <Field
-                            id="userGroupId"
-                            name="userGroupId"
+                          <Typeahead
+                            id="groupIds"
+                            name="groupIds"
                             component="select"
                             multiple
-                            defaultValue={user?.groupIds}
-                            value={groups?.map(({ groupId }) => groupId)}
                             className={
                               'bg-white form-control' +
-                              (props.errors.userGroupId &&
-                              props.touched.userGroupId
+                              (props.errors.groupIds && props.touched.groupIds
                                 ? ' is-invalid'
                                 : '')
                             }
@@ -404,15 +403,18 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                                 <option
                                   key={group.groupId}
                                   value={group.groupId}
+                                  selected={user?.groupIds.includes(
+                                    group.groupId
+                                  )}
                                 >
                                   {group.name}
                                 </option>
                               );
                             })}
-                          </Field>
-                          {props.errors.userGroupId && (
+                          </Typeahead>
+                          {props.errors.groupIds && (
                             <InvalidFeedback>
-                              {props.errors.userGroupId}
+                              {props.errors.groupIds}
                             </InvalidFeedback>
                           )}
                         </Col>

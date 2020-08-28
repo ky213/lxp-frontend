@@ -131,7 +131,7 @@ const EditCourse = ({
               description: Yup.string().required('Description is required'),
               periodDays: Yup.number(),
             })}
-            onSubmit={(
+            onSubmit={async (
               {
                 name,
                 description,
@@ -167,10 +167,9 @@ const EditCourse = ({
                 httpMethod = 'POST';
               }
 
-              axios({
+              await axios({
                 method: httpMethod,
                 headers: {
-                  // 'Content-Type': 'multipart/form-data',
                   'Content-Type': 'application/json',
                   ...authHeader(),
                 },
@@ -178,16 +177,17 @@ const EditCourse = ({
                 url: config.apiUrl + '/courses',
               })
                 .then((resp) => {
+
                   if (fileData) {
                     let uploadUrl = resp.data.uploadUrl;
 
                     axios({
                       method: 'PUT',
-                      headers: {
-                        'Content-Type': fileData.type,
-                      },
-                      body: fileData.data,
                       url: uploadUrl,
+                    data: fileData,
+                    headers: {
+                      "Content-Type": fileData.type,
+                    },
                       onUploadProgress: (ev) => {
                         const progress = (ev.loaded / ev.total) * 100;
                         setUploadProgress(Math.round(progress));

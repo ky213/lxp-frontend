@@ -90,10 +90,11 @@ const LearnerEdit = (props) => {
         { setStatus, setSubmitting }
       ) => {
         const groupIds = groups
-          .map((group) => {
-            if (selectedGroupNames.includes(group.name)) return group.groupId;
-          })
-          .filter((g) => isString(g));
+          .filter((group) => selectedGroupNames.includes(group.name))
+          .map(({ name, groupId }) => ({
+            name,
+            groupId,
+          }));
 
         setStatus();
         if (user) {
@@ -370,14 +371,9 @@ const LearnerEdit = (props) => {
                           <Typeahead
                             id="groupIds"
                             name="groupIds"
-                            options={groups.map(({ name }) => name)}
                             multiple
-                            defaultSelected={groups
-                              .map(({ groupId, name }) => {
-                                if (user?.groupIds.includes(groupId))
-                                  return name;
-                              })
-                              .filter((g) => isString(g))}
+                            options={groups.map(({ name }) => name)}
+                            selected={user?.groupIds.map(({ name }) => name)}
                             onChange={(selectedOptions) =>
                               (selectedGroupNames = selectedOptions)
                             }

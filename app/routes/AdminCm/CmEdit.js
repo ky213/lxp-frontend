@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import ThemedButton from '@/components/ThemedButton';
-import { isString } from 'lodash';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { Role } from '@/helpers';
 import {
@@ -41,8 +39,6 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
   let selectedGroupNames = [];
 
   const [{ selectedOrganization }] = useAppState();
-
-  let history = useHistory();
 
   React.useEffect(() => {
     roleService.getCmRoles().then((data) => {
@@ -94,10 +90,11 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         { setStatus, setSubmitting }
       ) => {
         const groupIds = groups
-          .map((group) => {
-            if (selectedGroupNames.includes(group.name)) return group.groupId;
-          })
-          .filter((g) => isString(g));
+          .filter((group) => selectedGroupNames.includes(group.name))
+          .map(({ name, groupId }) => ({
+            name,
+            groupId,
+          }));
 
         setStatus();
 
@@ -406,14 +403,9 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           <Typeahead
                             id="groupIds"
                             name="groupIds"
-                            options={groups.map(({ name }) => name)}
                             multiple
-                            defaultSelected={groups
-                              .map(({ groupId, name }) => {
-                                if (user?.groupIds.includes(groupId))
-                                  return name;
-                              })
-                              .filter((g) => isString(g))}
+                            options={groups.map(({ name }) => name)}
+                            selected={user?.groupIds.map(({ name }) => name)}
                             onChange={(selectedOptions) =>
                               (selectedGroupNames = selectedOptions)
                             }

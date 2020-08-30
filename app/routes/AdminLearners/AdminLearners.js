@@ -1,28 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {
-  Button,
-  ButtonToolbar,
-  Col,
-  Container,
-  Card,
-  CardFooter,
-  Row,
-  Table
-} from "@/components";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import ListUsers from "./ListUsers";
-import {
-  userService,
-  learnerService
-} from "@/services";
-import LearnerEdit from "./LearnerEdit";
+import React from 'react';
+import { Container, Row } from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import ListUsers from './ListUsers';
+import { userService, learnerService } from '@/services';
+import LearnerEdit from './LearnerEdit';
 import { useAppState } from '@/components/AppState';
 
 const AdminLearners = () => {
-  const [{currentUser, selectedOrganization}, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const loggedInUser = currentUser && currentUser.user;
-
   const recordsPerPage = 15;
   const [showEditForm, setShowEditForm] = React.useState(false);
   const [searchText, setSearchText] = React.useState(null);
@@ -30,7 +16,7 @@ const AdminLearners = () => {
   const [user, setUser] = React.useState(null);
   const [users, setUsers] = React.useState(null);
   const [pageId, setPageId] = React.useState(1);
-  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);  
+  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
 
   React.useEffect(() => {
     getUsers();
@@ -40,10 +26,10 @@ const AdminLearners = () => {
     if (employeeId != null) {
       userService
         .getByEmployeeId(employeeId)
-        .then(data => {
+        .then((data) => {
           setUser(data);
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     } else {
       setUser(null);
     }
@@ -55,23 +41,28 @@ const AdminLearners = () => {
     }
   }, [user]);
 
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     const searchTerm = e.target.value;
     setSearchText(searchTerm);
   };
 
   const getUsers = () => {
     learnerService
-      .getAll(pageId, recordsPerPage, searchText, selectedOrganization.organizationId)
-      .then(data => {
+      .getAll(
+        pageId,
+        recordsPerPage,
+        searchText,
+        selectedOrganization.organizationId
+      )
+      .then((data) => {
         // console.log('data', data);
         setUsers(data.users);
-        setTotalNumberOfRecords(data.totalNumberOfRecords);
+        setTotalNumberOfRecords(data.totalNumberOfRecords || 100);
       })
-      .catch(err => console.log("getAll", err));
+      .catch((err) => console.log('getAll', err));
   };
 
-  const handleUserEdit = employeeId => {
+  const handleUserEdit = (employeeId) => {
     setEmployeeId(employeeId);
   };
 

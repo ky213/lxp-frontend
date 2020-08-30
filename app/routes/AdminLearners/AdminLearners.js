@@ -55,7 +55,6 @@ const AdminLearners = () => {
         selectedOrganization.organizationId
       )
       .then((data) => {
-        // console.log('data', data);
         setUsers(data.users);
         setTotalNumberOfRecords(data.totalNumberOfRecords || 100);
       })

@@ -61,7 +61,6 @@ const InvalidFeedback = styled.section`
 
 const OrganizationSettings = (props) => {
   const intl = useIntl();
-
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const [organization, setOrganization] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
@@ -109,10 +108,11 @@ const OrganizationSettings = (props) => {
     }
   }, [props.organizationId]);
 
-  React.useEffect((params) => {
-    groupsService
-      .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups));
+  React.useEffect(() => {
+    if (props.organizationId)
+      groupsService
+        .getAll(props.organizationId)
+        .then((response) => setGroups(response.groups));
   }, []);
 
   return (
@@ -402,7 +402,7 @@ const OrganizationSettings = (props) => {
                                 />
                               </Col>
                             </FormGroup>
-                            {selectedOrganization && (
+                            {props.organizationId && (
                               <FormGroup row>
                                 <Label for="group" sm={3}>
                                   Default Group

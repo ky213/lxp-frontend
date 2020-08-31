@@ -56,7 +56,7 @@ const AdminLearners = () => {
       )
       .then((data) => {
         setUsers(data.users);
-        setTotalNumberOfRecords(data.totalNumberOfRecords || 100);
+        setTotalNumberOfRecords(data.totalNumberOfRecords);
       })
       .catch((err) => console.log('getAll', err));
   };

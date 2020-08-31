@@ -175,7 +175,6 @@ const ListUsers = ({
             </Col>
           </Row>
         </CardBody>
-
         <CardFooter className="d-flex justify-content-center pb-0">
           <Paginations
             pageId={pageId}

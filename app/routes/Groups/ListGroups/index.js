@@ -95,45 +95,40 @@ const ListGroups = ({
                     </InputGroup>
                   </div>
                   <ButtonToolbar>
-                    {isSuperAdmin &&
-                      selectedGroups &&
-                      selectedGroups.length > 0 && (
-                        <ButtonGroup className="mr-2">
-                          <Button
-                            color="secondary"
-                            onClick={handleDelete}
-                            className="text-decoration-none align-self-center"
-                            id="tooltipDelete"
-                          >
-                            <i className="fa fa-fw fa-trash"></i>
-                          </Button>
-                          <UncontrolledTooltip
-                            placement="bottom"
-                            target="tooltipDelete"
-                          >
-                            {intl.formatMessage({ id: 'General.Delete' })}
-                          </UncontrolledTooltip>
-                        </ButtonGroup>
-                      )}
-
-                    {isSuperAdmin && (
-                      <ButtonGroup className="ml-auto ml-lg-0">
+                    {selectedGroups && selectedGroups.length > 0 && (
+                      <ButtonGroup className="mr-2">
                         <Button
-                          color="primary"
-                          className="align-self-center"
-                          onClick={() => showGroupForm(true)}
-                          id="tooltipAddNew"
+                          color="secondary"
+                          onClick={handleDelete}
+                          className="text-decoration-none align-self-center"
+                          id="tooltipDelete"
                         >
-                          <i className="fa fa-fw fa-pencil"></i>
+                          <i className="fa fa-fw fa-trash"></i>
                         </Button>
                         <UncontrolledTooltip
                           placement="bottom"
-                          target="tooltipAddNew"
+                          target="tooltipDelete"
                         >
-                          Add New Group
+                          {intl.formatMessage({ id: 'General.Delete' })}
                         </UncontrolledTooltip>
                       </ButtonGroup>
                     )}
+                    <ButtonGroup className="ml-auto ml-lg-0">
+                      <Button
+                        color="primary"
+                        className="align-self-center"
+                        onClick={() => showGroupForm(true)}
+                        id="tooltipAddNew"
+                      >
+                        <i className="fa fa-fw fa-pencil"></i>
+                      </Button>
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target="tooltipAddNew"
+                      >
+                        Add New Group
+                      </UncontrolledTooltip>
+                    </ButtonGroup>
                   </ButtonToolbar>
                 </div>
               </CardBody>

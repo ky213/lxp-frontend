@@ -35,7 +35,7 @@ const CourseCard = ({ course, joinedCourses, onLaunch, ...otherProps }) => {
     <Card
       className="mb-3"
       onClick={() => {
-        /*onLaunch(course)*/
+        onLaunch(course);
       }}
     >
       <div className="cardWrapper">

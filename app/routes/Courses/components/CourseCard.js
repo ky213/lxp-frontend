@@ -10,8 +10,6 @@ import {
 } from '@/components';
 import { courseService } from '@/services';
 
-const status = ['danger', 'success', 'warning', 'secondary'];
-
 const CourseCard = ({ course, joinedCourses, onLaunch, ...otherProps }) => {
   const [courseIsJoined, setCourseIsJoined] = useState(
     joinedCourses.includes(course.courseId)

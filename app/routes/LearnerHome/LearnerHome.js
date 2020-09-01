@@ -79,10 +79,7 @@ const LearnerHome = () => {
       <React.Fragment>
         <Container className="learners-home">
           <Responsive displayIn={['laptop']}>
-            <HeaderMain
-              title={`Hello, ${user.fullName}`}
-              className="mb-5 mt-4"
-            />
+            <HeaderMain title={`Hello, ${user.fullName}`} className=" mt-4" />
           </Responsive>
           <Responsive displayIn={['mobile']}>
             <h5 className="mb-4 mt-4">{`Hello, ${user.fullName}`}</h5>
@@ -90,7 +87,7 @@ const LearnerHome = () => {
           <br />
           {/* START Content */}
           <Row>
-            <Col lg={4}>
+            <Col>
               <Card>
                 <CardBody>
                   <Profile selectedUser={user} tag={Link} to="/user/profile" />

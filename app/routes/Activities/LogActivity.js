@@ -563,7 +563,6 @@ export const LogActivity = ({
                                       id="supervisors"
                                       labelKey="name"
                                       options={supervisors}
-                                      selected={formikProps.values.supervisors}
                                       className={
                                         formikProps.errors.supervisor &&
                                         formikProps.touched.supervisor

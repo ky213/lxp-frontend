@@ -19,7 +19,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import ThemedButton from '@/components/ThemedButton';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { Paginations } from '@/routes/components/Paginations';
-import { programService, courseService } from '@/services';
+import { programService, courseService, userService } from '@/services';
 
 import { useAppState } from '@/components/AppState';
 
@@ -36,7 +36,6 @@ const recordsPerPage = 20;
 const Courses = (props) => {
   const [{ currentUser, selectedOrganization }] = useAppState();
   const user = currentUser && currentUser.user;
-
   const [deviceIsMobile, setDeviceIsMobile] = React.useState(null);
   const [pageId, setPageId] = React.useState(1);
 
@@ -55,7 +54,7 @@ const Courses = (props) => {
   const [filter, setFilter] = React.useState(null);
   const [startSearch, setStartSearch] = React.useState(false);
   const [contentWidth, setContentWidth] = React.useState(null);
-
+  const [joinedCourses, setJoinedCourses] = React.useState([]);
   let rowContent = React.useRef();
 
   React.useEffect(() => {
@@ -66,6 +65,15 @@ const Courses = (props) => {
         setPrograms(data);
       })
       .catch((err) => console.log('programService.getByCurrentUser', err));
+
+    userService
+      .getByEmployeeId(user.employeeId)
+      .then((employee) =>
+        setJoinedCourses(employee.joinedCourses.map(({ courseId }) => courseId))
+      )
+      .then((error) => {
+        console.log(error);
+      });
   }, []);
 
   React.useEffect(() => {
@@ -292,7 +300,11 @@ const Courses = (props) => {
                 <React.Fragment>
                   <CardColumns>
                     {coursesData.courses.map((course) => (
-                      <CourseCard course={course} onLaunch={handleLaunch} />
+                      <CourseCard
+                        course={course}
+                        onLaunch={handleLaunch}
+                        joinedCourses={joinedCourses}
+                      />
                     ))}
                   </CardColumns>
                   <CardFooter className="d-flex justify-content-center pb-0">

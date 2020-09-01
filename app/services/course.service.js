@@ -6,13 +6,14 @@ export const courseService = {
     getAll,
     getById,
     deleteCourses,
-    getAllJoinedCourses
+    getAllJoinedCourses,
+    joinCourse
 };
 
 function getAll(organizationId, programId, page, take, filter) {    
     const requestOptions = { method: 'GET', headers: authHeader() };
     let query = buildQuery({ organizationId, programId, page, take, filter });
-    return fetch(`${config.apiUrl}/courses?${query}`, requestOptions).then(handleResponse);    
+    return fetch(`${routePrefix}?${query}`, requestOptions).then(handleResponse);    
 }
 
 function getById(courseId, organizationId) {
@@ -31,8 +32,22 @@ function deleteCourses(courseIds, organizationId) {
     return fetch(`${routePrefix}/deleteCourses`, requestOptions).then(handleResponse);
 }
 
-function getAllJoinedCourses(organizationId, page, take, filter)  {
+function getAllJoinedCourses(organizationId, programId , page, take, filter)  {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    let query = buildQuery({ organizationId, page, take, filter });
-    return fetch(`${routePrefix}/allJoinedCourses?${query}`, requestOptions).then(handleResponse);  
+    let query = buildQuery({ organizationId, programId, page, take, filter });
+    return fetch(`${routePrefix}/getAllJoined?${query}`, requestOptions).then(handleResponse); 
+}
+
+function joinCourse(courseId, organizationId) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify({ organizationId , courseId }),
+      };
+    
+      return fetch(`${routePrefix}/joinCourse`, requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+          return data;
+        });
 }

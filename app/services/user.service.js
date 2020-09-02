@@ -13,6 +13,7 @@ export const userService = {
   changePassword,
   deleteEmployees,
   updateProfileData,
+  updateBulk
 };
 
 function validateBulk(users, isLearner) {
@@ -119,4 +120,18 @@ function updateProfileData(phoneNumber, pagerNumber) {
   return fetch(`${routePrefixUsers}/updateProfileData`, requestOptions).then(
     handleResponse
   );
+}
+
+function updateBulk(users, organizationId) {    
+  const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
+      body: JSON.stringify({users, organizationId})
+  };
+
+  return fetch(`${routePrefixUsers}/updateBulk`, requestOptions)
+      .then(handleResponse)
+      .then((data) => {
+          return data;
+      });
 }

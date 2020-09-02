@@ -196,8 +196,8 @@ export const LogActivity = ({
   };
 
   const handleAddLink = async (url) => {
+    const linkField = document.querySelector('.tab-pane.active input');
     let link = { url: url, logActivityId: selectedActivity.activityId };
-
     activityService
       .addLogActivityLink(link)
       .then((logActivityLinkId) => {
@@ -208,6 +208,8 @@ export const LogActivity = ({
         };
 
         setUrls((oldUrls) => oldUrls.concat(link));
+
+        linkField.value = '';
 
         alert('The link has sucessfully been added!');
         return link;

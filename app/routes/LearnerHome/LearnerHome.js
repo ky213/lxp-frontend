@@ -10,6 +10,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Responsive } from 'responsive-react';
 import styled from 'styled-components';
+import { Role } from '@/helpers';
 
 const TodayEventHeader = styled.div`
   padding: 1rem;
@@ -65,6 +66,7 @@ const LearnerHome = () => {
   const [todayEvents, setTodayEvents] = React.useState(null);
   const [upcomingEvents, setUpcomingEvents] = React.useState(null);
   const [joinedCourses, setJoinedCourses] = React.useState([]);
+  const isLearner = user.role === Role.Learner;
 
   React.useEffect(() => {
     userService
@@ -116,6 +118,7 @@ const LearnerHome = () => {
                   course={course}
                   onLaunch={handleLaunch}
                   joinedCourses={joinedCourses.map(({ courseId }) => courseId)}
+                  isLearner={isLearner}
                 />
               ))}
             </CardColumns>

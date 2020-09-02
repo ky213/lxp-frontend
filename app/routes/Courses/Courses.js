@@ -20,16 +20,14 @@ import ThemedButton from '@/components/ThemedButton';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { Paginations } from '@/routes/components/Paginations';
 import { programService, courseService, userService } from '@/services';
-
 import { useAppState } from '@/components/AppState';
-
 import styles from './Courses.css';
 import Loading from '@/components/Loading';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import { isMobileDevice } from 'responsive-react';
-
 import { CourseCard } from './components/CourseCard';
 import { TinCanLaunch } from '@/helpers';
+import { Role } from '@/helpers';
 
 const recordsPerPage = 20;
 
@@ -55,6 +53,7 @@ const Courses = (props) => {
   const [startSearch, setStartSearch] = React.useState(false);
   const [contentWidth, setContentWidth] = React.useState(null);
   const [joinedCourses, setJoinedCourses] = React.useState([]);
+  const isLearner = user.role === Role.Learner;
   let rowContent = React.useRef();
 
   React.useEffect(() => {
@@ -304,6 +303,7 @@ const Courses = (props) => {
                         course={course}
                         onLaunch={handleLaunch}
                         joinedCourses={joinedCourses}
+                        isLearner={isLearner}
                       />
                     ))}
                   </CardColumns>

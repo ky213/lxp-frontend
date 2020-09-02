@@ -10,7 +10,13 @@ import {
 } from '@/components';
 import { courseService } from '@/services';
 
-const CourseCard = ({ course, joinedCourses, onLaunch, ...otherProps }) => {
+const CourseCard = ({
+  course,
+  joinedCourses,
+  onLaunch,
+  isLearner,
+  ...otherProps
+}) => {
   const [courseIsJoined, setCourseIsJoined] = useState(
     joinedCourses.includes(course.courseId)
   );
@@ -89,12 +95,14 @@ const CourseCard = ({ course, joinedCourses, onLaunch, ...otherProps }) => {
           <i className="fa fa-eye mr-1"></i>
           <span className="text-inverse">0</span>
         </span>
-        <Button
-          color={courseIsJoined ? 'success' : 'primary'}
-          onClick={handleJoinCourse}
-        >
-          {courseIsJoined ? 'Joined' : 'Join Course'}
-        </Button>
+        {isLearner && (
+          <Button
+            color={courseIsJoined ? 'success' : 'primary'}
+            onClick={handleJoinCourse}
+          >
+            {courseIsJoined ? 'Joined' : 'Join Course'}
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

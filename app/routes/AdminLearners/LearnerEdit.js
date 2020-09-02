@@ -22,10 +22,9 @@ import {
   Row,
 } from '@/components';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { learnerService, groupsService } from '@/services';
+import { learnerService, groupsService, courseService } from '@/services';
 import { useAppState } from '@/components/AppState';
 import moment from 'moment';
-import { isString } from 'lodash';
 
 const InvalidFeedback = styled.section`
   width: 100%;
@@ -42,12 +41,25 @@ const LearnerEdit = (props) => {
   const [alertMessage, setAlertMessage] = React.useState(null);
   const [showAlert, setShowAlert] = React.useState(false);
   const [groups, setGroups] = React.useState([]);
+  const [courses, setCourses] = React.useState([]);
   let selectedGroupNames = [];
-
+  let selectedCoursNames = [];
   React.useEffect(() => {
     groupsService
       .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups));
+      .then((response) => setGroups(response.groups))
+      .catch((error) => {
+        console.log('groups error:', error);
+      });
+
+    courseService
+      .getAll(selectedOrganization.organizationId)
+      .then((response) => {
+        setCourses(response.courses);
+      })
+      .catch((error) => {
+        console.log('courses error:', error);
+      });
   }, []);
 
   const dismissAlert = () => {
@@ -69,11 +81,12 @@ const LearnerEdit = (props) => {
       {...props}
       enableReinitialize={true}
       initialValues={{
-        name: (user && user.name) || '',
-        surname: (user && user.surname) || '',
-        email: (user && user.email) || '',
-        gender: (user && user.gender) || '',
-        groupIds: (user && user.groupIds) || [],
+        name: user?.name || '',
+        surname: user?.surname || '',
+        email: user?.email || '',
+        gender: user?.gender || '',
+        groupIds: user?.groupIds || [],
+        courseIds: user?.courseIds || [],
         startDate:
           (user && user.startDate && moment(user.startDate).toDate()) ||
           new Date(),
@@ -96,6 +109,13 @@ const LearnerEdit = (props) => {
             groupId,
           }));
 
+        const joinedCourses = courses
+          .filter((course) => selectedCoursNames.includes(course.name))
+          .map(({ name, courseId }) => ({
+            name,
+            courseId,
+          }));
+
         setStatus();
         if (user) {
           learnerService
@@ -110,6 +130,7 @@ const LearnerEdit = (props) => {
                 userId: user.userId,
                 employeeId: user.employeeId,
                 groupIds,
+                joinedCourses,
               },
               selectedOrganization.organizationId
             )
@@ -150,6 +171,7 @@ const LearnerEdit = (props) => {
                 gender,
                 startDate,
                 groupIds,
+                joinedCourses,
               },
               selectedOrganization.organizationId
             )
@@ -386,6 +408,35 @@ const LearnerEdit = (props) => {
                           {props.errors.groupIds && (
                             <InvalidFeedback>
                               {props.errors.groupIds}
+                            </InvalidFeedback>
+                          )}
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label for="courses" sm={3}>
+                          Courses
+                        </Label>
+                        <Col sm={9}>
+                          <Typeahead
+                            id="courseIds"
+                            name="courseIds"
+                            multiple
+                            options={courses.map(({ name }) => name)}
+                            selected={user?.joinedCourses.map(
+                              ({ name }) => name
+                            )}
+                            onChange={(selectedOptions) =>
+                              (selectedCoursNames = selectedOptions)
+                            }
+                            className={
+                              props.errors.courseIds && props.touched.courseIds
+                                ? ' is-invalid'
+                                : ''
+                            }
+                          />
+                          {props.errors.courseIds && (
+                            <InvalidFeedback>
+                              {props.errors.courseIds}
                             </InvalidFeedback>
                           )}
                         </Col>

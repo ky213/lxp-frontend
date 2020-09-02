@@ -1,15 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Card, CardColumns, CardBody } from '@/components';
+import { Card, CardBody, CardColumns, Col, Container, Row } from '@/components';
+import { useAppState } from '@/components/AppState';
+import { TinCanLaunch } from '@/helpers';
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { Profile } from '@/routes/components/Profile';
-import { useAppState } from '@/components/AppState';
-import styled from 'styled-components';
-import moment from 'moment';
-import { Responsive } from 'responsive-react';
 import { CourseCard } from '@/routes/Courses/components/CourseCard';
 import { userService } from '@/services';
-import { TinCanLaunch } from '@/helpers';
+import moment from 'moment';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Responsive } from 'responsive-react';
+import styled from 'styled-components';
 
 const TodayEventHeader = styled.div`
   padding: 1rem;

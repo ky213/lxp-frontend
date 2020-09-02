@@ -9,6 +9,7 @@ import moment from 'moment';
 import { Responsive } from 'responsive-react';
 import { CourseCard } from '@/routes/Courses/components/CourseCard';
 import { userService } from '@/services';
+import { TinCanLaunch } from '@/helpers';
 
 const TodayEventHeader = styled.div`
   padding: 1rem;
@@ -74,6 +75,17 @@ const LearnerHome = () => {
       });
   }, []);
 
+  const handleLaunch = (course) => {
+    TinCanLaunch.launchContent(
+      user,
+      course,
+      course?.programId,
+      (launchLink) => {
+        window.open(launchLink);
+      }
+    );
+  };
+
   return (
     (user && (
       <React.Fragment>
@@ -102,7 +114,7 @@ const LearnerHome = () => {
                 <CourseCard
                   key={course.courseId}
                   course={course}
-                  onLaunch={() => {}}
+                  onLaunch={handleLaunch}
                   joinedCourses={joinedCourses.map(({ courseId }) => courseId)}
                 />
               ))}

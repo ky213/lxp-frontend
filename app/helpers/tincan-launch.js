@@ -94,7 +94,9 @@ const readXML = (filename, user, callback) => {
 } */
 
 function launchContent(user, registration, course, launcher) {
-    const launchUrlBase = `${process.env.UPLOADS_URL}/${course.contentPath}${!course.contentPath.endsWith('/') && '/' || ''}`;
+  const launchUrlBase = `${process.env.UPLOADS_URL}${course.contentPath}${
+    (!course.contentPath.endsWith('/') && '/') || ''
+  }`;
 
   const requestOptions = {
     method: 'GET',

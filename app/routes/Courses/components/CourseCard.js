@@ -32,12 +32,7 @@ const CourseCard = ({ course, joinedCourses, onLaunch, ...otherProps }) => {
   };
 
   return (
-    <Card
-      className="mb-3"
-      onClick={() => {
-        onLaunch(course);
-      }}
-    >
+    <Card className="mb-3">
       <div className="cardWrapper">
         <div
           className="courseLogo"
@@ -48,17 +43,18 @@ const CourseCard = ({ course, joinedCourses, onLaunch, ...otherProps }) => {
       <CardBody>
         <div className="mt-3 mb-2">
           <div className="mb-2">
-            <span
-              className="h4 text-decoration-none"
-              onClick={() => onLaunch(course)}
-            >
-              {course.name}
-            </span>
+            <span className="h4 text-decoration-none">{course.name}</span>
             <a
               href="#"
               title="Launch course"
               className="pull-right"
-              onClick={() => onLaunch(course)}
+              onClick={() => {
+                if (!courseIsJoined) {
+                  alert('You have to join the course first');
+                  return;
+                }
+                onLaunch(course);
+              }}
             >
               <i className="fa fa-external-link"></i>
             </a>

@@ -25,6 +25,7 @@ import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import { learnerService, groupsService, courseService } from '@/services';
 import { useAppState } from '@/components/AppState';
 import moment from 'moment';
+import { uniqBy } from 'lodash';
 
 const InvalidFeedback = styled.section`
   width: 100%;
@@ -42,8 +43,10 @@ const LearnerEdit = (props) => {
   const [showAlert, setShowAlert] = React.useState(false);
   const [groups, setGroups] = React.useState([]);
   const [courses, setCourses] = React.useState([]);
+
   let selectedGroupNames = [];
   let selectedCoursNames = [];
+
   React.useEffect(() => {
     groupsService
       .getAll(selectedOrganization?.organizationId)
@@ -102,14 +105,14 @@ const LearnerEdit = (props) => {
         { name, surname, email, gender, startDate, isActive },
         { setStatus, setSubmitting }
       ) => {
-        const groupIds = groups
+        const selectedGroups = groups
           .filter((group) => selectedGroupNames.includes(group.name))
           .map(({ name, groupId }) => ({
             name,
             groupId,
           }));
 
-        const joinedCourses = courses
+        const selectedCourses = courses
           .filter((course) => selectedCoursNames.includes(course.name))
           .map(({ name, courseId }) => ({
             name,
@@ -129,8 +132,14 @@ const LearnerEdit = (props) => {
                 startDate,
                 userId: user.userId,
                 employeeId: user.employeeId,
-                groupIds,
-                joinedCourses,
+                groupIds: uniqBy(
+                  [...selectedGroups, ...user.groupIds],
+                  'groupId'
+                ),
+                joinedCourses: uniqBy(
+                  [...selectedCourses, ...user.joinedCourses],
+                  'courseId'
+                ),
               },
               selectedOrganization.organizationId
             )
@@ -170,8 +179,8 @@ const LearnerEdit = (props) => {
                 email,
                 gender,
                 startDate,
-                groupIds,
-                joinedCourses,
+                groupIds: selectedGroups,
+                joinedCourses: selectedCourses,
               },
               selectedOrganization.organizationId
             )

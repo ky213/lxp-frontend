@@ -25,7 +25,6 @@ import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import { learnerService, groupsService, courseService } from '@/services';
 import { useAppState } from '@/components/AppState';
 import moment from 'moment';
-import { uniqBy } from 'lodash';
 
 const InvalidFeedback = styled.section`
   width: 100%;
@@ -44,8 +43,10 @@ const LearnerEdit = (props) => {
   const [groups, setGroups] = React.useState([]);
   const [courses, setCourses] = React.useState([]);
 
-  let selectedGroupNames = [];
-  let selectedCoursNames = [];
+  let selectedGroupNames = user ? user.groupIds.map(({ name }) => name) : [];
+  let selectedCoursNames = user
+    ? user.joinedCourses.map(({ name }) => name)
+    : [];
 
   React.useEffect(() => {
     groupsService
@@ -88,8 +89,6 @@ const LearnerEdit = (props) => {
         surname: user?.surname || '',
         email: user?.email || '',
         gender: user?.gender || '',
-        groupIds: user?.groupIds || [],
-        courseIds: user?.courseIds || [],
         startDate:
           (user && user.startDate && moment(user.startDate).toDate()) ||
           new Date(),
@@ -132,14 +131,8 @@ const LearnerEdit = (props) => {
                 startDate,
                 userId: user.userId,
                 employeeId: user.employeeId,
-                groupIds: uniqBy(
-                  [...selectedGroups, ...user.groupIds],
-                  'groupId'
-                ),
-                joinedCourses: uniqBy(
-                  [...selectedCourses, ...user.joinedCourses],
-                  'courseId'
-                ),
+                groupIds: selectedGroups,
+                joinedCourses: selectedCourses,
               },
               selectedOrganization.organizationId
             )
@@ -404,7 +397,7 @@ const LearnerEdit = (props) => {
                             name="groupIds"
                             multiple
                             options={groups.map(({ name }) => name)}
-                            selected={user?.groupIds.map(({ name }) => name)}
+                            selected={selectedGroupNames}
                             onChange={(selectedOptions) =>
                               (selectedGroupNames = selectedOptions)
                             }
@@ -431,9 +424,7 @@ const LearnerEdit = (props) => {
                             name="courseIds"
                             multiple
                             options={courses.map(({ name }) => name)}
-                            selected={user?.joinedCourses.map(
-                              ({ name }) => name
-                            )}
+                            selected={selectedCoursNames}
                             onChange={(selectedOptions) =>
                               (selectedCoursNames = selectedOptions)
                             }

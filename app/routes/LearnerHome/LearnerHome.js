@@ -95,7 +95,7 @@ const LearnerHome = () => {
               </Card>
             </Col>
           </Row>
-          <Row>
+          <Row className="flex-column">
             <HeaderMain title="My Courses" className="my-4" />
             <CardColumns>
               {joinedCourses.map((course) => (

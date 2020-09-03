@@ -24,6 +24,7 @@ import ThemedButton from '@/components/ThemedButton';
 import { useAppState } from '@/components/AppState';
 import { userService, groupsService } from '@/services';
 import { uniq } from 'lodash';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ListUsers = ({
   users,
@@ -99,8 +100,22 @@ const ListUsers = ({
 
     userService
       .updateBulk(payload, selectedOrganization.organizationId)
-      .then()
-      .catch();
+      .then(() => {
+        toast.success(
+          <div>
+            <h4 className="text-success">Success</h4>
+            <p>Users have been updated</p>
+          </div>
+        );
+      })
+      .catch((error) => {
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{JSON.stringify(error)}</p>
+          </div>
+        );
+      });
   };
 
   return (

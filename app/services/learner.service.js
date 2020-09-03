@@ -9,7 +9,8 @@ export const learnerService = {
     getAll,
     getAllActive,
     update,
-    validateBulk
+    validateBulk,
+    updateBulk
 };
 
 function add(user, organizationId) {
@@ -78,4 +79,18 @@ function validateBulk(users, organizationId) {
     .then(data => {
       return data;
     });
+}
+
+function updateBulk(users, organizationId) {    
+  const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
+      body: JSON.stringify({users, organizationId})
+  };
+
+  return fetch(`${routePrefix}/updateBulk`, requestOptions)
+      .then(handleResponse)
+      .then((data) => {
+          return data;
+      });
 }

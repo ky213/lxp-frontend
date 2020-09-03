@@ -1,6 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import {
   Container,
   Card,
@@ -21,7 +22,8 @@ import { UserRowLearner } from './UserRowLearner';
 import { Paginations } from '@/routes/components/Paginations';
 import ThemedButton from '@/components/ThemedButton';
 import { useAppState } from '@/components/AppState';
-import { userService } from '../../services/user.service';
+import { userService, groupsService } from '@/services';
+import { uniq } from 'lodash';
 
 const ListUsers = ({
   users,
@@ -39,6 +41,17 @@ const ListUsers = ({
 
   const [{ selectedOrganization }] = useAppState();
   const [selectedEmployees, setSelectedEmployees] = React.useState([]);
+  const [groups, setGroups] = React.useState([]);
+  let selectedGroupNames = [];
+
+  React.useEffect(() => {
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups))
+      .catch((error) => {
+        console.log('groups error:', error);
+      });
+  }, []);
 
   const onSelected = (employeeId, e) => {
     if (e.target.checked) {
@@ -66,6 +79,30 @@ const ListUsers = ({
     }
   };
 
+  const onUpdateBulk = () => {
+    const selectedUsers = users.filter(({ employeeId }) =>
+      selectedEmployees.includes(employeeId)
+    );
+    const payload = selectedUsers.map(({ employeeId, groupIds }) => {
+      const selectedGroups = groups
+        .filter((group) => selectedGroupNames.includes(group.name))
+        .map(({ groupId }) => groupId);
+
+      return {
+        employeeId,
+        groupIds: uniq([
+          ...groupIds.map(({ groupId }) => groupId),
+          ...selectedGroups,
+        ]),
+      };
+    });
+
+    userService
+      .updateBulk(payload, selectedOrganization.organizationId)
+      .then()
+      .catch();
+  };
+
   return (
     <React.Fragment>
       <Card className="mb-3">
@@ -73,7 +110,7 @@ const ListUsers = ({
           <Row>
             <Col lg={12}>
               <div className="d-lg-flex justify-content-end">
-                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+                <div className="mr-2 d-flex align-items-center mb-3 mb-lg-0">
                   <InputGroup>
                     <Input
                       onKeyUp={(e) => onSearch(e)}
@@ -86,6 +123,34 @@ const ListUsers = ({
                       </Button>
                     </InputGroupAddon>
                   </InputGroup>
+                </div>
+                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+                  <Typeahead
+                    id="groupNames"
+                    name="groupNames"
+                    multiple
+                    options={groups.map(({ name }) => name)}
+                    selected={selectedGroupNames}
+                    onChange={(selectedOptions) =>
+                      (selectedGroupNames = selectedOptions)
+                    }
+                  />
+                  <ButtonGroup className="mr-2">
+                    <Button
+                      color="primary"
+                      onClick={onUpdateBulk}
+                      className="ml-1 align-self-center"
+                      id="addBulkUsers"
+                    >
+                      Add
+                    </Button>
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target="addBulkUsers"
+                    >
+                      Add bulk users to groups
+                    </UncontrolledTooltip>
+                  </ButtonGroup>
                 </div>
                 <ButtonToolbar>
                   {selectedEmployees && selectedEmployees.length > 0 && (

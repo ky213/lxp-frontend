@@ -24,7 +24,7 @@ import ThemedButton from '@/components/ThemedButton';
 import { useAppState } from '@/components/AppState';
 import { userService, groupsService } from '@/services';
 import { uniq } from 'lodash';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const ListUsers = ({
   users,
@@ -105,7 +105,8 @@ const ListUsers = ({
           <div>
             <h4 className="text-success">Success</h4>
             <p>Users have been updated</p>
-          </div>
+          </div>,
+          { autoClose: 5000 }
         );
       })
       .catch((error) => {
@@ -125,7 +126,7 @@ const ListUsers = ({
           <Row>
             <Col lg={12}>
               <div className="d-lg-flex justify-content-end">
-                <div className="mr-2 d-flex align-items-center mb-3 mb-lg-0">
+                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
                   <InputGroup>
                     <Input
                       onKeyUp={(e) => onSearch(e)}
@@ -139,34 +140,37 @@ const ListUsers = ({
                     </InputGroupAddon>
                   </InputGroup>
                 </div>
-                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
-                  <Typeahead
-                    id="groupNames"
-                    name="groupNames"
-                    multiple
-                    options={groups.map(({ name }) => name)}
-                    selected={selectedGroupNames}
-                    onChange={(selectedOptions) =>
-                      (selectedGroupNames = selectedOptions)
-                    }
-                  />
-                  <ButtonGroup className="mr-2">
-                    <Button
-                      color="primary"
-                      onClick={onUpdateBulk}
-                      className="ml-1 align-self-center"
-                      id="addBulkUsers"
-                    >
-                      Add
-                    </Button>
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target="addBulkUsers"
-                    >
-                      Add bulk users to groups
-                    </UncontrolledTooltip>
-                  </ButtonGroup>
-                </div>
+                {selectedEmployees.length > 0 && (
+                  <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+                    <Typeahead
+                      id="groupNames"
+                      name="groupNames"
+                      placeholder="select groups..."
+                      options={groups.map(({ name }) => name)}
+                      selected={selectedGroupNames}
+                      onChange={(selectedOptions) =>
+                        (selectedGroupNames = selectedOptions)
+                      }
+                      multiple
+                    />
+                    <ButtonGroup className="mr-2">
+                      <Button
+                        color="primary"
+                        onClick={onUpdateBulk}
+                        className="ml-1 align-self-center"
+                        id="addBulkUsers"
+                      >
+                        Add
+                      </Button>
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target="addBulkUsers"
+                      >
+                        Add bulk users to groups
+                      </UncontrolledTooltip>
+                    </ButtonGroup>
+                  </div>
+                )}
                 <ButtonToolbar>
                   {selectedEmployees && selectedEmployees.length > 0 && (
                     <ButtonGroup className="mr-2">

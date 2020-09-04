@@ -3,8 +3,7 @@ import { useIntl } from 'react-intl';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import ThemedButton from '@/components/ThemedButton';
-import { Typeahead } from 'react-bootstrap-typeahead';
+import { toast } from 'react-toastify';
 import { groupsService, groupTypesService } from '@/services';
 import { Consumer } from '@/components/Theme/ThemeContext';
 import {

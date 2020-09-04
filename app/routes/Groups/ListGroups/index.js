@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
 import { GroupRow } from './components/GroupRow';
 import { Paginations } from '@/routes/components/Paginations';
 import { groupsService } from '@/services';
@@ -63,13 +64,28 @@ const ListGroups = ({
   };
 
   const handleDelete = () => {
-    if (confirm('Confirm group delete ?'))
-      groupsService
-        .deleteGroups(selectedGroups.map(({ groupId }) => groupId))
-        .then((response) => {
-          setSelectedGroups([]);
-          getAllGroups();
-        });
+    if (!confirm('Confirm group delete ?')) return;
+    groupsService
+      .deleteGroups(selectedGroups.map(({ groupId }) => groupId))
+      .then((response) => {
+        toast.success(
+          <div>
+            <h4 className="text-success">Success</h4>
+            <p>Grop has been deleted</p>
+          </div>,
+          { autoClose: 5000 }
+        );
+        setSelectedGroups([]);
+        getAllGroups();
+      })
+      .catch((error) => {
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{JSON.stringify(error)}</p>
+          </div>
+        );
+      });
   };
 
   return (

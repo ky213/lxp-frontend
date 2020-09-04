@@ -71,11 +71,23 @@ const ListUsers = ({
           selectedOrganization.organizationId,
           selectedEmployees
         );
+        toast.success(
+          <div>
+            <h4 className="text-success">Success</h4>
+            <p>User has been deleted</p>
+          </div>,
+          { autoClose: 5000 }
+        );
         getUsers();
         setSelectedEmployees([]);
       } catch (error) {
         console.log('Error while deleting learners:', error);
-        alert(`Something went wrong while deleting ${message}!`);
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{JSON.stringify(error)}</p>
+          </div>
+        );
       }
     }
   };

@@ -71,7 +71,7 @@ const ListGroups = ({
         toast.success(
           <div>
             <h4 className="text-success">Success</h4>
-            <p>Grop has been deleted</p>
+            <p>Group has been deactivated</p>
           </div>,
           { autoClose: 5000 }
         );

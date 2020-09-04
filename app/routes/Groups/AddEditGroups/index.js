@@ -46,17 +46,6 @@ const AddEditGroup = (props) => {
       .then((response) => setGroupTypes(response.groupTypes));
   }, []);
 
-  const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-    hideGroupForm();
-  };
-
-  const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
-
   const createGroup = (data, { setStatus, setSubmitting }) => {
     groupsService
       .create({
@@ -66,25 +55,24 @@ const AddEditGroup = (props) => {
       })
       .then(
         (reponse) => {
-          showAlertMessage({
-            title: intl.formatMessage({ id: 'General.Success' }),
-            message: 'You have sucessfully created a groups!',
-            type: 'success',
-          });
+          toast.success(
+            <div>
+              <h4 className="text-success">Success</h4>
+              <p>A new group has been created</p>
+            </div>,
+            { autoClose: 5000 }
+          );
           setSubmitting(false);
+          hideGroupForm();
         },
         (error) => {
           console.log(`Error while trying to create a groups:`, error);
-          let errorMessage = `Error while trying to create a groups`;
-          if (error.toLowerCase().includes('unique')) {
-            errorMessage = `Group with the same name already exists`;
-          }
-
-          showAlertMessage({
-            title: 'Error',
-            message: errorMessage,
-            type: 'danger',
-          });
+          toast.error(
+            <div>
+              <h4 className="text-danger">Error</h4>
+              <p>{JSON.stringify(error)}</p>
+            </div>
+          );
           setSubmitting(false);
           setStatus(error);
         }
@@ -100,25 +88,24 @@ const AddEditGroup = (props) => {
       })
       .then(
         (reponse) => {
-          showAlertMessage({
-            title: intl.formatMessage({ id: 'General.Success' }),
-            message: 'You have sucessfully changed the group!',
-            type: 'success',
-          });
+          toast.success(
+            <div>
+              <h4 className="text-success">Success</h4>
+              <p>Group has been updated</p>
+            </div>,
+            { autoClose: 5000 }
+          );
           setSubmitting(false);
+          hideGroupForm();
         },
         (error) => {
-          console.log(`Error while changing the group ${name}:`, error);
-          let errorMessage = `Error while trying to change the group ${name}`;
-          if (error.toLowerCase().includes('unique')) {
-            errorMessage = `Group with the same name (${name}) already exists`;
-          }
-
-          showAlertMessage({
-            title: 'Error',
-            message: errorMessage,
-            type: 'danger',
-          });
+          console.log(`Error while updating the group ${name}:`, error);
+          toast.error(
+            <div>
+              <h4 className="text-danger">Error</h4>
+              <p>{JSON.stringify(error)}</p>
+            </div>
+          );
           setSubmitting(false);
           setStatus(error);
         }

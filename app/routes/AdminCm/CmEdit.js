@@ -90,6 +90,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         { name, surname, email, gender, userRoleId, isActive },
         { setStatus, setSubmitting }
       ) => {
+        if (!confirm('confirm saving data?')) return;
+
         const groupIds = groups
           .filter((group) => selectedGroupNames.includes(group.name))
           .map(({ name, groupId }) => ({

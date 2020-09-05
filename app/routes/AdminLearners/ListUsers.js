@@ -22,7 +22,7 @@ import { UserRowLearner } from './UserRowLearner';
 import { Paginations } from '@/routes/components/Paginations';
 import ThemedButton from '@/components/ThemedButton';
 import { useAppState } from '@/components/AppState';
-import { userService, groupsService } from '@/services';
+import { userService, groupsService, courseService } from '@/services';
 import { uniq } from 'lodash';
 import { toast } from 'react-toastify';
 
@@ -43,7 +43,10 @@ const ListUsers = ({
   const [{ selectedOrganization }] = useAppState();
   const [selectedEmployees, setSelectedEmployees] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
+  const [courses, setCourses] = React.useState([]);
+
   let selectedGroupNames = [];
+  let selectedCourseNames = [];
 
   React.useEffect(() => {
     groupsService
@@ -51,6 +54,15 @@ const ListUsers = ({
       .then((response) => setGroups(response.groups))
       .catch((error) => {
         console.log('groups error:', error);
+      });
+
+    courseService
+      .getAll(selectedOrganization.organizationId)
+      .then((response) => {
+        setCourses(response.courses);
+      })
+      .catch((error) => {
+        console.log('courses error:', error);
       });
   }, []);
 
@@ -96,19 +108,29 @@ const ListUsers = ({
     const selectedUsers = users.filter(({ employeeId }) =>
       selectedEmployees.includes(employeeId)
     );
-    const payload = selectedUsers.map(({ employeeId, groupIds }) => {
-      const selectedGroups = groups
-        .filter((group) => selectedGroupNames.includes(group.name))
-        .map(({ groupId }) => groupId);
+    const payload = selectedUsers.map(
+      ({ employeeId, groupIds, joinedCourses }) => {
+        const selectedGroups = groups
+          .filter((group) => selectedGroupNames.includes(group.name))
+          .map(({ groupId }) => groupId);
 
-      return {
-        employeeId,
-        groupIds: uniq([
-          ...groupIds.map(({ groupId }) => groupId),
-          ...selectedGroups,
-        ]),
-      };
-    });
+        const selectedCourses = courses
+          .filter((course) => selectedCourseNames.includes(course.name))
+          .map(({ courseId }) => courseId);
+
+        return {
+          employeeId,
+          groupIds: uniq([
+            ...groupIds.map(({ groupId }) => groupId),
+            ...selectedGroups,
+          ]),
+          joinedCourses: uniq([
+            ...joinedCourses.map(({ courseId }) => courseId),
+            ...selectedCourses,
+          ]),
+        };
+      }
+    );
 
     userService
       .updateBulk(payload, selectedOrganization.organizationId)
@@ -154,17 +176,32 @@ const ListUsers = ({
                 </div>
                 {selectedEmployees.length > 0 && (
                   <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
-                    <Typeahead
-                      id="groupNames"
-                      name="groupNames"
-                      placeholder="select groups..."
-                      options={groups.map(({ name }) => name)}
-                      selected={selectedGroupNames}
-                      onChange={(selectedOptions) =>
-                        (selectedGroupNames = selectedOptions)
-                      }
-                      multiple
-                    />
+                    <div className="mr-1">
+                      <Typeahead
+                        id="groupNames"
+                        name="groupNames"
+                        placeholder="select groups..."
+                        options={groups.map(({ name }) => name)}
+                        selected={selectedGroupNames}
+                        onChange={(selectedOptions) =>
+                          (selectedGroupNames = selectedOptions)
+                        }
+                        multiple
+                      />
+                    </div>
+                    <div className="">
+                      <Typeahead
+                        id="courseNames"
+                        name="courseNames"
+                        placeholder="select courses..."
+                        options={courses.map(({ name }) => name)}
+                        selected={selectedCourseNames}
+                        onChange={(selectedOptions) =>
+                          (selectedCourseNames = selectedOptions)
+                        }
+                        multiple
+                      />
+                    </div>
                     <ButtonGroup className="mr-2">
                       <Button
                         color="primary"

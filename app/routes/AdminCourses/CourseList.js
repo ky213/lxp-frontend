@@ -1,6 +1,6 @@
-import React from "react";
-import { useIntl } from "react-intl";
-import moment from "moment";
+import React from 'react';
+import { useIntl } from 'react-intl';
+import moment from 'moment';
 import {
   ButtonGroup,
   Button,
@@ -12,12 +12,12 @@ import {
   CustomInput,
   Table,
   UncontrolledTooltip,
-} from "@/components";
-import ThemedButton from "@/components/ThemedButton";
-import { Paginations } from "@/routes/components/Paginations";
-import { courseService } from "@/services";
-import { useAppState } from "@/components/AppState";
-import { Role } from '@/helpers';
+} from '@/components';
+import ThemedButton from '@/components/ThemedButton';
+import { Paginations } from '@/routes/components/Paginations';
+import { courseService } from '@/services';
+import { useAppState } from '@/components/AppState';
+import { toast } from 'react-toastify';
 
 const CourseList = ({
   courses,
@@ -29,16 +29,10 @@ const CourseList = ({
   recordsPerPage,
   pageId,
   setPageId,
-  hideCheckBox
 }) => {
   const intl = useIntl();
-
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const [selectedCourses, setSelectedCourses] = React.useState([]);  
-  const isProgramDirector = currentUser && currentUser.user && currentUser.user.role == Role.ProgramDirector;
-
-  if (isProgramDirector)
-    hideCheckBox = true;
+  const [selectedCourses, setSelectedCourses] = React.useState([]);
 
   const onSelected = (courseId, e) => {
     if (e.target.checked) {
@@ -50,24 +44,30 @@ const CourseList = ({
 
   const onDelete = async () => {
     const message =
-      selectedCourses.length == 1 ? "this course" : "these courses";
-    if (confirm(`Are you sure you want to delete ${message}?`)) {
-      try {
-        await courseService.deleteCourses(
-          selectedCourses,
-          selectedOrganization.organizationId
-        );
-        getAllCourses();
-        setSelectedCourses([]);
-        showAlertMessage({
-          title: intl.formatMessage({ id: "General.Success" }),
-          message: "You have sucessfully deleted the courses",
-          type: "success",
-        });
-      } catch (error) {
-        console.log("Error while deleting courses:", error);
-        alert(`Something went wrong while deleting ${message}!`);
-      }
+      selectedCourses.length == 1 ? 'this course' : 'these courses';
+    if (!confirm(`Are you sure you want to delete ${message}?`)) return;
+    try {
+      await courseService.deleteCourses(
+        selectedCourses,
+        selectedOrganization.organizationId
+      );
+      getAllCourses();
+      setSelectedCourses([]);
+      toast.success(
+        <div>
+          <h4 className="text-success">Success</h4>
+          <p>Courses has been deleted</p>
+        </div>,
+        { autoClose: 5000 }
+      );
+    } catch (error) {
+      console.log('Error while deleting courses:', error);
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{JSON.stringify(error)}</p>
+        </div>
+      );
     }
   };
 
@@ -102,7 +102,7 @@ const CourseList = ({
                     placement="bottom"
                     target="tooltipDelete"
                   >
-                    {intl.formatMessage({ id: "General.Delete" })}
+                    {intl.formatMessage({ id: 'General.Delete' })}
                   </UncontrolledTooltip>
                 </ButtonGroup>
               )}
@@ -130,15 +130,15 @@ const CourseList = ({
                       {courses.map((item) => {
                         return (
                           <tr key={item.courseId}>
-                            {!hideCheckBox && (
-                            <td>
-                              <CustomInput
-                                type="checkbox"
-                                onClick={(e) => onSelected(item.courseId, e)}
-                                id={`CourseCheckbox-${item.courseId}`}
-                              />
-                            </td>
-                            )}
+                            {
+                              <td>
+                                <CustomInput
+                                  type="checkbox"
+                                  onClick={(e) => onSelected(item.courseId, e)}
+                                  id={`CourseCheckbox-${item.courseId}`}
+                                />
+                              </td>
+                            }
                             <td>
                               <a
                                 href="#"
@@ -154,7 +154,7 @@ const CourseList = ({
                             <td className="">{item.programName}</td>
                             <td className="text-center">
                               {item.startingDate &&
-                                moment(item.startingDate).format("L")}
+                                moment(item.startingDate).format('L')}
                             </td>
                             <td className="text-center">{item.periodDays}</td>
                           </tr>

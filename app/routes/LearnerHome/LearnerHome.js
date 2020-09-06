@@ -80,8 +80,8 @@ const LearnerHome = () => {
   const handleLaunch = (course) => {
     TinCanLaunch.launchContent(
       user,
-      course,
       course?.programId,
+      course,
       (launchLink) => {
         window.open(launchLink);
       }

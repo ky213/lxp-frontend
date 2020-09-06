@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import ThemedButton from '@/components/ThemedButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -89,6 +90,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         { name, surname, email, gender, userRoleId, isActive },
         { setStatus, setSubmitting }
       ) => {
+        if (!confirm('confirm saving data?')) return;
+
         const groupIds = groups
           .filter((group) => selectedGroupNames.includes(group.name))
           .map(({ name, groupId }) => ({
@@ -119,25 +122,29 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
               setSubmitting(false);
               if (response.isValid) {
                 onEdited();
-                showAlertMessage({
-                  title: intl.formatMessage({ id: 'General.Success' }),
-                  message: 'You have sucessfully created an user!',
-                  type: 'success',
-                });
+                toast.success(
+                  <div>
+                    <h4 className="text-success">Success</h4>
+                    <p>User has been updated</p>
+                  </div>,
+                  { autoClose: 5000 }
+                );
               } else {
-                showAlertMessage({
-                  title: 'Error',
-                  message: response.errorDetails,
-                  type: 'danger',
-                });
+                toast.error(
+                  <div>
+                    <h4 className="text-danger">Error</h4>
+                    <p>{JSON.stringify(response.errorDetails)}</p>
+                  </div>
+                );
               }
             })
             .catch((err) =>
-              showAlertMessage({
-                title: 'Error',
-                message: JSON.stringify(err),
-                type: 'danger',
-              })
+              toast.error(
+                <div>
+                  <h4 className="text-danger">Error</h4>
+                  <p>{JSON.stringify(err)}</p>
+                </div>
+              )
             );
         } else {
           courseManagerService
@@ -159,25 +166,29 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
               if (response.isValid) {
                 onEdited();
 
-                showAlertMessage({
-                  title: intl.formatMessage({ id: 'General.Success' }),
-                  message: 'You have sucessfully created an user!',
-                  type: 'success',
-                });
+                toast.success(
+                  <div>
+                    <h4 className="text-success">Success</h4>
+                    <p>User has been saved</p>
+                  </div>,
+                  { autoClose: 5000 }
+                );
               } else {
-                showAlertMessage({
-                  title: 'Error',
-                  message: JSON.stringify(response.errorDetails),
-                  type: 'danger',
-                });
+                toast.error(
+                  <div>
+                    <h4 className="text-danger">Error</h4>
+                    <p>{JSON.stringify(response.errorDetails)}</p>
+                  </div>
+                );
               }
             })
             .catch((e) => {
-              showAlertMessage({
-                title: 'Error',
-                message: 'error',
-                type: 'danger',
-              });
+              toast.error(
+                <div>
+                  <h4 className="text-danger">Error</h4>
+                  <p>{JSON.stringify(e)}</p>
+                </div>
+              );
               setSubmitting(false);
               setStatus(e);
             });

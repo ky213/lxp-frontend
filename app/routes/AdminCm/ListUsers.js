@@ -1,6 +1,9 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { uniq } from 'lodash';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { toast } from 'react-toastify';
 import {
   Card,
   CardFooter,
@@ -20,8 +23,7 @@ import { UserRowCm } from './UserRowCm';
 import { Paginations } from '@/routes/components/Paginations';
 import ThemedButton from '@/components/ThemedButton';
 import { useAppState } from '@/components/AppState';
-import { userService } from '../../services/user.service';
-import { toast } from 'react-toastify';
+import { userService, groupsService } from '@/services';
 
 const ListUsers = ({
   users,
@@ -39,6 +41,17 @@ const ListUsers = ({
 
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
   const [selectedEmployees, setSelectedEmployees] = React.useState([]);
+  const [groups, setGroups] = React.useState([]);
+  let selectedGroupNames = [];
+
+  React.useEffect(() => {
+    groupsService
+      .getAll(selectedOrganization?.organizationId)
+      .then((response) => setGroups(response.groups))
+      .catch((error) => {
+        console.log('groups error:', error);
+      });
+  }, []);
 
   const onSelected = (employeeId, e) => {
     if (e.target.checked) {
@@ -80,6 +93,48 @@ const ListUsers = ({
     }
   };
 
+  const onUpdateBulk = () => {
+    const selectedUsers = users.filter(({ employeeId }) =>
+      selectedEmployees.includes(employeeId)
+    );
+    const payload = selectedUsers.map(
+      ({ userId, employeeId, groupIds, joinedCourses }) => {
+        const selectedGroups = groups
+          .filter((group) => selectedGroupNames.includes(group.name))
+          .map(({ groupId }) => groupId);
+
+        return {
+          userId,
+          employeeId,
+          groupIds: uniq([
+            ...groupIds.map(({ groupId }) => groupId),
+            ...selectedGroups,
+          ]),
+        };
+      }
+    );
+
+    userService
+      .updateBulk(payload, selectedOrganization.organizationId)
+      .then(() => {
+        toast.success(
+          <div>
+            <h4 className="text-success">Success</h4>
+            <p>Users have been updated</p>
+          </div>,
+          { autoClose: 5000 }
+        );
+      })
+      .catch((error) => {
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{JSON.stringify(error)}</p>
+          </div>
+        );
+      });
+  };
+
   return (
     <React.Fragment>
       <Card className="mb-3">
@@ -95,7 +150,7 @@ const ListUsers = ({
                       defaultValue={searchText}
                     />
                     <InputGroupAddon addonType="append">
-                      <Button color="secondary" outline>
+                      <Button color="secondary" outline loading>
                         <i className="fa fa-search"></i>
                       </Button>
                     </InputGroupAddon>
@@ -153,9 +208,44 @@ const ListUsers = ({
               </div>
             </Col>
           </Row>
-          <Row>
-            <Col>&nbsp;</Col>
+          <Row className="mt-3">
+            <Col lg={12}>
+              {selectedEmployees.length > 0 && (
+                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+                  <div className="mr-1">
+                    <Typeahead
+                      id="groupNames"
+                      name="groupNames"
+                      placeholder="select groups..."
+                      options={groups.map(({ name }) => name)}
+                      selected={selectedGroupNames}
+                      onChange={(selectedOptions) =>
+                        (selectedGroupNames = selectedOptions)
+                      }
+                      multiple
+                    />
+                  </div>
+                  <ButtonGroup className="mr-2">
+                    <Button
+                      color="primary"
+                      onClick={onUpdateBulk}
+                      className="ml-1 align-self-center"
+                      id="addBulkUsers"
+                    >
+                      Add
+                    </Button>
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target="addBulkUsers"
+                    >
+                      Add bulk users to groups
+                    </UncontrolledTooltip>
+                  </ButtonGroup>
+                </div>
+              )}
+            </Col>
           </Row>
+          <Col>&nbsp;</Col>
           <Row>
             <Col>
               <Table className="mb-0" hover responsive>

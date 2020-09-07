@@ -269,7 +269,7 @@ const ListUsers = ({
                       placement="bottom"
                       target="addBulkUsers"
                     >
-                      Add bulk users to groups
+                      Add bulk users to groups and courses
                     </UncontrolledTooltip>
                   </ButtonGroup>
                 </div>

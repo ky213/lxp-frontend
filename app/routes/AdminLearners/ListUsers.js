@@ -109,7 +109,7 @@ const ListUsers = ({
       selectedEmployees.includes(employeeId)
     );
     const payload = selectedUsers.map(
-      ({ employeeId, groupIds, joinedCourses }) => {
+      ({ userId, employeeId, groupIds, joinedCourses }) => {
         const selectedGroups = groups
           .filter((group) => selectedGroupNames.includes(group.name))
           .map(({ groupId }) => groupId);
@@ -119,6 +119,7 @@ const ListUsers = ({
           .map(({ courseId }) => courseId);
 
         return {
+          userId,
           employeeId,
           groupIds: uniq([
             ...groupIds.map(({ groupId }) => groupId),

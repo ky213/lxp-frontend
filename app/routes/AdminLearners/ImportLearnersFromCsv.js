@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, CardBody, Col, Container, Row, Table } from '@/components';
 import { HeaderMain } from '@/routes/components/HeaderMain';
-import { learnerService, groupsService } from '@/services';
+import { learnerService, groupsService, courseService } from '@/services';
 import ThemedButton from '@/components/ThemedButton';
 import Papa from 'papaparse';
 import { useAppState } from '@/components/AppState';
@@ -17,12 +17,26 @@ const ImportLearnersFromCsv = () => {
   const [users, setUsers] = React.useState(null);
   const [importDisabled, setImportDisabled] = React.useState(false);
   const [groups, setGroups] = React.useState([]);
+  const [courses, setCourses] = React.useState([]);
+
   const inputFile = React.useRef(null);
 
   React.useEffect(() => {
     groupsService
       .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups));
+      .then((response) => setGroups(response.groups))
+      .catch((error) => {
+        console.log('courses error:', error);
+      });
+
+    courseService
+      .getAll(selectedOrganization.organizationId)
+      .then((response) => {
+        setCourses(response.courses);
+      })
+      .catch((error) => {
+        console.log('courses error:', error);
+      });
   }, []);
 
   const goBack = (event) => {
@@ -111,6 +125,7 @@ const ImportLearnersFromCsv = () => {
                   <th className="align-middle bt-0">Gender</th>
                   <th className="align-middle bt-0">StartDate</th>
                   <th className="align-middle bt-0">Groups</th>
+                  <th className="align-middle bt-0">Courses</th>
                   <th className="align-middle bt-0">Error</th>
                 </tr>
               </thead>
@@ -134,6 +149,14 @@ const ImportLearnersFromCsv = () => {
                             if (user.groupIds.includes(groupId)) return name;
                           })
                           .filter((g) => isString(g))
+                          .join(', ')}
+                      </td>
+                      <td>
+                        {courses
+                          .map(({ name, courseId }) => {
+                            if (user.courseIds?.includes(courseId)) return name;
+                          })
+                          .filter((c) => isString(c))
                           .join(', ')}
                       </td>
                       <td>
@@ -183,6 +206,7 @@ const ImportLearnersFromCsv = () => {
                 <th className="align-middle bt-0">Gender</th>
                 <th className="align-middle bt-0">StartDate</th>
                 <th className="align-middle bt-0">Groups</th>
+                <th className="align-middle bt-0">Courses</th>
               </tr>
             </thead>
             <tbody>
@@ -192,7 +216,8 @@ const ImportLearnersFromCsv = () => {
                 <td>Email</td>
                 <td>M or F</td>
                 <td>yyyyMMdd</td>
-                <td>Group1, Grou2, ...</td>
+                <td>Group1, Group2, ...</td>
+                <td>Course1, Course2, ...</td>
               </tr>
             </tbody>
           </Table>
@@ -209,7 +234,10 @@ const ImportLearnersFromCsv = () => {
             <li>Start date format: yyyyMMdd (example: 20200128)</li>
             <li>Gender options: M (male), F (female)</li>
             <li>
-              Valid groups names:{groups.map(({ name }) => name).join(', ')}
+              Valid groups names: {groups.map(({ name }) => name).join(', ')}
+            </li>
+            <li>
+              Valid courses names: {courses.map(({ name }) => name).join(', ')}
             </li>
           </ul>
         </Col>

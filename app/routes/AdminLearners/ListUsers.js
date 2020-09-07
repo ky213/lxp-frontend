@@ -174,52 +174,6 @@ const ListUsers = ({
                     </InputGroupAddon>
                   </InputGroup>
                 </div>
-                {selectedEmployees.length > 0 && (
-                  <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
-                    <div className="mr-1">
-                      <Typeahead
-                        id="groupNames"
-                        name="groupNames"
-                        placeholder="select groups..."
-                        options={groups.map(({ name }) => name)}
-                        selected={selectedGroupNames}
-                        onChange={(selectedOptions) =>
-                          (selectedGroupNames = selectedOptions)
-                        }
-                        multiple
-                      />
-                    </div>
-                    <div className="">
-                      <Typeahead
-                        id="courseNames"
-                        name="courseNames"
-                        placeholder="select courses..."
-                        options={courses.map(({ name }) => name)}
-                        selected={selectedCourseNames}
-                        onChange={(selectedOptions) =>
-                          (selectedCourseNames = selectedOptions)
-                        }
-                        multiple
-                      />
-                    </div>
-                    <ButtonGroup className="mr-2">
-                      <Button
-                        color="primary"
-                        onClick={onUpdateBulk}
-                        className="ml-1 align-self-center"
-                        id="addBulkUsers"
-                      >
-                        Add
-                      </Button>
-                      <UncontrolledTooltip
-                        placement="bottom"
-                        target="addBulkUsers"
-                      >
-                        Add bulk users to groups
-                      </UncontrolledTooltip>
-                    </ButtonGroup>
-                  </div>
-                )}
                 <ButtonToolbar>
                   {selectedEmployees && selectedEmployees.length > 0 && (
                     <ButtonGroup className="mr-2">
@@ -269,6 +223,56 @@ const ListUsers = ({
                   </UncontrolledTooltip>
                 </ButtonToolbar>
               </div>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col lg={12}>
+              {selectedEmployees.length > 0 && (
+                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+                  <div className="mr-1">
+                    <Typeahead
+                      id="groupNames"
+                      name="groupNames"
+                      placeholder="select groups..."
+                      options={groups.map(({ name }) => name)}
+                      selected={selectedGroupNames}
+                      onChange={(selectedOptions) =>
+                        (selectedGroupNames = selectedOptions)
+                      }
+                      multiple
+                    />
+                  </div>
+                  <div className="">
+                    <Typeahead
+                      id="courseNames"
+                      name="courseNames"
+                      placeholder="select courses..."
+                      options={courses.map(({ name }) => name)}
+                      selected={selectedCourseNames}
+                      onChange={(selectedOptions) =>
+                        (selectedCourseNames = selectedOptions)
+                      }
+                      multiple
+                    />
+                  </div>
+                  <ButtonGroup className="mr-2">
+                    <Button
+                      color="primary"
+                      onClick={onUpdateBulk}
+                      className="ml-1 align-self-center"
+                      id="addBulkUsers"
+                    >
+                      Add
+                    </Button>
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target="addBulkUsers"
+                    >
+                      Add bulk users to groups
+                    </UncontrolledTooltip>
+                  </ButtonGroup>
+                </div>
+              )}
             </Col>
           </Row>
           <Row>

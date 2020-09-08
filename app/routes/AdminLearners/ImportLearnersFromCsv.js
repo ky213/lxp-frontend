@@ -89,7 +89,7 @@ const ImportLearnersFromCsv = () => {
             })
             .filter((g) => isString(g));
 
-          user.courseIds = courses
+          user.joinedCourses = courses
             .map(({ name, courseId }) => {
               if (user.courseNames?.includes(name)) return courseId;
             })
@@ -162,7 +162,7 @@ const ImportLearnersFromCsv = () => {
                       <td>
                         {courses
                           .map(({ name, courseId }) => {
-                            if (user.courseIds?.includes(courseId)) return name;
+                            if (user.joinedCourses?.includes(courseId)) return name;
                           })
                           .filter((c) => isString(c))
                           .join(', ')}

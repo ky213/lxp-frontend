@@ -49,7 +49,6 @@ export const LogActivity = ({
     currentUser && currentUser.user && currentUser.user.role;
   const [supervisors, setSupervisors] = React.useState([]);
   const [activityTypes, setActivityTypes] = React.useState([]);
-  const [participationLevels, setParticipationLevels] = React.useState([]);
   const [timeDifference, setTimeDifference] = React.useState(30);
 
   React.useEffect(() => {
@@ -58,10 +57,6 @@ export const LogActivity = ({
       .then((types) => {
         setActivityTypes(types);
       });
-
-    activityService.getParticipationLevels().then((levels) => {
-      setParticipationLevels(levels);
-    });
 
     courseManagerService
       .getAllActive(1, 999, null, selectedOrganization.organizationId)
@@ -285,9 +280,6 @@ export const LogActivity = ({
           ),
           activityType: Yup.string().required(
             'You need to choose the activity type'
-          ),
-          participationLevel: Yup.string().required(
-            'You need to select a participation level'
           ),
           end: Yup.date()
             .required(
@@ -627,47 +619,6 @@ export const LogActivity = ({
                                     </Field>
                                     <ErrorMessage
                                       name="activityType"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
-                                  </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                  <Label for="participationLevel" sm={3}>
-                                    Participation level
-                                  </Label>
-                                  <Col sm={9}>
-                                    <Field
-                                      component="select"
-                                      name="participationLevel"
-                                      id="participationLevel"
-                                      className={
-                                        'bg-white form-control' +
-                                        (formikProps.errors
-                                          .participationLevel &&
-                                        formikProps.touched.participationLevel
-                                          ? ' is-invalid'
-                                          : '')
-                                      }
-                                      placeholder="Participation level..."
-                                    >
-                                      <option key={8959} value="">
-                                        Participation Level...
-                                      </option>
-                                      {participationLevels.map((at) => {
-                                        //console.log("Map each at:", at)
-                                        return (
-                                          <option
-                                            key={at.participationLevel}
-                                            value={at.participationLevel}
-                                          >
-                                            {at.type}
-                                          </option>
-                                        );
-                                      })}
-                                    </Field>
-                                    <ErrorMessage
-                                      name="participationLevel"
                                       component="div"
                                       className="invalid-feedback"
                                     />

@@ -78,6 +78,7 @@ const ImportLearnersFromCsv = () => {
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
             groupNames: row.data.Groups,
+            courseNames: row.data.Courses,
             organizationId: selectedOrganization.organizationId,
             error: '',
           };
@@ -88,12 +89,19 @@ const ImportLearnersFromCsv = () => {
             })
             .filter((g) => isString(g));
 
+          user.courseIds = courses
+            .map(({ name, courseId }) => {
+              if (user.courseNames?.includes(name)) return courseId;
+            })
+            .filter((c) => isString(c));
+
           csvUsers.push(user);
         },
         complete: function () {
           learnerService
             .validateBulk(csvUsers, selectedOrganization.organizationId)
             .then((data) => {
+              console.log('USERS:', data);
               setUsers(data.data);
               setImportDisabled(data.numOfRecordsInvalid > 0);
               setShowLoading(false);

@@ -110,25 +110,23 @@ const ListUsers = ({
     );
     const payload = selectedUsers.map(
       ({ userId, employeeId, groupIds, joinedCourses }) => {
+        const userGroupIds = groupIds.map(({ groupId }) => groupId);
         const selectedGroups = groups
           .filter((group) => selectedGroupNames.includes(group.name))
-          .map(({ groupId }) => groupId);
+          .map(({ groupId }) => groupId)
+          .filter((groupId) => !userGroupIds.includes(groupId));
 
+        const userCourseIds = joinedCourses.map(({ courseId }) => courseId);
         const selectedCourses = courses
           .filter((course) => selectedCourseNames.includes(course.name))
-          .map(({ courseId }) => courseId);
+          .map(({ courseId }) => courseId)
+          .filter((courseId) => !userCourseIds.includes(courseId));
 
         return {
           userId,
           employeeId,
-          groupIds: uniq([
-            ...groupIds.map(({ groupId }) => groupId),
-            ...selectedGroups,
-          ]),
-          joinedCourses: uniq([
-            ...joinedCourses.map(({ courseId }) => courseId),
-            ...selectedCourses,
-          ]),
+          groupIds: selectedGroups,
+          joinedCourses: selectedCourses,
         };
       }
     );

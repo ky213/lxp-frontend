@@ -80,15 +80,17 @@ const ImportCmFromCsv = () => {
             error: '',
           };
 
-          if (loggedInUser && loggedInUser.role == Role.SuperAdmin) {
+          if (loggedInUser && loggedInUser.role === Role.SuperAdmin) {
             user.organizationId = selectedOrganization.organizationId;
           }
 
-          user.groupIds = groups
-            .map(({ name, groupId }) => {
-              if (user.groupNames.includes(name)) return groupId;
-            })
-            .filter((g) => isString(g));
+          if(user.groupIds && user.groupIds.length>0) {
+            user.groupIds = groups
+                .map(({name, groupId}) => {
+                  if (user.groupNames.includes(name)) return groupId;
+                })
+                .filter((g) => isString(g));
+          }
 
           csvUsers.push(user);
         },

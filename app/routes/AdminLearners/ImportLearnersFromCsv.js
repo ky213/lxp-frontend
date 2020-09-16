@@ -83,17 +83,21 @@ const ImportLearnersFromCsv = () => {
             error: '',
           };
 
-          user.groupIds = groups
-            .map(({ name, groupId }) => {
-              if (user.groupNames.includes(name)) return groupId;
-            })
-            .filter((g) => isString(g));
+          if(user.groupIds && user.groupIds.length>0) {
+            user.groupIds = groups
+                .map(({name, groupId}) => {
+                  if (user.groupNames.includes(name)) return groupId;
+                })
+                .filter((g) => isString(g));
+          }
 
-          user.joinedCourses = courses
-            .map(({ name, courseId }) => {
-              if (user.courseNames?.includes(name)) return courseId;
-            })
-            .filter((c) => isString(c));
+          if(user.joinedCourses && user.joinedCourses.length>0) {
+            user.joinedCourses = courses
+                .map(({name, courseId}) => {
+                  if (user.courseNames?.includes(name)) return courseId;
+                })
+                .filter((c) => isString(c));
+          }
 
           csvUsers.push(user);
         },

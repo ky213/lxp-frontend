@@ -158,7 +158,7 @@ const ImportLearnersFromCsv = () => {
                       <td>
                         {groups
                           .map(({ name, groupId }) => {
-                            if (user.groupIds.includes(groupId)) return name;
+                            if (user.groupIds && user.groupIds.includes(groupId)) return name;
                           })
                           .filter((g) => isString(g))
                           .join(', ')}

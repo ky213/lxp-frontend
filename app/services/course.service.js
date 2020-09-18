@@ -8,6 +8,8 @@ export const courseService = {
   deleteCourses,
   getAllJoinedCourses,
   joinCourse,
+  getAllUsersJoinedCourse,
+  progressBreakdown
 };
 
 function getAll(organizationId, programId, page, take, filter) {
@@ -52,4 +54,34 @@ function joinCourse(courseId) {
   return fetch(`${routePrefix}/joinCourse?${query}`, requestOptions).then(
     handleResponse
   );
+}
+
+
+function getAllUsersJoinedCourse(organizationId, programId, courseId) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader() },
+        body: JSON.stringify({ programId, organizationId, courseId })
+    };
+
+    return fetch(`${config.apiUrl}/dashboards/distribution/progress`, requestOptions)
+        .then(handleResponse)
+        .then(data => {
+            return data;
+        });
+}
+
+
+function progressBreakdown(courseId) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader() },
+        body: JSON.stringify({ courseId })
+    };
+
+    return fetch(`${config.apiUrl}/dashboards/distribution/breakdown`, requestOptions)
+        .then(handleResponse)
+        .then(data => {
+            return data;
+        });
 }

@@ -50,6 +50,7 @@ import Reporting from './Reporting';
 import GroupTypes from './GroupTypes';
 import Groups from './Groups';
 import Dashboard from './Dashboard';
+import DashboardNew from './DashboardNew';
 
 import { useAppState, AppStateContext } from '@/components/AppState';
 

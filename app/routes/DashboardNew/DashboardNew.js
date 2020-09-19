@@ -298,6 +298,7 @@ const DashboardNew = (props) => {
     setLoading(true);
     try {
       const data = await courseService.notAttemptedUsers(
+        selectedOrganization.organizationId,
         selectedProgramId,
         selectedCourseId,
         Offset,

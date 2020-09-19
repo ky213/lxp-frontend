@@ -1,3 +1,7 @@
 .card-img-top:hover {
   cursor:pointer
 }
+
+.table {
+  width: 200% !important;
+}

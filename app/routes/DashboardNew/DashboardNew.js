@@ -596,7 +596,7 @@ const DashboardNew = (props) => {
                 <Card className="mb-3">
 
                   {!loading && (
-                    <Table className="mb-0" hover striped responsive>
+                    <Table className={styles.table} hover striped responsive>
                       <thead>
                         <tr>
                           <th className="align-middle bt-0 text-center" width="20%">Name</th>

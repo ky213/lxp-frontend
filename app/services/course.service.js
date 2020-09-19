@@ -9,7 +9,10 @@ export const courseService = {
   getAllJoinedCourses,
   joinCourse,
   getAllUsersJoinedCourse,
-  progressBreakdown
+  progressBreakdown,
+  attemptedUsers,
+  notAttemptedUsers,
+  completedUsers
 };
 
 function getAll(organizationId, programId, page, take, filter) {
@@ -80,6 +83,50 @@ function progressBreakdown(courseId) {
     };
 
     return fetch(`${config.apiUrl}/dashboards/distribution/breakdown`, requestOptions)
+        .then(handleResponse)
+        .then(data => {
+            return data;
+        });
+}
+
+
+function attemptedUsers(programId, courseId, offset, pageSize) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader() },
+        body: JSON.stringify({ courseId, programId, offset, pageSize })
+    };
+
+    return fetch(`https://api.staging.lxpia.com/api/dashboards/distribution/progress/users/attempted`, requestOptions)
+        .then(handleResponse)
+        .then(data => {
+            return data;
+        });
+}
+
+function notAttemptedUsers(programId, courseId, offset, pageSize) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader() },
+        body: JSON.stringify({ courseId, programId, offset, pageSize })
+    };
+
+    return fetch(`${config.apiUrl}/dashboards/distribution/progress/users/not_attempted`, requestOptions)
+        .then(handleResponse)
+        .then(data => {
+            return data;
+        });
+}
+
+
+function completedUsers(programId, courseId, offset, pageSize) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeader() },
+        body: JSON.stringify({ courseId, programId, offset, pageSize })
+    };
+
+    return fetch(`https://api.staging.lxpia.com/api/dashboards/distribution/progress/users/completed`, requestOptions)
         .then(handleResponse)
         .then(data => {
             return data;

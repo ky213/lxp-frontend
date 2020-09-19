@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   Col,
@@ -13,6 +13,9 @@ import {
   Row,
   UncontrolledTooltip,
   CardColumns,
+  ButtonToolbar,
+  Table,
+  Card
 } from "@/components";
 import { Button } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -24,7 +27,6 @@ import { programService, courseService } from "@/services";
 import { useAppState } from "@/components/AppState";
 
 import { ResponsivePie } from '@nivo/pie';
-import { ResponsiveBar } from '@nivo/bar'
 
 import styles from "./DashboardNew.css";
 import Loading from "@/components/Loading";
@@ -33,6 +35,11 @@ import { isMobileDevice } from "responsive-react";
 
 import { CourseCard } from "./components/CourseCard";
 import { TinCanLaunch } from "@/helpers";
+
+// tabel 
+import moment from 'moment';
+import { CSVLink } from "react-csv";
+
 
 const recordsPerPage = 20;
 
@@ -50,9 +57,8 @@ const DashboardNew = (props) => {
   const [programs, setPrograms] = React.useState([]);
 
   const [selectedProgramId, setSelectedProgramId] = React.useState(null);
-  const [coursesData, setCoursesData] = React.useState([]);
+  const [coursesData, setCoursesData] = React.useState({ courses: [] });
   const [selectedCourseId, setSelectedCourseId] = React.useState(null);
-  const [selectedCourseName, setSelectedCourseName] = React.useState(null);
 
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(null);
@@ -65,6 +71,17 @@ const DashboardNew = (props) => {
   const [startSearch, setStartSearch] = React.useState(false);
   const [contentWidth, setContentWidth] = React.useState(null);
 
+  //  tabel 
+  const [loading, setLoading] = React.useState(false);
+  const [csvData, setCsvData] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
+  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(10);
+  const csvLink = React.useRef();
+  const [tablePageId, setTablePageId] = React.useState(1);
+  const [selectedSectionInPie, setSelectedSectionInPie] = React.useState(null);
+
+
+
   const [chartData, setChartData] = React.useState(
     [{
       "id": "selectCourse",
@@ -73,24 +90,6 @@ const DashboardNew = (props) => {
       "color": "hsl(166, 70%, 50%)"
     }]
   );
-
-  // Progress Breakdown
-  const [breakdownChartData, setBreakdownChartData] = React.useState(
-    [{
-      "id": "selectCourse",
-      "label": "Select Course",
-      "value": 1,
-      "color": "hsl(166, 70%, 50%)"
-    }]
-  );
-
-  const [ahmedChartsData, setAhmedChartsData] = useState([
-    {
-      "country": "Select Course",
-      "Total Number of students": 1,
-      "Total Number of studentsColor": "hsl(78, 70%, 50%)"
-    }
-  ])
 
   let rowContent = React.useRef();
 
@@ -127,7 +126,6 @@ const DashboardNew = (props) => {
   React.useEffect(() => {
     if (selectedCourseId) {
       loadStudents();
-      loadBreakDown();
     }
   }, [selectedCourseId]);
 
@@ -187,24 +185,18 @@ const DashboardNew = (props) => {
           selectedCourseId
         );
 
-        console.log("records data:", data)
-
         if (data) {
-          setAhmedChartsData([{
-            "country": selectedCourseName,
-            "Total Number of students": data.allUsers,
-            "Total Number of studentsColor": "hsl(78, 70%, 50%)"
-          }])
+          let notStarted = data.allUsers - (data.completed + data.inProgress)
           setChartData([
             {
-              "id": "AllUsers",
-              "label": "All Users",
-              "value": data.allUsers,
+              "id": "notStarted",
+              "label": "Not Started",
+              "value": notStarted,
               "color": "hsl(344, 70%, 50%)"
             },
             {
               "id": "completedUsers",
-              "label": "Completed Users",
+              "label": "Completed",
               "value": data.completed,
               "color": "hsl(73, 70%, 50%)"
             },
@@ -215,72 +207,6 @@ const DashboardNew = (props) => {
               "color": "hsl(286, 70%, 50%)"
             }
           ])
-        }
-
-      } catch (err) {
-        showAlertMessage({
-          title: "Error",
-          message: err,
-          type: "danger",
-        });
-      }
-
-      setIsLoading(false);
-    }
-  };
-
-  const loadBreakDown = async () => {
-    // setCoursesData(null);
-
-    if (selectedCourseId) {
-      setIsLoading(true);
-      dismissAlert();
-
-      try {
-        const data = await courseService.progressBreakdown(
-          "ea5692e4-8598-4c3f-9465-7d6e8d6c0414"
-        );
-
-        console.log("records data:", data)
-        const newData = {
-          "totalBreakdownUsersCount": "5",
-          "breakDownAnswersDistribution": [
-            {
-              "points": "1",
-              "count": "3"
-            },
-            {
-              "points": "2",
-              "count": "1"
-            },
-            {
-              "points": "3",
-              "count": "1"
-            }
-          ]
-        }
-        if (newData) {
-          if (newData.totalBreakdownUsersCount != "0")
-            setBreakdownChartData([
-              {
-                "id": "Row 1",
-                "label": "Row 1 of break Down Answers Distribution",
-                "value": newData.breakDownAnswersDistribution[0].count,
-                "color": "hsl(344, 70%, 50%)"
-              },
-              {
-                "id": "Row 2",
-                "label": "Row 2 of break Down Answers Distribution",
-                "value": newData.breakDownAnswersDistribution[1].count,
-                "color": "hsl(73, 70%, 50%)"
-              },
-              {
-                "id": "Row 3",
-                "label": "Row 3 of break Down Answers Distribution",
-                "value": newData.breakDownAnswersDistribution[2].count,
-                "color": "hsl(286, 70%, 50%)"
-              }
-            ]);
         }
 
       } catch (err) {
@@ -317,7 +243,6 @@ const DashboardNew = (props) => {
     if (e && e.length > 0) {
       let x = e[0].courseId;
       setSelectedCourseId(e[0].courseId);
-      setSelectedCourseName(e[0].name);
     } else setSelectedCourseId(null);
   };
 
@@ -349,6 +274,87 @@ const DashboardNew = (props) => {
       setStartSearch(!startSearch);
     }
   };
+
+  const fetchAttemptedUsersData = async (Offset = 0) => {
+    setLoading(true);
+    try {
+      const data = await courseService.attemptedUsers(
+        selectedProgramId,
+        selectedCourseId,
+        Offset,
+        10
+      );
+      setUsers(data);
+      console.log(data)
+    }
+    catch (error) {
+      console.log("Error while fetching learners:", error)
+    }
+
+    setLoading(false);
+  }
+
+  const fetchNotAttemptedUsersData = async (Offset = 0) => {
+    setLoading(true);
+    try {
+      const data = await courseService.notAttemptedUsers(
+        selectedProgramId,
+        selectedCourseId,
+        Offset,
+        10
+      );
+      setUsers(data);
+      console.log(data)
+    }
+    catch (error) {
+      console.log("Error while fetching learners:", error)
+    }
+
+    setLoading(false);
+  }
+
+  const fetchCompletedUsersData = async (Offset = 0) => {
+    setLoading(true);
+    try {
+      const data = await courseService.completedUsers(
+        selectedProgramId,
+        selectedCourseId,
+        Offset,
+        10
+      );
+      setUsers(data);
+      console.log(data)
+    }
+    catch (error) {
+      console.log("Error while fetching learners:", error)
+    }
+
+    setLoading(false);
+  }
+
+  let paginationContent = null;
+  if (totalNumberOfRecords > 0 && selectedSectionInPie != null) {
+    paginationContent = (
+      <CardFooter className="d-flex justify-content-center pb-0">
+        <Paginations
+          pageId={tablePageId}
+          setPageId={pageIdSelected => {
+            if (selectedSectionInPie == "inProgress")
+              fetchAttemptedUsersData((pageIdSelected - 1) * 10)
+            if (selectedSectionInPie == "notStarted")
+              fetchNotAttemptedUsersData((pageIdSelected - 1) * 10)
+            if (selectedSectionInPie == "completedUsers")
+              fetchCompletedUsersData((pageIdSelected - 1) * 10)
+            if (["inProgress", "notStarted", "completedUsers"].includes(selectedSectionInPie))
+              setTablePageId(pageIdSelected)
+          }}
+          totalNumber={totalNumberOfRecords}
+          recordsPerPage={10}
+        />
+      </CardFooter>
+    );
+  }
+
 
   return (
     <React.Fragment>
@@ -457,8 +463,9 @@ const DashboardNew = (props) => {
 
 
         {isLoading && <Loading />}
-        <Row>
-          <Col lg={6}>
+
+        <div className="mb-3">
+          <Col lg={12}>
             <div style={{ height: 400 }}>
               <ResponsivePie
                 data={chartData}
@@ -482,6 +489,16 @@ const DashboardNew = (props) => {
                 animate={true}
                 motionStiffness={90}
                 motionDamping={15}
+                onClick={(e) => {
+                  setSelectedSectionInPie(e.id)
+                  setTotalNumberOfRecords(e.value)
+                  if (e.id == "inProgress")
+                    fetchAttemptedUsersData()
+                  if (e.id == "notStarted")
+                    fetchNotAttemptedUsersData()
+                  if (e.id == "completedUsers")
+                    fetchCompletedUsersData()
+                }}
                 defs={[
                   {
                     id: 'dots',
@@ -574,231 +591,58 @@ const DashboardNew = (props) => {
                 ]}
               />
             </div>
+            <Row>
+              <Col lg={12}>
+                <Card className="mb-3">
 
-          </Col>
+                  {!loading && (
+                    <Table className="mb-0" hover striped responsive>
+                      <thead>
+                        <tr>
+                          <th className="align-middle bt-0 text-center" width="20%">Name</th>
+                          <th className="align-middle bt-0 text-left" width="15%">surname</th>
+                          <th className="align-middle bt-0 text-left" width="15%">Email</th>
+                          <th className="align-middle bt-0 text-left" width="20%">Gender</th>
+                          <th className="align-middle bt-0 text-left" width="20%">total number of answers (correct and wrong)</th>
+                          <th className="align-middle bt-0 text-center" width="10%">Number of incorrect answers</th>
+                          <th className="align-middle bt-0 text-right" width="5%">Number of correct answers</th>
+                          <th className="align-middle bt-0 text-center" width="10%">Number of points collected by user in course</th>
+                          <th className="align-middle bt-0 text-center" width="10%">Phone Number</th>
+                          <th className="align-middle bt-0 text-center" width="10%">Pager Number</th>
+                          <th className="align-middle bt-0 text-center" width="10%">Start Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {users && users.map(user => (
+                          <tr>
+                            <td className="align-middle bt-0">{user.name}</td>
+                            <td className="align-middle bt-0">{user.surname}</td>
+                            <td className="align-middle bt-0">{user.email}</td>
+                            <td className="align-middle bt-0">{user.gender}</td>
+                            <td className="align-middle bt-0">{user.answers_count}</td>
+                            <td className="align-middle bt-0">{user.response_fail_count}</td>
+                            <td className="align-middle bt-0">{user.response_success_count}</td>
+                            <td className="align-middle bt-0">{user.scores}</td>
+                            <td className="align-middle bt-0">{user.phone_number}</td>
+                            <td className="align-middle bt-0">{user.pager_number}</td>
+                            <td className="align-middle bt-0">{user.start_date}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
+                  {loading && (
+                    <Loading />
+                  )}
 
-
-          <Col lg={6}>
-            <div style={{ height: 400 }}>
-              <ResponsivePie
-                data={breakdownChartData}
-                margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-                innerRadius={0.5}
-                padAngle={0.7}
-                cornerRadius={3}
-                colors={{ scheme: 'nivo' }}
-                borderWidth={1}
-                borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-                radialLabelsSkipAngle={10}
-                radialLabelsTextXOffset={6}
-                radialLabelsTextColor="#333333"
-                radialLabelsLinkOffset={0}
-                radialLabelsLinkDiagonalLength={16}
-                radialLabelsLinkHorizontalLength={24}
-                radialLabelsLinkStrokeWidth={1}
-                radialLabelsLinkColor={{ from: 'color' }}
-                slicesLabelsSkipAngle={10}
-                slicesLabelsTextColor="#333333"
-                animate={true}
-                motionStiffness={90}
-                motionDamping={15}
-                defs={[
-                  {
-                    id: 'dots',
-                    type: 'patternDots',
-                    background: 'inherit',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    size: 4,
-                    padding: 1,
-                    stagger: true
-                  },
-                  {
-                    id: 'lines',
-                    type: 'patternLines',
-                    background: 'inherit',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    rotation: -45,
-                    lineWidth: 6,
-                    spacing: 10
-                  }
-                ]}
-                fill={[
-                  {
-                    match: {
-                      id: 'ruby'
-                    },
-                    id: 'dots'
-                  },
-                  {
-                    match: {
-                      id: 'c'
-                    },
-                    id: 'dots'
-                  },
-                  {
-                    match: {
-                      id: 'go'
-                    },
-                    id: 'dots'
-                  },
-                  {
-                    match: {
-                      id: 'python'
-                    },
-                    id: 'dots'
-                  },
-                  {
-                    match: {
-                      id: 'scala'
-                    },
-                    id: 'lines'
-                  },
-                  {
-                    match: {
-                      id: 'lisp'
-                    },
-                    id: 'lines'
-                  },
-                  {
-                    match: {
-                      id: 'elixir'
-                    },
-                    id: 'lines'
-                  },
-                  {
-                    match: {
-                      id: 'javascript'
-                    },
-                    id: 'lines'
-                  }
-                ]}
-                legends={[
-                  {
-                    anchor: 'bottom',
-                    direction: 'row',
-                    translateY: 56,
-                    itemWidth: 100,
-                    itemHeight: 18,
-                    itemTextColor: '#999',
-                    symbolSize: 18,
-                    symbolShape: 'circle',
-                    effects: [
-                      {
-                        on: 'hover',
-                        style: {
-                          itemTextColor: '#000'
-                        }
-                      }
-                    ]
-                  }
-                ]}
-              />
-            </div>
-
-          </Col>
-        </Row>
-
-
-
-        <div className="mb-3">
-          <Col lg={12}>
-            <div style={{ height: 400 }}>
-              <ResponsiveBar
-                data={ahmedChartsData}
-                keys={['Total Number of students']}
-                indexBy="country"
-                margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-                padding={0.3}
-                colors={{ scheme: 'nivo' }}
-                defs={[
-                  {
-                    id: 'dots',
-                    type: 'patternDots',
-                    background: 'inherit',
-                    color: '#38bcb2',
-                    size: 4,
-                    padding: 1,
-                    stagger: true
-                  },
-                  {
-                    id: 'lines',
-                    type: 'patternLines',
-                    background: 'inherit',
-                    color: '#eed312',
-                    rotation: -45,
-                    lineWidth: 6,
-                    spacing: 10
-                  }
-                ]}
-                fill={[
-                  {
-                    match: {
-                      id: 'fries'
-                    },
-                    id: 'dots'
-                  },
-                  {
-                    match: {
-                      id: 'sandwich'
-                    },
-                    id: 'lines'
-                  }
-                ]}
-                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                axisTop={null}
-                axisRight={null}
-                axisBottom={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'Cources',
-                  legendPosition: 'middle',
-                  legendOffset: 32
-                }}
-                axisLeft={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'Numbers',
-                  legendPosition: 'middle',
-                  legendOffset: -40
-                }}
-                labelSkipWidth={12}
-                labelSkipHeight={12}
-                labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                legends={[
-                  {
-                    dataFrom: 'keys',
-                    anchor: 'bottom-right',
-                    direction: 'column',
-                    justify: false,
-                    translateX: 120,
-                    translateY: 0,
-                    itemsSpacing: 2,
-                    itemWidth: 100,
-                    itemHeight: 20,
-                    itemDirection: 'left-to-right',
-                    itemOpacity: 0.85,
-                    symbolSize: 20,
-                    effects: [
-                      {
-                        on: 'hover',
-                        style: {
-                          itemOpacity: 1
-                        }
-                      }
-                    ]
-                  }
-                ]}
-                animate={true}
-                motionStiffness={90}
-                motionDamping={15}
-              />
-            </div>
+                  { /* END Table */}
+                  {paginationContent}
+                </Card>
+              </Col>
+            </Row>
 
           </Col>
         </div>
-
 
       </Container>
     </React.Fragment>

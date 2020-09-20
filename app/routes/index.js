@@ -198,8 +198,6 @@ export const RoutedContent = (props) => {
 
       <PrivateRoute path="/reporting" exact component={Reporting} />
 
-      <PrivateRoute path="/dashboard" exact component={Dashboard} />
-
       <PrivateRoute path="/dashboardNew" exact component={DashboardNew} />
 
       <PrivateRoute path="/activities" exact component={ActivityCalendar} />

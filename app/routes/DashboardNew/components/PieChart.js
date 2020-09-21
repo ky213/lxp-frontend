@@ -1,59 +1,62 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
-import { useAppState } from '@/components/AppState'
+import { useAppState } from '@/components/AppState';
 import { programService, courseService } from '@/services';
 
-const PieChart = ({selectedProgramId, selectedCourseId}) => {
+const PieChart = ({ course }) => {
   const [{ selectedOrganization }] = useAppState();
   const [chartData, setChartData] = useState([
-        {
-          id: 'selectCourse',
-          label: 'Select Course', 
-          value: 1,
-          color: 'hsl(166, 70%, 50%)',
-        },
-      ]);
+    {
+      id: 'selectCourse',
+      label: 'Select Course',
+      value: 1,
+      color: 'hsl(166, 70%, 50%)',
+    },
+  ]);
 
-  const loadData = () => {
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
     try {
-        const data = await courseService.getAllUsersJoinedCourse(
-          selectedOrganization.organizationId,
-          selectedProgramId,
-          selectedCourseId
-        );
+      const data = await courseService.getAllUsersJoinedCourse(
+        selectedOrganization.organizationId,
+        course.programId,
+        course.courseId
+      );
 
-        if (data) {
-          let notStarted = data.allUsers - (data.completed + data.inProgress);
-          setChartData([
-            {
-              id: 'notStarted',
-              label: 'Not Started',
-              value: notStarted,
-              color: '#CB251A',
-            },
-            {
-              id: 'completedUsers',
-              label: 'Completed',
-              value: data.completed,
-              color: '#1ACB2C',
-            },
-            {
-              id: 'inProgress',
-              label: 'In Progress',
-              value: data.inProgress,
-              color: '#18A0FB',
-            },
-          ]);
-        }
-      } catch (err) {
-        showAlertMessage({
-          title: 'Error',
-          message: err,
-          type: 'danger',
-        });
+      if (data) {
+        let notStarted = data.allUsers - (data.completed + data.inProgress);
+        setChartData([
+          {
+            id: 'notStarted',
+            label: 'Not Started',
+            value: notStarted,
+            color: '#CB251A',
+          },
+          {
+            id: 'completedUsers',
+            label: 'Completed',
+            value: data.completed,
+            color: '#1ACB2C',
+          },
+          {
+            id: 'inProgress',
+            label: 'In Progress',
+            value: data.inProgress,
+            color: '#18A0FB',
+          },
+        ]);
       }
-  } 
-
+    } catch (err) {
+      showAlertMessage({
+        title: 'Error',
+        message: err,
+        type: 'danger',
+      });
+    }
+  };
 
   return (
     <div style={{ height: 400 }}>
@@ -80,11 +83,11 @@ const PieChart = ({selectedProgramId, selectedCourseId}) => {
         motionStiffness={90}
         motionDamping={15}
         onClick={(e) => {
-          setSelectedSectionInPie(e.id);
-          setTotalNumberOfRecords(e.value);
-          if (e.id == 'inProgress') fetchAttemptedUsersData();
-          if (e.id == 'notStarted') fetchNotAttemptedUsersData();
-          if (e.id == 'completedUsers') fetchCompletedUsersData();
+          // setSelectedSectionInPie(e.id);
+          // setTotalNumberOfRecords(e.value);
+          // if (e.id == 'inProgress') fetchAttemptedUsersData();
+          // if (e.id == 'notStarted') fetchNotAttemptedUsersData();
+          // if (e.id == 'completedUsers') fetchCompletedUsersData();
         }}
         defs={[
           {
@@ -178,7 +181,7 @@ const PieChart = ({selectedProgramId, selectedCourseId}) => {
         ]}
       />
     </div>
-  )
+  );
 };
 
 export default PieChart;

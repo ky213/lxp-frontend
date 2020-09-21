@@ -4,7 +4,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { programService, courseService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
-export const CourseSelector = () => {
+export const CourseSelector = ({ onCourseSelect }) => {
   const [{ selectedOrganization }] = useAppState();
   const [programs, setPrograms] = useState([]);
   const [selectedProgramId, setSelectedProgramId] = React.useState(null);
@@ -36,12 +36,6 @@ export const CourseSelector = () => {
       });
   }, [programs]);
 
-  const onProgramChange = (program) => {
-    setSelectedProgramId(program.id);
-  };
-
-  const onCourseChange = (course) => {};
-
   return (
     <Form className="form-inline">
       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
@@ -51,7 +45,7 @@ export const CourseSelector = () => {
           labelKey="name"
           options={programs}
           placeholder="Program..."
-          onChange={onProgramChange}
+          onChange={(program) => setSelectedProgramId(program.programId)}
         />
       </FormGroup>
       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
@@ -61,7 +55,7 @@ export const CourseSelector = () => {
           labelKey="name"
           options={coursesData}
           placeholder="Courses..."
-          onChange={onCourseChange}
+          onChange={onCourseSelect}
           disabled={selectedProgramId}
           multiple
         />

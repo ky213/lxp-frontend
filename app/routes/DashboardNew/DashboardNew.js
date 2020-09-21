@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, Col, Container, Row } from '@/components';
 import { Button } from 'reactstrap';
 
@@ -6,8 +6,11 @@ import { HeaderMain } from '@/routes/components/HeaderMain';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import CourseSelector from './components/CourseSelector';
 import LearnersTable from './components/LearnersTable';
+import PieChart from './components/PieChart';
 
 const DashboardNew = (props) => {
+  const [selectedCourses, setSelectedCourses] = useState([]);
+
   // const fetchAttemptedUsersData = async (Offset = 0) => {
   //   setLoading(true);
   //   try {
@@ -63,6 +66,10 @@ const DashboardNew = (props) => {
   //   setLoading(false);
   // };
 
+  const handleCourseSelect = (course) => {
+    setSelectedCourses([...selectedCourses, course]);
+  };
+
   return (
     <Container className="courses-home">
       <HeaderMain title="Courses" subTitles="" />
@@ -89,11 +96,13 @@ const DashboardNew = (props) => {
       </Row>
       <Row>
         <Col>
-          <CourseSelector />
+          <CourseSelector onCourseSelect={handleCourseSelect} />
         </Col>
       </Row>
       <Row className="mb-3">
-        <Col lg={12}></Col>
+        <Col lg={12}>
+          <PieChart course={selectedCourses[0]} />
+        </Col>
       </Row>
       <Row>
         <Col lg={12}>

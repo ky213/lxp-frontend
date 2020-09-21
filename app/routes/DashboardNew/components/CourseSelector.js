@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, FormGroup, UncontrolledTooltip } from '@/components';
+import { Form, FormGroup } from '@/components';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import ThemedButton from '@/components/ThemedButton';
 import { programService, courseService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
@@ -24,7 +23,7 @@ export const CourseSelector = () => {
 
   useEffect(() => {
     courseService
-      .getAll(selectedOrganization.organizationId, selectedProgramId, 1, 10, '')
+      .getAll(selectedOrganization.organizationId, selectedProgramId)
       .then((data) => {
         setCoursesData(data.courses);
       })
@@ -37,8 +36,10 @@ export const CourseSelector = () => {
       });
   }, [programs]);
 
-  const onProgramChange = () => {};
-  const onCourseChange = () => {};
+  const onProgramChange = (program) => {
+    setSelectedProgramId(program.id);
+  };
+  const onCourseChange = (course) => {};
 
   return (
     <Form className="form-inline">
@@ -47,38 +48,21 @@ export const CourseSelector = () => {
           clearButton
           id="programs"
           labelKey="name"
-          //   selected={
-          //     (selectedProgramId &&
-          //       programs && [
-          //         programs.find((p) => p.programId == selectedProgramId),
-          //       ]) ||
-          //     (programs && programs.length == 1 && [programs[0]]) ||
-          //     []
-          //   }
           options={programs}
           placeholder="Program..."
-          onChange={(e) => onProgramChange(e)}
+          onChange={onProgramChange}
         />
       </FormGroup>
       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
         <Typeahead
           clearButton
-          id="cources"
+          id="courses"
           labelKey="name"
-          //   selected={
-          //       (selectedCourseId &&
-          //         coursesData.courses && [
-          //           coursesData.courses.find(
-          //             (p) => p.courseId == selectedCourseId
-          //           ),
-          //         ]) ||
-          //       (coursesData.courses &&
-          //         coursesData.courses.length == 1 && [coursesData.courses[0]]) ||
-          //       []
-          //   }
           options={coursesData}
           placeholder="Courses..."
-          onChange={(e) => onCourseChange(e)}
+          onChange={onCourseChange}
+          disabled={selectedProgramId}
+          multiple
         />
       </FormGroup>
     </Form>

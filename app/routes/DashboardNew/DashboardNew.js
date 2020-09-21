@@ -29,6 +29,8 @@ import { isMobileDevice } from 'responsive-react';
 
 import { TinCanLaunch } from '@/helpers';
 
+import CourseSelector from './components/CourseSelector';
+
 // tabel
 
 const recordsPerPage = 20;
@@ -343,364 +345,262 @@ const DashboardNew = (props) => {
   }
 
   return (
-    <React.Fragment>
-      <Container className="courses-home">
-        <HeaderMain title="Courses" subTitles="" />
+    <Container className="courses-home">
+      <HeaderMain title="Courses" subTitles="" />
 
-        {showAlert && alertMessage && (
-          <Alert color={alertMessage.type}>
-            <h6 className="mb-1 alert-heading">{alertMessage.title}</h6>
-            {alertMessage.message}
-            <div className="mt-2">
-              <Button color={alertMessage.type} onClick={dismissAlert}>
-                {intl.formatMessage({ id: 'General.Dismiss' })}
-              </Button>
-            </div>
-          </Alert>
-        )}
-
-        <Row>
-          <Col lg={12}>
-            <HeaderDemo
-              title="View courses"
-              subTitle="You can view and take courses from here."
-            />
-          </Col>
-        </Row>
-
-        <div className="mb-3">
-          <div className={styles.cardBody} ref={rowContent}>
-            <Row>
-              <Col lg={12}>
-                <Form className={!deviceIsMobile ? 'form-inline' : ''}>
-                  <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                    <Typeahead
-                      clearButton
-                      id="programs"
-                      labelKey="name"
-                      selected={
-                        (selectedProgramId &&
-                          programs && [
-                            programs.find(
-                              (p) => p.programId == selectedProgramId
-                            ),
-                          ]) ||
-                        (programs && programs.length == 1 && [programs[0]]) ||
-                        []
-                      }
-                      options={programs}
-                      placeholder="Program..."
-                      onChange={(e) => onProgramChange(e)}
-                    />
-                  </FormGroup>
-                  {coursesData && !deviceIsMobile && (
-                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                      <Typeahead
-                        clearButton
-                        id="cources"
-                        labelKey="name"
-                        selected={
-                          (selectedCourseId &&
-                            coursesData.courses && [
-                              coursesData.courses.find(
-                                (p) => p.courseId == selectedCourseId
-                              ),
-                            ]) ||
-                          (coursesData.courses &&
-                            coursesData.courses.length == 1 && [
-                              coursesData.courses[0],
-                            ]) ||
-                          []
-                        }
-                        options={coursesData.courses}
-                        placeholder="Cources..."
-                        onChange={(e) => onCourseChange(e)}
-                      />
-                    </FormGroup>
-                  )}
-
-                  {selectedProgramId && (
-                    <React.Fragment>
-                      <div className="align-right">
-                        {coursesData && (
-                          <React.Fragment>
-                            <ThemedButton
-                              id="btnRefresh"
-                              type="button"
-                              onClick={loadCourses}
-                              className={deviceIsMobile ? 'btn-block' : ''}
-                            >
-                              Search
-                            </ThemedButton>
-                            <UncontrolledTooltip
-                              placement="bottom"
-                              target="btnRefresh"
-                            >
-                              Search courses
-                            </UncontrolledTooltip>
-                          </React.Fragment>
-                        )}
-                      </div>
-                    </React.Fragment>
-                  )}
-                </Form>
-              </Col>
-            </Row>
+      {showAlert && alertMessage && (
+        <Alert color={alertMessage.type}>
+          <h6 className="mb-1 alert-heading">{alertMessage.title}</h6>
+          {alertMessage.message}
+          <div className="mt-2">
+            <Button color={alertMessage.type} onClick={dismissAlert}>
+              {intl.formatMessage({ id: 'General.Dismiss' })}
+            </Button>
           </div>
-        </div>
+        </Alert>
+      )}
 
-        {isLoading && <Loading />}
+      <Row>
+        <Col lg={12}>
+          <HeaderDemo
+            title="View courses"
+            subTitle="You can view and take courses from here."
+          />
+        </Col>
+      </Row>
 
-        <div className="mb-3">
-          <Col lg={12}>
-            <div style={{ height: 400 }}>
-              <ResponsivePie
-                data={chartData}
-                margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-                innerRadius={0.5}
-                padAngle={0.7}
-                cornerRadius={3}
-                colors={{ scheme: 'nivo' }}
-                borderWidth={1}
-                borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-                radialLabelsSkipAngle={10}
-                radialLabelsTextXOffset={6}
-                radialLabelsTextColor="#333333"
-                radialLabelsLinkOffset={0}
-                radialLabelsLinkDiagonalLength={16}
-                radialLabelsLinkHorizontalLength={24}
-                radialLabelsLinkStrokeWidth={1}
-                radialLabelsLinkColor={{ from: 'color' }}
-                slicesLabelsSkipAngle={10}
-                slicesLabelsTextColor="#333333"
-                animate={true}
-                motionStiffness={90}
-                motionDamping={15}
-                onClick={(e) => {
-                  setSelectedSectionInPie(e.id);
-                  setTotalNumberOfRecords(e.value);
-                  if (e.id == 'inProgress') fetchAttemptedUsersData();
-                  if (e.id == 'notStarted') fetchNotAttemptedUsersData();
-                  if (e.id == 'completedUsers') fetchCompletedUsersData();
-                }}
-                defs={[
-                  {
-                    id: 'dots',
-                    type: 'patternDots',
-                    background: 'inherit',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    size: 4,
-                    padding: 1,
-                    stagger: true,
+      {isLoading && <Loading />}
+
+      <CourseSelector />
+
+      <div className="mb-3">
+        <Col lg={12}>
+          <div style={{ height: 400 }}>
+            <ResponsivePie
+              data={chartData}
+              margin={{}}
+              innerRadius={0.5}
+              padAngle={0.7}
+              cornerRadius={3}
+              colors={{ scheme: 'nivo' }}
+              borderWidth={1}
+              borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+              radialLabelsSkipAngle={10}
+              radialLabelsTextXOffset={6}
+              radialLabelsTextColor="#333333"
+              radialLabelsLinkOffset={0}
+              radialLabelsLinkDiagonalLength={16}
+              radialLabelsLinkHorizontalLength={24}
+              radialLabelsLinkStrokeWidth={1}
+              radialLabelsLinkColor={{ from: 'color' }}
+              slicesLabelsSkipAngle={10}
+              slicesLabelsTextColor="#333333"
+              animate={true}
+              motionStiffness={90}
+              motionDamping={15}
+              onClick={(e) => {
+                setSelectedSectionInPie(e.id);
+                setTotalNumberOfRecords(e.value);
+                if (e.id == 'inProgress') fetchAttemptedUsersData();
+                if (e.id == 'notStarted') fetchNotAttemptedUsersData();
+                if (e.id == 'completedUsers') fetchCompletedUsersData();
+              }}
+              defs={[
+                {
+                  id: 'dots',
+                  type: 'patternDots',
+                  background: 'inherit',
+                  color: 'rgba(255, 255, 255, 0.3)',
+                  size: 4,
+                  padding: 1,
+                  stagger: true,
+                },
+                {
+                  id: 'lines',
+                  type: 'patternLines',
+                  background: 'inherit',
+                  color: 'rgba(255, 255, 255, 0.3)',
+                  rotation: -45,
+                  lineWidth: 6,
+                  spacing: 10,
+                },
+              ]}
+              fill={[
+                {
+                  match: {
+                    id: 'ruby',
                   },
-                  {
-                    id: 'lines',
-                    type: 'patternLines',
-                    background: 'inherit',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    rotation: -45,
-                    lineWidth: 6,
-                    spacing: 10,
+                  id: 'dots',
+                },
+                {
+                  match: {
+                    id: 'c',
                   },
-                ]}
-                fill={[
-                  {
-                    match: {
-                      id: 'ruby',
-                    },
-                    id: 'dots',
+                  id: 'dots',
+                },
+                {
+                  match: {
+                    id: 'go',
                   },
-                  {
-                    match: {
-                      id: 'c',
-                    },
-                    id: 'dots',
+                  id: 'dots',
+                },
+                {
+                  match: {
+                    id: 'python',
                   },
-                  {
-                    match: {
-                      id: 'go',
-                    },
-                    id: 'dots',
+                  id: 'dots',
+                },
+                {
+                  match: {
+                    id: 'scala',
                   },
-                  {
-                    match: {
-                      id: 'python',
-                    },
-                    id: 'dots',
+                  id: 'lines',
+                },
+                {
+                  match: {
+                    id: 'lisp',
                   },
-                  {
-                    match: {
-                      id: 'scala',
-                    },
-                    id: 'lines',
+                  id: 'lines',
+                },
+                {
+                  match: {
+                    id: 'elixir',
                   },
-                  {
-                    match: {
-                      id: 'lisp',
-                    },
-                    id: 'lines',
+                  id: 'lines',
+                },
+                {
+                  match: {
+                    id: 'javascript',
                   },
-                  {
-                    match: {
-                      id: 'elixir',
-                    },
-                    id: 'lines',
-                  },
-                  {
-                    match: {
-                      id: 'javascript',
-                    },
-                    id: 'lines',
-                  },
-                ]}
-                legends={[
-                  {
-                    anchor: 'bottom',
-                    direction: 'row',
-                    translateY: 56,
-                    itemWidth: 100,
-                    itemHeight: 18,
-                    itemTextColor: '#999',
-                    symbolSize: 18,
-                    symbolShape: 'circle',
-                    effects: [
-                      {
-                        on: 'hover',
-                        style: {
-                          itemTextColor: '#000',
-                        },
+                  id: 'lines',
+                },
+              ]}
+              legends={[
+                {
+                  anchor: 'bottom',
+                  direction: 'row',
+                  translateY: 56,
+                  itemWidth: 100,
+                  itemHeight: 18,
+                  itemTextColor: '#999',
+                  symbolSize: 18,
+                  symbolShape: 'circle',
+                  effects: [
+                    {
+                      on: 'hover',
+                      style: {
+                        itemTextColor: '#000',
                       },
-                    ],
-                  },
-                ]}
-              />
-            </div>
-            <Row>
-              <Col lg={12}>
-                <Card className="mb-3">
-                  {!loading && (
-                    <Table className={styles.table} hover striped responsive>
-                      <thead>
-                        <tr>
-                          <th
-                            className="align-middle bt-0 text-center"
-                            width="20%"
-                          >
-                            Name
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-left"
-                            width="15%"
-                          >
-                            surname
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-left"
-                            width="15%"
-                          >
-                            Email
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-left"
-                            width="20%"
-                          >
-                            Gender
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-left"
-                            width="20%"
-                          >
-                            total number of answers (correct and wrong)
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-center"
-                            width="10%"
-                          >
-                            Number of incorrect answers
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-right"
-                            width="5%"
-                          >
-                            Number of correct answers
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-center"
-                            width="10%"
-                          >
-                            Number of points collected by user in course
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-center"
-                            width="10%"
-                          >
-                            Phone Number
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-center"
-                            width="10%"
-                          >
-                            Pager Number
-                          </th>
-                          <th
-                            className="align-middle bt-0 text-center"
-                            width="10%"
-                          >
-                            Start Date
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users &&
-                          users.map((user) => (
-                            <tr>
-                              <td className="align-middle bt-0">{user.name}</td>
-                              <td className="align-middle bt-0">
-                                {user.surname}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.email}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.gender}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.answers_count}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.response_fail_count}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.response_success_count}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.scores}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.phone_number}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.pager_number}
-                              </td>
-                              <td className="align-middle bt-0">
-                                {user.start_date}
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </Table>
-                  )}
-                  {loading && <Loading />}
+                    },
+                  ],
+                },
+              ]}
+            />
+          </div>
+          <Row>
+            <Col lg={12}>
+              <Card className="mb-3">
+                {!loading && (
+                  <Table className={styles.table} hover striped responsive>
+                    <thead>
+                      <tr>
+                        <th
+                          className="align-middle bt-0 text-center"
+                          width="20%"
+                        >
+                          Name
+                        </th>
+                        <th className="align-middle bt-0 text-left" width="15%">
+                          surname
+                        </th>
+                        <th className="align-middle bt-0 text-left" width="15%">
+                          Email
+                        </th>
+                        <th className="align-middle bt-0 text-left" width="20%">
+                          Gender
+                        </th>
+                        <th className="align-middle bt-0 text-left" width="20%">
+                          total number of answers (correct and wrong)
+                        </th>
+                        <th
+                          className="align-middle bt-0 text-center"
+                          width="10%"
+                        >
+                          Number of incorrect answers
+                        </th>
+                        <th className="align-middle bt-0 text-right" width="5%">
+                          Number of correct answers
+                        </th>
+                        <th
+                          className="align-middle bt-0 text-center"
+                          width="10%"
+                        >
+                          Number of points collected by user in course
+                        </th>
+                        <th
+                          className="align-middle bt-0 text-center"
+                          width="10%"
+                        >
+                          Phone Number
+                        </th>
+                        <th
+                          className="align-middle bt-0 text-center"
+                          width="10%"
+                        >
+                          Pager Number
+                        </th>
+                        <th
+                          className="align-middle bt-0 text-center"
+                          width="10%"
+                        >
+                          Start Date
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users &&
+                        users.map((user) => (
+                          <tr>
+                            <td className="align-middle bt-0">{user.name}</td>
+                            <td className="align-middle bt-0">
+                              {user.surname}
+                            </td>
+                            <td className="align-middle bt-0">{user.email}</td>
+                            <td className="align-middle bt-0">{user.gender}</td>
+                            <td className="align-middle bt-0">
+                              {user.answers_count}
+                            </td>
+                            <td className="align-middle bt-0">
+                              {user.response_fail_count}
+                            </td>
+                            <td className="align-middle bt-0">
+                              {user.response_success_count}
+                            </td>
+                            <td className="align-middle bt-0">{user.scores}</td>
+                            <td className="align-middle bt-0">
+                              {user.phone_number}
+                            </td>
+                            <td className="align-middle bt-0">
+                              {user.pager_number}
+                            </td>
+                            <td className="align-middle bt-0">
+                              {user.start_date}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </Table>
+                )}
+                {loading && <Loading />}
 
-                  {/* END Table */}
-                  {paginationContent}
-                </Card>
-              </Col>
-            </Row>
-          </Col>
-        </div>
-      </Container>
-    </React.Fragment>
+                {/* END Table */}
+                {paginationContent}
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+      </div>
+    </Container>
   );
 };
 

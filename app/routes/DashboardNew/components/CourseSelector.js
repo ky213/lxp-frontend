@@ -5,7 +5,7 @@ import { programService, courseService } from '@/services';
 import { useAppState } from '@/components/AppState';
 
 export const CourseSelector = () => {
-  const [{ currentUser, selectedOrganization }] = useAppState();
+  const [{ selectedOrganization }] = useAppState();
   const [programs, setPrograms] = useState([]);
   const [selectedProgramId, setSelectedProgramId] = React.useState(null);
   const [coursesData, setCoursesData] = React.useState([]);
@@ -39,6 +39,7 @@ export const CourseSelector = () => {
   const onProgramChange = (program) => {
     setSelectedProgramId(program.id);
   };
+
   const onCourseChange = (course) => {};
 
   return (

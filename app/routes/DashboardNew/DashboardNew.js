@@ -30,6 +30,7 @@ import { isMobileDevice } from 'responsive-react';
 import { TinCanLaunch } from '@/helpers';
 
 import CourseSelector from './components/CourseSelector';
+import LearnersTable from './components/LearnersTable';
 
 // tabel
 
@@ -371,235 +372,19 @@ const DashboardNew = (props) => {
 
       {isLoading && <Loading />}
 
-      <CourseSelector />
-
-      <div className="mb-3">
-        <Col lg={12}>
-          <div style={{ height: 400 }}>
-            <ResponsivePie
-              data={chartData}
-              margin={{}}
-              innerRadius={0.5}
-              padAngle={0.7}
-              cornerRadius={3}
-              colors={{ scheme: 'nivo' }}
-              borderWidth={1}
-              borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-              radialLabelsSkipAngle={10}
-              radialLabelsTextXOffset={6}
-              radialLabelsTextColor="#333333"
-              radialLabelsLinkOffset={0}
-              radialLabelsLinkDiagonalLength={16}
-              radialLabelsLinkHorizontalLength={24}
-              radialLabelsLinkStrokeWidth={1}
-              radialLabelsLinkColor={{ from: 'color' }}
-              slicesLabelsSkipAngle={10}
-              slicesLabelsTextColor="#333333"
-              animate={true}
-              motionStiffness={90}
-              motionDamping={15}
-              onClick={(e) => {
-                setSelectedSectionInPie(e.id);
-                setTotalNumberOfRecords(e.value);
-                if (e.id == 'inProgress') fetchAttemptedUsersData();
-                if (e.id == 'notStarted') fetchNotAttemptedUsersData();
-                if (e.id == 'completedUsers') fetchCompletedUsersData();
-              }}
-              defs={[
-                {
-                  id: 'dots',
-                  type: 'patternDots',
-                  background: 'inherit',
-                  color: 'rgba(255, 255, 255, 0.3)',
-                  size: 4,
-                  padding: 1,
-                  stagger: true,
-                },
-                {
-                  id: 'lines',
-                  type: 'patternLines',
-                  background: 'inherit',
-                  color: 'rgba(255, 255, 255, 0.3)',
-                  rotation: -45,
-                  lineWidth: 6,
-                  spacing: 10,
-                },
-              ]}
-              fill={[
-                {
-                  match: {
-                    id: 'ruby',
-                  },
-                  id: 'dots',
-                },
-                {
-                  match: {
-                    id: 'c',
-                  },
-                  id: 'dots',
-                },
-                {
-                  match: {
-                    id: 'go',
-                  },
-                  id: 'dots',
-                },
-                {
-                  match: {
-                    id: 'python',
-                  },
-                  id: 'dots',
-                },
-                {
-                  match: {
-                    id: 'scala',
-                  },
-                  id: 'lines',
-                },
-                {
-                  match: {
-                    id: 'lisp',
-                  },
-                  id: 'lines',
-                },
-                {
-                  match: {
-                    id: 'elixir',
-                  },
-                  id: 'lines',
-                },
-                {
-                  match: {
-                    id: 'javascript',
-                  },
-                  id: 'lines',
-                },
-              ]}
-              legends={[
-                {
-                  anchor: 'bottom',
-                  direction: 'row',
-                  translateY: 56,
-                  itemWidth: 100,
-                  itemHeight: 18,
-                  itemTextColor: '#999',
-                  symbolSize: 18,
-                  symbolShape: 'circle',
-                  effects: [
-                    {
-                      on: 'hover',
-                      style: {
-                        itemTextColor: '#000',
-                      },
-                    },
-                  ],
-                },
-              ]}
-            />
-          </div>
-          <Row>
-            <Col lg={12}>
-              <Card className="mb-3">
-                {!loading && (
-                  <Table className={styles.table} hover striped responsive>
-                    <thead>
-                      <tr>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="20%"
-                        >
-                          Name
-                        </th>
-                        <th className="align-middle bt-0 text-left" width="15%">
-                          surname
-                        </th>
-                        <th className="align-middle bt-0 text-left" width="15%">
-                          Email
-                        </th>
-                        <th className="align-middle bt-0 text-left" width="20%">
-                          Gender
-                        </th>
-                        <th className="align-middle bt-0 text-left" width="20%">
-                          total number of answers (correct and wrong)
-                        </th>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="10%"
-                        >
-                          Number of incorrect answers
-                        </th>
-                        <th className="align-middle bt-0 text-right" width="5%">
-                          Number of correct answers
-                        </th>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="10%"
-                        >
-                          Number of points collected by user in course
-                        </th>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="10%"
-                        >
-                          Phone Number
-                        </th>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="10%"
-                        >
-                          Pager Number
-                        </th>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="10%"
-                        >
-                          Start Date
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {users &&
-                        users.map((user) => (
-                          <tr>
-                            <td className="align-middle bt-0">{user.name}</td>
-                            <td className="align-middle bt-0">
-                              {user.surname}
-                            </td>
-                            <td className="align-middle bt-0">{user.email}</td>
-                            <td className="align-middle bt-0">{user.gender}</td>
-                            <td className="align-middle bt-0">
-                              {user.answers_count}
-                            </td>
-                            <td className="align-middle bt-0">
-                              {user.response_fail_count}
-                            </td>
-                            <td className="align-middle bt-0">
-                              {user.response_success_count}
-                            </td>
-                            <td className="align-middle bt-0">{user.scores}</td>
-                            <td className="align-middle bt-0">
-                              {user.phone_number}
-                            </td>
-                            <td className="align-middle bt-0">
-                              {user.pager_number}
-                            </td>
-                            <td className="align-middle bt-0">
-                              {user.start_date}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </Table>
-                )}
-                {loading && <Loading />}
-
-                {/* END Table */}
-                {paginationContent}
-              </Card>
-            </Col>
-          </Row>
+      <Row>
+        <Col>
+          <CourseSelector />
         </Col>
-      </div>
+      </Row>
+      <Row className="mb-3">
+        <Col lg={12}></Col>
+      </Row>
+      <Row>
+        <Col lg={12}>
+          <LearnersTable />
+        </Col>
+      </Row>
     </Container>
   );
 };

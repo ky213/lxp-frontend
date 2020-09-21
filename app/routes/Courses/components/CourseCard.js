@@ -106,6 +106,7 @@ const CourseCard = ({
           <Button
             color={courseIsJoined ? 'success' : 'primary'}
             onClick={handleJoinCourse}
+            disabled={courseIsJoined}
           >
             {courseIsJoined ? 'Joined' : 'Join Course'}
           </Button>

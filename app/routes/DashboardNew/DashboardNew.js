@@ -1,45 +1,35 @@
-import React from "react";
+import React from 'react';
 import {
   Alert,
   Col,
   Container,
-  CardBody,
   CardFooter,
-  Input,
-  InputGroup,
-  InputGroupAddon,
   Form,
   FormGroup,
   Row,
   UncontrolledTooltip,
-  CardColumns,
-  ButtonToolbar,
   Table,
-  Card
-} from "@/components";
-import { Button } from "reactstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
-import ThemedButton from "@/components/ThemedButton";
-import { HeaderMain } from "@/routes/components/HeaderMain";
-import { Paginations } from "@/routes/components/Paginations";
-import { programService, courseService } from "@/services";
+  Card,
+} from '@/components';
+import { Button } from 'reactstrap';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import ThemedButton from '@/components/ThemedButton';
+import { HeaderMain } from '@/routes/components/HeaderMain';
+import { Paginations } from '@/routes/components/Paginations';
+import { programService, courseService } from '@/services';
 
-import { useAppState } from "@/components/AppState";
+import { useAppState } from '@/components/AppState';
 
 import { ResponsivePie } from '@nivo/pie';
 
-import styles from "./DashboardNew.css";
-import Loading from "@/components/Loading";
-import { HeaderDemo } from "@/routes/components/HeaderDemo";
-import { isMobileDevice } from "responsive-react";
+import styles from './DashboardNew.css';
+import Loading from '@/components/Loading';
+import { HeaderDemo } from '@/routes/components/HeaderDemo';
+import { isMobileDevice } from 'responsive-react';
 
-import { CourseCard } from "./components/CourseCard";
-import { TinCanLaunch } from "@/helpers";
+import { TinCanLaunch } from '@/helpers';
 
-// tabel 
-import moment from 'moment';
-import { CSVLink } from "react-csv";
-
+// tabel
 
 const recordsPerPage = 20;
 
@@ -71,7 +61,7 @@ const DashboardNew = (props) => {
   const [startSearch, setStartSearch] = React.useState(false);
   const [contentWidth, setContentWidth] = React.useState(null);
 
-  //  tabel 
+  //  tabel
   const [loading, setLoading] = React.useState(false);
   const [csvData, setCsvData] = React.useState([]);
   const [users, setUsers] = React.useState([]);
@@ -80,16 +70,14 @@ const DashboardNew = (props) => {
   const [tablePageId, setTablePageId] = React.useState(1);
   const [selectedSectionInPie, setSelectedSectionInPie] = React.useState(null);
 
-
-
-  const [chartData, setChartData] = React.useState(
-    [{
-      "id": "selectCourse",
-      "label": "Select Course",
-      "value": 1,
-      "color": "hsl(166, 70%, 50%)"
-    }]
-  );
+  const [chartData, setChartData] = React.useState([
+    {
+      id: 'selectCourse',
+      label: 'Select Course',
+      value: 1,
+      color: 'hsl(166, 70%, 50%)',
+    },
+  ]);
 
   let rowContent = React.useRef();
 
@@ -98,10 +86,10 @@ const DashboardNew = (props) => {
     programService
       .getByCurrentUser(selectedOrganization.organizationId)
       .then((data) => {
-        console.log("Programs data:", data)
+        console.log('Programs data:', data);
         setPrograms(data);
       })
-      .catch((err) => console.log("programService.getByCurrentUser", err));
+      .catch((err) => console.log('programService.getByCurrentUser', err));
   }, []);
 
   React.useEffect(() => {
@@ -109,7 +97,6 @@ const DashboardNew = (props) => {
       setSelectedProgramId(programs[0].programId);
     else setSelectedProgramId(null);
   }, [programs]);
-
 
   React.useEffect(() => {
     setShowAlert(alertMessage ? true : false);
@@ -153,23 +140,22 @@ const DashboardNew = (props) => {
           filter
         );
 
-        console.log("Courses data:", data)
+        console.log('Courses data:', data);
 
         if (data) {
           setCoursesData(data);
         }
       } catch (err) {
         showAlertMessage({
-          title: "Error",
+          title: 'Error',
           message: err,
-          type: "danger",
+          type: 'danger',
         });
       }
 
       setIsLoading(false);
     }
   };
-
 
   const loadStudents = async () => {
     // setCoursesData(null);
@@ -186,34 +172,33 @@ const DashboardNew = (props) => {
         );
 
         if (data) {
-          let notStarted = data.allUsers - (data.completed + data.inProgress)
+          let notStarted = data.allUsers - (data.completed + data.inProgress);
           setChartData([
             {
-              "id": "notStarted",
-              "label": "Not Started",
-              "value": notStarted,
-              "color": "hsl(344, 70%, 50%)"
+              id: 'notStarted',
+              label: 'Not Started',
+              value: notStarted,
+              color: 'hsl(344, 70%, 50%)',
             },
             {
-              "id": "completedUsers",
-              "label": "Completed",
-              "value": data.completed,
-              "color": "hsl(73, 70%, 50%)"
+              id: 'completedUsers',
+              label: 'Completed',
+              value: data.completed,
+              color: 'hsl(73, 70%, 50%)',
             },
             {
-              "id": "inProgress",
-              "label": "In Progress",
-              "value": data.inProgress,
-              "color": "hsl(286, 70%, 50%)"
-            }
-          ])
+              id: 'inProgress',
+              label: 'In Progress',
+              value: data.inProgress,
+              color: 'hsl(286, 70%, 50%)',
+            },
+          ]);
         }
-
       } catch (err) {
         showAlertMessage({
-          title: "Error",
+          title: 'Error',
           message: err,
-          type: "danger",
+          type: 'danger',
         });
       }
 
@@ -247,7 +232,7 @@ const DashboardNew = (props) => {
   };
 
   const handleLaunch = (course) => {
-    console.log("Got course before launch:", course)
+    console.log('Got course before launch:', course);
     TinCanLaunch.launchContent(
       user,
       selectedProgramId,
@@ -260,14 +245,14 @@ const DashboardNew = (props) => {
 
   const handleKeyDownSearch = (ev) => {
     console.log(
-      "Typing:",
+      'Typing:',
       ev.target.value,
       ev.target.value.length,
-      ev.target.value == " ",
+      ev.target.value == ' ',
       ev.key
     );
 
-    if (ev.key === "Enter" || ev.key === "Space") {
+    if (ev.key === 'Enter' || ev.key === 'Space') {
       ev.preventDefault();
       ev.stopPropagation();
 
@@ -285,14 +270,13 @@ const DashboardNew = (props) => {
         10
       );
       setUsers(data);
-      console.log(data)
-    }
-    catch (error) {
-      console.log("Error while fetching learners:", error)
+      console.log(data);
+    } catch (error) {
+      console.log('Error while fetching learners:', error);
     }
 
     setLoading(false);
-  }
+  };
 
   const fetchNotAttemptedUsersData = async (Offset = 0) => {
     setLoading(true);
@@ -305,14 +289,13 @@ const DashboardNew = (props) => {
         10
       );
       setUsers(data);
-      console.log(data)
-    }
-    catch (error) {
-      console.log("Error while fetching learners:", error)
+      console.log(data);
+    } catch (error) {
+      console.log('Error while fetching learners:', error);
     }
 
     setLoading(false);
-  }
+  };
 
   const fetchCompletedUsersData = async (Offset = 0) => {
     setLoading(true);
@@ -324,14 +307,13 @@ const DashboardNew = (props) => {
         10
       );
       setUsers(data);
-      console.log(data)
-    }
-    catch (error) {
-      console.log("Error while fetching learners:", error)
+      console.log(data);
+    } catch (error) {
+      console.log('Error while fetching learners:', error);
     }
 
     setLoading(false);
-  }
+  };
 
   let paginationContent = null;
   if (totalNumberOfRecords > 0 && selectedSectionInPie != null) {
@@ -339,15 +321,19 @@ const DashboardNew = (props) => {
       <CardFooter className="d-flex justify-content-center pb-0">
         <Paginations
           pageId={tablePageId}
-          setPageId={pageIdSelected => {
-            if (selectedSectionInPie == "inProgress")
-              fetchAttemptedUsersData((pageIdSelected - 1) * 10)
-            if (selectedSectionInPie == "notStarted")
-              fetchNotAttemptedUsersData((pageIdSelected - 1) * 10)
-            if (selectedSectionInPie == "completedUsers")
-              fetchCompletedUsersData((pageIdSelected - 1) * 10)
-            if (["inProgress", "notStarted", "completedUsers"].includes(selectedSectionInPie))
-              setTablePageId(pageIdSelected)
+          setPageId={(pageIdSelected) => {
+            if (selectedSectionInPie == 'inProgress')
+              fetchAttemptedUsersData((pageIdSelected - 1) * 10);
+            if (selectedSectionInPie == 'notStarted')
+              fetchNotAttemptedUsersData((pageIdSelected - 1) * 10);
+            if (selectedSectionInPie == 'completedUsers')
+              fetchCompletedUsersData((pageIdSelected - 1) * 10);
+            if (
+              ['inProgress', 'notStarted', 'completedUsers'].includes(
+                selectedSectionInPie
+              )
+            )
+              setTablePageId(pageIdSelected);
           }}
           totalNumber={totalNumberOfRecords}
           recordsPerPage={10}
@@ -355,7 +341,6 @@ const DashboardNew = (props) => {
       </CardFooter>
     );
   }
-
 
   return (
     <React.Fragment>
@@ -368,7 +353,7 @@ const DashboardNew = (props) => {
             {alertMessage.message}
             <div className="mt-2">
               <Button color={alertMessage.type} onClick={dismissAlert}>
-                {intl.formatMessage({ id: "General.Dismiss" })}
+                {intl.formatMessage({ id: 'General.Dismiss' })}
               </Button>
             </div>
           </Alert>
@@ -387,7 +372,7 @@ const DashboardNew = (props) => {
           <div className={styles.cardBody} ref={rowContent}>
             <Row>
               <Col lg={12}>
-                <Form className={!deviceIsMobile ? "form-inline" : ""}>
+                <Form className={!deviceIsMobile ? 'form-inline' : ''}>
                   <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                     <Typeahead
                       clearButton
@@ -421,7 +406,10 @@ const DashboardNew = (props) => {
                                 (p) => p.courseId == selectedCourseId
                               ),
                             ]) ||
-                          (coursesData.courses && coursesData.courses.length == 1 && [coursesData.courses[0]]) ||
+                          (coursesData.courses &&
+                            coursesData.courses.length == 1 && [
+                              coursesData.courses[0],
+                            ]) ||
                           []
                         }
                         options={coursesData.courses}
@@ -440,7 +428,7 @@ const DashboardNew = (props) => {
                               id="btnRefresh"
                               type="button"
                               onClick={loadCourses}
-                              className={deviceIsMobile ? "btn-block" : ""}
+                              className={deviceIsMobile ? 'btn-block' : ''}
                             >
                               Search
                             </ThemedButton>
@@ -457,11 +445,9 @@ const DashboardNew = (props) => {
                   )}
                 </Form>
               </Col>
-
             </Row>
           </div>
         </div>
-
 
         {isLoading && <Loading />}
 
@@ -491,14 +477,11 @@ const DashboardNew = (props) => {
                 motionStiffness={90}
                 motionDamping={15}
                 onClick={(e) => {
-                  setSelectedSectionInPie(e.id)
-                  setTotalNumberOfRecords(e.value)
-                  if (e.id == "inProgress")
-                    fetchAttemptedUsersData()
-                  if (e.id == "notStarted")
-                    fetchNotAttemptedUsersData()
-                  if (e.id == "completedUsers")
-                    fetchCompletedUsersData()
+                  setSelectedSectionInPie(e.id);
+                  setTotalNumberOfRecords(e.value);
+                  if (e.id == 'inProgress') fetchAttemptedUsersData();
+                  if (e.id == 'notStarted') fetchNotAttemptedUsersData();
+                  if (e.id == 'completedUsers') fetchCompletedUsersData();
                 }}
                 defs={[
                   {
@@ -508,7 +491,7 @@ const DashboardNew = (props) => {
                     color: 'rgba(255, 255, 255, 0.3)',
                     size: 4,
                     padding: 1,
-                    stagger: true
+                    stagger: true,
                   },
                   {
                     id: 'lines',
@@ -517,58 +500,58 @@ const DashboardNew = (props) => {
                     color: 'rgba(255, 255, 255, 0.3)',
                     rotation: -45,
                     lineWidth: 6,
-                    spacing: 10
-                  }
+                    spacing: 10,
+                  },
                 ]}
                 fill={[
                   {
                     match: {
-                      id: 'ruby'
+                      id: 'ruby',
                     },
-                    id: 'dots'
+                    id: 'dots',
                   },
                   {
                     match: {
-                      id: 'c'
+                      id: 'c',
                     },
-                    id: 'dots'
+                    id: 'dots',
                   },
                   {
                     match: {
-                      id: 'go'
+                      id: 'go',
                     },
-                    id: 'dots'
+                    id: 'dots',
                   },
                   {
                     match: {
-                      id: 'python'
+                      id: 'python',
                     },
-                    id: 'dots'
+                    id: 'dots',
                   },
                   {
                     match: {
-                      id: 'scala'
+                      id: 'scala',
                     },
-                    id: 'lines'
+                    id: 'lines',
                   },
                   {
                     match: {
-                      id: 'lisp'
+                      id: 'lisp',
                     },
-                    id: 'lines'
+                    id: 'lines',
                   },
                   {
                     match: {
-                      id: 'elixir'
+                      id: 'elixir',
                     },
-                    id: 'lines'
+                    id: 'lines',
                   },
                   {
                     match: {
-                      id: 'javascript'
+                      id: 'javascript',
                     },
-                    id: 'lines'
-                  }
+                    id: 'lines',
+                  },
                 ]}
                 legends={[
                   {
@@ -584,67 +567,138 @@ const DashboardNew = (props) => {
                       {
                         on: 'hover',
                         style: {
-                          itemTextColor: '#000'
-                        }
-                      }
-                    ]
-                  }
+                          itemTextColor: '#000',
+                        },
+                      },
+                    ],
+                  },
                 ]}
               />
             </div>
             <Row>
               <Col lg={12}>
                 <Card className="mb-3">
-
                   {!loading && (
                     <Table className={styles.table} hover striped responsive>
                       <thead>
                         <tr>
-                          <th className="align-middle bt-0 text-center" width="20%">Name</th>
-                          <th className="align-middle bt-0 text-left" width="15%">surname</th>
-                          <th className="align-middle bt-0 text-left" width="15%">Email</th>
-                          <th className="align-middle bt-0 text-left" width="20%">Gender</th>
-                          <th className="align-middle bt-0 text-left" width="20%">total number of answers (correct and wrong)</th>
-                          <th className="align-middle bt-0 text-center" width="10%">Number of incorrect answers</th>
-                          <th className="align-middle bt-0 text-right" width="5%">Number of correct answers</th>
-                          <th className="align-middle bt-0 text-center" width="10%">Number of points collected by user in course</th>
-                          <th className="align-middle bt-0 text-center" width="10%">Phone Number</th>
-                          <th className="align-middle bt-0 text-center" width="10%">Pager Number</th>
-                          <th className="align-middle bt-0 text-center" width="10%">Start Date</th>
+                          <th
+                            className="align-middle bt-0 text-center"
+                            width="20%"
+                          >
+                            Name
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-left"
+                            width="15%"
+                          >
+                            surname
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-left"
+                            width="15%"
+                          >
+                            Email
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-left"
+                            width="20%"
+                          >
+                            Gender
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-left"
+                            width="20%"
+                          >
+                            total number of answers (correct and wrong)
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-center"
+                            width="10%"
+                          >
+                            Number of incorrect answers
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-right"
+                            width="5%"
+                          >
+                            Number of correct answers
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-center"
+                            width="10%"
+                          >
+                            Number of points collected by user in course
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-center"
+                            width="10%"
+                          >
+                            Phone Number
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-center"
+                            width="10%"
+                          >
+                            Pager Number
+                          </th>
+                          <th
+                            className="align-middle bt-0 text-center"
+                            width="10%"
+                          >
+                            Start Date
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {users && users.map(user => (
-                          <tr>
-                            <td className="align-middle bt-0">{user.name}</td>
-                            <td className="align-middle bt-0">{user.surname}</td>
-                            <td className="align-middle bt-0">{user.email}</td>
-                            <td className="align-middle bt-0">{user.gender}</td>
-                            <td className="align-middle bt-0">{user.answers_count}</td>
-                            <td className="align-middle bt-0">{user.response_fail_count}</td>
-                            <td className="align-middle bt-0">{user.response_success_count}</td>
-                            <td className="align-middle bt-0">{user.scores}</td>
-                            <td className="align-middle bt-0">{user.phone_number}</td>
-                            <td className="align-middle bt-0">{user.pager_number}</td>
-                            <td className="align-middle bt-0">{user.start_date}</td>
-                          </tr>
-                        ))}
+                        {users &&
+                          users.map((user) => (
+                            <tr>
+                              <td className="align-middle bt-0">{user.name}</td>
+                              <td className="align-middle bt-0">
+                                {user.surname}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.email}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.gender}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.answers_count}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.response_fail_count}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.response_success_count}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.scores}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.phone_number}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.pager_number}
+                              </td>
+                              <td className="align-middle bt-0">
+                                {user.start_date}
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </Table>
                   )}
-                  {loading && (
-                    <Loading />
-                  )}
+                  {loading && <Loading />}
 
-                  { /* END Table */}
+                  {/* END Table */}
                   {paginationContent}
                 </Card>
               </Col>
             </Row>
-
           </Col>
         </div>
-
       </Container>
     </React.Fragment>
   );

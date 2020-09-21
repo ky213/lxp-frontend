@@ -97,7 +97,7 @@ function attemptedUsers(programId, courseId, offset, pageSize) {
         body: JSON.stringify({ courseId, programId, offset, pageSize })
     };
 
-    return fetch(`https://api.staging.lxpia.com/api/dashboards/distribution/progress/users/attempted`, requestOptions)
+    return fetch(`${config.apiUrl}/dashboards/distribution/progress/users/attempted`, requestOptions)
         .then(handleResponse)
         .then(data => {
             return data;
@@ -126,7 +126,7 @@ function completedUsers(programId, courseId, offset, pageSize) {
         body: JSON.stringify({ courseId, programId, offset, pageSize })
     };
 
-    return fetch(`https://api.staging.lxpia.com/api/dashboards/distribution/progress/users/completed`, requestOptions)
+    return fetch(`${config.apiUrl}/dashboards/distribution/progress/users/completed`, requestOptions)
         .then(handleResponse)
         .then(data => {
             return data;

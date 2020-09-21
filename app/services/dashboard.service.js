@@ -1,9 +1,9 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
 
-const xapiUrl = `${config.apiUrl.replace('/api', '/api')}`;
+const xapiUrl = process.env.XAPI_URL;
 
-export const reportingService = {
+export const dashboardService = {
     getAll,
     getById,
     getExperiences

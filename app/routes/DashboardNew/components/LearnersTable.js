@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Table, Card } from '@/components';
+import { Table, Card, CardFooter } from '@/components';
+import { Paginations } from '@/routes/components/Paginations';
 
 const LearnersTable = () => {
   const [tablePageId, setTablePageId] = useState(1);
@@ -8,7 +9,7 @@ const LearnersTable = () => {
   return (
     <Card className="mb-3">
       {
-        <Table className={styles.table} hover striped responsive>
+        <Table hover striped responsive>
           <thead>
             <tr>
               <th className="align-middle bt-0 text-center" width="20%">

@@ -10,7 +10,7 @@ const PieChart = ({ course }) => {
       id: 'selectCourse',
       label: 'Select Course',
       value: 1,
-      color: 'hsl(166, 70%, 50%)',
+      color: 'hsl(126, 70%, 50%)',
     },
   ]);
 
@@ -20,37 +20,39 @@ const PieChart = ({ course }) => {
 
   const loadData = async () => {
     try {
-      const data = await courseService.getAllUsersJoinedCourse(
-        selectedOrganization.organizationId,
-        course.programId,
-        course.courseId
-      );
+      if (course) {
+        const data = await courseService.getAllUsersJoinedCourse(
+          selectedOrganization.organizationId,
+          course.programId,
+          course.courseId
+        );
 
-      if (data) {
-        let notStarted = data.allUsers - (data.completed + data.inProgress);
-        setChartData([
-          {
-            id: 'notStarted',
-            label: 'Not Started',
-            value: notStarted,
-            color: '#CB251A',
-          },
-          {
-            id: 'completedUsers',
-            label: 'Completed',
-            value: data.completed,
-            color: '#1ACB2C',
-          },
-          {
-            id: 'inProgress',
-            label: 'In Progress',
-            value: data.inProgress,
-            color: '#18A0FB',
-          },
-        ]);
+        if (data) {
+          let notStarted = data.allUsers - (data.completed + data.inProgress);
+          setChartData([
+            {
+              id: 'notStarted',
+              label: 'Not Started',
+              value: notStarted,
+              color: 'hsl(4, 77%, 45%)',
+            },
+            {
+              id: 'completedUsers',
+              label: 'Completed',
+              value: data.completed,
+              color: 'hsl(126, 77%, 45%)',
+            },
+            {
+              id: 'inProgress',
+              label: 'In Progress',
+              value: data.inProgress,
+              color: 'hsl(204, 97%, 54%)',
+            },
+          ]);
+        }
       }
     } catch (err) {
-      showAlertMessage({
+      console.log({
         title: 'Error',
         message: err,
         type: 'danger',
@@ -59,7 +61,7 @@ const PieChart = ({ course }) => {
   };
 
   return (
-    <div style={{ height: 400 }}>
+    <div style={{ height: 200 }}>
       <ResponsivePie
         data={chartData}
         margin={{}}

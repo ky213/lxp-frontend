@@ -99,10 +99,12 @@ const DashboardNew = (props) => {
           <CourseSelector onCourseSelect={handleCourseSelect} />
         </Col>
       </Row>
-      <Row className="mb-3">
-        <Col lg={12}>
-          <PieChart course={selectedCourses[0]} />
-        </Col>
+      <Row className="py-5">
+        {selectedCourses.map((course) => (
+          <Col>
+            <PieChart course={course} />
+          </Col>
+        ))}
       </Row>
       <Row>
         <Col lg={12}>

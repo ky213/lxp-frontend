@@ -14,9 +14,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
     programService
       .getByCurrentUser(selectedOrganization.organizationId)
       .then((data) => {
-        console.log('Programs data:', data);
         setPrograms(data);
-        setSelectedProgramId(data[0]?.programId || null);
       })
       .catch((err) => console.log('programService.getByCurrentUser', err));
   }, []);

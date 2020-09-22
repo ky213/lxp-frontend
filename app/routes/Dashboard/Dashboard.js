@@ -22,7 +22,6 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
 
-import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
 
 import { reportingService, programService, learnerService } from '@/services';

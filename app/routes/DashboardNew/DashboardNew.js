@@ -88,7 +88,7 @@ const DashboardNew = (props) => {
           <CourseSelector onCourseSelect={handleCourseSelect} />
         </Col>
       </Row>
-      <Row style={{ minHeight: 300 }}>
+      <Row style={{ minHeight: 200 }} className="py-4">
         {selectedCourses.map((course) => (
           <Col className="text-center">
             <PieChart course={course} />

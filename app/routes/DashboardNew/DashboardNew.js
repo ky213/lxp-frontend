@@ -7,18 +7,20 @@ import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import CourseSelector from './components/CourseSelector';
 import LearnersTable from './components/LearnersTable';
 import PieChart from './components/PieChart';
+import { useAppState } from '@/components/AppState';
 
 const DashboardNew = (props) => {
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [{ selectedOrganization }] = useAppState();
 
-  const fetchAttemptedUsersData = async (Offset = 0) => {
+  const fetchAttemptedUsersData = async (course, Offset = 0) => {
     setLoading(true);
     try {
       const data = await courseService.attemptedUsers(
-        selectedProgramId,
-        selectedCourseId,
+        course.programId,
+        course.courseId,
         Offset,
         10
       );
@@ -31,13 +33,13 @@ const DashboardNew = (props) => {
     setLoading(false);
   };
 
-  const fetchNotAttemptedUsersData = async (Offset = 0) => {
+  const fetchNotAttemptedUsersData = async (course, Offset = 0) => {
     setLoading(true);
     try {
       const data = await courseService.notAttemptedUsers(
         selectedOrganization.organizationId,
-        selectedProgramId,
-        selectedCourseId,
+        course.programId,
+        course.courseId,
         Offset,
         10
       );
@@ -50,12 +52,12 @@ const DashboardNew = (props) => {
     setLoading(false);
   };
 
-  const fetchCompletedUsersData = async (Offset = 0) => {
+  const fetchCompletedUsersData = async (course, Offset = 0) => {
     setLoading(true);
     try {
       const data = await courseService.completedUsers(
-        selectedProgramId,
-        selectedCourseId,
+        course.programId,
+        course.courseId,
         Offset,
         10
       );
@@ -91,7 +93,12 @@ const DashboardNew = (props) => {
       <Row style={{ minHeight: 200 }} className="py-4">
         {selectedCourses.map((course) => (
           <Col className="text-center">
-            <PieChart course={course} />
+            <PieChart
+              course={course}
+              fetchCompleted={fetchCompletedUsersData}
+              fetchInProgress={fetchAttemptedUsersData}
+              fetchNotStarted={fetchNotAttemptedUsersData}
+            />
           </Col>
         ))}
 
@@ -103,7 +110,7 @@ const DashboardNew = (props) => {
       </Row>
       <Row>
         <Col lg={12}>
-          <LearnersTable />
+          <LearnersTable users={users} />
         </Col>
       </Row>
     </Container>

@@ -27,19 +27,19 @@ const PieChart = ({ course }) => {
               id: 'notStarted',
               label: 'Not Started',
               value: notStarted,
-              color: 'hsl(4, 77%, 45%)',
+              color: 'hsl(44,70%,50%)',
             },
             {
               id: 'completedUsers',
               label: 'Completed',
               value: data.completed,
-              color: 'hsl(100, 77%, 45%)',
+              color: 'hsl(200, 70%, 50%)',
             },
             {
               id: 'inProgress',
               label: 'In Progress',
               value: data.inProgress,
-              color: 'hsl(50, 97%, 54%)',
+              color: 'hsl(100, 70%, 50%)',
             },
           ]);
         }
@@ -62,7 +62,6 @@ const PieChart = ({ course }) => {
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
-      // colors={{ scheme: 'nivo' }}
       borderWidth={1}
       borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
       enableRadialLabels={true}

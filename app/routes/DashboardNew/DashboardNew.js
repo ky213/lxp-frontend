@@ -88,12 +88,18 @@ const DashboardNew = (props) => {
           <CourseSelector onCourseSelect={handleCourseSelect} />
         </Col>
       </Row>
-      <Row className="py-5">
+      <Row style={{ minHeight: 300 }}>
         {selectedCourses.map((course) => (
-          <Col>
+          <Col className="text-center">
             <PieChart course={course} />
           </Col>
         ))}
+
+        {selectedCourses.length == 0 && (
+          <Col className="d-flex align-items-center justify-content-center">
+            <h3 className="text-center">Please select some courses...</h3>
+          </Col>
+        )}
       </Row>
       <Row>
         <Col lg={12}>

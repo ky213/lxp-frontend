@@ -40,7 +40,7 @@ const PieChart = ({
               boxWidth: 20,
             },
             onClick: (e, { index }) => {
-              if (index) getData(index);
+              getData(index);
             },
           },
           title: {
@@ -77,7 +77,7 @@ const PieChart = ({
 
   const onChartClick = (event, arr) => {
     const index = arr[0]?._index;
-    if (index) getData(index);
+    getData(index);
   };
 
   const getData = (index) => {

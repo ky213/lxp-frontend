@@ -63,11 +63,6 @@ const Reporting = () => {
         selectedOrganization.organizationId
       );
       setPrograms(data);
-      /*
-            if(data && data.length == 1) {
-                setSelectedProgram(data[0])
-            }
-            */
 
       try {
         const learners = await learnerService.getAllActive(
@@ -136,7 +131,7 @@ const Reporting = () => {
     }
 
     if (learner) {
-      filter.agent = TinCanLaunch.getActor(learner);
+      filter.agent = JSON.stringify(learner);
     }
 
     if (experiences && experiences.length > 0) {
@@ -198,7 +193,7 @@ const Reporting = () => {
     }
 
     if (learner) {
-      filter.agent = TinCanLaunch.getActor(learner);
+      filter.agent = JSON.stringify(learner);
     }
 
     if (experiences && experiences.length > 0) {
@@ -234,10 +229,10 @@ const Reporting = () => {
 
   const handleLearnerChange = (e) => {
     if (e && e.length > 0) {
-      setSelectedLearner(e[0]);
+      setSelectedLearner(e.map(r => ({ fullName: r.fullName} )));
     } else {
       setSelectedLearner(null);
-    }
+    } 
   };
 
   const handleExperienceChange = (e) => {

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Table, Card, CardFooter } from '@/components';
 import { Paginations } from '@/routes/components/Paginations';
 
-const LearnersTable = () => {
+const LearnersTable = ({ users }) => {
   const [tablePageId, setTablePageId] = useState(1);
-  const [users, setUsers] = useState([]);
 
   return (
     <Card className="mb-3">
@@ -72,18 +71,16 @@ const LearnersTable = () => {
         </Table>
       }
 
-      {
-        <CardFooter className="d-flex justify-content-center pb-0">
-          <Paginations
-            pageId={tablePageId}
-            setPageId={(pageIdSelected) => {
-              setTablePageId(pageIdSelected);
-            }}
-            totalNumber={10}
-            recordsPerPage={10}
-          />
-        </CardFooter>
-      }
+      <CardFooter className="d-flex justify-content-center pb-0">
+        <Paginations
+          pageId={tablePageId}
+          setPageId={(pageIdSelected) => {
+            setTablePageId(pageIdSelected);
+          }}
+          totalNumber={10}
+          recordsPerPage={10}
+        />
+      </CardFooter>
     </Card>
   );
 };

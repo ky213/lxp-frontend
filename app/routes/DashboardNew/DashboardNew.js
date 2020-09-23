@@ -9,6 +9,8 @@ import LearnersTable from './components/LearnersTable';
 import PieChart from './components/PieChart';
 import { useAppState } from '@/components/AppState';
 
+import './DashboardNew.scss';
+
 const DashboardNew = (props) => {
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [users, setUsers] = useState([]);

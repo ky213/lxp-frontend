@@ -36,7 +36,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
 
   return (
     <Form className="form-inline">
-      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+      <FormGroup className="course-selector mb-2 mr-sm-2 mb-sm-0">
         <Typeahead
           clearButton
           id="programs"
@@ -46,7 +46,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
           onChange={(program) => setSelectedProgramId(program.programId)}
         />
       </FormGroup>
-      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+      <FormGroup className="course-selector mb-2 mr-sm-2 mb-sm-0">
         <Typeahead
           clearButton
           id="courses"

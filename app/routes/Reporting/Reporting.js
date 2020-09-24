@@ -229,10 +229,10 @@ const Reporting = () => {
 
   const handleLearnerChange = (e) => {
     if (e && e.length > 0) {
-      setSelectedLearner(e.map(r => ({ fullName: r.fullName} )));
+      setSelectedLearner(e.map((r) => ({ fullName: r.fullName })));
     } else {
       setSelectedLearner(null);
-    } 
+    }
   };
 
   const handleExperienceChange = (e) => {
@@ -294,7 +294,7 @@ const Reporting = () => {
                   <div className="d-lg-flex justify-content-end">
                     <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
                       <Form inline>
-                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <FormGroup className="my-2 mr-sm-2 mb-sm-0">
                           <Typeahead
                             clearButton
                             id="programs"
@@ -313,7 +313,7 @@ const Reporting = () => {
                             onChange={handleProgramChange}
                           />
                         </FormGroup>
-                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <FormGroup className="my-2 mr-sm-2 mb-sm-0">
                           <Typeahead
                             clearButton
                             id="learners"
@@ -324,7 +324,7 @@ const Reporting = () => {
                             onChange={handleLearnerChange}
                           />
                         </FormGroup>
-                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <FormGroup className="my-2 mr-sm-2 mb-sm-0">
                           <Typeahead
                             clearButton
                             id="experience"

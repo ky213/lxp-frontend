@@ -21,9 +21,6 @@ const LearnersTable = ({ users }) => {
                 Email
               </th>
               <th className="align-middle bt-0 text-left" width="20%">
-                Gender
-              </th>
-              <th className="align-middle bt-0 text-left" width="20%">
                 total number of answers (correct and wrong)
               </th>
               <th className="align-middle bt-0 text-center" width="10%">
@@ -34,12 +31,6 @@ const LearnersTable = ({ users }) => {
               </th>
               <th className="align-middle bt-0 text-center" width="10%">
                 Number of points collected by user in course
-              </th>
-              <th className="align-middle bt-0 text-center" width="10%">
-                Phone Number
-              </th>
-              <th className="align-middle bt-0 text-center" width="10%">
-                Pager Number
               </th>
               <th className="align-middle bt-0 text-center" width="10%">
                 Start Date
@@ -53,7 +44,6 @@ const LearnersTable = ({ users }) => {
                   <td className="align-middle bt-0">{user.name}</td>
                   <td className="align-middle bt-0">{user.surname}</td>
                   <td className="align-middle bt-0">{user.email}</td>
-                  <td className="align-middle bt-0">{user.gender}</td>
                   <td className="align-middle bt-0">{user.answers_count}</td>
                   <td className="align-middle bt-0">
                     {user.response_fail_count}
@@ -62,8 +52,6 @@ const LearnersTable = ({ users }) => {
                     {user.response_success_count}
                   </td>
                   <td className="align-middle bt-0">{user.scores}</td>
-                  <td className="align-middle bt-0">{user.phone_number}</td>
-                  <td className="align-middle bt-0">{user.pager_number}</td>
                   <td className="align-middle bt-0">{user.start_date}</td>
                 </tr>
               ))}

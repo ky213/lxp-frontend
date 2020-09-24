@@ -124,7 +124,6 @@ const EditCourse = ({
                   course.startingDate &&
                   moment(course.startingDate).toDate()) ||
                 '',
-              fileData: '',
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required('Name is required'),
@@ -139,7 +138,6 @@ const EditCourse = ({
                 periodDays,
                 fileData,
                 startingDate,
-                logoImage,
               },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
@@ -196,17 +194,15 @@ const EditCourse = ({
                         // in practice, you would want to use the actual response object
                         //setUploadStatus(true);
                         setSubmitting(false);
-                        if (course) {
-                          finishEdit();
-                        } else {
-                          finishInsert();
-                        }
+                        finishInsert();
                       })
                       .catch((err) => {
                         console.error(err);
                         throw err;
                       });
                   }
+                  setSubmitting(false);
+                  finishInsert();
                 })
                 .catch((err) => console.error(err));
             }}
@@ -410,7 +406,7 @@ const EditCourse = ({
                               <Col sm={9}>
                                 <input
                                   type="file"
-                                  required
+                                  required={!course}
                                   onChange={(f) =>
                                     formikProps.setFieldValue(
                                       'fileData',

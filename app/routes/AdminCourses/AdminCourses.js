@@ -92,10 +92,9 @@ const AdminCourses = () => {
     setEditForm(false);
     setCourse(null);
     getAllCourses();
-
     showAlertMessage({
       title: intl.formatMessage({ id: 'General.Success' }),
-      message: 'You have sucessfully created a course',
+      message: 'You have sucessfully saved the course',
       type: 'success',
     });
   };

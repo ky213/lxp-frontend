@@ -28,7 +28,7 @@ const PieChart = ({
             {
               label: 'Course state',
               data: chartData,
-              backgroundColor: ['#CB251A', '#1ACB2C', '#18A0FB'],
+              backgroundColor: ['#EB6356', '#1ACB2C', '#18A0FB'],
               borderWidth: 1,
             },
           ],

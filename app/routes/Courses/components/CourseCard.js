@@ -43,7 +43,10 @@ const CourseCard = ({
         <div
           className="courseLogo"
           title="Launch course"
-          style={{ backgroundImage: `url(${course.image})` }}
+          style={{
+            backgroundImage: `url(${course.image})`,
+            backgroundSize: 'cover',
+          }}
           onClick={() => {
             if (!courseIsJoined) {
               alert('You have to join the course first');

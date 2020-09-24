@@ -46,7 +46,7 @@ const EditCourse = ({
   const [programsLoaded, setProgramsLoaded] = React.useState(false);
   const [formLoaded, setFormLoaded] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(0);
-  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
+  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState('');
 
   React.useEffect(() => {
     programService
@@ -144,10 +144,9 @@ const EditCourse = ({
               { setStatus, setSubmitting, isSubmitting }
             ) => {
               setSubmitting(true);
-
               const formData = new FormData();
               if (fileData) formData.append('tincan', fileData.name);
-              if (logoImage) formData.append('logo', logoImage.name);
+              formData.append('logo', selectedLogoDataUrl);
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
@@ -177,17 +176,16 @@ const EditCourse = ({
                 url: config.apiUrl + '/courses',
               })
                 .then((resp) => {
-
                   if (fileData) {
                     let uploadUrl = resp.data.uploadUrl;
 
                     axios({
                       method: 'PUT',
                       url: uploadUrl,
-                    data: fileData,
-                    headers: {
-                      "Content-Type": fileData.type,
-                    },
+                      data: fileData,
+                      headers: {
+                        'Content-Type': fileData.type,
+                      },
                       onUploadProgress: (ev) => {
                         const progress = (ev.loaded / ev.total) * 100;
                         setUploadProgress(Math.round(progress));

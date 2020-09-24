@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Card, CardFooter } from '@/components';
 import { Paginations } from '@/routes/components/Paginations';
+import moment from 'moment';
 
 const LearnersTable = ({ users }) => {
   const [tablePageId, setTablePageId] = useState(1);
@@ -52,7 +53,9 @@ const LearnersTable = ({ users }) => {
                     {user.response_success_count}
                   </td>
                   <td className="align-middle bt-0">{user.scores}</td>
-                  <td className="align-middle bt-0">{user.start_date}</td>
+                  <td className="align-middle bt-0">
+                    {moment(user.start_date).format('DD-MM-YYYY')}
+                  </td>
                 </tr>
               ))}
           </tbody>

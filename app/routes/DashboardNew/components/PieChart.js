@@ -5,12 +5,7 @@ import { courseService } from '@/services';
 
 import Chart from 'chart.js';
 
-const PieChart = ({
-  course,
-  fetchCompleted,
-  fetchInProgress,
-  fetchNotStarted,
-}) => {
+const PieChart = ({ course, experiences, onSetExperience }) => {
   const [{ selectedOrganization }] = useAppState();
   const [chartData, setChartData] = useState([]);
 
@@ -23,7 +18,7 @@ const PieChart = ({
       new Chart(course.courseId, {
         type: 'doughnut',
         data: {
-          labels: ['Not started', 'Completed', 'In progress'],
+          labels: experiences,
           datasets: [
             {
               label: 'Course state',
@@ -40,7 +35,7 @@ const PieChart = ({
               boxWidth: 20,
             },
             onClick: (e, { index }) => {
-              getData(index);
+              onSetExperience(course, index);
             },
           },
           title: {
@@ -77,13 +72,7 @@ const PieChart = ({
 
   const onChartClick = (event, arr) => {
     const index = arr[0]?._index;
-    getData(index);
-  };
-
-  const getData = (index) => {
-    if (index === 0) fetchNotStarted(course);
-    if (index === 1) fetchCompleted(course);
-    if (index === 2) fetchInProgress(course);
+    onSetExperience(course, index);
   };
 
   return (

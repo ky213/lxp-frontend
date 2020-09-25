@@ -3,9 +3,7 @@ import { Table, Card, CardFooter } from '@/components';
 import { Paginations } from '@/routes/components/Paginations';
 import moment from 'moment';
 
-const LearnersTable = ({ users }) => {
-  const [tablePageId, setTablePageId] = useState(1);
-
+const LearnersTable = ({ users, onPagination, pageId }) => {
   return (
     <Card className="mb-3">
       {
@@ -64,11 +62,11 @@ const LearnersTable = ({ users }) => {
 
       <CardFooter className="d-flex justify-content-center pb-0">
         <Paginations
-          pageId={tablePageId}
+          pageId={pageId}
           setPageId={(pageIdSelected) => {
-            setTablePageId(pageIdSelected);
+            onPagination(pageIdSelected);
           }}
-          totalNumber={10}
+          totalNumber={30}
           recordsPerPage={10}
         />
       </CardFooter>

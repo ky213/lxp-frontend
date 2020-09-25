@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { courseService } from '@/services';
 import { Container, Row, Col } from '@/components';
 
@@ -12,18 +12,28 @@ import { useAppState } from '@/components/AppState';
 import './DashboardNew.scss';
 
 const DashboardNew = (props) => {
+  const [{ selectedOrganization }] = useAppState();
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [{ selectedOrganization }] = useAppState();
+  const [experience, setExperience] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [offset, setOffset] = useState(1);
+  const experienceEnum = ['Not started', 'Completed', 'In progress'];
 
-  const fetchAttemptedUsersData = async (course, Offset = 0) => {
+  useEffect(() => {
+    if (experience === experienceEnum[0]) fetchNotAttemptedUsersData();
+    if (experience === experienceEnum[1]) fetchCompletedUsersData();
+    if (experience === experienceEnum[2]) fetchAttemptedUsersData();
+  }, [experience, offset]);
+
+  const fetchAttemptedUsersData = async () => {
     setLoading(true);
     try {
       const data = await courseService.attemptedUsers(
-        course.programId,
-        course.courseId,
-        Offset,
+        selectedCourse.programId,
+        selectedCourse.courseId,
+        offset - 1,
         10
       );
       setUsers(data);
@@ -35,14 +45,14 @@ const DashboardNew = (props) => {
     setLoading(false);
   };
 
-  const fetchNotAttemptedUsersData = async (course, Offset = 0) => {
+  const fetchNotAttemptedUsersData = async () => {
     setLoading(true);
     try {
       const data = await courseService.notAttemptedUsers(
         selectedOrganization.organizationId,
-        course.programId,
-        course.courseId,
-        Offset,
+        selectedCourse.programId,
+        selectedCourse.courseId,
+        offset - 1,
         10
       );
       setUsers(data);
@@ -54,13 +64,13 @@ const DashboardNew = (props) => {
     setLoading(false);
   };
 
-  const fetchCompletedUsersData = async (course, Offset = 0) => {
+  const fetchCompletedUsersData = async () => {
     setLoading(true);
     try {
       const data = await courseService.completedUsers(
-        course.programId,
-        course.courseId,
-        Offset,
+        selectedCourse.programId,
+        selectedCourse.courseId,
+        offset - 1,
         10
       );
       setUsers(data);
@@ -72,8 +82,9 @@ const DashboardNew = (props) => {
     // setLoading(false);
   };
 
-  const handleCourseSelect = (courses) => {
-    setSelectedCourses(courses);
+  const handleSelectExperience = (course, index) => {
+    setSelectedCourse(course);
+    setExperience(experienceEnum[index]);
   };
 
   return (
@@ -89,7 +100,7 @@ const DashboardNew = (props) => {
       </Row>
       <Row>
         <Col>
-          <CourseSelector onCourseSelect={handleCourseSelect} />
+          <CourseSelector onCourseSelect={setSelectedCourses} />
         </Col>
       </Row>
       <Row style={{ minHeight: 200 }} className="py-4">
@@ -97,9 +108,8 @@ const DashboardNew = (props) => {
           <Col className="text-center">
             <PieChart
               course={course}
-              fetchCompleted={fetchCompletedUsersData}
-              fetchInProgress={fetchAttemptedUsersData}
-              fetchNotStarted={fetchNotAttemptedUsersData}
+              experiences={experienceEnum}
+              onSetExperience={handleSelectExperience}
             />
           </Col>
         ))}
@@ -112,7 +122,11 @@ const DashboardNew = (props) => {
       </Row>
       <Row>
         <Col lg={12}>
-          <LearnersTable users={users} />
+          <LearnersTable
+            users={users}
+            onPagination={setOffset}
+            pageId={offset}
+          />
         </Col>
       </Row>
     </Container>

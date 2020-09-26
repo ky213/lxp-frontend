@@ -18,7 +18,7 @@
 }
 
 .res-logo.primary {
-  color: #1eb7ff;
+  color: #254d77;
 }
 
 .color-form-text {
@@ -27,7 +27,7 @@
 
 .sidebar {
   color: #f4f5f7;
-  background-color: rgb(41, 56, 98);
+  background-color: #254d77;
   border-right: 0 none;
 }
 
@@ -86,10 +86,7 @@ body {
 }
 
 .fullscreen {
-  background: rgb(1, 101, 242);
-  background-image: url('../images/backgrounds/login.png');
-  background-repeat: repeat-x;
-  background-position: left bottom;
+  background: #254d77;
 }
 
 .fullscreen .form-group label {
@@ -121,16 +118,13 @@ body {
 
 .login__submit {
   border-radius: 0.15rem;
-  background-color: #247bf4;
-  border-color: #247bf4;
-  width: 50%;
+  background-color: #122c49;
+  border-color: #122c49;
+  color: #f2f7fe;
 }
 
 .login__forgot-password {
   color: #f2f7fe;
-  width: 40%;
-  display: inline-block;
-  margin-left: auto;
 }
 
 .login__forgot-password:hover {
@@ -425,4 +419,9 @@ body {
 
 .dropdown-item {
   overflow: visible !important;
+}
+
+.btn-primary {
+  background-color: #254d77 !important;
+  border-color: #254d77 !important;
 }

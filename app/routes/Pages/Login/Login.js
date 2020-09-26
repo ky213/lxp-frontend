@@ -127,13 +127,10 @@ class Login extends React.Component {
                           className="invalid-feedback"
                         />
                       </FormGroup>
-                      <FormGroup
-                        className="mt-5 d-flex"
-                        style={{ alignItems: 'center' }}
-                      >
+                      <FormGroup className="mt-5 ">
                         <button
                           type="submit"
-                          className="btn btn-primary btn-block login__submit"
+                          className="btn btn-block login__submit"
                           block
                           tag={Link}
                           to="/"
@@ -141,10 +138,10 @@ class Login extends React.Component {
                         >
                           Sign In
                         </button>
-
+                        <br />
                         <Link
                           to="/pages/forgot-password"
-                          className="text-decoration-none login__forgot-password"
+                          className="login__forgot-password"
                         >
                           Forgot Password
                         </Link>

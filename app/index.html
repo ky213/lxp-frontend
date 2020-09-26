@@ -1,168 +1,162 @@
 <!DOCTYPE html>
 <% var config = htmlWebpackPlugin || SSRData %>
-<!--[if lt IE 7 ]> <html lang="en" class="ie6" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="ie7" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="ie8" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="ie9" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Learn - Learning Experience Platform</title>
-  <script type="text/javascript" src="env-config.js"></script>
- 
-  <% if (config.files.favicon) { %>
-  <link rel="shortcut icon" href="<%= config.files.favicon%>">
-  <% } %>
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, minimal-ui">
+<!--[if lt IE 7]> <html lang="en" class="ie6" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
+<!--[if IE 7]>    <html lang="en" class="ie7" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
+<!--[if IE 8]>    <html lang="en" class="ie8" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
+<!--[if IE 9]>    <html lang="en" class="ie9" <% if(config.files.manifest) { %> manifest="<%= config.files.manifest %>"<% } %>> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="" <% if(config.files.manifest) { %>
+  manifest="<%= config.files.manifest %>"<% } %>>
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn - Learning Experience Platform</title>
+    <script type="text/javascript" src="env-config.js"></script>
 
-  <% for (var css in config.files.css) { %>
-  <link href="<%= config.files.css[css] %>" rel="preload" as="style">
-  <link href="<%= config.files.css[css] %>" rel="stylesheet">
-  <% } %>
-  
-  <% if (config.options.chunks) { %>
-    <%= config.options.chunks.css %>
-  <% } %>
+    <% if (config.files.favicon) { %>
+    <link rel="shortcut icon" href="<%= config.files.favicon%>" />
+    <% } %>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=0, minimal-ui"
+    />
 
-  <!-- Loader Style -->
-  <style>
-    @keyframes spin {
-      100% {
-        transform: rotate(360deg)
-      }
-    }
-    .initial-loader-wrap {
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: -apple-system, "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
-      font-size: 12px;
-      position: fixed;
-      z-index: 99999;
-      background-color: #0165f2;
-      transition: opacity 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000);
-      background: rgb(1,101,242);
-      background-image: url('data:image/png;base64,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');
-      background-repeat: repeat-x;
-      background-position: left bottom;
-    }
-    .loaded .initial-loader-wrap {
-      opacity: 0;
-    }
-    .initial-loader {
-      min-width: 240px;
-      color: #fff;
-      line-height: 1.5;
-    }
-    .initial-loader__row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem;
-    }
-    .initial-loader__row + .initial-loader__row {
-      border-top: 1px solid #8ebbf9;
-    }
-    .initial-loader h1 {
-      margin: 0;
-      color: #fff;
-      font-size: 30px;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-    .initial-loader svg#loader-circle {
-      transform-origin: 50% 50%;
-	    animation: spin .5s linear infinite;
-    }   
-    /* override z-index of date-picker popup */
-    .react-datepicker-popper {
-        z-index: 100;
-    }
-  </style>
+    <% for (var css in config.files.css) { %>
+    <link href="<%= config.files.css[css] %>" rel="preload" as="style" />
+    <link href="<%= config.files.css[css] %>" rel="stylesheet" />
+    <% } %> <% if (config.options.chunks) { %> <%= config.options.chunks.css %>
+    <% } %>
 
-
-</head>
-<body>
-  <script>
-    (function () {
-
-      function redirect() {
-        const url = Object.assign({}, window.location);
-        if (url.protocol !== 'https:' && !url.host.startsWith('localhost:')) {
-          url.href = url.href.replace('http:','https:');
-          window.location.href = url.href;
+    <!-- Loader Style -->
+    <style>
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
         }
-
       }
-      redirect();
-    })();
-  </script>
+      .initial-loader-wrap {
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: -apple-system, 'Helvetica Neue', Helvetica, 'Segoe UI',
+          Arial, sans-serif;
+        font-size: 12px;
+        position: fixed;
+        z-index: 99999;
+        background-color: #122c49;
+        transition: opacity 200ms cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+      .loaded .initial-loader-wrap {
+        opacity: 0;
+      }
+      .initial-loader {
+        min-width: 240px;
+        color: #fff;
+        line-height: 1.5;
+      }
+      .initial-loader__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+      }
+      .initial-loader__row + .initial-loader__row {
+        border-top: 1px solid #8ebbf9;
+      }
+      .initial-loader h1 {
+        margin: 0;
+        color: #fff;
+        font-size: 30px;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .initial-loader svg#loader-circle {
+        transform-origin: 50% 50%;
+        animation: spin 0.5s linear infinite;
+      }
+      /* override z-index of date-picker popup */
+      .react-datepicker-popper {
+        z-index: 100;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      (function () {
+        function redirect() {
+          const url = Object.assign({}, window.location);
+          if (url.protocol !== 'https:' && !url.host.startsWith('localhost:')) {
+            url.href = url.href.replace('http:', 'https:');
+            window.location.href = url.href;
+          }
+        }
+        redirect();
+      })();
+    </script>
 
-  <!-- START Loader -->
-  <div class="initial-loader-wrap">
-    <div class="initial-loader">
-      <div class="initial-loader__row">
-        
-        <svg id="Layer_1" data-name="Layer 1" height="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.84 154.82"><defs><style>.cls-1{fill:#fff;}</style></defs><title>learn-logo</title><path class="cls-1" d="M195.14,128.14a63.09,63.09,0,0,0-28.54-5.73H117.51V270.16l20.5,0V209.83H166.5A63.3,63.3,0,0,0,195.37,204a38.61,38.61,0,0,0,16.83-15.84,48,48,0,0,0-.13-44.29A38.59,38.59,0,0,0,195.14,128.14ZM189.86,185a32.43,32.43,0,0,1-23.68,7H138.05V140.06h28.29a32.13,32.13,0,0,1,23.35,6.82,26.14,26.14,0,0,1,6.89,19.35A25.64,25.64,0,0,1,189.86,185Z" transform="translate(-117.51 -118.28)"/><rect class="cls-1" x="224.25" width="20.54" height="151.87"/><path class="cls-1" d="M457.15,221.11a35.77,35.77,0,0,0-14.68-9.29,156.71,156.71,0,0,0-18.3-5.12,68.07,68.07,0,0,1-17.32-5.9,9.11,9.11,0,0,1-5.54-8.27,10.84,10.84,0,0,1,4.36-9,21.73,21.73,0,0,1,13.53-3.65,22.64,22.64,0,0,1,14.11,4.1,16.39,16.39,0,0,1,6.11,11.19l.14,1.44h20.3l-.12-1.7A34.3,34.3,0,0,0,447,170.53a43.84,43.84,0,0,0-27.6-8.47A41.64,41.64,0,0,0,391.16,171a29,29,0,0,0-10.6,23.15,22.18,22.18,0,0,0,6,16.17A39.42,39.42,0,0,0,401,219.45a106.75,106.75,0,0,0,16.79,4.83,87.69,87.69,0,0,1,18.47,5.43,10.78,10.78,0,0,1,5.82,11,12.65,12.65,0,0,1-4.52,9.76,22.21,22.21,0,0,1-15.24,4.34,26.29,26.29,0,0,1-17.59-5.54,22.88,22.88,0,0,1-8-13l-.27-1.27H375.64l.18,1.77A37.9,37.9,0,0,0,390.72,263a50.84,50.84,0,0,0,31.49,9.61c.8,0,1.59.06,2.38.06a45,45,0,0,0,27.47-9.39,29.64,29.64,0,0,0,11-23.95A25.69,25.69,0,0,0,457.15,221.11Z" transform="translate(-117.51 -118.28)"/><path class="cls-1" d="M573.07,249.76a11.74,11.74,0,0,0-8-3.3,11.12,11.12,0,0,0-8.28,3.28,11.55,11.55,0,0,0,0,16.15,11.32,11.32,0,0,0,8,3.3H565a11.42,11.42,0,0,0,8.08-19.43Z" transform="translate(-117.51 -118.28)"/><path class="cls-1" d="M302.42,225.41a26.71,26.71,0,1,1-53.41,0V194.7H228v30.72a47.7,47.7,0,0,0,95.39,0V164h-21Z" transform="translate(-117.51 -118.28)"/><path class="cls-1" d="M511.3,251.05A30.77,30.77,0,0,1,499.73,240a38.61,38.61,0,0,1-5.18-17.11h81.5v-1.59c0-1.9,0-3.6.1-5.1s.1-3.07.1-4.6a51.4,51.4,0,0,0-6-24.29A47.28,47.28,0,0,0,553.05,169a49.51,49.51,0,0,0-26.49-6.93A53.47,53.47,0,0,0,499.19,169a47.93,47.93,0,0,0-18.51,19.44,61.16,61.16,0,0,0-6.56,28.87,60.19,60.19,0,0,0,6.69,29.08,49.17,49.17,0,0,0,18.5,19.32,51.64,51.64,0,0,0,25.81,6.92h2.1V254.78l-1.58,0A31.09,31.09,0,0,1,511.3,251.05Zm-16.51-44.82a28.79,28.79,0,0,1,10.32-19.14,33.14,33.14,0,0,1,20.65-7.19h.38a30.25,30.25,0,0,1,20.77,7.42,27.85,27.85,0,0,1,8.94,18.91Z" transform="translate(-117.51 -118.28)"/></svg>
-  
-        <svg
+    <!-- START Loader -->
+    <div class="initial-loader-wrap">
+      <div class="initial-loader text-center">
+        <div>
+          <svg
             version="1.1"
             id="loader-circle"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-            width="30px" height="30px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"
-        >
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="40px"
+            y="40px"
+            width="80px"
+            height="80px"
+            viewBox="0 0 40 40"
+            enable-background="new 0 0 40 40"
+            xml:space="preserve"
+          >
             <g>
-                <path
-                    fill="#e7e7e7"
-                    d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"
-                />
-                <path
-                    fill="#1EB7FF"
-                    d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z"
-                >
-                </path>
+              <path
+                fill="#e7e7e7"
+                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"
+              />
+              <path
+                fill="#1EB7FF"
+                d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z"
+              ></path>
             </g>
-        </svg>
-      </div>
-      <div class="initial-loader__row">
-        Please Wait. Loading...
+          </svg>
+        </div>
+        <div>Please Wait. Loading...</div>
       </div>
     </div>
-  </div>
 
-  <script>
-    (function() {
+    <script>
+      (function () {
         var bodyElement = document.querySelector('body');
         bodyElement.classList.add('loading');
 
-        document.addEventListener('readystatechange', function() {
-            if(document.readyState === 'complete') {
-                var bodyElement = document.querySelector('body');
-                var loaderElement = document.querySelector('.initial-loader-wrap');
-                bodyElement.classList.add('loaded');
-                setTimeout(function() {
-                    bodyElement.removeChild(loaderElement);
-                    bodyElement.classList.remove('loading', 'loaded');
-                }, 200);
-            }
+        document.addEventListener('readystatechange', function () {
+          if (document.readyState === 'complete') {
+            var bodyElement = document.querySelector('body');
+            var loaderElement = document.querySelector('.initial-loader-wrap');
+            bodyElement.classList.add('loaded');
+            setTimeout(function () {
+              bodyElement.removeChild(loaderElement);
+              bodyElement.classList.remove('loading', 'loaded');
+            }, 200);
+          }
         });
-    })();
-  </script>
-  <!-- END Loader -->
+      })();
+    </script>
+    <!-- END Loader -->
 
-  <div id="root"><%= config.innerHtml || '' %></div>
+    <div id="root"><%= config.innerHtml || '' %></div>
 
-  <% for (var chunk in config.files.chunks) { %>
-  <script src="<%= config.files.chunks[chunk].entry %>" defer></script>
-  <% } %>
-
-  <% if (config.options.devServer) { %>
-  <script src="<%= config.options.devServer%>/webpack-dev-server.js"></script>
-  <% } %>
-</body>
+    <% for (var chunk in config.files.chunks) { %>
+    <script src="<%= config.files.chunks[chunk].entry %>" defer></script>
+    <% } %> <% if (config.options.devServer) { %>
+    <script src="<%= config.options.devServer%>/webpack-dev-server.js"></script>
+    <% } %>
+  </body>
 </html>

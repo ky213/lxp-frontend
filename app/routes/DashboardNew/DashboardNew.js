@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { courseService } from '@/services';
 import { Container, Row, Col } from '@/components';
+import { useAppState } from '@/components/AppState';
 
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
 import CourseSelector from './components/CourseSelector';
 import LearnersTable from './components/LearnersTable';
 import PieChart from './components/PieChart';
-import { useAppState } from '@/components/AppState';
 
 import './DashboardNew.scss';
 
@@ -105,7 +105,7 @@ const DashboardNew = (props) => {
       </Row>
       <Row style={{ minHeight: 200 }} className="py-4">
         {selectedCourses.map((course) => (
-          <Col className="text-center">
+          <Col className="text-center" key={course.courseId}>
             <PieChart
               course={course}
               experiences={experienceEnum}
@@ -124,6 +124,8 @@ const DashboardNew = (props) => {
         <Col lg={12}>
           <LearnersTable
             users={users}
+            course={selectedCourse}
+            experience={experience}
             onPagination={setOffset}
             pageId={offset}
           />

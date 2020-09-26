@@ -1,24 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   Card,
   CardFooter,
-  Button,
-  Collapse,
   CardBody,
+  Collapse,
+  Row,
+  Col,
 } from '@/components';
-import { Paginations } from '@/routes/components/Paginations';
 import moment from 'moment';
 
-const Expand = ({ user }) => {
+import { Paginations } from '@/routes/components/Paginations';
+import { reportingService } from '../../../services';
+import { useAppState } from '@/components/AppState';
+
+const ExpandRow = ({ user, course, experience }) => {
   return (
     <td colSpan="9">
       <Collapse isOpen={true}>
         <Card className="border-0">
           <CardBody>
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-            labore wes anderson cred nesciunt sapiente ea proident.
+            <Row>
+              <Col>
+                <Row>
+                  <Col>
+                    <h5 className="text-right">Learner: </h5>
+                  </Col>
+                  <Col>{user.email}</Col>
+                </Row>
+              </Col>
+              <Col>
+                <Row>
+                  <Col>
+                    <h5 className="text-right">Activity: </h5>
+                  </Col>
+                  <Col>{course.name}</Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <h5 className="text-right">Experience: </h5>
+                  </Col>
+                  <Col>{experience}</Col>
+                </Row>
+              </Col>
+            </Row>
           </CardBody>
         </Card>
       </Collapse>
@@ -26,8 +51,19 @@ const Expand = ({ user }) => {
   );
 };
 
-const LearnersTable = ({ users, onPagination, pageId }) => {
+const LearnersTable = ({ users, course, experience, onPagination, pageId }) => {
+  const [{ selectedOrganization }] = useAppState();
   const [openUser, setOpenUser] = useState('');
+
+  useEffect(() => {
+    if (course)
+      reportingService
+        .getAll({ selectedOrganizationId: selectedOrganization.organizationId })
+        .then((res) => {})
+        .catch((error) => {
+          console.log(error);
+        });
+  }, [course]);
 
   const toggle = (user) =>
     openUser ? setOpenUser('') : setOpenUser(user.email);
@@ -68,7 +104,7 @@ const LearnersTable = ({ users, onPagination, pageId }) => {
           <tbody>
             {users &&
               users.map((user) => (
-                <>
+                <React.Fragment key={user.email}>
                   <tr>
                     <td className="align-middle bt-0">
                       <i
@@ -94,8 +130,16 @@ const LearnersTable = ({ users, onPagination, pageId }) => {
                       {moment(user.start_date).format('DD-MM-YYYY')}
                     </td>
                   </tr>
-                  <tr>{user.email === openUser && <Expand user={user} />}</tr>
-                </>
+                  <tr>
+                    {user.email === openUser && (
+                      <ExpandRow
+                        user={user}
+                        course={course}
+                        experience={experience}
+                      />
+                    )}
+                  </tr>
+                </React.Fragment>
               ))}
           </tbody>
         </Table>

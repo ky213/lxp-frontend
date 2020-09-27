@@ -32,7 +32,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
           type: 'danger',
         });
       });
-  }, [programs]);
+  }, [selectedProgramId]);
 
   return (
     <Form className="form-inline">
@@ -43,7 +43,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
           labelKey="name"
           options={programs}
           placeholder="Program..."
-          onChange={(program) => setSelectedProgramId(program.programId)}
+          onChange={(programs) => setSelectedProgramId(programs[0]?.programId)}
         />
       </FormGroup>
       <FormGroup className="course-selector mb-2 mr-sm-2 mb-sm-0">
@@ -54,7 +54,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
           options={coursesData}
           placeholder="Courses..."
           onChange={onCourseSelect}
-          disabled={selectedProgramId}
+          disabled={!selectedProgramId}
           multiple
         />
       </FormGroup>

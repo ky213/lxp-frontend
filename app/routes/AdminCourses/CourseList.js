@@ -123,7 +123,6 @@ const CourseList = ({
                         <th className="bt-0">Name</th>
                         <th className="bt-0">Program name</th>
                         <th className="bt-0 text-center">Starting date</th>
-                        <th className="bt-0 text-center">Period days</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -156,7 +155,6 @@ const CourseList = ({
                               {item.startingDate &&
                                 moment(item.startingDate).format('L')}
                             </td>
-                            <td className="text-center">{item.periodDays}</td>
                           </tr>
                         );
                       })}

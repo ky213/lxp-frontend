@@ -121,14 +121,16 @@ const DashboardNew = (props) => {
         )}
       </Row>
       <Row>
-        <Col lg={12}>
-          <LearnersTable
-            users={users}
-            course={selectedCourse}
-            experience={experience}
-            onPagination={setOffset}
-            pageId={offset}
-          />
+        <Col>
+          {experience && (
+            <LearnersTable
+              users={users}
+              course={selectedCourse}
+              experience={experience}
+              onPagination={setOffset}
+              pageId={offset}
+            />
+          )}
         </Col>
       </Row>
     </Container>

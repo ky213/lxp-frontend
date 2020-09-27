@@ -75,30 +75,20 @@ const LearnersTable = ({ users, course, experience, onPagination, pageId }) => {
           <thead>
             <tr>
               <th></th>
-              <th className="align-middle bt-0 text-center" width="20%">
-                Name
-              </th>
-              <th className="align-middle bt-0 text-left" width="15%">
-                surname
-              </th>
-              <th className="align-middle bt-0 text-left" width="15%">
-                Email
-              </th>
-              <th className="align-middle bt-0 text-left" width="20%">
+              <th className="align-middle bt-0 ">Name</th>
+              <th className="align-middle bt-0 ">surname</th>
+              <th className="align-middle bt-0 ">Email</th>
+              <th className="align-middle bt-0 ">
                 total number of answers (correct and wrong)
               </th>
-              <th className="align-middle bt-0 text-center" width="10%">
+              <th className="align-middle bt-0 ">
                 Number of incorrect answers
               </th>
-              <th className="align-middle bt-0 text-right" width="5%">
-                Number of correct answers
-              </th>
-              <th className="align-middle bt-0 text-center" width="10%">
+              <th className="align-middle bt-0 ">Number of correct answers</th>
+              <th className="align-middle bt-0 ">
                 Number of points collected by user in course
               </th>
-              <th className="align-middle bt-0 text-center" width="10%">
-                Start Date
-              </th>
+              <th className="align-middle bt-0 ">Start Date</th>
             </tr>
           </thead>
           <tbody>

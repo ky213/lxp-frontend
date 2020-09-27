@@ -112,15 +112,19 @@ const LearnerHome = () => {
           <Row className="flex-column">
             <HeaderMain title="My Courses" className="my-4" />
             <CardColumns>
-              {joinedCourses.map((course) => (
-                <CourseCard
-                  key={course.courseId}
-                  course={course}
-                  onLaunch={handleLaunch}
-                  joinedCourses={joinedCourses.map(({ courseId }) => courseId)}
-                  isLearner={isLearner}
-                />
-              ))}
+              {joinedCourses
+                .sort((a, b) => a.name < b.name)
+                .map((course) => (
+                  <CourseCard
+                    key={course.courseId}
+                    course={course}
+                    onLaunch={handleLaunch}
+                    joinedCourses={joinedCourses.map(
+                      ({ courseId }) => courseId
+                    )}
+                    isLearner={isLearner}
+                  />
+                ))}
             </CardColumns>
           </Row>
           <br />

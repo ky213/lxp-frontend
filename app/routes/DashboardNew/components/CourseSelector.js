@@ -43,7 +43,9 @@ export const CourseSelector = ({ onCourseSelect }) => {
           labelKey="name"
           options={programs}
           placeholder="Program..."
-          onChange={(programs) => setSelectedProgramId(programs[0]?.programId)}
+          onChange={(programsList) =>
+            setSelectedProgramId(programsList[0]?.programId)
+          }
         />
       </FormGroup>
       <FormGroup className="course-selector mb-2 mr-sm-2 mb-sm-0">

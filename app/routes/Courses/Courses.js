@@ -298,14 +298,16 @@ const Courses = (props) => {
               coursesData.courses.length > 0 && (
                 <React.Fragment>
                   <CardColumns>
-                    {coursesData.courses.map((course) => (
-                      <CourseCard
-                        course={course}
-                        onLaunch={handleLaunch}
-                        joinedCourses={joinedCourses}
-                        isLearner={isLearner}
-                      />
-                    ))}
+                    {coursesData.courses
+                      .sort((a, b) => a.name < b.name)
+                      .map((course) => (
+                        <CourseCard
+                          course={course}
+                          onLaunch={handleLaunch}
+                          joinedCourses={joinedCourses}
+                          isLearner={isLearner}
+                        />
+                      ))}
                   </CardColumns>
                   <CardFooter className="d-flex justify-content-center pb-0">
                     <Paginations

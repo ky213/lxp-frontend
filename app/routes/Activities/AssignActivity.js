@@ -52,7 +52,6 @@ export const AssignActivity = ({
   const [timeDifference, setTimeDifference] = React.useState(30);
   const [courses, setCourses] = React.useState([]);
   const [rrule, setRRule] = React.useState([]);
-  const [showRepeatOptions, setShowRepeatOptions] = React.useState(false);
   //const [userPrograms, setUserPrograms] = React.useState([]);
   const [selectedProgram, setSelectedProgram] = React.useState(null);
   const currentProgram =
@@ -114,7 +113,6 @@ export const AssignActivity = ({
     }
 
     setRRule(false);
-    setShowRepeatOptions(false);
   }, [isOpen]);
 
   const eventStartObj = (eventStart && moment(eventStart).toObject()) || null;
@@ -218,7 +216,6 @@ export const AssignActivity = ({
             activityType,
             location,
             courses,
-            during,
           },
           { setStatus, setSubmitting }
         ) => {
@@ -250,13 +247,11 @@ export const AssignActivity = ({
             priority: priority,
             activityTypeId: activityType,
             location: location,
-            repeat: showRepeatOptions,
             description: description,
             participants: learners,
             courses: courses,
             rrule: (rrule && rrule.toString()) || null,
             organizationId: selectedOrganization.organizationId,
-            during: during,
           };
 
           try {
@@ -446,82 +441,7 @@ export const AssignActivity = ({
                                 )}
                             </Col>
                           </FormGroup>
-                          <FormGroup row>
-                            <Label for="type" sm={3}>
-                              During
-                            </Label>
-                            <Col sm={9}>
-                              <Field
-                                component="select"
-                                name="during"
-                                id="during"
-                                defaultValue={''}
-                                className={
-                                  'bg-white form-control' +
-                                  (formikProps.errors.during &&
-                                  formikProps.touched.during
-                                    ? ' is-invalid'
-                                    : '')
-                                }
-                                placeholder="During..."
-                              >
-                                <option value="">- select duration -</option>
-                                <option value="1">
-                                  Whole day (working hours)
-                                </option>
-                                <option value="2">Day shift</option>
-                                <option value="3">Night shift</option>
-                              </Field>
-                              <ErrorMessage
-                                name="during"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </Col>
-                          </FormGroup>
-                          <FormGroup row>
-                            <Label for="description" sm={3}>
-                              Repeat?
-                            </Label>
-                            <Col sm={9}>
-                              <CustomInput
-                                inline
-                                type="radio"
-                                id="repeatYes"
-                                name="repeat"
-                                label="Yes"
-                                value="1"
-                                onChange={(event) => {
-                                  setShowRepeatOptions(true);
-                                }}
-                              />
-                              <CustomInput
-                                inline
-                                type="radio"
-                                id="repeatNo"
-                                name="repeat"
-                                label="No"
-                                value="0"
-                                defaultChecked
-                                onChange={(event) => {
-                                  setShowRepeatOptions(false);
-                                }}
-                              />
-                            </Col>
-                          </FormGroup>
-                          {showRepeatOptions && (
-                            <FormGroup row>
-                              <Col sm={12} style={{ whiteSpace: 'nowrap' }}>
-                                <RRuleGenerator
-                                  onChange={(rrule) => {
-                                    setRRule(rrule);
-                                  }}
-                                  //config={{end: ['Never', 'After']}}
-                                />
-                              </Col>
-                            </FormGroup>
-                          )}
-
+                                            
                           <FormGroup row>
                             <Label for="type" sm={3}>
                               Activity type

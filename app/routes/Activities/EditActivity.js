@@ -308,7 +308,6 @@ export const EditActivity = ({
               priority: selectedActivity.priority || 1,
               activityType: selectedActivity.activityTypeId || '',
               courses: selectedActivity.courses || [],
-              during: selectedActivity.during || null,
             }}
             validationSchema={Yup.object().shape({
               program: Yup.array().min(1, 'You need to select a program'),
@@ -354,7 +353,6 @@ export const EditActivity = ({
                 activityType,
                 location,
                 courses,
-                during,
               },
               { setStatus, setSubmitting }
             ) => {
@@ -404,7 +402,6 @@ export const EditActivity = ({
                 courses: courses || null,
                 rrule: (rrule && rrule.toString()) || null,
                 organizationId: selectedOrganization.organizationId,
-                during: during,
               };
 
               try {
@@ -649,114 +646,7 @@ export const EditActivity = ({
                                             )}
                                         </Col>
                                       </FormGroup>
-                                    )}
-                                    <FormGroup row>
-                                      <Label for="type" sm={3}>
-                                        During
-                                      </Label>
-                                      <Col sm={9}>
-                                        <Field
-                                          component="select"
-                                          name="during"
-                                          id="during"
-                                          className={
-                                            'bg-white form-control' +
-                                            (formikProps.errors.during &&
-                                            formikProps.touched.during
-                                              ? ' is-invalid'
-                                              : '')
-                                          }
-                                          placeholder="During..."
-                                        >
-                                          <option value="">
-                                            - select duration -
-                                          </option>
-                                          <option value="1">
-                                            Whole day (working hours)
-                                          </option>
-                                          <option value="2">Day shift</option>
-                                          <option value="3">Night shift</option>
-                                        </Field>
-                                        <ErrorMessage
-                                          name="during"
-                                          component="div"
-                                          className="invalid-feedback"
-                                        />
-                                      </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                      <Label for="description" sm={3}>
-                                        Repeat?
-                                      </Label>
-                                      <Col sm={9}>
-                                        <CustomInput
-                                          inline
-                                          disabled={
-                                            currentUserRole == Role.Learner
-                                          }
-                                          type="radio"
-                                          id="repeatYes"
-                                          name="repeat"
-                                          label="Yes"
-                                          value="1"
-                                          defaultChecked={showRepeatOptions}
-                                          onChange={(event) => {
-                                            setShowRepeatOptions(true);
-                                          }}
-                                        />
-                                        <CustomInput
-                                          inline
-                                          type="radio"
-                                          id="repeatNo"
-                                          name="repeat"
-                                          label="No"
-                                          value="0"
-                                          disabled={
-                                            currentUserRole == Role.Learner
-                                          }
-                                          defaultChecked={!showRepeatOptions}
-                                          onChange={(event) => {
-                                            setShowRepeatOptions(false);
-                                          }}
-                                        />
-                                      </Col>
-                                    </FormGroup>
-                                    {showRepeatOptions &&
-                                      currentUserRole != Role.Learner && (
-                                        <FormGroup row>
-                                          <Col
-                                            sm={12}
-                                            style={{ whiteSpace: 'nowrap' }}
-                                          >
-                                            <RRuleGenerator
-                                              value={selectedActivity.rrule}
-                                              onChange={(rrule) => {
-                                                setRRule(rrule);
-                                              }}
-                                              //config={{end: ['Never', 'After']}}
-                                            />
-                                          </Col>
-                                        </FormGroup>
-                                      )}
-                                    {showRepeatOptions &&
-                                      currentUserRole == Role.Learner && (
-                                        <FormGroup row>
-                                          <Label sm={3}>Repeating</Label>
-                                          <Col
-                                            sm={9}
-                                            style={{ whiteSpace: 'nowrap' }}
-                                          >
-                                            <Label className="col-form-label">
-                                              <strong>
-                                                {selectedActivity.rrule &&
-                                                  rrulestr(
-                                                    selectedActivity.rrule
-                                                  ).toText()}
-                                              </strong>
-                                            </Label>
-                                          </Col>
-                                        </FormGroup>
-                                      )}
+                                    )}                                   
                                     <FormGroup row>
                                       <Label for="type" sm={3}>
                                         Activity type

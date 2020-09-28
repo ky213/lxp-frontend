@@ -47,6 +47,7 @@ const EditCourse = ({
   const [formLoaded, setFormLoaded] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(0);
   const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState('');
+  const [courseFileName, setCourseFileName] = React.useState('');
 
   React.useEffect(() => {
     programService
@@ -64,6 +65,7 @@ const EditCourse = ({
   React.useEffect(() => {
     if (course) {
       setSelectedLogoDataUrl(course.image);
+      setCourseFileName(course.contentPath);
     } else {
       setSelectedLogoDataUrl(null);
     }
@@ -129,13 +131,7 @@ const EditCourse = ({
               description: Yup.string().required('Description is required'),
             })}
             onSubmit={async (
-              {
-                name,
-                description,
-                programId,
-                fileData,
-                startingDate,
-              },
+              { name, description, programId, fileData, startingDate },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
               setSubmitting(true);
@@ -334,7 +330,6 @@ const EditCourse = ({
                               </Col>
                             </FormGroup>
 
-                           
                             <FormGroup row>
                               <Label for="programId" sm={3}>
                                 Program
@@ -351,6 +346,7 @@ const EditCourse = ({
                                       ? ' is-invalid'
                                       : '')
                                   }
+                                  required
                                 >
                                   <option value="">Select a program</option>
                                   {programs.map((p) => {
@@ -375,17 +371,43 @@ const EditCourse = ({
                                 Course file (.zip)
                               </Label>
                               <Col sm={9}>
-                                <input
-                                  type="file"
-                                  required={!course}
-                                  onChange={(f) =>
-                                    formikProps.setFieldValue(
-                                      'fileData',
-                                      f.target.files[0]
-                                    )
-                                  }
-                                  accept=".zip"
-                                />
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span
+                                      class="input-group-text"
+                                      id="inputGroupFileAddon02"
+                                    >
+                                      {course ? 'Update' : 'Upload'}
+                                    </span>
+                                  </div>
+
+                                  <div class="custom-file">
+                                    <input
+                                      type="file"
+                                      id="courseFile"
+                                      name="courseFile"
+                                      className="custom-file-input"
+                                      required={!course}
+                                      onChange={(f) => {
+                                        formikProps.setFieldValue(
+                                          'fileData',
+                                          f.target.files[0]
+                                        );
+
+                                        setCourseFileName(
+                                          f.target.files[0].name
+                                        );
+                                      }}
+                                      accept=".zip"
+                                    />
+                                    <label
+                                      class="custom-file-label"
+                                      for="courseFile"
+                                    >
+                                      {courseFileName || 'Choose a fille'}
+                                    </label>
+                                  </div>
+                                </div>
                                 {/* {props.errors.programId && (
                                   <InvalidFeedback>
                                     {props.errors.programId}

@@ -31,6 +31,7 @@ const DashboardNew = (props) => {
     setLoading(true);
     try {
       const data = await courseService.attemptedUsers(
+        selectedOrganization.organizationId,
         selectedCourse.programId,
         selectedCourse.courseId,
         offset - 1,
@@ -68,6 +69,7 @@ const DashboardNew = (props) => {
     setLoading(true);
     try {
       const data = await courseService.completedUsers(
+        selectedOrganization.organizationId,
         selectedCourse.programId,
         selectedCourse.courseId,
         offset - 1,

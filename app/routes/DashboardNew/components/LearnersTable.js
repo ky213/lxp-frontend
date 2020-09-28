@@ -102,7 +102,7 @@ const LearnersTable = ({ users, course, experience, onPagination, pageId }) => {
                           user.email === openUser ? 'down' : 'right'
                         } fa-fw`}
                         onClick={() => toggle(user)}
-                        style={{ marginBottom: '1rem' }}
+                        style={{ marginBottom: '1rem', cursor: 'pointer' }}
                       ></i>
                     </td>
                     <td className="align-middle bt-0">{user.name}</td>

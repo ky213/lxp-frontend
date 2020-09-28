@@ -90,11 +90,11 @@ function progressBreakdown(courseId) {
 }
 
 
-function attemptedUsers(programId, courseId, offset, pageSize) {
+function attemptedUsers(organizationId, programId, courseId, offset, pageSize) {
     const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeader() },
-        body: JSON.stringify({ courseId, programId, offset, pageSize })
+        body: JSON.stringify({ organizationId, courseId, programId, offset, pageSize })
     };
 
     return fetch(`${config.apiUrl}/dashboards/distribution/progress/users/attempted`, requestOptions)
@@ -119,11 +119,11 @@ function notAttemptedUsers(organizationId, programId, courseId, offset, pageSize
 }
 
 
-function completedUsers(programId, courseId, offset, pageSize) {
+function completedUsers(organizationId, programId, courseId, offset, pageSize) {
     const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeader() },
-        body: JSON.stringify({ courseId, programId, offset, pageSize })
+        body: JSON.stringify({ organizationId, courseId, programId, offset, pageSize })
     };
 
     return fetch(`${config.apiUrl}/dashboards/distribution/progress/users/completed`, requestOptions)

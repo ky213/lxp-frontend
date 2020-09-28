@@ -18,14 +18,14 @@ const DashboardNew = (props) => {
   const [loading, setLoading] = useState(false);
   const [experience, setExperience] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [offset, setOffset] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const experienceEnum = ['Not started', 'Completed', 'In progress'];
 
   useEffect(() => {
     if (experience === experienceEnum[0]) fetchNotAttemptedUsersData();
     if (experience === experienceEnum[1]) fetchCompletedUsersData();
     if (experience === experienceEnum[2]) fetchAttemptedUsersData();
-  }, [experience, offset]);
+  }, [experience, pageNumber]);
 
   const fetchAttemptedUsersData = async () => {
     setLoading(true);
@@ -34,11 +34,10 @@ const DashboardNew = (props) => {
         selectedOrganization.organizationId,
         selectedCourse.programId,
         selectedCourse.courseId,
-        offset - 1,
-        10
+        (pageNumber - 1) * 10, //offset
+        10 // records per page
       );
       setUsers(data);
-      console.log(data);
     } catch (error) {
       console.log('Error while fetching learners:', error);
     }
@@ -53,11 +52,10 @@ const DashboardNew = (props) => {
         selectedOrganization.organizationId,
         selectedCourse.programId,
         selectedCourse.courseId,
-        offset - 1,
-        10
+        (pageNumber - 1) * 10, //offset
+        10 // records per page
       );
       setUsers(data);
-      console.log(data);
     } catch (error) {
       console.log('Error while fetching learners:', error);
     }
@@ -72,11 +70,10 @@ const DashboardNew = (props) => {
         selectedOrganization.organizationId,
         selectedCourse.programId,
         selectedCourse.courseId,
-        offset - 1,
-        10
+        (pageNumber - 1) * 10, //offset
+        10 // records per page
       );
       setUsers(data);
-      console.log(data);
     } catch (error) {
       console.log('Error while fetching learners:', error);
     }
@@ -126,11 +123,12 @@ const DashboardNew = (props) => {
         <Col>
           {experience && (
             <LearnersTable
-              users={users}
+              users={users.users}
+              totalNumberOfRecords={users.numOfUsers}
               course={selectedCourse}
               experience={experience}
-              onPagination={setOffset}
-              pageId={offset}
+              onPagination={setPageNumber}
+              pageId={pageNumber}
             />
           )}
         </Col>

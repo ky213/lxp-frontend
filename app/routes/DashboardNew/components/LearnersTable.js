@@ -51,7 +51,14 @@ const ExpandRow = ({ user, course, experience }) => {
   );
 };
 
-const LearnersTable = ({ users, course, experience, onPagination, pageId }) => {
+const LearnersTable = ({
+  users,
+  totalNumberOfRecords,
+  course,
+  experience,
+  onPagination,
+  pageId,
+}) => {
   const [{ selectedOrganization }] = useAppState();
   const [openUser, setOpenUser] = useState('');
 
@@ -116,7 +123,7 @@ const LearnersTable = ({ users, course, experience, onPagination, pageId }) => {
                       {user.response_success_count}
                     </td>
                     <td className="align-middle bt-0">{user.scores}</td>
-                    <td className="align-middle bt-0">
+                    <td className="align-middle bt-0 text-nowrap">
                       {moment(user.start_date).format('DD-MM-YYYY')}
                     </td>
                   </tr>
@@ -138,10 +145,8 @@ const LearnersTable = ({ users, course, experience, onPagination, pageId }) => {
       <CardFooter className="d-flex justify-content-center pb-0">
         <Paginations
           pageId={pageId}
-          setPageId={(pageIdSelected) => {
-            onPagination(pageIdSelected);
-          }}
-          totalNumber={30}
+          setPageId={onPagination}
+          totalNumber={totalNumberOfRecords}
           recordsPerPage={10}
         />
       </CardFooter>

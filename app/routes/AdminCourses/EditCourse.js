@@ -118,7 +118,6 @@ const EditCourse = ({
               logoImage: (course && course.image) || '',
               description: (course && course.description) || '',
               programId: (course && course.programId) || '',
-              periodDays: (course && course.periodDays) || 0,
               startingDate:
                 (course &&
                   course.startingDate &&
@@ -128,14 +127,12 @@ const EditCourse = ({
             validationSchema={Yup.object().shape({
               name: Yup.string().required('Name is required'),
               description: Yup.string().required('Description is required'),
-              periodDays: Yup.number(),
             })}
             onSubmit={async (
               {
                 name,
                 description,
                 programId,
-                periodDays,
                 fileData,
                 startingDate,
               },
@@ -148,7 +145,6 @@ const EditCourse = ({
               formData.append('name', name);
               formData.append('description', description);
               formData.append('programId', programId);
-              formData.append('periodDays', periodDays);
               formData.append('startingDate', startingDate);
               formData.append(
                 'selectedOrganization',
@@ -338,32 +334,7 @@ const EditCourse = ({
                               </Col>
                             </FormGroup>
 
-                            <FormGroup row>
-                              <Label for="periodDays" sm={3}>
-                                Period days
-                              </Label>
-                              <Col sm={4}>
-                                <Field
-                                  type="text"
-                                  name="periodDays"
-                                  id="periodDays"
-                                  className={
-                                    'bg-white form-control' +
-                                    (formikProps.errors.periodDays &&
-                                    formikProps.touched.periodDays
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  placeholder="Min level..."
-                                />
-                                <ErrorMessage
-                                  name="periodDays"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </Col>
-                            </FormGroup>
-
+                           
                             <FormGroup row>
                               <Label for="programId" sm={3}>
                                 Program

@@ -24,7 +24,6 @@ import {
 } from '@/components';
 import {
   announcementService,
-  expLevelService,
   programService,
   roleService,
 } from '@/services';
@@ -47,12 +46,10 @@ const EditAnnouncements = ({
   const [files, setFiles] = React.useState([]);
   const [programs, setPrograms] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
-  const [expLevels, setExpLevels] = React.useState([]);
   const [dutyDateFrom, setDutyDateFrom] = React.useState(null);
   const [dutyDateTo, setDutyDateTo] = React.useState(null);
 
   const [programsLoaded, setProgramsLoaded] = React.useState(false);
-  const [expLevelsLoaded, setExpLevelsLoaded] = React.useState(false);
   const [rolesLoaded, setRolesLoaded] = React.useState(false);
   const [formLoaded, setFormLoaded] = React.useState(false);
 
@@ -65,17 +62,13 @@ const EditAnnouncements = ({
       });
     roleService.getAll().then((data) => {
       setRoles(data);
-      setExpLevelsLoaded(true);
-    });
-    expLevelService.getAll().then((data) => {
-      setExpLevels(data);
       setRolesLoaded(true);
     });
   }, []);
 
   React.useEffect(() => {
-    if (programsLoaded && expLevelsLoaded && rolesLoaded) setFormLoaded(true);
-  }, [programsLoaded, expLevelsLoaded, rolesLoaded]);
+    if (programsLoaded  && rolesLoaded) setFormLoaded(true);
+  }, [programsLoaded, rolesLoaded]);
 
   React.useEffect(() => {}, [files]);
 
@@ -182,7 +175,6 @@ const EditAnnouncements = ({
               text: (announcement && announcement.text) || '',
               programs: (announcement && announcement.programs) || [],
               roles: (announcement && announcement.roles) || [],
-              expLevels: (announcement && announcement.expLevels) || [],
               isActive: (announcement && announcement.isActive) || false,
             }}
             validationSchema={Yup.object().shape({
@@ -194,7 +186,7 @@ const EditAnnouncements = ({
               ),
             })}
             onSubmit={(
-              { title, text, programs, roles, expLevels, isActive },
+              { title, text, programs, roles,  isActive },
               { setStatus, setSubmitting }
             ) => {
               console.log(
@@ -202,7 +194,6 @@ const EditAnnouncements = ({
                 text,
                 programs,
                 roles,
-                expLevels,
                 isActive,
                 dutyDateFrom,
                 dutyDateTo
@@ -212,7 +203,6 @@ const EditAnnouncements = ({
                 text,
                 programs: programs.map((t) => t.programId),
                 roles: roles.map((t) => t.role_id),
-                expLevels: expLevels.map((t) => t.expLevelId),
                 isActive,
                 dateFrom:
                   (dutyDateFrom && moment(dutyDateFrom).format()) || null,
@@ -410,48 +400,6 @@ const EditAnnouncements = ({
                                 {props.errors.programs && (
                                   <InvalidFeedback>
                                     {props.errors.programs}
-                                  </InvalidFeedback>
-                                )}
-                              </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                              <Label for="expLevel" sm={3}>
-                                {intl.formatMessage({ id: 'General.ExpLevel' })}
-                              </Label>
-                              <Col sm={9}>
-                                <Typeahead
-                                  clearButton
-                                  id="expLevel"
-                                  selected={props.values.expLevels}
-                                  labelKey="name"
-                                  multiple
-                                  className={
-                                    props.errors.expLevels &&
-                                    props.touched.expLevels
-                                      ? ' is-invalid'
-                                      : ''
-                                  }
-                                  options={expLevels}
-                                  placeholder={intl.formatMessage({
-                                    id: 'General.ExpLevelPlaceholder',
-                                  })}
-                                  onChange={(selectedOptions) =>
-                                    props.setFieldValue(
-                                      'expLevels',
-                                      selectedOptions
-                                    )
-                                  }
-                                  onInputChange={(selectedOptions) =>
-                                    props.setFieldValue(
-                                      'expLevels',
-                                      selectedOptions
-                                    )
-                                  }
-                                />
-                                {props.errors.expLevels && (
-                                  <InvalidFeedback>
-                                    {props.errors.expLevels}
                                   </InvalidFeedback>
                                 )}
                               </Col>

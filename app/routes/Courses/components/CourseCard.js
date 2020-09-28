@@ -60,8 +60,8 @@ const CourseCard = ({
         <div className="mt-3 mb-2">
           <div className="mb-2">
             <span className="h4 text-decoration-none">{course.name}</span>
-            <a
-              href="#"
+            <Button
+              color={course.inProgress ? 'primary' : 'secondary'}
               title="Launch course"
               className="pull-right"
               onClick={() => {
@@ -72,8 +72,8 @@ const CourseCard = ({
                 onLaunch(course);
               }}
             >
-              <i className="fa fa-external-link"></i>
-            </a>
+              {course.inProgress ? 'Resume' : 'Start'}
+            </Button>
           </div>
           <div
             className="courseDescription"
@@ -103,7 +103,7 @@ const CourseCard = ({
       <CardFooter className="bt-0 d-flex justify-content-between">
         <span className="mr-3">
           <i className="fa fa-eye mr-1"></i>
-          <span className="text-inverse">0</span>
+          <span className="text-inverse">{course.NumofUsersInProgress}</span>
         </span>
         {isLearner && (
           <Button

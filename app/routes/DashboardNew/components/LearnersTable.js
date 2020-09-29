@@ -25,45 +25,29 @@ const ExpandRow = ({ user, course, experience }) => {
               <Col>
                 <Row>
                   <Col>
-                    <h5 className="text-right">Learner: </h5>
-                  </Col>
-                  <Col className="text-nowrap">
-                    {user.name} {user.surname}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <h5 className="text-right text-nowrap">
-                      Learner is on screen #12:
-                    </h5>
+                    <h5 className="text-right text-nowrap">Screen #12:</h5>
                   </Col>
                   <Col> Phishing attacks</Col>
                 </Row>
-              </Col>
-              <Col>
                 <Row>
                   <Col>
                     <h5 className="text-right">Activity: </h5>
                   </Col>
                   <Col>{course.name}</Col>
                 </Row>
-                <Row>
-                  <Col>
-                    <h5 className="text-right">Experience: </h5>
-                  </Col>
-                  <Col>{experience}</Col>
-                </Row>
               </Col>
-            </Row>
-            <Row className="mt-4">
-              <Col className="col-3 ml-auto">
-                <a
-                  href="/reporting"
-                  className="stretched-link text-nowrap"
-                  style={{ color: '#007bff !important' }}
-                >
-                  More details on {user.name} {user.surname}
-                </a>
+              <Col>
+                <Row className="pt-2">
+                  <Col>
+                    <a
+                      href="/reporting"
+                      className="stretched-link text-nowrap"
+                      style={{ color: '#007bff !important' }}
+                    >
+                      More details on {user.name} {user.surname}
+                    </a>
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </CardBody>

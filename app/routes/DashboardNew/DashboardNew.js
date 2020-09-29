@@ -31,7 +31,7 @@ const DashboardNew = (props) => {
     if (experience === experienceEnum[0]) fetchNotAttemptedUsersData();
     if (experience === experienceEnum[1]) fetchCompletedUsersData();
     if (experience === experienceEnum[2]) fetchAttemptedUsersData();
-  }, [experience, pageNumber]);
+  }, [experience, pageNumber, selectedCourse]);
 
   const fetchAttemptedUsersData = async () => {
     setLoading(true);
@@ -126,14 +126,14 @@ const DashboardNew = (props) => {
         )}
       </Row>
       <Row className="mb-2">
-        {experience && (
+        {experience && selectedCourses.length > 0 && (
           <Col>
-            <button class="btn btn-primary mr-2 rounded-pill">
+            <button className="btn btn-primary mr-2 rounded-pill">
               {selectedCourse.name}
-              <span class="badge badge-light ml-2"></span>
+              <span className="badge badge-light ml-2"></span>
             </button>
-            <button class={`btn ${statusColors[experience]} rounded-pill`}>
-              {experience} <span class="badge badge-light ml-2"></span>
+            <button className={`btn ${statusColors[experience]} rounded-pill`}>
+              {experience} <span className="badge badge-light ml-2"></span>
             </button>
           </Col>
         )}

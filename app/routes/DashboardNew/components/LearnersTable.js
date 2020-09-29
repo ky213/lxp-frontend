@@ -84,15 +84,7 @@ const LearnersTable = ({
   const [{ selectedOrganization }] = useAppState();
   const [openUser, setOpenUser] = useState('');
 
-  useEffect(() => {
-    if (course)
-      reportingService
-        .getAll({ selectedOrganizationId: selectedOrganization.organizationId })
-        .then((res) => {})
-        .catch((error) => {
-          console.log(error);
-        });
-  }, [course]);
+  useEffect(() => {}, [pageId, experience]);
 
   const toggle = (user) =>
     openUser ? setOpenUser('') : setOpenUser(user.email);

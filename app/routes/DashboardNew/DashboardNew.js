@@ -19,7 +19,13 @@ const DashboardNew = (props) => {
   const [experience, setExperience] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+
   const experienceEnum = ['Not started', 'Completed', 'In progress'];
+  const statusColors = {
+    'Not started': 'btn-notStarted',
+    'In progress': 'btn-inProgress',
+    Completed: 'btn-completed',
+  };
 
   useEffect(() => {
     if (experience === experienceEnum[0]) fetchNotAttemptedUsersData();
@@ -116,6 +122,19 @@ const DashboardNew = (props) => {
         {selectedCourses.length == 0 && (
           <Col className="d-flex align-items-center justify-content-center">
             <h3 className="text-center">Please select some courses...</h3>
+          </Col>
+        )}
+      </Row>
+      <Row className="mb-2">
+        {experience && (
+          <Col>
+            <button class="btn btn-primary mr-2 rounded-pill">
+              {selectedCourse.name}
+              <span class="badge badge-light ml-2"></span>
+            </button>
+            <button class={`btn ${statusColors[experience]} rounded-pill`}>
+              {experience} <span class="badge badge-light ml-2"></span>
+            </button>
           </Col>
         )}
       </Row>

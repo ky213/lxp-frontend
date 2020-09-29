@@ -426,3 +426,24 @@ body {
   border-color: #254d77 !important;
   color: #f4f4f7 !important;
 }
+
+.btn-inProgress {
+  background-color: #18a0fb !important;
+  border-color: #18a0fb !important;
+  color: #f4f4f7 !important;
+  cursor: none;
+}
+
+.btn-completed {
+  background-color: #1acb2c !important;
+  border-color: #1acb2c !important;
+  color: #f4f4f7 !important;
+  cursor: none;
+}
+
+.btn-notStarted {
+  background-color: #eb6356 !important;
+  border-color: #eb6356 !important;
+  color: #f4f4f7 !important;
+  cursor: none;
+}

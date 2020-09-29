@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Table,
   Card,
@@ -26,7 +27,17 @@ const ExpandRow = ({ user, course, experience }) => {
                   <Col>
                     <h5 className="text-right">Learner: </h5>
                   </Col>
-                  <Col>{user.email}</Col>
+                  <Col className="text-nowrap">
+                    {user.name} {user.surname}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <h5 className="text-right text-nowrap">
+                      Learner is on screen #12:
+                    </h5>
+                  </Col>
+                  <Col> Phishing attacks</Col>
                 </Row>
               </Col>
               <Col>
@@ -42,6 +53,17 @@ const ExpandRow = ({ user, course, experience }) => {
                   </Col>
                   <Col>{experience}</Col>
                 </Row>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col className="col-3 ml-auto">
+                <a
+                  href="/reporting"
+                  className="stretched-link text-nowrap"
+                  style={{ color: '#007bff !important' }}
+                >
+                  More details on {user.name} {user.surname}
+                </a>
               </Col>
             </Row>
           </CardBody>

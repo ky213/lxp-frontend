@@ -59,23 +59,22 @@ const CourseCard = ({
       <CardBody>
         <div className="mt-3 mb-2">
           <div className="mb-2">
-            <span className="h4 text-decoration-none">{course.name}</span>
-            {isLearner && (
-              <Button
-                color={course.inProgress ? 'primary' : 'secondary'}
-                title="Launch course"
-                className="pull-right"
-                onClick={() => {
-                  if (!courseIsJoined) {
-                    alert('You have to join the course first');
-                    return;
-                  }
-                  onLaunch(course);
-                }}
-              >
-                {course.inProgress ? 'Resume' : 'Start'}
-              </Button>
-            )}
+            <span className="h4 text-decoration-none">{course.name}</span>(
+            <Button
+              color="primary"
+              title="Launch course"
+              className="pull-right"
+              onClick={() => {
+                if (isLearner && !courseIsJoined) {
+                  alert('You have to join the course first');
+                  return;
+                }
+                onLaunch(course);
+              }}
+            >
+              Launch
+            </Button>
+            )
           </div>
           <div
             className="courseDescription"

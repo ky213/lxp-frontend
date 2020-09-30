@@ -39,13 +39,15 @@ const ExpandRow = ({ user, course, experience }) => {
               <Col>
                 <Row className="pt-2">
                   <Col>
-                    <a
-                      href="/reporting"
+                    <Link
+                      to="/reporting"
                       className="stretched-link text-nowrap"
-                      style={{ color: '#007bff !important' }}
+                      style={{
+                        color: '#007bff !important',
+                      }}
                     >
-                      More details on {user.name} {user.surname}
-                    </a>
+                      More details on {user.name} {user.surname}...
+                    </Link>
                   </Col>
                 </Row>
               </Col>

@@ -25,9 +25,9 @@ const ExpandRow = ({ user, course, experience }) => {
               <Col>
                 <Row>
                   <Col>
-                    <h5 className="text-right text-nowrap">Screen #12:</h5>
+                    <h5 className="text-right text-nowrap">Screen #:</h5>
                   </Col>
-                  <Col> Phishing attacks</Col>
+                  <Col>12</Col>
                 </Row>
                 <Row>
                   <Col>
@@ -67,7 +67,6 @@ const LearnersTable = ({
   onPagination,
   pageId,
 }) => {
-  const [{ selectedOrganization }] = useAppState();
   const [openUser, setOpenUser] = useState('');
 
   useEffect(() => {}, [pageId, experience]);
@@ -82,20 +81,13 @@ const LearnersTable = ({
           <thead>
             <tr>
               <th></th>
-              <th className="align-middle bt-0 ">Name</th>
-              <th className="align-middle bt-0 ">surname</th>
+              <th className="align-middle bt-0 ">Full Name</th>
               <th className="align-middle bt-0 ">Email</th>
-              <th className="align-middle bt-0 ">
-                total number of answers (correct and wrong)
-              </th>
-              <th className="align-middle bt-0 ">
-                Number of incorrect answers
-              </th>
-              <th className="align-middle bt-0 ">Number of correct answers</th>
-              <th className="align-middle bt-0 ">
-                Number of points collected by user in course
-              </th>
               <th className="align-middle bt-0 ">Start Date</th>
+              <th className="align-middle bt-0 ">Correct answers</th>
+              <th className="align-middle bt-0 ">Incorrect answers</th>
+              <th className="align-middle bt-0 ">Total Answers</th>
+              <th className="align-middle bt-0 ">Points collected</th>
             </tr>
           </thead>
           <tbody>
@@ -112,19 +104,24 @@ const LearnersTable = ({
                         style={{ marginBottom: '1rem', cursor: 'pointer' }}
                       ></i>
                     </td>
-                    <td className="align-middle bt-0">{user.name}</td>
-                    <td className="align-middle bt-0">{user.surname}</td>
-                    <td className="align-middle bt-0">{user.email}</td>
-                    <td className="align-middle bt-0">{user.answers_count}</td>
                     <td className="align-middle bt-0">
-                      {user.response_fail_count}
+                      {user.name} {user.surname}
                     </td>
-                    <td className="align-middle bt-0">
+                    <td className="align-middle bt-0 ">{user.email}</td>
+                    <td className="align-middle bt-0 text-nowrap text-center">
+                      {moment(user.start_date).format('DD-MM-YYYY')}
+                    </td>
+                    <td className="align-middle bt-0 text-center">
                       {user.response_success_count}
                     </td>
-                    <td className="align-middle bt-0">{user.scores}</td>
-                    <td className="align-middle bt-0 text-nowrap">
-                      {moment(user.start_date).format('DD-MM-YYYY')}
+                    <td className="align-middle bt-0 text-center">
+                      {user.response_fail_count}
+                    </td>
+                    <td className="align-middle bt-0 text-center">
+                      {user.answers_count}
+                    </td>
+                    <td className="align-middle bt-0 text-center">
+                      {user.scores}
                     </td>
                   </tr>
                   <tr>

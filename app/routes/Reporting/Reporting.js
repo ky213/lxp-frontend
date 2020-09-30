@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import {
   Container,
@@ -12,7 +13,6 @@ import {
   Form,
   FormGroup,
   ButtonToolbar,
-  UncontrolledTooltip,
 } from '@/components';
 import ThemedButton from '@/components/ThemedButton';
 
@@ -24,38 +24,23 @@ import moment from 'moment';
 import { CSVLink } from 'react-csv';
 
 import { reportingService, programService, learnerService } from '@/services';
-import { TinCanLaunch } from '@/helpers';
 import { useAppState } from '@/components/AppState';
+import { isEmpty } from 'lodash';
 
 const Reporting = () => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+  const [{ selectedOrganization }] = useAppState();
   const [statements, setStatements] = useState(null);
-  const [count, setCount] = React.useState(0);
   const [pageId, setPageId] = React.useState(1);
-  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(100);
+  const [totalNumberOfRecords] = React.useState(100);
   const [programs, setPrograms] = React.useState(null);
   const [selectedProgram, setSelectedProgram] = React.useState(null);
   const [learners, setLearners] = React.useState([]);
   const [selectedLearner, setSelectedLearner] = React.useState([]);
   const [experiences, setExperiences] = React.useState([]);
-  const [selectedExperiences, setSelectedExperiences] = React.useState(null);
+  const [selectedExperiences, setSelectedExperiences] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [csvData, setCsvData] = React.useState([]);
   const csvLink = React.useRef();
-
-  let paginationContent = null;
-  if (totalNumberOfRecords > 0) {
-    paginationContent = (
-      <CardFooter className="d-flex justify-content-center pb-0">
-        <Paginations
-          pageId={pageId}
-          setPageId={setPageId}
-          totalNumber={totalNumberOfRecords}
-          recordsPerPage={100}
-        />
-      </CardFooter>
-    );
-  }
 
   React.useEffect(() => {
     const queryParams = queryString.parse(location.search);
@@ -87,28 +72,30 @@ const Reporting = () => {
     fetchData();
   }, [selectedProgram]);
 
-  /*
-    React.useEffect(() => {
-        if(csvData && csvData.length > 1) {
-            csvLink.current.link.click()
-        }
-    }, [csvData])
-    */
-
   const fetchData = async (queryParams) => {
     setLoading(true);
-    const data = await programService.getByCurrentUser(
-      selectedOrganization.organizationId
-    );
-    setPrograms(data);
 
-    if (queryParams.programId) {
-      setSelectedProgram(
-        data.find((program) => program.programId === queryParams.programId)
-      );
-    }
+    const queryExperiences = {
+      'Not started': { name: 'launched', value: 'launcehd' },
+      'In progress': { name: 'attempted', value: 'attempted' },
+      Completed: { name: 'complete', value: 'complete' },
+    };
+
+    if (queryParams.experience)
+      setSelectedExperiences([queryExperiences[queryParams.experience]]);
 
     try {
+      const data = await programService.getByCurrentUser(
+        selectedOrganization.organizationId
+      );
+      setPrograms(data);
+
+      if (queryParams.programId) {
+        setSelectedProgram(
+          data.find((program) => program.programId === queryParams.programId)
+        );
+      }
+
       const response = await learnerService.getAllActive(
         1,
         999,
@@ -135,6 +122,12 @@ const Reporting = () => {
       }
     } catch (error) {
       console.log('Error while fetching learners:', error);
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{JSON.stringify(error)}</p>
+        </div>
+      );
     }
 
     setLoading(false);
@@ -201,6 +194,7 @@ const Reporting = () => {
   };
 
   const getStatements = async (program, learner, experiences) => {
+    setLoading(true);
     const filter = {
       selectedOrganizationId: selectedOrganization.organizationId,
       limit: 100,
@@ -219,23 +213,30 @@ const Reporting = () => {
       filter.experiences = JSON.stringify(experiences);
     }
 
-    const data = await reportingService.getAll(filter);
+    try {
+      const data = await reportingService.getAll(filter);
 
-    setStatements(data.statements);
+      setStatements(data.statements);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{JSON.stringify(error)}</p>
+        </div>
+      );
+    }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await getStatements(
-        selectedProgram,
-        selectedLearner,
-        selectedExperiences
-      );
-      setLoading(false);
-    };
-
-    fetchData();
+    if (
+      selectedProgram &&
+      !isEmpty(selectedLearner) &&
+      !isEmpty(selectedExperiences)
+    ) {
+      getStatements(selectedProgram, selectedLearner, selectedExperiences);
+    }
   }, [selectedProgram, selectedLearner, selectedExperiences]);
 
   const handleProgramChange = (e) => {
@@ -260,7 +261,7 @@ const Reporting = () => {
     if (e && e.length > 0) {
       setSelectedExperiences(e);
     } else {
-      setSelectedExperiences(null);
+      setSelectedExperiences([]);
     }
   };
 
@@ -282,12 +283,6 @@ const Reporting = () => {
     value = value.toString().split('e');
     return +(value[0] + 'e' + (value[1] ? +value[1] + exp : exp));
   }
-
-  /*
-    if(!statements) {
-        return <Loading />;
-    }
-    */
 
   const handleClickExport = async () => {
     await getExport(selectedProgram, selectedLearner, selectedExperiences);
@@ -340,7 +335,7 @@ const Reporting = () => {
                             id="learners"
                             labelKey="fullName"
                             options={learners}
-                            defaultSelected={selectedLearner}
+                            selected={selectedLearner}
                             multiple
                             placeholder="Select learners..."
                             onChange={handleLearnerChange}
@@ -352,25 +347,12 @@ const Reporting = () => {
                             id="experience"
                             labelKey="name"
                             options={experiences}
+                            selected={selectedExperiences}
                             multiple
                             placeholder="Select experience..."
                             onChange={handleExperienceChange}
                           />
                         </FormGroup>
-                        {/*
-                                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                           
-                                            <InputGroup>
-                                                <Input onKeyUp={(e) => onSearch(e)} placeholder="Search for..." />
-                                                <InputGroupAddon addonType="append">
-                                                    <Button color="secondary" outline>
-                                                        <i className="fa fa-search"></i>
-                                                    </Button>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                            </FormGroup>
-                                      
-                                        */}
                       </Form>
                     </div>
                     <ButtonToolbar>
@@ -430,7 +412,7 @@ const Reporting = () => {
                     <tbody>
                       {statements &&
                         statements.map((statement) => (
-                          <tr>
+                          <tr key={statement.id}>
                             <td className="align-middle bt-0">
                               {moment(statement.timestamp).format('LLL')}
                             </td>
@@ -472,8 +454,17 @@ const Reporting = () => {
                 )}
                 {loading && <Loading />}
 
-                {/* END Table */}
-                {paginationContent}
+                {totalNumberOfRecords > 0 && (
+                  <CardFooter className="d-flex justify-content-center pb-0">
+                    <Paginations
+                      key={pageId}
+                      pageId={pageId}
+                      setPageId={setPageId}
+                      totalNumber={totalNumberOfRecords}
+                      recordsPerPage={100}
+                    />
+                  </CardFooter>
+                )}
               </Card>
             </Col>
           </Row>

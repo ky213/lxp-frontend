@@ -40,7 +40,7 @@ const ExpandRow = ({ user, course, experience }) => {
                 <Row className="pt-2">
                   <Col>
                     <Link
-                      to="/reporting"
+                      to={`/reporting/?programId=${course.programId}&userId=${user.userId}&experience=${experience}`}
                       className="stretched-link text-nowrap"
                       style={{
                         color: '#007bff !important',

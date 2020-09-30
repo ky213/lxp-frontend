@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
 import {
   Container,
   Card,
@@ -35,7 +36,7 @@ const Reporting = () => {
   const [programs, setPrograms] = React.useState(null);
   const [selectedProgram, setSelectedProgram] = React.useState(null);
   const [learners, setLearners] = React.useState([]);
-  const [selectedLearner, setSelectedLearner] = React.useState(null);
+  const [selectedLearner, setSelectedLearner] = React.useState([]);
   const [experiences, setExperiences] = React.useState([]);
   const [selectedExperiences, setSelectedExperiences] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -57,36 +58,9 @@ const Reporting = () => {
   }
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const data = await programService.getByCurrentUser(
-        selectedOrganization.organizationId
-      );
-      setPrograms(data);
+    const queryParams = queryString.parse(location.search);
 
-      try {
-        const learners = await learnerService.getAllActive(
-          1,
-          999,
-          null,
-          selectedOrganization.organizationId,
-          (selectedProgram && selectedProgram.programId) || null
-        );
-        setLearners(
-          learners.users.map((usr) => ({
-            employeeId: usr.employeeId,
-            email: usr.email,
-            fullName: `${usr.name} ${usr.surname}`,
-          }))
-        );
-      } catch (error) {
-        console.log('Error while fetching learners:', error);
-      }
-
-      setLoading(false);
-    };
-
-    fetchData();
+    fetchData(queryParams);
   }, []);
 
   React.useEffect(() => {
@@ -120,6 +94,51 @@ const Reporting = () => {
         }
     }, [csvData])
     */
+
+  const fetchData = async (queryParams) => {
+    setLoading(true);
+    const data = await programService.getByCurrentUser(
+      selectedOrganization.organizationId
+    );
+    setPrograms(data);
+
+    if (queryParams.programId) {
+      setSelectedProgram(
+        data.find((program) => program.programId === queryParams.programId)
+      );
+    }
+
+    try {
+      const response = await learnerService.getAllActive(
+        1,
+        999,
+        null,
+        selectedOrganization.organizationId,
+        selectedProgram?.programId || null
+      );
+
+      setLearners(
+        response.users.map((usr) => ({
+          employeeId: usr.employeeId,
+          userId: usr.userId,
+          email: usr.email,
+          fullName: `${usr.name} ${usr.surname}`,
+        }))
+      );
+
+      if (queryParams.userId) {
+        const { name, surname, email } = response.users.find(
+          (user) => user.userId === queryParams.userId
+        );
+
+        setSelectedLearner([{ fullName: `${name} ${surname}`, email }]);
+      }
+    } catch (error) {
+      console.log('Error while fetching learners:', error);
+    }
+
+    setLoading(false);
+  };
 
   const getExport = async (program, learner, experiences) => {
     const filter = {
@@ -229,9 +248,11 @@ const Reporting = () => {
 
   const handleLearnerChange = (e) => {
     if (e && e.length > 0) {
-      setSelectedLearner(e.map((r) => ({ fullName: r.fullName })));
+      setSelectedLearner(
+        e.map((r) => ({ fullName: r.fullName, email: e.email }))
+      );
     } else {
-      setSelectedLearner(null);
+      setSelectedLearner([]);
     }
   };
 
@@ -319,6 +340,7 @@ const Reporting = () => {
                             id="learners"
                             labelKey="fullName"
                             options={learners}
+                            defaultSelected={selectedLearner}
                             multiple
                             placeholder="Select learners..."
                             onChange={handleLearnerChange}

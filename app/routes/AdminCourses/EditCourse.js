@@ -245,11 +245,17 @@ const EditCourse = ({
                                   maxFileSizeKB={200}
                                   defaultImage={selectedLogoDataUrl}
                                   onSelectedImage={(imageDataUrl) => {
-                                    //console.log("Selected image:", imageDataUrl)
-                                    //setFieldValue('logoImage', imageDataUrl);
                                     setSelectedLogoDataUrl(imageDataUrl);
                                   }}
                                 />
+                                <small text="muted">
+                                  - max file size 200KB
+                                </small>
+                                <br />
+                                <small text="muted">
+                                  - for a better view use at least a 400 X 400
+                                  resolution
+                                </small>
                               </Col>
                             </FormGroup>
 

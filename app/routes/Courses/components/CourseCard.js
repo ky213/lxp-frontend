@@ -59,7 +59,7 @@ const CourseCard = ({
       <CardBody>
         <div className="mt-3 mb-2">
           <div className="mb-2">
-            <span className="h4 text-decoration-none">{course.name}</span>(
+            <span className="h4 text-decoration-none">{course.name}</span>
             <Button
               color="primary"
               title="Launch course"
@@ -74,7 +74,6 @@ const CourseCard = ({
             >
               Launch
             </Button>
-            )
           </div>
           <div
             className="courseDescription"

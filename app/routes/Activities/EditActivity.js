@@ -169,7 +169,7 @@ export const EditActivity = ({
       setShowRepeatOptions(selectedActivity.repeat);
       setRRule(selectedActivity.rrule);
       setFiles(selectedActivity.files);
-      setUrls(selectedActivity.links);
+      setUrls(selectedActivity.links.filter((l) => l?.url?.length > 0));
     }
   }, [selectedActivity]);
 
@@ -236,46 +236,49 @@ export const EditActivity = ({
   };
 
   const handleRemoveLink = async (link) => {
-    if (link) {
-      if (link.activityLinkId) {
-        await activityService.deleteActivityLink(link.activityLinkId);
+    if (!confirm('Confirm delete link?')) return;
 
-        setUrls((z) =>
-          z.filter((f) => f.activityLinkId != link.activityLinkId)
-        );
+    if (link?.activityLinkId) {
+      await activityService.deleteActivityLink(link.activityLinkId);
 
-        alert('The link has been deleted');
-      } else {
-        setUrls((z) => z.filter((f) => f.url != link.url));
-      }
+      setUrls((z) => z.filter((f) => f.activityLinkId != link.activityLinkId));
+
+      alert('The link has been deleted');
+    } else {
+      setUrls((z) => z.filter((f) => f.url != link.url));
     }
   };
 
   const handleAddLink = async (url) => {
     let link = { url: url, activityId: selectedActivity.activityId };
 
-    activityService
-      .addActivityLink(link)
-      .then((activityLinkId) => {
-        link = { ...link, activityLinkId: activityLinkId, status: 'uploaded' };
+    if (url)
+      activityService
+        .addActivityLink(link)
+        .then((activityLinkId) => {
+          link = {
+            ...link,
+            activityLinkId: activityLinkId,
+            status: 'uploaded',
+          };
 
-        setUrls((oldUrls) => oldUrls.concat(link));
+          setUrls([...urls, link]);
 
-        alert('The link has sucessfully been added!');
-        return link;
-      })
-      .catch((error) => {
-        link = { ...link, status: 'error' };
-        setUrls((z) =>
-          z.map((f) => {
-            if (f.url != link.url) return f;
+          alert('The link has sucessfully been added!');
+          return link;
+        })
+        .catch((error) => {
+          link = { ...link, status: 'error' };
+          setUrls((z) =>
+            z.map((f) => {
+              if (f.url != link.url) return f;
 
-            return link;
-          })
-        );
+              return link;
+            })
+          );
 
-        alert(`Error while adding the link to the activity!`, error);
-      });
+          alert(`Error while adding the link to the activity!`, error);
+        });
   };
 
   //console.log("Selected activity:", selectedActivity, userPrograms, userPrograms.filter(up => up.programId == selectedActivity.programId))
@@ -646,7 +649,7 @@ export const EditActivity = ({
                                             )}
                                         </Col>
                                       </FormGroup>
-                                    )}                                   
+                                    )}
                                     <FormGroup row>
                                       <Label for="type" sm={3}>
                                         Activity type

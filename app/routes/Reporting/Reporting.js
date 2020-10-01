@@ -242,16 +242,6 @@ const Reporting = () => {
     }
   };
 
-  const handleLearnerChange = (e) => {
-    if (e && e.length > 0) {
-      setSelectedLearner(
-        e.map((r) => ({ fullName: r.fullName, email: e.email }))
-      );
-    } else {
-      setSelectedLearner([]);
-    }
-  };
-
   const handleExperienceChange = (e) => {
     if (e && e.length > 0) {
       setSelectedExperiences(e);
@@ -333,7 +323,7 @@ const Reporting = () => {
                             selected={selectedLearner}
                             multiple
                             placeholder="Select learners..."
-                            onChange={handleLearnerChange}
+                            onChange={setSelectedLearner}
                           />
                         </FormGroup>
                         <FormGroup className="my-2 mr-sm-2 mb-sm-0">
@@ -456,7 +446,7 @@ const Reporting = () => {
                       pageId={pageId}
                       setPageId={setPageId}
                       totalNumber={totalNumberOfRecords}
-                      recordsPerPage={100}
+                      recordsPerPage={10}
                     />
                   </CardFooter>
                 )}

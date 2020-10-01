@@ -248,9 +248,6 @@ const EditCourse = ({
                                     setSelectedLogoDataUrl(imageDataUrl);
                                   }}
                                 />
-                                <strong>
-                                  (Max file size 200KB. 400 X 400 resolution)
-                                </strong>
                               </Col>
                             </FormGroup>
 

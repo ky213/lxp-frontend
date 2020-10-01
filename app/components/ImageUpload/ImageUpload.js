@@ -86,6 +86,7 @@ class ImageUpload extends Component {
           <InputGroupAddon addonType="prepend">
             <i className="fa fa-fw fa-file-picture-o mr-2"></i>
           </InputGroupAddon>
+
           <CustomInput
             type="file"
             accept="image/*"
@@ -94,9 +95,16 @@ class ImageUpload extends Component {
             name="customFile"
           />
         </InputGroup>
+        <p
+          class="my-2 font-weight-bold text-dark"
+          style={{ fontFamily: 'sans-serif' }}
+        >
+          (Max file size 200KB. 400 X 400 resolution)
+        </p>
+
         <ImagePlaceholder
           image={imagePreviewUrl || this.props.defaultImage}
-          className="figure mr-2 mb-0"
+          className="mt-0 figure mr-2 mb-0"
         />
       </div>
     );

@@ -25,7 +25,6 @@ import { CSVLink } from 'react-csv';
 
 import { reportingService, programService, learnerService } from '@/services';
 import { useAppState } from '@/components/AppState';
-import { isEmpty } from 'lodash';
 
 const Reporting = () => {
   const [{ selectedOrganization }] = useAppState();
@@ -78,7 +77,7 @@ const Reporting = () => {
     const queryExperiences = {
       'Not started': { name: 'launched', value: 'launcehd' },
       'In progress': { name: 'attempted', value: 'attempted' },
-      Completed: { name: 'complete', value: 'complete' },
+      Completed: { name: 'completed', value: 'completed' },
     };
 
     if (queryParams.experience)
@@ -230,11 +229,7 @@ const Reporting = () => {
   };
 
   useEffect(() => {
-    if (
-      selectedProgram &&
-      !isEmpty(selectedLearner) &&
-      !isEmpty(selectedExperiences)
-    ) {
+    if (selectedProgram) {
       getStatements(selectedProgram, selectedLearner, selectedExperiences);
     }
   }, [selectedProgram, selectedLearner, selectedExperiences]);

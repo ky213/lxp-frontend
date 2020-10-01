@@ -278,7 +278,6 @@ const Reporting = () => {
     <React.Fragment>
       <Container>
         <HeaderMain title="Learner Reporting" />
-
         <React.Fragment>
           <Row>
             <Col lg={12}>

@@ -48,7 +48,7 @@ const Reporting = () => {
   }, []);
 
   React.useEffect(() => {
-    const fetchData = async () => {
+    const fetchExperiences = async () => {
       setLoading(true);
 
       const exp = await reportingService.getExperiences({
@@ -68,7 +68,8 @@ const Reporting = () => {
       setLoading(false);
     };
 
-    fetchData();
+    fetchExperiences();
+    getStatements(selectedProgram);
   }, [selectedProgram]);
 
   const fetchData = async (queryParams) => {
@@ -120,7 +121,6 @@ const Reporting = () => {
         setSelectedLearner([{ fullName: `${name} ${surname}`, email }]);
       }
     } catch (error) {
-      console.log('Error while fetching learners:', error);
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>

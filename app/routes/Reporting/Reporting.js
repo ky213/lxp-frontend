@@ -30,7 +30,7 @@ const Reporting = () => {
   const [{ selectedOrganization }] = useAppState();
   const [statements, setStatements] = useState(null);
   const [pageId, setPageId] = React.useState(1);
-  const [totalNumberOfRecords] = React.useState(100);
+  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
   const [programs, setPrograms] = React.useState(null);
   const [selectedProgram, setSelectedProgram] = React.useState(null);
   const [learners, setLearners] = React.useState([]);
@@ -196,8 +196,8 @@ const Reporting = () => {
     setLoading(true);
     const filter = {
       selectedOrganizationId: selectedOrganization.organizationId,
-      limit: 100,
-      take: 100,
+      limit: 10,
+      take: 10,
       page: pageId,
     };
     if (program && program.programId) {
@@ -216,6 +216,7 @@ const Reporting = () => {
       const data = await reportingService.getAll(filter);
 
       setStatements(data.statements);
+      setTotalNumberOfRecords(data.totalNumberOfRecords);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -232,7 +233,7 @@ const Reporting = () => {
     if (selectedProgram) {
       getStatements(selectedProgram, selectedLearner, selectedExperiences);
     }
-  }, [selectedProgram, selectedLearner, selectedExperiences]);
+  }, [selectedProgram, selectedLearner, selectedExperiences, pageId]);
 
   const handleProgramChange = (e) => {
     if (e && e.length > 0) {

@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run start:dev",
+    "dev": "webpack-dev-server --inline  --open --hot --env.ENVIRONMENT=development --config ./build/webpack.config.client.dev.js",
+    "start:dev": "node ./build/cli-tools.js --clear dist --create dist && webpack-dev-server --open --hot --host 0.0.0.0 --env.ENVIRONMENT=development --config ./build/webpack.config.client.dev.js",
     "build:dev": "node ./build/cli-tools.js --clear dist --create dist && webpack --env.ENVIRONMENT=development --config ./build/webpack.config.client.dev.js",
     "build:prod": "node ./build/cli-tools.js --clear dist --create dist && webpack --env.ENVIRONMENT=production --config ./build/webpack.config.client.prod.js",
-    "start:dev": "node ./build/cli-tools.js --clear dist --create dist && webpack-dev-server --open --hot --host 0.0.0.0 --env.ENVIRONMENT=development --config ./build/webpack.config.client.dev.js",
     "start:prod": "node ./build/cli-tools.js --clear dist --create dist && webpack-dev-server --env.ENVIRONMENT=production --config ./build/webpack.config.client.prod.js"
   },
   "author": "Webkom",
@@ -26,6 +27,7 @@
     "babel-plugin-transform-imports": "^2.0.0",
     "babel-plugin-universal-import": "^4.0.2",
     "circular-dependency-plugin": "^5.0.2",
+    "clean-webpack-plugin": "^3.0.0",
     "commander": "^2.20.0",
     "css-loader": "^3.1.0",
     "dotenv": "^8.2.0",

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { courseService } from '@/services';
 import { Container, Row, Col } from '@/components';
 import { useAppState } from '@/components/AppState';
+import { hot } from 'react-hot-loader';
 
 import { HeaderMain } from '@/routes/components/HeaderMain';
 import { HeaderDemo } from '@/routes/components/HeaderDemo';
@@ -156,4 +157,4 @@ const DashboardNew = (props) => {
   );
 };
 
-export default DashboardNew;
+export default hot(module)(DashboardNew);

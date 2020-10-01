@@ -2,10 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 const dotenv = require('dotenv');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CircularDependencyPlugin = require('circular-dependency-plugin');
 var ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 var config = require('../config');
 
@@ -42,7 +40,7 @@ module.exports = (env) => {
     target: 'web',
     mode: 'development',
     entry: {
-      app: [path.join(config.srcDir, 'index.js')],
+      app: [path.join(config.srcDir)],
     },
     output: {
       filename: '[name].bundle.js',
@@ -67,14 +65,6 @@ module.exports = (env) => {
     },
     plugins: [
       new webpack.DefinePlugin(envKeys),
-      /*
-            new CircularDependencyPlugin({
-                exclude: /a\.js|node_modules/,
-                failOnError: true,
-                allowAsyncCycles: false,
-                cwd: process.cwd(),
-            }),
-            */
       new HtmlWebpackPlugin({
         template: config.srcHtmlLayout,
         inject: false,
@@ -87,7 +77,7 @@ module.exports = (env) => {
       new webpack.NamedModulesPlugin(),
       new webpack.HotModuleReplacementPlugin(),
       new ExtractCssChunks(),
-      // new BundleAnalyzerPlugin()
+      new CleanWebpackPlugin(),
     ],
     module: {
       rules: [
@@ -180,12 +170,11 @@ module.exports = (env) => {
     },
     devServer: {
       hot: true,
-      contentBase: config.serveDir,
       compress: true,
       historyApiFallback: {
         index: BASE_PATH,
       },
-      host: '0.0.0.0',
+      host: 'localhost',
       port: 4101,
     },
   };

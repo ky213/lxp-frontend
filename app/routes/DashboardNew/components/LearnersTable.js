@@ -1,63 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Table,
-  Card,
-  CardFooter,
-  CardBody,
-  Collapse,
-  Row,
-  Col,
-} from '@/components';
 import moment from 'moment';
+import { hot } from 'react-hot-loader';
 
+import { Table, Card, CardFooter } from '@/components';
 import { Paginations } from '@/routes/components/Paginations';
-import { reportingService } from '../../../services';
-import { useAppState } from '@/components/AppState';
-
-const ExpandRow = ({ user, course, experience }) => {
-  return (
-    <td colSpan="9">
-      <Collapse isOpen={true}>
-        <Card className="border-0">
-          <CardBody>
-            <Row>
-              <Col>
-                <Row>
-                  <Col>
-                    <h5 className="text-right text-nowrap">Screen #:</h5>
-                  </Col>
-                  <Col>12</Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <h5 className="text-right">Activity: </h5>
-                  </Col>
-                  <Col>{course.name}</Col>
-                </Row>
-              </Col>
-              <Col>
-                <Row className="pt-2">
-                  <Col>
-                    <Link
-                      to={`/reporting/?programId=${course.programId}&userId=${user.userId}&experience=${experience}`}
-                      className="stretched-link text-nowrap"
-                      style={{
-                        color: '#007bff !important',
-                      }}
-                    >
-                      More details on {user.name} {user.surname}...
-                    </Link>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </CardBody>
-        </Card>
-      </Collapse>
-    </td>
-  );
-};
+import ExpandRow from './ExpandRow';
 
 const LearnersTable = ({
   users,
@@ -151,4 +98,4 @@ const LearnersTable = ({
   );
 };
 
-export default LearnersTable;
+export default hot(module)(LearnersTable);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { hot } from 'react-hot-loader';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import {
@@ -459,4 +460,4 @@ const Reporting = () => {
   );
 };
 
-export default Reporting;
+export default hot(module)(Reporting);

@@ -1,16 +1,16 @@
-import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import ReactQuill from 'react-quill';
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
-import styled from 'styled-components';
-import ThemedButton from '@/components/ThemedButton';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import axios from 'axios';
-import config from '@/config';
-import { authHeader, handleResponse, buildQuery } from '@/helpers';
-import ImageUpload from '@/components/ImageUpload';
+import React from 'react'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import ReactQuill from 'react-quill'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+import styled from 'styled-components'
+import ThemedButton from '@/components/ThemedButton'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import axios from 'axios'
+import config from '@/config'
+import { authHeader, handleResponse, buildQuery } from '@/helpers'
+import ImageUpload from '@/components/ImageUpload'
 
 import {
   Row,
@@ -24,11 +24,12 @@ import {
   FormGroup,
   Label,
   Loading,
-} from '@/components';
-import { programService } from '@/services';
-import { Consumer } from '@/components/Theme/ThemeContext';
-import { useAppState } from '@/components/AppState';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+} from '@/components'
+import { programService } from '@/services'
+import { Consumer } from '@/components/Theme/ThemeContext'
+import { useAppState } from '@/components/AppState'
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable'
+import { hot } from 'react-hot-loader'
 
 const EditCourse = ({
   course,
@@ -39,48 +40,48 @@ const EditCourse = ({
   hideAlertMessage,
   updateCourseList,
 }) => {
-  const [{ selectedOrganization }] = useAppState();
-  const [programs, setPrograms] = React.useState([]);
+  const [{ selectedOrganization }] = useAppState()
+  const [programs, setPrograms] = React.useState([])
   //const [startingDate, setStartingDate] = React.useState(null);
 
-  const [programsLoaded, setProgramsLoaded] = React.useState(false);
-  const [formLoaded, setFormLoaded] = React.useState(false);
-  const [uploadProgress, setUploadProgress] = React.useState(0);
-  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState('');
-  const [courseFileName, setCourseFileName] = React.useState('');
+  const [programsLoaded, setProgramsLoaded] = React.useState(false)
+  const [formLoaded, setFormLoaded] = React.useState(false)
+  const [uploadProgress, setUploadProgress] = React.useState(0)
+  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState('')
+  const [courseFileName, setCourseFileName] = React.useState('')
 
   React.useEffect(() => {
     programService
       .getByCurrentUser(selectedOrganization.organizationId)
-      .then((data) => {
-        setPrograms(data);
-        setProgramsLoaded(true);
-      });
-  }, []);
+      .then(data => {
+        setPrograms(data)
+        setProgramsLoaded(true)
+      })
+  }, [])
 
   React.useEffect(() => {
-    if (programsLoaded) setFormLoaded(true);
-  }, [programsLoaded]);
+    if (programsLoaded) setFormLoaded(true)
+  }, [programsLoaded])
 
   React.useEffect(() => {
     if (course) {
-      setSelectedLogoDataUrl(course.image);
-      setCourseFileName(course.contentPath);
+      setSelectedLogoDataUrl(course.image)
+      setCourseFileName(course.contentPath)
     } else {
-      setSelectedLogoDataUrl(null);
+      setSelectedLogoDataUrl(null)
     }
-  }, [course]);
+  }, [course])
 
   const cancel = () => {
-    onCancel();
-  };
+    onCancel()
+  }
 
   const InvalidFeedback = styled.section`
     width: 100%;
     margin-top: 0.25rem;
     font-size: 0.75rem;
     color: #ed1c24;
-  `;
+  `
 
   const modules = {
     toolbar: [
@@ -94,7 +95,7 @@ const EditCourse = ({
       ],
       ['clean'],
     ],
-  };
+  }
 
   const formats = [
     'header',
@@ -106,12 +107,12 @@ const EditCourse = ({
     'list',
     'bullet',
     'indent',
-  ];
+  ]
 
   return (
     (formLoaded && (
       <Consumer>
-        {(themeState) => (
+        {themeState => (
           <Formik
             {...themeState}
             enableReinitialize={true}
@@ -134,26 +135,26 @@ const EditCourse = ({
               { name, description, programId, fileData, startingDate },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
-              setSubmitting(true);
-              const formData = new FormData();
-              if (fileData) formData.append('tincan', fileData.name);
-              formData.append('logo', selectedLogoDataUrl);
-              formData.append('name', name);
-              formData.append('description', description);
-              formData.append('programId', programId);
-              formData.append('startingDate', startingDate);
+              setSubmitting(true)
+              const formData = new FormData()
+              if (fileData) formData.append('tincan', fileData.name)
+              formData.append('logo', selectedLogoDataUrl)
+              formData.append('name', name)
+              formData.append('description', description)
+              formData.append('programId', programId)
+              formData.append('startingDate', startingDate)
               formData.append(
                 'selectedOrganization',
                 selectedOrganization.organizationId
-              );
+              )
 
-              let httpMethod = '';
+              let httpMethod = ''
               if (course) {
-                httpMethod = 'PUT';
-                formData.append('courseId', course.courseId);
-                formData.append('contentPath', course.contentPath);
+                httpMethod = 'PUT'
+                formData.append('courseId', course.courseId)
+                formData.append('contentPath', course.contentPath)
               } else {
-                httpMethod = 'POST';
+                httpMethod = 'POST'
               }
 
               await axios({
@@ -165,9 +166,9 @@ const EditCourse = ({
                 data: formData,
                 url: config.apiUrl + '/courses',
               })
-                .then((resp) => {
+                .then(resp => {
                   if (fileData) {
-                    let uploadUrl = resp.data.uploadUrl;
+                    let uploadUrl = resp.data.uploadUrl
 
                     axios({
                       method: 'PUT',
@@ -176,30 +177,30 @@ const EditCourse = ({
                       headers: {
                         'Content-Type': fileData.type,
                       },
-                      onUploadProgress: (ev) => {
-                        const progress = (ev.loaded / ev.total) * 100;
-                        setUploadProgress(Math.round(progress));
+                      onUploadProgress: ev => {
+                        const progress = (ev.loaded / ev.total) * 100
+                        setUploadProgress(Math.round(progress))
                       },
                     })
-                      .then((resp) => {
+                      .then(resp => {
                         // our mocked response will always return true
                         // in practice, you would want to use the actual response object
                         //setUploadStatus(true);
-                        setSubmitting(false);
-                        finishInsert();
+                        setSubmitting(false)
+                        finishInsert()
                       })
-                      .catch((err) => {
-                        console.error(err);
-                        throw err;
-                      });
+                      .catch(err => {
+                        console.error(err)
+                        throw err
+                      })
                   }
-                  setSubmitting(false);
-                  finishInsert();
+                  setSubmitting(false)
+                  finishInsert()
                 })
-                .catch((err) => console.error(err));
+                .catch(err => console.error(err))
             }}
           >
-            {(formikProps) => {
+            {formikProps => {
               return (
                 <React.Fragment>
                   <Row>
@@ -244,8 +245,8 @@ const EditCourse = ({
                                   name="logoImage"
                                   maxFileSizeKB={200}
                                   defaultImage={selectedLogoDataUrl}
-                                  onSelectedImage={(imageDataUrl) => {
-                                    setSelectedLogoDataUrl(imageDataUrl);
+                                  onSelectedImage={imageDataUrl => {
+                                    setSelectedLogoDataUrl(imageDataUrl)
                                   }}
                                 />
                               </Col>
@@ -259,7 +260,7 @@ const EditCourse = ({
                                 <ReactQuill
                                   value={formikProps.values.description}
                                   name="text"
-                                  onChange={(x) =>
+                                  onChange={x =>
                                     formikProps.setFieldValue('description', x)
                                   }
                                   modules={modules}
@@ -311,7 +312,7 @@ const EditCourse = ({
                                     selected={formikProps.values.startingDate}
                                     showMonthDropdown
                                     showYearDropdown
-                                    onChange={(date) =>
+                                    onChange={date =>
                                       formikProps.setFieldValue(
                                         'startingDate',
                                         date
@@ -347,12 +348,12 @@ const EditCourse = ({
                                   required
                                 >
                                   <option value="">Select a program</option>
-                                  {programs.map((p) => {
+                                  {programs.map(p => {
                                     return (
                                       <option value={p.programId}>
                                         {p.name}
                                       </option>
-                                    );
+                                    )
                                   })}
                                 </Field>
                                 {formikProps.errors.programId &&
@@ -386,15 +387,15 @@ const EditCourse = ({
                                       name="courseFile"
                                       className="custom-file-input"
                                       required={!course}
-                                      onChange={(f) => {
+                                      onChange={f => {
                                         formikProps.setFieldValue(
                                           'fileData',
                                           f.target.files[0]
-                                        );
+                                        )
 
                                         setCourseFileName(
                                           f.target.files[0].name
-                                        );
+                                        )
                                       }}
                                       accept=".zip"
                                     />
@@ -438,13 +439,13 @@ const EditCourse = ({
                   </Row>
                   {/* END Section 2 */}
                 </React.Fragment>
-              );
+              )
             }}
           </Formik>
         )}
       </Consumer>
     )) || <Loading />
-  );
-};
+  )
+}
 
-export default EditCourse;
+export default hot(module)(EditCourse)

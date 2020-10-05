@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   InputGroup,
   InputGroupAddon,
   CustomInput,
   Media,
   Button,
-} from '@/components';
+} from '@/components'
 
-import logoPlaceholder from './placeholder.png';
-import styled from 'styled-components';
-import { ToastContainer, toast } from 'react-toastify';
+import logoPlaceholder from './placeholder.png'
+import styled from 'styled-components'
+import { ToastContainer, toast } from 'react-toastify'
 
 const ImagePlaceholder = styled.figure`
   border: 2px dashed #dee2e6;
@@ -20,10 +20,10 @@ const ImagePlaceholder = styled.figure`
   height: 125px;
   background-color: #000;
   background-size: cover;
-  background-image: url(${(props) =>
+  background-image: url(${props =>
     props.image ? props.image : logoPlaceholder});
   background-position: center center;
-`;
+`
 
 const contentError = ({ errorMessage, closeToast }) => (
   <Media>
@@ -39,7 +39,7 @@ const contentError = ({ errorMessage, closeToast }) => (
         <Button
           color="danger"
           onClick={() => {
-            closeToast;
+            closeToast
           }}
         >
           I Understand
@@ -47,36 +47,36 @@ const contentError = ({ errorMessage, closeToast }) => (
       </div>
     </Media>
   </Media>
-);
+)
 
 class ImageUpload extends Component {
   state = {
     file: '',
     imagePreviewUrl: '',
-  };
+  }
 
-  handleImageChange = (e) => {
-    e.preventDefault();
-    const { maxFileSizeKB } = this.props;
-    const maxFileSize = (maxFileSizeKB || 150) * 1024;
-    let reader = new FileReader();
-    let file = e.target.files[0];
+  handleImageChange = e => {
+    e.preventDefault()
+    const { maxFileSizeKB } = this.props
+    const maxFileSize = (maxFileSizeKB || 150) * 1024
+    let reader = new FileReader()
+    let file = e.target.files[0]
 
     if (file && file.size && file.size > maxFileSize) {
-      toast.error(contentError({ errorMessage: 'Image file size too large!' }));
-      return;
+      toast.error(contentError({ errorMessage: 'Image file size too large!' }))
+      return
     }
 
     reader.onloadend = () => {
-      this.props.onSelectedImage(reader.result);
-      this.setState({ file: file, imagePreviewUrl: reader.result });
-    };
-    reader.readAsDataURL(file);
-  };
+      this.props.onSelectedImage(reader.result)
+      this.setState({ file: file, imagePreviewUrl: reader.result })
+    }
+    reader.readAsDataURL(file)
+  }
 
   render() {
-    let { imagePreviewUrl } = this.state;
-    let $imagePreview = 'null';
+    let { imagePreviewUrl } = this.state
+    let $imagePreview = 'null'
 
     //console.log("Default image: ",defaultImage )
 
@@ -95,20 +95,17 @@ class ImageUpload extends Component {
             name="customFile"
           />
         </InputGroup>
-        <p
-          class="my-2 font-weight-bold text-dark"
-          style={{ fontFamily: 'sans-serif' }}
-        >
-          (Max file size 200KB. 400 X 400 resolution)
-        </p>
+        <small class="my-2 d-block">
+          Max file size 200KB. 400 X 400 resolution
+        </small>
 
         <ImagePlaceholder
           image={imagePreviewUrl || this.props.defaultImage}
           className="mt-0 figure mr-2 mb-0"
         />
       </div>
-    );
+    )
   }
 }
 
-export { ImageUpload };
+export { ImageUpload }

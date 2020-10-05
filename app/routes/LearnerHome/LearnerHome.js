@@ -1,47 +1,60 @@
-import { Card, CardBody, CardColumns, Col, Container, Row } from '@/components';
-import { useAppState } from '@/components/AppState';
-import { TinCanLaunch } from '@/helpers';
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { Profile } from '@/routes/components/Profile';
-import { CourseCard } from '@/routes/Courses/components/CourseCard';
-import { userService } from '@/services';
-import moment from 'moment';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Responsive } from 'responsive-react';
-import styled from 'styled-components';
-import { Role } from '@/helpers';
+import React from 'react'
+import moment from 'moment'
+import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import { Typeahead } from 'react-bootstrap-typeahead'
+
+import {
+  Card,
+  CardBody,
+  CardColumns,
+  Col,
+  Container,
+  Row,
+  Form,
+  FormGroup,
+} from '@/components'
+import { useAppState } from '@/components/AppState'
+import { TinCanLaunch } from '@/helpers'
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { Profile } from '@/routes/components/Profile'
+import { CourseCard } from '@/routes/Courses/components/CourseCard'
+import { userService, programService } from '@/services'
+import { Responsive } from 'responsive-react'
+import { Role } from '@/helpers'
 
 const TodayEventHeader = styled.div`
   padding: 1rem;
-  background: ${(props) => props.bgColor || '#FFF'};
+  background: ${props => props.bgColor || '#FFF'};
   color: #404e73;
   align-items: center;
-`;
+`
 
 const TodayEvent = styled.div`
   padding: 1rem;
-  background: ${(props) => props.bgColor || '#EFF0F4'};
+  background: ${props => props.bgColor || '#EFF0F4'};
   color: #404e73;
   align-items: center;
-`;
+`
 
 const UpcomingEventHeader = styled.div`
   padding: 0.5rem 1rem;
-  border-bottom: 2px solid ${(props) => props.borderColor || '#38456C'};
+  border-bottom: 2px solid ${props => props.borderColor || '#38456C'};
   color: #404e73;
-`;
+`
 
 const UpcomingEvent = styled.div`
   padding: 1rem;
   padding-right: 0;
-  border-bottom: 1px solid ${(props) => props.borderColor || '#D4D7DF'};
+  border-bottom: 1px solid ${props => props.borderColor || '#D4D7DF'};
   color: #404e73;
   align-items: center;
-`;
+`
 
 const UpcomingBadge = styled.span`
-  background: ${(props) => props.borderColor || '#F66E60'};
+  background: ${props => props.borderColor || '#F66E60'};
   padding: 0.5rem;
   border-radius: 0.15rem;
   letter-spacing: 1px;
@@ -51,42 +64,72 @@ const UpcomingBadge = styled.span`
   white-space: nowrap;
   font-size: 0.8rem;
   font-weight: bold;
-`;
+`
 const EventStatusIcon = styled.i`
   height: 10px;
   width: 10px;
   display: inline-block;
   border-radius: 50%;
-  background: ${(props) => props.color || '#096BF2'};
-`;
+  background: ${props => props.color || '#096BF2'};
+`
 
 const LearnerHome = () => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const user = currentUser && currentUser.user;
-  const [todayEvents, setTodayEvents] = React.useState(null);
-  const [upcomingEvents, setUpcomingEvents] = React.useState(null);
-  const [joinedCourses, setJoinedCourses] = React.useState([]);
-  const isLearner = user.role === Role.Learner;
+  const [{ currentUser }] = useAppState()
+  const user = currentUser && currentUser.user
+  const [todayEvents, setTodayEvents] = React.useState(null)
+  const [upcomingEvents, setUpcomingEvents] = React.useState(null)
+  const [joinedCourses, setJoinedCourses] = React.useState([])
+  const [programs, setPrograms] = React.useState([])
+  const isLearner = user.role === Role.Learner
 
   React.useEffect(() => {
+    getJoinedCourses()
+
+    programService
+      .getByCurrentUser(user.organizationId)
+      .then(data => {
+        setPrograms(data)
+      })
+      .catch(error => {
+        console.log('Error:::', error)
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{JSON.stringify(error)}</p>
+          </div>
+        )
+      })
+  }, [])
+
+  const getJoinedCourses = () => {
     userService
       .getByEmployeeId(user.employeeId)
-      .then((employee) => setJoinedCourses(employee.joinedCourses))
-      .then((error) => {
-        console.log('Joined Courses:', error);
-      });
-  }, []);
+      .then(employee => setJoinedCourses(employee.joinedCourses))
+      .catch(error => {
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{JSON.stringify(error)}</p>
+          </div>
+        )
+      })
+  }
 
-  const handleLaunch = (course) => {
-    TinCanLaunch.launchContent(
-      user,
-      course?.programId,
-      course,
-      (launchLink) => {
-        window.open(launchLink);
-      }
-    );
-  };
+  const handleLaunch = course => {
+    TinCanLaunch.launchContent(user, course?.programId, course, launchLink => {
+      window.open(launchLink)
+    })
+  }
+
+  const filterCourses = programsList => {
+    const programId = programsList[0]?.programId
+
+    if (programsList.length > 0)
+      setJoinedCourses(
+        joinedCourses.filter(course => course.programId === programId)
+      )
+    else getJoinedCourses()
+  }
 
   return (
     (user && (
@@ -109,12 +152,25 @@ const LearnerHome = () => {
               </Card>
             </Col>
           </Row>
+
           <Row className="flex-column">
             <HeaderMain title="My Courses" className="my-4" />
+            <Row className="mb-4">
+              <Col className="col-3">
+                <Typeahead
+                  clearButton
+                  id="programs"
+                  labelKey="name"
+                  options={programs}
+                  placeholder="Program..."
+                  onChange={filterCourses}
+                />
+              </Col>
+            </Row>
             <CardColumns>
               {joinedCourses
                 .sort((a, b) => a.name < b.name)
-                .map((course) => (
+                .map(course => (
                   <CourseCard
                     key={course.courseId}
                     course={course}
@@ -167,7 +223,7 @@ const LearnerHome = () => {
                           }`}</small>
                         </p>
                       </TodayEvent>
-                    );
+                    )
                   })}
                 </div>
               )}
@@ -223,7 +279,7 @@ const LearnerHome = () => {
                           )}
                         </Col>
                       </UpcomingEvent>
-                    );
+                    )
                   })}
                 </>
               )}
@@ -244,7 +300,7 @@ const LearnerHome = () => {
       </React.Fragment>
     )) ||
     null
-  );
-};
+  )
+}
 
-export default LearnerHome;
+export default hot(module)(LearnerHome)

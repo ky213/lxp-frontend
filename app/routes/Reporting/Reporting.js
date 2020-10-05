@@ -256,7 +256,7 @@ const Reporting = () => {
   ])
 
   const handleProgramChange = e => {
-    if (e && e.length > 0) {
+    if (e?.length > 0) {
       setSelectedProgram(e[0])
     } else {
       setSelectedProgram(null)
@@ -366,7 +366,6 @@ const Reporting = () => {
                               id="toDate"
                               name="toDate"
                               className="mr-2"
-                              placeholderText="From date..."
                               customInput={<AddonInput />}
                               dateFormat="dd/MM/yyyy h:mm aa"
                               autoComplete="off"
@@ -386,7 +385,6 @@ const Reporting = () => {
                             <DatePicker
                               id="toDate"
                               name="toDate"
-                              placeholderText="To date..."
                               customInput={<AddonInput />}
                               dateFormat="dd/MM/yyyy h:mm aa"
                               autoComplete="off"

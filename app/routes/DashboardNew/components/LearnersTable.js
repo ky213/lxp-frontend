@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
-import { hot } from 'react-hot-loader';
+import React, { useState, useEffect } from 'react'
+import moment from 'moment'
+import { hot } from 'react-hot-loader'
 
-import { Table, Card, CardFooter } from '@/components';
-import { Paginations } from '@/routes/components/Paginations';
-import ExpandRow from './ExpandRow';
+import { Table, Card, CardFooter } from '@/components'
+import { Paginations } from '@/routes/components/Paginations'
+import ExpandRow from './ExpandRow'
 
 const LearnersTable = ({
   users,
@@ -14,12 +14,11 @@ const LearnersTable = ({
   onPagination,
   pageId,
 }) => {
-  const [openUser, setOpenUser] = useState('');
+  const [openUser, setOpenUser] = useState('')
 
-  useEffect(() => {}, [pageId, experience]);
+  useEffect(() => {}, [pageId, experience])
 
-  const toggle = (user) =>
-    openUser ? setOpenUser('') : setOpenUser(user.email);
+  const toggle = user => (openUser ? setOpenUser('') : setOpenUser(user.email))
 
   return (
     <Card className="mb-3">
@@ -39,7 +38,7 @@ const LearnersTable = ({
           </thead>
           <tbody>
             {users &&
-              users.map((user) => (
+              users.map(user => (
                 <React.Fragment key={user.email}>
                   <tr>
                     <td className="align-middle bt-0">
@@ -88,6 +87,7 @@ const LearnersTable = ({
 
       <CardFooter className="d-flex justify-content-center pb-0">
         <Paginations
+          key={pageId}
           pageId={pageId}
           setPageId={onPagination}
           totalNumber={totalNumberOfRecords}
@@ -95,7 +95,7 @@ const LearnersTable = ({
         />
       </CardFooter>
     </Card>
-  );
-};
+  )
+}
 
-export default hot(module)(LearnersTable);
+export default hot(module)(LearnersTable)

@@ -1,51 +1,84 @@
-import React from 'react';
-import { hot } from 'react-hot-loader';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
 
-import { reportingService } from '@/services';
-import { CardBody, Collapse, Row, Col } from '@/components';
+import { reportingService } from '@/services'
+import { Card, CardBody, Collapse, Row, Col, Loading } from '@/components'
+import { useAppState } from '@/components/AppState'
 
 const ExpandRow = ({ user, course, experience }) => {
+  const [{ selectedOrganization }] = useAppState()
+  const [activities, setActivities] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    getActivities()
+  }, [])
+
+  const getActivities = async () => {
+    try {
+      setLoading(true)
+      const response = await reportingService.getAll({
+        registration: course.programId,
+        agent: user.email,
+        courseId: course.courseId,
+      })
+
+      if (response) {
+        setLoading(false)
+        setActivities(reponse.data)
+      }
+    } catch (error) {
+      setLoading(false)
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{JSON.stringify(error)}</p>
+        </div>
+      )
+    }
+  }
+
   return (
     <td colSpan="9">
       <Collapse isOpen={true}>
         <Card className="border-0">
-          <CardBody>
-            <Row>
-              <Col>
-                <Row>
-                  <Col>
-                    <h5 className="text-right text-nowrap">Screen #:</h5>
-                  </Col>
-                  <Col>12</Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <h5 className="text-right">Activity: </h5>
-                  </Col>
-                  <Col>{course.name}</Col>
-                </Row>
-              </Col>
-              <Col>
-                <Row className="pt-2">
-                  <Col>
-                    <Link
-                      to={`/reporting/?programId=${course.programId}&userId=${user.userId}&experience=${experience}`}
-                      className="stretched-link text-nowrap"
-                      style={{
-                        color: '#007bff !important',
-                      }}
-                    >
-                      More details on {user.name} {user.surname}...
-                    </Link>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </CardBody>
+          {!loading ? (
+            <CardBody>
+              <Row>
+                <Col>
+                  <Row>
+                    <Col>
+                      <h5 className="text-right">Activity: </h5>
+                    </Col>
+                    <Col>{course.name}</Col>
+                  </Row>
+                </Col>
+                <Col>
+                  <Row className="pt-2">
+                    <Col>
+                      <Link
+                        to={`/reporting/?programId=${course.programId}&userId=${user.userId}&experience=${experience}`}
+                        className="stretched-link text-nowrap"
+                        style={{
+                          color: '#007bff !important',
+                        }}
+                      >
+                        More details on {user.name} {user.surname}...
+                      </Link>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </CardBody>
+          ) : (
+            <Loading />
+          )}
         </Card>
       </Collapse>
     </td>
-  );
-};
+  )
+}
 
-export default hot(module)(ExpandRow);
+export default hot(module)(ExpandRow)

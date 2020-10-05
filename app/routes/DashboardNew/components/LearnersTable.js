@@ -40,14 +40,15 @@ const LearnersTable = ({
             {users &&
               users.map(user => (
                 <React.Fragment key={user.email}>
-                  <tr>
+                  <tr
+                    onClick={() => toggle(user)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <td className="align-middle bt-0">
                       <i
                         className={`fa fa-chevron-${
                           user.email === openUser ? 'down' : 'right'
                         } fa-fw`}
-                        onClick={() => toggle(user)}
-                        style={{ marginBottom: '1rem', cursor: 'pointer' }}
                       ></i>
                     </td>
                     <td className="align-middle bt-0">

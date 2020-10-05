@@ -12,6 +12,12 @@ const ExpandRow = ({ user, course, experience }) => {
   const [activity, setActivity] = useState(null)
   const [loading, setLoading] = useState(false)
 
+  const experienceMap = {
+    'In progress': [{ name: 'attempted', value: 'attempted' }],
+    'Not started': [{ name: '', value: '' }],
+    Completed: [{ name: 'completed', value: 'completed' }],
+  }
+
   useEffect(() => {
     getActivities()
   }, [])
@@ -23,6 +29,7 @@ const ExpandRow = ({ user, course, experience }) => {
         registration: course.programId,
         agent: JSON.stringify([{ email: user.email }]),
         courseId: course.courseId,
+        experiences: JSON.stringify(experienceMap[experience]),
       })
 
       if (response) {

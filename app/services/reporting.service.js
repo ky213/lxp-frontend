@@ -55,29 +55,6 @@ function getAll({
     handleResponse
   )
 }
-function getDashActivies({
-  selectedOrganizationId,
-  statementId,
-  voidedStatementId,
-  registration,
-  agent,
-  verb,
-  activity,
-  since,
-  until,
-  limit,
-  ascending,
-  experiences,
-  page,
-  take,
-}) {
-  const requestOptions = { method: 'GET', headers: authHeader() }
-  let query = buildQuery({ registration, courseId, selectedOrganizationId })
-  return fetch(
-    `${xapiUrl}/statements?registration=${registration}|${courseId}`,
-    requestOptions
-  ).then(handleResponse)
-}
 
 function getById(id, statementId, selectedOrganizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() }

@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { hot } from 'react-hot-loader';
-import { toast } from 'react-toastify';
-import queryString from 'query-string';
+import React, { useState, useEffect } from 'react'
+import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
+import queryString from 'query-string'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+import { CSVLink } from 'react-csv'
+import { reportingService, programService, learnerService } from '@/services'
+
 import {
   Container,
   Card,
@@ -9,92 +14,91 @@ import {
   Col,
   Row,
   Table,
+  Label,
   Loading,
   CardBody,
   Form,
   FormGroup,
   ButtonToolbar,
-} from '@/components';
-import ThemedButton from '@/components/ThemedButton';
-
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { Paginations } from '@/routes/components/Paginations';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import moment from 'moment';
-import { CSVLink } from 'react-csv';
-
-import { reportingService, programService, learnerService } from '@/services';
-import { useAppState } from '@/components/AppState';
+} from '@/components'
+import ThemedButton from '@/components/ThemedButton'
+import { AddonInput } from '@/routes/Forms/DatePicker/components'
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import { Paginations } from '@/routes/components/Paginations'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { useAppState } from '@/components/AppState'
 
 const Reporting = () => {
-  const [{ selectedOrganization }] = useAppState();
-  const [statements, setStatements] = useState(null);
-  const [pageId, setPageId] = React.useState(1);
-  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0);
-  const [programs, setPrograms] = React.useState(null);
-  const [selectedProgram, setSelectedProgram] = React.useState(null);
-  const [learners, setLearners] = React.useState([]);
-  const [selectedLearner, setSelectedLearner] = React.useState([]);
-  const [experiences, setExperiences] = React.useState([]);
-  const [selectedExperiences, setSelectedExperiences] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [csvData, setCsvData] = React.useState([]);
-  const csvLink = React.useRef();
+  const [{ selectedOrganization }] = useAppState()
+  const [statements, setStatements] = useState(null)
+  const [pageId, setPageId] = React.useState(1)
+  const [totalNumberOfRecords, setTotalNumberOfRecords] = React.useState(0)
+  const [programs, setPrograms] = React.useState(null)
+  const [selectedProgram, setSelectedProgram] = React.useState(null)
+  const [learners, setLearners] = React.useState([])
+  const [selectedLearner, setSelectedLearner] = React.useState([])
+  const [experiences, setExperiences] = React.useState([])
+  const [selectedExperiences, setSelectedExperiences] = React.useState([])
+  const [loading, setLoading] = React.useState(false)
+  const [csvData, setCsvData] = React.useState([])
+  const [fromDate, setFromDate] = useState(new Date().toString())
+  const [toDate, setToDate] = useState(new Date().toString())
+  const csvLink = React.useRef()
 
   React.useEffect(() => {
-    const queryParams = queryString.parse(location.search);
+    const queryParams = queryString.parse(location.search)
 
-    fetchData(queryParams);
-  }, []);
+    fetchData(queryParams)
+  }, [])
 
   React.useEffect(() => {
     const fetchExperiences = async () => {
-      setLoading(true);
+      setLoading(true)
 
       const exp = await reportingService.getExperiences({
         programId: (selectedProgram && selectedProgram.programId) || null,
-      });
+      })
       setExperiences(
         exp
-          .filter((v, i, a) => a.findIndex((t) => t === v) === i)
-          .map((e) => {
-            const val = e && e.experience && JSON.parse(e.experience);
+          .filter((v, i, a) => a.findIndex(t => t === v) === i)
+          .map(e => {
+            const val = e && e.experience && JSON.parse(e.experience)
             return {
               name: val['en'] || val['en-US'],
               value: val['en'] || val['en-US'],
-            };
+            }
           })
-      );
-      setLoading(false);
-    };
+      )
+      setLoading(false)
+    }
 
-    fetchExperiences();
-    getStatements(selectedProgram);
-  }, [selectedProgram]);
+    fetchExperiences()
+    getStatements(selectedProgram)
+  }, [selectedProgram])
 
-  const fetchData = async (queryParams) => {
-    setLoading(true);
+  const fetchData = async queryParams => {
+    setLoading(true)
 
     const queryExperiences = {
       'Not started': { name: 'launched', value: 'launcehd' },
       'In progress': { name: 'attempted', value: 'attempted' },
       Completed: { name: 'completed', value: 'completed' },
-    };
+    }
 
     if (queryParams.experience)
-      setSelectedExperiences([queryExperiences[queryParams.experience]]);
+      setSelectedExperiences([queryExperiences[queryParams.experience]])
 
     try {
       const data = await programService.getByCurrentUser(
         selectedOrganization.organizationId
-      );
-      setPrograms(data);
+      )
+      setPrograms(data)
 
       if (queryParams.programId) {
         setSelectedProgram(
-          data.find((program) => program.programId === queryParams.programId)
-        );
+          data.find(program => program.programId === queryParams.programId)
+        )
       }
 
       const response = await learnerService.getAllActive(
@@ -103,23 +107,23 @@ const Reporting = () => {
         null,
         selectedOrganization.organizationId,
         selectedProgram?.programId || null
-      );
+      )
 
       setLearners(
-        response.users.map((usr) => ({
+        response.users.map(usr => ({
           employeeId: usr.employeeId,
           userId: usr.userId,
           email: usr.email,
           fullName: `${usr.name} ${usr.surname}`,
         }))
-      );
+      )
 
       if (queryParams.userId) {
         const { name, surname, email } = response.users.find(
-          (user) => user.userId === queryParams.userId
-        );
+          user => user.userId === queryParams.userId
+        )
 
-        setSelectedLearner([{ fullName: `${name} ${surname}`, email }]);
+        setSelectedLearner([{ fullName: `${name} ${surname}`, email }])
       }
     } catch (error) {
       toast.error(
@@ -127,32 +131,32 @@ const Reporting = () => {
           <h4 className="text-danger">Error</h4>
           <p>{JSON.stringify(error)}</p>
         </div>
-      );
+      )
     }
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const getExport = async (program, learner, experiences) => {
     const filter = {
       selectedOrganizationId: selectedOrganization.organizationId,
       page: 1,
-    };
+    }
     if (program && program.programId) {
-      filter.registration = program.programId;
+      filter.registration = program.programId
     }
 
     if (learner) {
-      filter.agent = JSON.stringify(learner);
+      filter.agent = JSON.stringify(learner)
     }
 
     if (experiences && experiences.length > 0) {
-      filter.experiences = JSON.stringify(experiences);
+      filter.experiences = JSON.stringify(experiences)
     }
 
-    const data = await reportingService.getAll(filter);
+    const data = await reportingService.getAll(filter)
 
-    let exportData = [];
+    let exportData = []
     exportData.push([
       'Time',
       'Learner',
@@ -162,10 +166,10 @@ const Reporting = () => {
       'Experience',
       'Result',
       'Success',
-    ]);
+    ])
 
     if (data.statements) {
-      data.statements.map((statement) =>
+      data.statements.map(statement =>
         exportData.push([
           moment(statement.timestamp).format('LLL'),
           statement.actor.name,
@@ -186,94 +190,109 @@ const Reporting = () => {
             '',
           statement.result && statement.result.success,
         ])
-      );
+      )
 
-      setCsvData(exportData);
-      csvLink.current.link.click();
+      setCsvData(exportData)
+      csvLink.current.link.click()
     }
-  };
+  }
 
-  const getStatements = async (program, learner, experiences) => {
-    setLoading(true);
+  const getStatements = async (program, learner, experiences, since, until) => {
+    setLoading(true)
     const filter = {
       selectedOrganizationId: selectedOrganization.organizationId,
       limit: 10,
       take: 10,
       page: pageId,
-    };
+      since,
+      until,
+    }
     if (program && program.programId) {
-      filter.registration = program.programId;
+      filter.registration = program.programId
     }
 
     if (learner) {
-      filter.agent = JSON.stringify(learner);
+      filter.agent = JSON.stringify(learner)
     }
 
     if (experiences && experiences.length > 0) {
-      filter.experiences = JSON.stringify(experiences);
+      filter.experiences = JSON.stringify(experiences)
     }
 
     try {
-      const data = await reportingService.getAll(filter);
+      const data = await reportingService.getAll(filter)
 
-      setStatements(data.statements);
-      setTotalNumberOfRecords(data.totalNumberOfRecords);
-      setLoading(false);
+      setStatements(data.statements)
+      setTotalNumberOfRecords(data.totalNumberOfRecords)
+      setLoading(false)
     } catch (error) {
-      setLoading(false);
+      setLoading(false)
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>
           <p>{JSON.stringify(error)}</p>
         </div>
-      );
+      )
     }
-  };
+  }
 
   useEffect(() => {
     if (selectedProgram) {
-      getStatements(selectedProgram, selectedLearner, selectedExperiences);
+      getStatements(
+        selectedProgram,
+        selectedLearner,
+        selectedExperiences,
+        fromDate,
+        toDate
+      )
     }
-  }, [selectedProgram, selectedLearner, selectedExperiences, pageId]);
+  }, [
+    selectedProgram,
+    selectedLearner,
+    selectedExperiences,
+    pageId,
+    fromDate,
+    toDate,
+  ])
 
-  const handleProgramChange = (e) => {
+  const handleProgramChange = e => {
     if (e && e.length > 0) {
-      setSelectedProgram(e[0]);
+      setSelectedProgram(e[0])
     } else {
-      setSelectedProgram(null);
+      setSelectedProgram(null)
     }
-  };
+  }
 
-  const handleExperienceChange = (e) => {
+  const handleExperienceChange = e => {
     if (e && e.length > 0) {
-      setSelectedExperiences(e);
+      setSelectedExperiences(e)
     } else {
-      setSelectedExperiences([]);
+      setSelectedExperiences([])
     }
-  };
+  }
 
   function decimalAdjust(type, value, exp) {
     // If the exp is undefined or zero...
     if (typeof exp === 'undefined' || +exp === 0) {
-      return Math[type](value);
+      return Math[type](value)
     }
-    value = +value;
-    exp = +exp;
+    value = +value
+    exp = +exp
     // If the value is not a number or the exp is not an integer...
     if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-      return NaN;
+      return NaN
     }
     // Shift
-    value = value.toString().split('e');
-    value = Math[type](+(value[0] + 'e' + (value[1] ? +value[1] - exp : -exp)));
+    value = value.toString().split('e')
+    value = Math[type](+(value[0] + 'e' + (value[1] ? +value[1] - exp : -exp)))
     // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? +value[1] + exp : exp));
+    value = value.toString().split('e')
+    return +(value[0] + 'e' + (value[1] ? +value[1] + exp : exp))
   }
 
   const handleClickExport = async () => {
-    await getExport(selectedProgram, selectedLearner, selectedExperiences);
-  };
+    await getExport(selectedProgram, selectedLearner, selectedExperiences)
+  }
 
   return (
     <React.Fragment>
@@ -305,8 +324,7 @@ const Reporting = () => {
                               (selectedProgram &&
                                 programs &&
                                 programs.filter(
-                                  (p) =>
-                                    p.programId == selectedProgram.programId
+                                  p => p.programId == selectedProgram.programId
                                 )) ||
                               []
                             }
@@ -339,6 +357,49 @@ const Reporting = () => {
                             onChange={handleExperienceChange}
                           />
                         </FormGroup>
+                        <Row className="pl-3 mt-2">
+                          <FormGroup>
+                            <Label for="toDate" className="mr-2">
+                              From
+                            </Label>
+                            <DatePicker
+                              id="toDate"
+                              name="toDate"
+                              className="mr-2"
+                              placeholderText="From date..."
+                              customInput={<AddonInput />}
+                              dateFormat="dd/MM/yyyy h:mm aa"
+                              autoComplete="off"
+                              showTimeSelect
+                              showMonthDropdown
+                              showYearDropdown
+                              selected={new Date(fromDate)}
+                              onChange={date => {
+                                setFromDate(date.toString())
+                              }}
+                            />
+                          </FormGroup>
+                          <FormGroup className="">
+                            <Label for="todate" className="mr-2">
+                              To
+                            </Label>
+                            <DatePicker
+                              id="toDate"
+                              name="toDate"
+                              placeholderText="To date..."
+                              customInput={<AddonInput />}
+                              dateFormat="dd/MM/yyyy h:mm aa"
+                              autoComplete="off"
+                              showTimeSelect
+                              showMonthDropdown
+                              showYearDropdown
+                              selected={new Date(toDate)}
+                              onChange={date => {
+                                setToDate(date.toString())
+                              }}
+                            />
+                          </FormGroup>
+                        </Row>
                       </Form>
                     </div>
                     <ButtonToolbar>
@@ -397,7 +458,7 @@ const Reporting = () => {
                     </thead>
                     <tbody>
                       {statements &&
-                        statements.map((statement) => (
+                        statements.map(statement => (
                           <tr key={statement.id}>
                             <td className="align-middle bt-0">
                               {moment(statement.timestamp).format('LLL')}
@@ -457,7 +518,7 @@ const Reporting = () => {
         </React.Fragment>
       </Container>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default hot(module)(Reporting);
+export default hot(module)(Reporting)

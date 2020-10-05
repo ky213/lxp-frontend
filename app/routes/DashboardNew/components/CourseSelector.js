@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { Form, FormGroup } from '@/components';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { programService, courseService } from '@/services';
-import { useAppState } from '@/components/AppState';
+import React, { useEffect, useState } from 'react'
+import { Form, FormGroup } from '@/components'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { programService, courseService } from '@/services'
+import { useAppState } from '@/components/AppState'
+import { hot } from 'react-hot-loader'
 
 export const CourseSelector = ({ onCourseSelect }) => {
-  const [{ selectedOrganization }] = useAppState();
-  const [programs, setPrograms] = useState([]);
-  const [selectedProgramId, setSelectedProgramId] = React.useState(null);
-  const [coursesData, setCoursesData] = React.useState([]);
+  const [{ selectedOrganization }] = useAppState()
+  const [programs, setPrograms] = useState([])
+  const [selectedProgramId, setSelectedProgramId] = React.useState(null)
+  const [coursesData, setCoursesData] = React.useState([])
 
   useEffect(() => {
     programService
       .getByCurrentUser(selectedOrganization.organizationId)
-      .then((data) => {
-        setPrograms(data);
+      .then(data => {
+        setPrograms(data)
       })
-      .catch((err) => console.log('programService.getByCurrentUser', err));
-  }, []);
+      .catch(err => console.log('programService.getByCurrentUser', err))
+  }, [])
 
   useEffect(() => {
     courseService
       .getAll(selectedOrganization.organizationId, selectedProgramId)
-      .then((data) => {
-        setCoursesData(data.courses);
+      .then(data => {
+        setCoursesData(data.courses)
       })
-      .catch((err) => {
+      .catch(err => {
         showAlertMessage({
           title: 'Error',
           message: err,
           type: 'danger',
-        });
-      });
-  }, [selectedProgramId]);
+        })
+      })
+  }, [selectedProgramId])
 
   return (
     <Form className="form-inline">
@@ -43,7 +44,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
           labelKey="name"
           options={programs}
           placeholder="Program..."
-          onChange={(programsList) =>
+          onChange={programsList =>
             setSelectedProgramId(programsList[0]?.programId)
           }
         />
@@ -61,7 +62,7 @@ export const CourseSelector = ({ onCourseSelect }) => {
         />
       </FormGroup>
     </Form>
-  );
-};
+  )
+}
 
-export default CourseSelector;
+export default hot(module)(CourseSelector)

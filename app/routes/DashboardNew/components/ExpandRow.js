@@ -37,7 +37,6 @@ const ExpandRow = ({ user, course, experience }) => {
         setActivity(response.statements.pop()?.object?.definition?.name?.und)
       }
     } catch (error) {
-      console.log(error)
       setLoading(false)
       toast.error(
         <div>

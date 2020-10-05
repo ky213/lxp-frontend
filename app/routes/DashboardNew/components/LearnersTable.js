@@ -39,8 +39,9 @@ const LearnersTable = ({
           <tbody>
             {users &&
               users.map(user => (
-                <React.Fragment key={user.email}>
+                <React.Fragment>
                   <tr
+                    key={user.userId}
                     onClick={() => toggle(user)}
                     style={{ cursor: 'pointer' }}
                   >

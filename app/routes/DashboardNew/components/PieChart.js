@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import { useAppState } from '@/components/AppState';
-import { courseService } from '@/services';
+import { useAppState } from '@/components/AppState'
+import { courseService } from '@/services'
 
-import Chart from 'chart.js';
+import Chart from 'chart.js'
+import { hot } from 'react-hot-loader'
 
 const PieChart = ({ course, experiences, onSetExperience }) => {
-  const [{ selectedOrganization }] = useAppState();
-  const [chartData, setChartData] = useState([]);
+  const [{ selectedOrganization }] = useAppState()
+  const [chartData, setChartData] = useState([])
 
   useEffect(() => {
-    loadData();
-  }, []);
+    loadData()
+  }, [])
 
   useEffect(() => {
     if (chartData.length)
@@ -34,8 +35,8 @@ const PieChart = ({ course, experiences, onSetExperience }) => {
             labels: {
               boxWidth: 20,
             },
-            onClick: (e, { index }) => {
-              onSetExperience(course, index);
+            onClick(e, { index }) {
+              onSetExperience(course, index)
             },
           },
           title: {
@@ -44,8 +45,8 @@ const PieChart = ({ course, experiences, onSetExperience }) => {
           },
           onClick: onChartClick,
         },
-      });
-  }, [chartData]);
+      })
+  }, [chartData])
 
   const loadData = async () => {
     try {
@@ -54,11 +55,11 @@ const PieChart = ({ course, experiences, onSetExperience }) => {
           selectedOrganization.organizationId,
           course.programId,
           course.courseId
-        );
+        )
 
         if (data) {
-          const notStarted = data.allUsers - (data.completed + data.inProgress);
-          setChartData([notStarted, data.completed, data.inProgress]);
+          const notStarted = data.allUsers - (data.completed + data.inProgress)
+          setChartData([notStarted, data.completed, data.inProgress])
         }
       }
     } catch (err) {
@@ -66,20 +67,27 @@ const PieChart = ({ course, experiences, onSetExperience }) => {
         title: 'Error',
         message: err,
         type: 'danger',
-      });
+      })
     }
-  };
+  }
 
   const onChartClick = (event, arr) => {
-    const index = arr[0]?._index;
-    onSetExperience(course, index);
-  };
+    const index = arr[0]?._index
+    onSetExperience(course, index)
+  }
 
   return (
-    <div style={{ width: '300px', height: '300px', margin: 'auto' }}>
+    <div
+      style={{
+        width: '300px',
+        height: '300px',
+        margin: 'auto',
+        cursor: 'pointer',
+      }}
+    >
       <canvas id={course.courseId} width="300" height="300"></canvas>
     </div>
-  );
-};
+  )
+}
 
-export default PieChart;
+export default hot(module)(PieChart)

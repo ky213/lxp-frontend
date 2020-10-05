@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import { hot } from 'react-hot-loader'
 import {
   Alert,
   Col,
@@ -13,100 +14,102 @@ import {
   Row,
   UncontrolledTooltip,
   CardColumns,
-} from '@/components';
-import { Button } from 'reactstrap';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import ThemedButton from '@/components/ThemedButton';
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { Paginations } from '@/routes/components/Paginations';
-import { programService, courseService, userService } from '@/services';
-import { useAppState } from '@/components/AppState';
-import styles from './Courses.css';
-import Loading from '@/components/Loading';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { isMobileDevice } from 'responsive-react';
-import { CourseCard } from './components/CourseCard';
-import { TinCanLaunch } from '@/helpers';
-import { Role } from '@/helpers';
+} from '@/components'
+import { Button } from 'reactstrap'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import ThemedButton from '@/components/ThemedButton'
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { Paginations } from '@/routes/components/Paginations'
+import { programService, courseService, userService } from '@/services'
+import { useAppState } from '@/components/AppState'
+import styles from './Courses.css'
+import Loading from '@/components/Loading'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import { isMobileDevice } from 'responsive-react'
+import { CourseCard } from './components/CourseCard'
+import { TinCanLaunch } from '@/helpers'
+import { Role } from '@/helpers'
 
-const recordsPerPage = 20;
+const recordsPerPage = 20
 
-const Courses = (props) => {
-  const [{ currentUser, selectedOrganization }] = useAppState();
-  const user = currentUser && currentUser.user;
-  const [deviceIsMobile, setDeviceIsMobile] = React.useState(null);
-  const [pageId, setPageId] = React.useState(1);
+const Courses = props => {
+  const [{ currentUser, selectedOrganization }] = useAppState()
+  const user = currentUser && currentUser.user
+  const [deviceIsMobile, setDeviceIsMobile] = React.useState(null)
+  const [pageId, setPageId] = React.useState(1)
 
-  const [programs, setPrograms] = React.useState([]);
+  const [programs, setPrograms] = React.useState([])
 
-  const [selectedProgramId, setSelectedProgramId] = React.useState(null);
-  const [coursesData, setCoursesData] = React.useState(null);
+  const [selectedProgramId, setSelectedProgramId] = React.useState(null)
+  const [coursesData, setCoursesData] = React.useState(null)
 
-  const [showAlert, setShowAlert] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const [employeeNameFilter, setEmployeeNameFilter] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [showAlert, setShowAlert] = React.useState(false)
+  const [alertMessage, setAlertMessage] = React.useState(null)
+  const [employeeNameFilter, setEmployeeNameFilter] = React.useState(null)
+  const [isLoading, setIsLoading] = React.useState(false)
   const [displayFilterControls, setDisplayFilterControls] = React.useState(
     false
-  );
-  const [filter, setFilter] = React.useState(null);
-  const [startSearch, setStartSearch] = React.useState(false);
-  const [contentWidth, setContentWidth] = React.useState(null);
-  const [joinedCourses, setJoinedCourses] = React.useState([]);
-  const isLearner = user.role === Role.Learner;
-  let rowContent = React.useRef();
+  )
+  const [filter, setFilter] = React.useState(null)
+  const [startSearch, setStartSearch] = React.useState(false)
+  const [contentWidth, setContentWidth] = React.useState(null)
+  const [joinedCourses, setJoinedCourses] = React.useState([])
+  const isLearner = user.role === Role.Learner
+  const isSuperAdmin = user.role === Role.SuperAdmin
+
+  let rowContent = React.useRef()
 
   React.useEffect(() => {
-    setDeviceIsMobile(isMobileDevice());
+    setDeviceIsMobile(isMobileDevice())
     programService
       .getByCurrentUser(selectedOrganization.organizationId)
-      .then((data) => {
-        setPrograms(data);
+      .then(data => {
+        setPrograms(data)
       })
-      .catch((err) => console.log('programService.getByCurrentUser', err));
+      .catch(err => console.log('programService.getByCurrentUser', err))
 
     userService
       .getByEmployeeId(user.employeeId)
-      .then((employee) =>
+      .then(employee =>
         setJoinedCourses(employee.joinedCourses.map(({ courseId }) => courseId))
       )
-      .then((error) => {
-        console.log(error);
-      });
-  }, []);
+      .then(error => {
+        console.log(error)
+      })
+  }, [])
 
   React.useEffect(() => {
     if (programs && programs.length == 1)
-      setSelectedProgramId(programs[0].programId);
-    else setSelectedProgramId(null);
-  }, [programs]);
+      setSelectedProgramId(programs[0].programId)
+    else setSelectedProgramId(null)
+  }, [programs])
 
   React.useEffect(() => {
-    setShowAlert(alertMessage ? true : false);
-  }, [alertMessage]);
+    setShowAlert(alertMessage ? true : false)
+  }, [alertMessage])
 
   React.useEffect(() => {
     if (selectedProgramId) {
-      loadCourses();
+      loadCourses()
     } else {
-      setCoursesData(null);
+      setCoursesData(null)
     }
-  }, [selectedProgramId]);
+  }, [selectedProgramId])
 
   React.useEffect(() => {
-    loadCourses();
-  }, [startSearch, pageId]);
+    loadCourses()
+  }, [startSearch, pageId])
 
   const handleSearch = async () => {
-    await loadCourses();
-  };
+    await loadCourses()
+  }
 
   const loadCourses = async () => {
-    setCoursesData(null);
+    setCoursesData(null)
 
     if (selectedProgramId) {
-      setIsLoading(true);
-      dismissAlert();
+      setIsLoading(true)
+      dismissAlert()
 
       try {
         const data = await courseService.getAll(
@@ -115,59 +118,54 @@ const Courses = (props) => {
           pageId,
           recordsPerPage,
           filter
-        );
+        )
 
         if (data) {
-          setCoursesData(data);
+          setCoursesData(data)
         }
       } catch (err) {
         showAlertMessage({
           title: 'Error',
           message: err,
           type: 'danger',
-        });
+        })
       }
 
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
+    setAlertMessage({ title, message, type })
+    setShowAlert(true)
+  }
 
-  const onProgramChange = (e) => {
+  const onProgramChange = e => {
     if (e && e.length > 0) {
-      let x = e[0].programId;
-      setSelectedProgramId(x);
-    } else setSelectedProgramId(null);
-  };
+      let x = e[0].programId
+      setSelectedProgramId(x)
+    } else setSelectedProgramId(null)
+  }
 
-  const handleLaunch = (course) => {
-    TinCanLaunch.launchContent(
-      user,
-      selectedProgramId,
-      course,
-      (launchLink) => {
-        window.open(launchLink);
-      }
-    );
-  };
+  const handleLaunch = course => {
+    TinCanLaunch.launchContent(user, selectedProgramId, course, launchLink => {
+      window.open(launchLink)
+    })
+  }
 
-  const handleKeyDownSearch = (ev) => {
+  const handleKeyDownSearch = ev => {
     if (ev.key === 'Enter' || ev.key === 'Space') {
-      ev.preventDefault();
-      ev.stopPropagation();
+      ev.preventDefault()
+      ev.stopPropagation()
 
-      setStartSearch(!startSearch);
+      setStartSearch(!startSearch)
     }
-  };
+  }
 
   return (
     <React.Fragment>
@@ -209,7 +207,7 @@ const Courses = (props) => {
                         (selectedProgramId &&
                           programs && [
                             programs.find(
-                              (p) => p.programId == selectedProgramId
+                              p => p.programId == selectedProgramId
                             ),
                           ]) ||
                         (programs && programs.length == 1 && [programs[0]]) ||
@@ -217,7 +215,7 @@ const Courses = (props) => {
                       }
                       options={programs}
                       placeholder="Program..."
-                      onChange={(e) => onProgramChange(e)}
+                      onChange={e => onProgramChange(e)}
                     />
                   </FormGroup>
 
@@ -268,7 +266,7 @@ const Courses = (props) => {
                         <InputGroup>
                           <Input
                             onKeyDown={handleKeyDownSearch}
-                            onChange={(e) =>
+                            onChange={e =>
                               setEmployeeNameFilter(e.target.value)
                             }
                             placeholder="Search for course..."
@@ -300,12 +298,13 @@ const Courses = (props) => {
                   <CardColumns>
                     {coursesData.courses
                       .sort((a, b) => a.name < b.name)
-                      .map((course) => (
+                      .map(course => (
                         <CourseCard
                           course={course}
                           onLaunch={handleLaunch}
                           joinedCourses={joinedCourses}
                           isLearner={isLearner}
+                          isSuperAdmin={isSuperAdmin}
                         />
                       ))}
                   </CardColumns>
@@ -323,7 +322,7 @@ const Courses = (props) => {
         )}
       </Container>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default Courses;
+export default hot(module)(Courses)

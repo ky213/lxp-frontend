@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { hot } from 'react-hot-loader'
 import {
   Card,
   Button,
@@ -7,35 +8,36 @@ import {
   AvatarAddOn,
   CardFooter,
   CardBody,
-} from '@/components';
-import { courseService } from '@/services';
+} from '@/components'
+import { courseService } from '@/services'
 
-const CourseCard = ({
+let CourseCard = ({
   course,
   joinedCourses,
   onLaunch,
   isLearner,
+  isSuperAdmin,
   ...otherProps
 }) => {
   const [courseIsJoined, setCourseIsJoined] = useState(
     joinedCourses.includes(course.courseId)
-  );
+  )
 
-  const createMarkup = (html) => {
-    return { __html: html };
-  };
+  const createMarkup = html => {
+    return { __html: html }
+  }
 
   const handleJoinCourse = () => {
     if (!courseIsJoined)
       courseService
         .joinCourse(course.courseId)
         .then(() => {
-          setCourseIsJoined(true);
+          setCourseIsJoined(true)
         })
-        .catch((error) => {
-          console.log(error);
-        });
-  };
+        .catch(error => {
+          console.log(error)
+        })
+  }
 
   return (
     <Card className="mb-3">
@@ -46,13 +48,15 @@ const CourseCard = ({
           style={{
             backgroundImage: `url(${course.image})`,
             backgroundSize: 'cover',
+            cursor: `${isSuperAdmin ? 'auto' : 'pointer'}`,
           }}
           onClick={() => {
+            if (isSuperAdmin) return
             if (!courseIsJoined) {
-              alert('You have to join the course first');
-              return;
+              alert('You have to join the course first')
+              return
             }
-            onLaunch(course);
+            onLaunch(course)
           }}
         ></div>
       </div>
@@ -60,20 +64,22 @@ const CourseCard = ({
         <div className="mt-3 mb-2">
           <div className="mb-2">
             <span className="h4 text-decoration-none">{course.name}</span>
-            <Button
-              color="primary"
-              title="Launch course"
-              className="pull-right"
-              onClick={() => {
-                if (isLearner && !courseIsJoined) {
-                  alert('You have to join the course first');
-                  return;
-                }
-                onLaunch(course);
-              }}
-            >
-              Launch
-            </Button>
+            {!isSuperAdmin && (
+              <Button
+                color="primary"
+                title="Launch course"
+                className="pull-right"
+                onClick={() => {
+                  if (isLearner && !courseIsJoined) {
+                    alert('You have to join the course first')
+                    return
+                  }
+                  onLaunch(course)
+                }}
+              >
+                Launch
+              </Button>
+            )}
           </div>
           <div
             className="courseDescription"
@@ -116,7 +122,9 @@ const CourseCard = ({
         )}
       </CardFooter>
     </Card>
-  );
-};
+  )
+}
 
-export { CourseCard };
+CourseCard = hot(module)(CourseCard)
+
+export { CourseCard }

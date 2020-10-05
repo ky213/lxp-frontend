@@ -9,7 +9,7 @@ import { useAppState } from '@/components/AppState'
 
 const ExpandRow = ({ user, course, experience }) => {
   const [{ selectedOrganization }] = useAppState()
-  const [activities, setActivities] = useState([])
+  const [activity, setActivity] = useState(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -21,15 +21,16 @@ const ExpandRow = ({ user, course, experience }) => {
       setLoading(true)
       const response = await reportingService.getAll({
         registration: course.programId,
-        agent: user.email,
+        agent: JSON.stringify([{ email: user.email }]),
         courseId: course.courseId,
       })
 
       if (response) {
         setLoading(false)
-        setActivities(reponse.data)
+        setActivity(response.statements.pop()?.object?.definition?.name?.und)
       }
     } catch (error) {
+      console.log(error)
       setLoading(false)
       toast.error(
         <div>
@@ -52,7 +53,7 @@ const ExpandRow = ({ user, course, experience }) => {
                     <Col>
                       <h5 className="text-right">Activity: </h5>
                     </Col>
-                    <Col>{course.name}</Col>
+                    <Col>{activity || 'No Activity'}</Col>
                   </Row>
                 </Col>
                 <Col>

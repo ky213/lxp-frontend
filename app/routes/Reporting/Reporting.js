@@ -42,8 +42,8 @@ const Reporting = () => {
   const [selectedExperiences, setSelectedExperiences] = React.useState([])
   const [loading, setLoading] = React.useState(false)
   const [csvData, setCsvData] = React.useState([])
-  const [fromDate, setFromDate] = useState(new Date().toString())
-  const [toDate, setToDate] = useState(new Date().toString())
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
   const csvLink = React.useRef()
 
   React.useEffect(() => {
@@ -372,10 +372,8 @@ const Reporting = () => {
                               showTimeSelect
                               showMonthDropdown
                               showYearDropdown
-                              selected={new Date(fromDate)}
-                              onChange={date => {
-                                setFromDate(date.toString())
-                              }}
+                              selected={fromDate}
+                              onChange={setFromDate}
                             />
                           </FormGroup>
                           <FormGroup className="">
@@ -391,10 +389,8 @@ const Reporting = () => {
                               showTimeSelect
                               showMonthDropdown
                               showYearDropdown
-                              selected={new Date(toDate)}
-                              onChange={date => {
-                                setToDate(date.toString())
-                              }}
+                              selected={toDate}
+                              onChange={setToDate}
                             />
                           </FormGroup>
                         </Row>

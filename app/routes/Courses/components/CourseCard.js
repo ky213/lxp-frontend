@@ -48,15 +48,6 @@ let CourseCard = ({
           style={{
             backgroundImage: `url(${course.image})`,
             backgroundSize: 'cover',
-            cursor: `${isSuperAdmin ? 'auto' : 'pointer'}`,
-          }}
-          onClick={() => {
-            if (isSuperAdmin) return
-            if (!courseIsJoined) {
-              alert('You have to join the course first')
-              return
-            }
-            onLaunch(course)
           }}
         ></div>
       </div>

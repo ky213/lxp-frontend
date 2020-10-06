@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { SketchPicker } from 'react-color'
 import styled from 'styled-components'
 import { hot } from 'react-hot-loader'
+import classNames from 'classnames'
 
 import ThemedButton from '@/components/ThemedButton'
 import {
@@ -13,8 +14,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Nav,
-  NavItem,
   Button,
   CustomInput,
   FormGroup,
@@ -28,6 +27,7 @@ import { HeaderDemo } from '@/routes/components/HeaderDemo'
 import { useAppState } from '@/components/AppState'
 import { SUPER_ADMIN_UPDATE_ORGANIZATION } from '@/actions'
 import MailServerSettings from './MailServerSettings'
+import { isNil } from 'lodash'
 
 const Swatch = styled.section`
   padding: 5px;
@@ -270,28 +270,32 @@ const OrganizationSettings = props => {
                               onClick={() => setSelectedTab('general')}
                             >
                               <a
-                                className={`nav-link ${
-                                  selectedTab === 'general' ? 'active' : ''
-                                } `}
+                                className={classNames('nav-link', {
+                                  active: selectedTab === 'general',
+                                })}
                                 href="#"
                               >
                                 <i className="fa fa-gear mr-2"></i> General
                               </a>
                             </li>
-                            {/* <li
+                            <li
                               className="nav-item"
-                              onClick={() => setSelectedTab('mailServer')}
+                              onClick={() => {
+                                if (!isNil(props.organizationId))
+                                  setSelectedTab('mailServer')
+                              }}
                             >
                               <a
-                                className={`nav-link ${
-                                  selectedTab === 'mailServer' ? 'active' : ''
-                                } `}
+                                className={classNames('nav-link', {
+                                  active: selectedTab === 'mailServer',
+                                  disabled: isNil(props.organizationId),
+                                })}
                                 href="#"
                               >
                                 <i className="fa fa-server mr-2"></i> Mail
                                 Server
                               </a>
-                            </li> */}
+                            </li>
                           </ul>
                         </CardHeader>
                         <CardBody>
@@ -504,7 +508,7 @@ const OrganizationSettings = props => {
                                       intl.formatMessage({
                                         id: 'General.Create',
                                       })}
-                                  </ThemedButton>{' '}
+                                  </ThemedButton>
                                   <Button
                                     type="button"
                                     onClick={() => onCancel()}

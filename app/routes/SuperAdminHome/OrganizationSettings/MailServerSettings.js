@@ -1,6 +1,7 @@
 import React from 'react'
 import { hot } from 'react-hot-loader'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
+import classNames from 'classnames'
 import * as Yup from 'yup'
 
 import { Col, FormGroup, Label, Button } from '@/components'
@@ -24,9 +25,19 @@ const MailsServerSettings = () => {
     serverPassword: Yup.string().required('Required'),
   })
 
+  const initelValues = {
+    SMTPHost: '',
+    portNumber: '',
+    encryption: '',
+    senderEmail: '',
+    senderLabel: '',
+    serverId: '',
+    serverPassword: '',
+  }
+
   return (
     <Formik
-      initialValues={{ SMTPHost: '' }}
+      initialValues={initelValues}
       validationSchema={MailServerSchema}
       onSubmit={handleOnSubmit}
     >
@@ -181,7 +192,9 @@ const MailsServerSettings = () => {
                 id="serverPassword"
                 className={
                   'bg-white form-control' +
-                  (errors.password && touched.password ? ' is-invalid' : '')
+                  (errors.serverPassword && touched.serverPassword
+                    ? ' is-invalid'
+                    : '')
                 }
               />
               <ErrorMessage
@@ -199,7 +212,7 @@ const MailsServerSettings = () => {
                 className="mr-2"
                 disabled={isSubmitting}
               >
-                Submit
+                Save
               </Button>
               <Button type="button" onClick={() => {}} color="info">
                 Test connection

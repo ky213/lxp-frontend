@@ -4,49 +4,40 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
 import { Col, FormGroup, Label, Button } from '@/components'
-import ThemedButton from '@/components/ThemedButton'
 
 const MailsServerSettings = () => {
+  const handleOnSubmit = (values, { setSubmitting }) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2))
+
+      setSubmitting(false)
+    }, 1000)
+  }
+
+  const MailServerSchema = Yup.object().shape({
+    SMTPHost: Yup.string().required('Required'),
+    portNumber: Yup.string().required('Required'),
+    encryption: Yup.string().required('Required'),
+    senderEmail: Yup.string().required('Required'),
+    senderLabel: Yup.string().required('Required'),
+    serverId: Yup.string().required('Required'),
+    serverPassword: Yup.string().required('Required'),
+  })
+
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
-      validate={values => {
-        const errors = {}
-
-        if (!values.email) {
-          errors.email = 'Required'
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = 'Invalid email address'
-        }
-
-        return errors
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2))
-
-          setSubmitting(false)
-        }, 400)
-      }}
+      initialValues={{ SMTPHost: '' }}
+      validationSchema={MailServerSchema}
+      onSubmit={handleOnSubmit}
     >
       {({
         values,
-
         errors,
-
         touched,
-
         handleChange,
-
-        handleBlur,
-
         handleSubmit,
-
+        handleBlur,
         isSubmitting,
-
-        /* and other goodies */
       }) => (
         <Form onSubmit={handleSubmit}>
           <FormGroup row>
@@ -55,12 +46,12 @@ const MailsServerSettings = () => {
             </Label>
             <Col sm={9}>
               <Field
-                type="text"
-                name="SMTPHost"
                 id="SMTPHost"
+                name="SMTPHost"
+                type="text"
                 className={
                   'bg-white form-control' +
-                  (errors.name && touched.name ? ' is-invalid' : '')
+                  (errors.SMTPHost && touched.SMTPHost ? ' is-invalid' : '')
                 }
               />
               <ErrorMessage
@@ -81,7 +72,7 @@ const MailsServerSettings = () => {
                 id="portNumber"
                 className={
                   'bg-white form-control' +
-                  (errors.name && touched.name ? ' is-invalid' : '')
+                  (errors.portNumber && touched.portNumber ? ' is-invalid' : '')
                 }
               />
               <ErrorMessage
@@ -123,7 +114,9 @@ const MailsServerSettings = () => {
                 id="senderEmail"
                 className={
                   'bg-white form-control' +
-                  (errors.name && touched.name ? ' is-invalid' : '')
+                  (errors.senderEmail && touched.senderEmail
+                    ? ' is-invalid'
+                    : '')
                 }
               />
               <ErrorMessage
@@ -144,7 +137,9 @@ const MailsServerSettings = () => {
                 id="senderLabel"
                 className={
                   'bg-white form-control' +
-                  (errors.name && touched.name ? ' is-invalid' : '')
+                  (errors.senderLabel && touched.senderLabel
+                    ? ' is-invalid'
+                    : '')
                 }
               />
               <ErrorMessage
@@ -165,7 +160,7 @@ const MailsServerSettings = () => {
                 id="serverId"
                 className={
                   'bg-white form-control' +
-                  (errors.name && touched.name ? ' is-invalid' : '')
+                  (errors.serverId && touched.serverId ? ' is-invalid' : '')
                 }
               />
               <ErrorMessage
@@ -186,7 +181,7 @@ const MailsServerSettings = () => {
                 id="serverPassword"
                 className={
                   'bg-white form-control' +
-                  (errors.name && touched.name ? ' is-invalid' : '')
+                  (errors.password && touched.password ? ' is-invalid' : '')
                 }
               />
               <ErrorMessage
@@ -202,9 +197,9 @@ const MailsServerSettings = () => {
                 type="submit"
                 color="primary"
                 className="mr-2"
-                onClick={() => {}}
+                disabled={isSubmitting}
               >
-                Save
+                Submit
               </Button>
               <Button type="button" onClick={() => {}} color="info">
                 Test connection

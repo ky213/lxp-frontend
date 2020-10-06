@@ -278,7 +278,7 @@ const OrganizationSettings = props => {
                                 <i className="fa fa-gear mr-2"></i> General
                               </a>
                             </li>
-                            <li
+                            {/* <li
                               className="nav-item"
                               onClick={() => setSelectedTab('mailServer')}
                             >
@@ -291,7 +291,7 @@ const OrganizationSettings = props => {
                                 <i className="fa fa-server mr-2"></i> Mail
                                 Server
                               </a>
-                            </li>
+                            </li> */}
                           </ul>
                         </CardHeader>
                         <CardBody>

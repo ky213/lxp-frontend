@@ -7,6 +7,7 @@ export const organizationService = {
   update,
   create,
   deleteOrganizations,
+  sendEmail
 };
 
 function getAll(pageId, recordsPerPage, filter) {
@@ -65,3 +66,18 @@ function deleteOrganizations(organizations) {
       return data;
     });
 }
+
+function sendEmail(id, email) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(email),
+  };
+
+  return fetch(`${config.apiUrl}/organizations/email/${id}`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+

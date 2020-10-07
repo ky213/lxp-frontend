@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
-import { Col, FormGroup, Label, Button } from '@/components'
+import { Col, FormGroup, Label, Button, Loading } from '@/components'
 import { organizationService } from '@/services'
 
 const MailsServerSettings = ({ organization }) => {
+  const [isTesting, setIsTesting] = useState(false)
+
   const handleOnSubmit = async (values, { setSubmitting }) => {
     try {
       await organizationService.update({ ...organization, ...values })
@@ -32,6 +34,7 @@ const MailsServerSettings = ({ organization }) => {
 
   const testConnection = async values => {
     try {
+      setIsTesting(true)
       await organizationService.testMailServerConnection(values)
       toast.success(
         <div>
@@ -40,7 +43,9 @@ const MailsServerSettings = ({ organization }) => {
         </div>,
         { autoClose: 3000 }
       )
+      setIsTesting(false)
     } catch (error) {
+      setIsTesting(false)
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>
@@ -284,14 +289,15 @@ const MailsServerSettings = ({ organization }) => {
                 className="mr-2"
                 disabled={isSubmitting}
               >
-                Save
+                {isSubmitting ? <Loading small /> : 'Save'}
               </Button>
               <Button
                 type="button"
                 onClick={() => testConnection(values)}
                 color="info"
+                disabled={isTesting}
               >
-                Test connection
+                {isTesting ? <Loading small /> : 'Test connection '}
               </Button>
             </Col>
           </FormGroup>

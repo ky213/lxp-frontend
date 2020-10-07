@@ -42,7 +42,6 @@ const EditCourse = ({
 }) => {
   const [{ selectedOrganization }] = useAppState()
   const [programs, setPrograms] = React.useState([])
-  //const [startingDate, setStartingDate] = React.useState(null);
 
   const [programsLoaded, setProgramsLoaded] = React.useState(false)
   const [formLoaded, setFormLoaded] = React.useState(false)
@@ -121,18 +120,13 @@ const EditCourse = ({
               logoImage: (course && course.image) || '',
               description: (course && course.description) || '',
               programId: (course && course.programId) || '',
-              startingDate:
-                (course &&
-                  course.startingDate &&
-                  moment(course.startingDate).toDate()) ||
-                '',
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required('Name is required'),
               description: Yup.string().required('Description is required'),
             })}
             onSubmit={async (
-              { name, description, programId, fileData, startingDate },
+              { name, description, programId, fileData },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
               setSubmitting(true)
@@ -142,7 +136,6 @@ const EditCourse = ({
               formData.append('name', name)
               formData.append('description', description)
               formData.append('programId', programId)
-              formData.append('startingDate', startingDate)
               formData.append(
                 'selectedOrganization',
                 selectedOrganization.organizationId
@@ -285,50 +278,6 @@ const EditCourse = ({
                                 />
                               </Col>
                             </FormGroup>
-
-                            <FormGroup row>
-                              <Label for="startingDate" sm={3}>
-                                Starting date
-                              </Label>
-                              <Col sm={4}>
-                                <InputGroup>
-                                  <InputGroupAddon addonType="prepend">
-                                    <i className="fa fa-fw fa-calendar"></i>
-                                    From:
-                                  </InputGroupAddon>
-                                  <DatePicker
-                                    id="startingDate"
-                                    name="startingDate"
-                                    showMonthDropdown
-                                    showYearDropdown
-                                    autoComplete="off"
-                                    className={
-                                      'bg-white form-control zIndex100' +
-                                      (formikProps.errors.startingDate &&
-                                      formikProps.touched.startingDate
-                                        ? ' is-invalid'
-                                        : '')
-                                    }
-                                    selected={formikProps.values.startingDate}
-                                    showMonthDropdown
-                                    showYearDropdown
-                                    onChange={date =>
-                                      formikProps.setFieldValue(
-                                        'startingDate',
-                                        date
-                                      )
-                                    }
-                                  />
-                                  {formikProps.errors.startingDate &&
-                                    formikProps.touched.startingDate && (
-                                      <InvalidFeedback>
-                                        {formikProps.errors.startingDate}
-                                      </InvalidFeedback>
-                                    )}
-                                </InputGroup>
-                              </Col>
-                            </FormGroup>
-
                             <FormGroup row>
                               <Label for="programId" sm={3}>
                                 Program

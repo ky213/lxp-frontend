@@ -453,7 +453,7 @@ const OrganizationSettings = props => {
                                   />
                                 </Col>
                               </FormGroup>
-                              {props.organizationId && (
+                              {organization && (
                                 <FormGroup row>
                                   <Label for="group" sm={3}>
                                     Default Group
@@ -500,7 +500,7 @@ const OrganizationSettings = props => {
                               <FormGroup row>
                                 <Col sm={3} />
                                 <Col sm={9}>
-                                  <ThemedButton type="submit">
+                                  <ThemedButton type="submit" className="mr-2">
                                     {(organization &&
                                       intl.formatMessage({
                                         id: 'General.Update',
@@ -520,7 +520,7 @@ const OrganizationSettings = props => {
                               </FormGroup>
                             </Form>
                           ) : (
-                            <MailServerSettings />
+                            <MailServerSettings organization={organization} />
                           )}
                         </CardBody>
                       </Card>

@@ -9,6 +9,7 @@ export const organizationService = {
   create,
   deleteOrganizations,
   testMailServerConnection,
+  sendEmail,
 }
 
 function getAll(pageId, recordsPerPage, filter) {
@@ -76,6 +77,20 @@ function testMailServerConnection(organization, serverSettings) {
   }
 
   return fetch(`${config.apiUrl}/organizations/testEmail`, requestOptions)
+    .then(handleResponse)
+    .then(data => {
+      return data
+    })
+}
+
+function sendEmail(id, email) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(email),
+  }
+
+  return fetch(`${config.apiUrl}/organizations/email/${id}`, requestOptions)
     .then(handleResponse)
     .then(data => {
       return data

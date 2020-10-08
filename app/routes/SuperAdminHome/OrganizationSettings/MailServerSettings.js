@@ -73,6 +73,7 @@ const MailsServerSettings = ({ organization }) => {
     Encryption: organization?.Encryption || '',
     Email: organization?.Email || '',
     Subject: organization?.Subject || '',
+    Body: organization?.Body || '',
     Label: organization?.Label || '',
     ServerId: organization?.ServerId || '',
     Password: '',

@@ -35,7 +35,10 @@ const MailsServerSettings = ({ organization }) => {
   const testConnection = async values => {
     try {
       setIsTesting(true)
-      await organizationService.testMailServerConnection(values)
+      await organizationService.testMailServerConnection({
+        ...organization,
+        ...values,
+      })
       toast.success(
         <div>
           <h4 className="text-success">Success</h4>
@@ -69,8 +72,10 @@ const MailsServerSettings = ({ organization }) => {
     PortNumber: organization?.PortNumber || '',
     Encryption: organization?.Encryption || '',
     Email: organization?.Email || '',
+    Subject: organization?.Subject || '',
     Label: organization?.Label || '',
     ServerId: organization?.ServerId || '',
+    Password: '',
   }
 
   return (

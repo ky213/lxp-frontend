@@ -1,41 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { courseService } from '@/services';
-import { Container, Row, Col } from '@/components';
-import { useAppState } from '@/components/AppState';
-import { hot } from 'react-hot-loader';
+import React, { useState, useEffect } from 'react'
+import { courseService } from '@/services'
+import { Container, Row, Col } from '@/components'
+import { useAppState } from '@/components/AppState'
+import { hot } from 'react-hot-loader'
 
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import CourseSelector from './components/CourseSelector';
-import LearnersTable from './components/LearnersTable';
-import PieChart from './components/PieChart';
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import CourseSelector from './components/CourseSelector'
+import LearnersTable from './components/LearnersTable'
+import PieChart from './components/PieChart'
+import Metrics from './components/Metrics'
 
-import './DashboardNew.scss';
+import './DashboardNew.scss'
 
-const DashboardNew = (props) => {
-  const [{ selectedOrganization }] = useAppState();
-  const [selectedCourses, setSelectedCourses] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [experience, setExperience] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+const DashboardNew = props => {
+  const [{ selectedOrganization }] = useAppState()
+  const [selectedCourses, setSelectedCourses] = useState([])
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [experience, setExperience] = useState('')
+  const [selectedCourse, setSelectedCourse] = useState(null)
+  const [pageNumber, setPageNumber] = useState(1)
 
-  const experienceEnum = ['Not started', 'Completed', 'In progress'];
+  const experienceEnum = ['Not started', 'Completed', 'In progress']
   const statusColors = {
     'Not started': 'btn-notStarted',
     'In progress': 'btn-inProgress',
     Completed: 'btn-completed',
-  };
+  }
 
   useEffect(() => {
-    if (experience === experienceEnum[0]) fetchNotAttemptedUsersData();
-    if (experience === experienceEnum[1]) fetchCompletedUsersData();
-    if (experience === experienceEnum[2]) fetchAttemptedUsersData();
-  }, [experience, pageNumber, selectedCourse]);
+    if (experience === experienceEnum[0]) fetchNotAttemptedUsersData()
+    if (experience === experienceEnum[1]) fetchCompletedUsersData()
+    if (experience === experienceEnum[2]) fetchAttemptedUsersData()
+  }, [experience, pageNumber, selectedCourse])
 
   const fetchAttemptedUsersData = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const data = await courseService.attemptedUsers(
         selectedOrganization.organizationId,
@@ -43,17 +44,17 @@ const DashboardNew = (props) => {
         selectedCourse.courseId,
         (pageNumber - 1) * 10, //offset
         10 // records per page
-      );
-      setUsers(data);
+      )
+      setUsers(data)
     } catch (error) {
-      console.log('Error while fetching learners:', error);
+      console.log('Error while fetching learners:', error)
     }
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const fetchNotAttemptedUsersData = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const data = await courseService.notAttemptedUsers(
         selectedOrganization.organizationId,
@@ -61,17 +62,17 @@ const DashboardNew = (props) => {
         selectedCourse.courseId,
         (pageNumber - 1) * 10, //offset
         10 // records per page
-      );
-      setUsers(data);
+      )
+      setUsers(data)
     } catch (error) {
-      console.log('Error while fetching learners:', error);
+      console.log('Error while fetching learners:', error)
     }
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const fetchCompletedUsersData = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const data = await courseService.completedUsers(
         selectedOrganization.organizationId,
@@ -79,30 +80,24 @@ const DashboardNew = (props) => {
         selectedCourse.courseId,
         (pageNumber - 1) * 10, //offset
         10 // records per page
-      );
-      setUsers(data);
+      )
+      setUsers(data)
     } catch (error) {
-      console.log('Error while fetching learners:', error);
+      console.log('Error while fetching learners:', error)
     }
 
     // setLoading(false);
-  };
+  }
 
   const handleSelectExperience = (course, index) => {
-    setSelectedCourse(course);
-    setExperience(experienceEnum[index]);
-  };
+    setSelectedCourse(course)
+    setExperience(experienceEnum[index])
+  }
 
   return (
     <Container className="courses-home">
-      <HeaderMain title="Courses" subTitles="" />
-      <Row>
-        <Col lg={12}>
-          <HeaderDemo
-            title="View courses"
-            subTitle="You can view and take courses from here."
-          />
-        </Col>
+      <Row className="my-3 pl-3">
+        <Metrics></Metrics>
       </Row>
       <Row>
         <Col>
@@ -110,7 +105,7 @@ const DashboardNew = (props) => {
         </Col>
       </Row>
       <Row style={{ minHeight: 200 }} className="py-4">
-        {selectedCourses.map((course) => (
+        {selectedCourses.map(course => (
           <Col className="text-center" key={course.courseId}>
             <PieChart
               course={course}
@@ -154,7 +149,7 @@ const DashboardNew = (props) => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default hot(module)(DashboardNew);
+export default hot(module)(DashboardNew)

@@ -97,7 +97,7 @@ const DashboardNew = props => {
   return (
     <Container className="courses-home">
       <Row className="my-3 pl-3">
-        <Metrics></Metrics>
+        <Metrics organizationId={selectedOrganization.organizationId}></Metrics>
       </Row>
       <Row>
         <Col>

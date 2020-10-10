@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { Row, Col, Card, CardBody, Loading } from '@/Components'
 import { learnerService } from '@/services'
 
-const Metrics = ({ organizationId }) => {
+const MetricCards = ({ organizationId }) => {
   const [users, setUsers] = useState(null)
 
   useEffect(() => {
@@ -55,4 +55,4 @@ const Metrics = ({ organizationId }) => {
   )
 }
 
-export default hot(module)(Metrics)
+export default hot(module)(MetricCards)

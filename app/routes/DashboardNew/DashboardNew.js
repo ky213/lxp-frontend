@@ -4,12 +4,10 @@ import { Container, Row, Col } from '@/components'
 import { useAppState } from '@/components/AppState'
 import { hot } from 'react-hot-loader'
 
-import { HeaderMain } from '@/routes/components/HeaderMain'
-import { HeaderDemo } from '@/routes/components/HeaderDemo'
 import CourseSelector from './components/CourseSelector'
 import LearnersTable from './components/LearnersTable'
 import PieChart from './components/PieChart'
-import Metrics from './components/Metrics'
+import MetricCards from './components/MetricCards'
 
 import './DashboardNew.scss'
 
@@ -97,7 +95,9 @@ const DashboardNew = props => {
   return (
     <Container className="courses-home">
       <Row className="my-3 pl-3">
-        <Metrics organizationId={selectedOrganization.organizationId}></Metrics>
+        <MetricCards
+          organizationId={selectedOrganization.organizationId}
+        ></MetricCards>
       </Row>
       <Row>
         <Col>

@@ -53,7 +53,6 @@ const MailsServerSettings = ({ organization }) => {
         <div>
           <h4 className="text-danger">Error</h4>
           <p>Connection failed, please verify your settings</p>
-          <p>{error.message}</p>
         </div>
       )
     }

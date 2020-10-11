@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
 
-import { Row, Col, Card, CardBody, Loading } from '@/Components'
+import { Row, Col, Card, CardBody, Loading } from '@/components'
 import { learnerService } from '@/services'
 
 const MetricCards = ({ organizationId }) => {

@@ -1,26 +1,33 @@
-import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { SketchPicker } from 'react-color';
-import styled from 'styled-components';
-import ThemedButton from '@/components/ThemedButton';
-import { useIntl } from 'react-intl';
+import React from 'react'
+import { useIntl } from 'react-intl'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import { SketchPicker } from 'react-color'
+import styled from 'styled-components'
+import { hot } from 'react-hot-loader'
+import classNames from 'classnames'
+
+import ThemedButton from '@/components/ThemedButton'
 import {
   Row,
   Col,
   Card,
+  CardHeader,
   CardBody,
   Button,
+  CustomInput,
   FormGroup,
   Label,
   Alert,
-} from '@/components';
-import { organizationService, groupsService } from '@/services';
-import { Consumer } from '@/components/Theme/ThemeContext';
-import ImageUpload from '@/components/ImageUpload';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { useAppState } from '@/components/AppState';
-import { SUPER_ADMIN_UPDATE_ORGANIZATION } from '@/actions';
+} from '@/components'
+import { organizationService, groupsService } from '@/services'
+import { Consumer } from '@/components/Theme/ThemeContext'
+import ImageUpload from '@/components/ImageUpload'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import { useAppState } from '@/components/AppState'
+import { SUPER_ADMIN_UPDATE_ORGANIZATION } from '@/actions'
+import MailServerSettings from './MailServerSettings'
+import { isNil } from 'lodash'
 
 const Swatch = styled.section`
   padding: 5px;
@@ -29,18 +36,18 @@ const Swatch = styled.section`
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   display: inline-block;
   cursor: pointer;
-`;
+`
 
 const SwatchSelectedColor = styled.section`
-  background-color: ${(props) => (props.color ? props.color : '#1EB7FF')};
+  background-color: ${props => (props.color ? props.color : '#1EB7FF')};
   width: 36px;
   height: 14px;
-`;
+`
 
 const ColorPickerPopover = styled.section`
   position: absolute;
   z-index: 2;
-`;
+`
 
 const ColorPickerCover = styled.section`
   position: fixed;
@@ -48,106 +55,108 @@ const ColorPickerCover = styled.section`
   right: 0px;
   bottom: 0px;
   left: 0px;
-`;
+`
 
 const InvalidFeedback = styled.section`
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.75rem;
   color: #ed1c24;
-`;
+`
 
-const OrganizationSettings = (props) => {
-  const intl = useIntl();
-
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const [organization, setOrganization] = React.useState(null);
-  const [showAlert, setShowAlert] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const [showColorPicker, setShowColorPicker] = React.useState(false);
+const OrganizationSettings = props => {
+  const intl = useIntl()
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
+  const [organization, setOrganization] = React.useState(null)
+  const [showAlert, setShowAlert] = React.useState(false)
+  const [alertMessage, setAlertMessage] = React.useState(null)
+  const [showColorPicker, setShowColorPicker] = React.useState(false)
   const [
     showBackgroundColorPicker,
     setShowBackgroundColorPicker,
-  ] = React.useState(false);
-  const [selectedColorCode, setSelectedColorCode] = React.useState('#FFFFFF');
+  ] = React.useState(false)
+  const [selectedColorCode, setSelectedColorCode] = React.useState('#FFFFFF')
   const [
     selectedBackgroundColorCode,
     setSelectedBackgroundColorCode,
-  ] = React.useState('#1EB7FF');
-  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null);
-  const [groups, setGroups] = React.useState([]);
+  ] = React.useState('#1EB7FF')
+  const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null)
+  const [groups, setGroups] = React.useState([])
+  const [selectedTab, setSelectedTab] = React.useState('general')
 
-  const { onCancel } = props;
+  const { onCancel } = props
 
   const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
+    setAlertMessage({ title, message, type })
+    setShowAlert(true)
+  }
 
   React.useEffect(() => {
     //const organizationId = queryParams && queryParams.id || currentUser && currentUser.user.organizationId;
     if (props.organizationId) {
       //console.log("Edit organization useEffect:", organizationId)
-      organizationService.getById(props.organizationId).then((data) => {
-        setOrganization(data);
-        setSelectedColorCode(data.colorCode || '#FFFFFF');
-        setSelectedBackgroundColorCode(data.backgroundColorCode || '#1EB7FF');
-        setSelectedLogoDataUrl(data.logo || null);
-
-        // console.log('Got organization:', data);
-      });
+      organizationService.getById(props.organizationId).then(data => {
+        setOrganization(data)
+        setSelectedColorCode(data.colorCode || '#FFFFFF')
+        setSelectedBackgroundColorCode(data.backgroundColorCode || '#1EB7FF')
+        setSelectedLogoDataUrl(data.logo || null)
+      })
     } else {
-      setOrganization(null);
-      setSelectedColorCode('#FFFFFF');
-      setSelectedBackgroundColorCode('#1EB7FF');
-      setSelectedLogoDataUrl(null);
+      setOrganization(null)
+      setSelectedColorCode('#FFFFFF')
+      setSelectedBackgroundColorCode('#1EB7FF')
+      setSelectedLogoDataUrl(null)
     }
-  }, [props.organizationId]);
+  }, [props.organizationId])
 
-  React.useEffect((params) => {
-    groupsService
-      .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups));
-  }, []);
+  React.useEffect(() => {
+    if (props.organizationId)
+      groupsService
+        .getAll(props.organizationId)
+        .then(response => setGroups(response.groups))
+  }, [])
 
   return (
     <React.Fragment>
       <Row>
         <Col lg={12}>
           <HeaderDemo
-            title="Edit organization settings"
-            subTitle="You can change organization settings like organization name, logo, academic months etc. here"
+            title={intl.formatMessage({
+              id: 'SuperAdminHome.EditOrganizationSettingsTitle',
+            })}
+            subTitle={intl.formatMessage({
+              id: 'SuperAdminHome.EditOrganizationSettingsSubtitle',
+            })}
           />
         </Col>
       </Row>
-
       <Consumer>
-        {(themeState) => (
+        {themeState => (
           <Formik
             {...themeState}
             {...props}
             enableReinitialize={true}
             initialValues={{
               name: (organization && organization.name) || '',
+              isActive:
+                (organization && organization.isActive) || !organization,
               defaultGroupId: organization?.defaultGroupId || '',
             }}
             validationSchema={Yup.object().shape({
-              name: Yup.string().required('Name is required'),
-              defaultGroupId: Yup.string().required(
-                'Default group is required'
+              name: Yup.string().required(
+                intl.formatMessage({ id: 'General.NameIsRequired' })
               ),
             })}
             onSubmit={async (
-              { name, defaultGroupId },
+              { name, isActive, defaultGroupId },
               { setStatus, setSubmitting }
             ) => {
-              setStatus();
-              //console.log('onSubmit', name, academicFirstMonth, academicLastMonth);
+              setStatus()
 
               // Updating existing
               if (organization) {
@@ -155,35 +164,44 @@ const OrganizationSettings = (props) => {
                   const updatedOrganization = {
                     name,
                     organizationId: organization.organizationId,
+                    isActive,
                     colorCode: selectedColorCode,
                     backgroundColorCode: selectedBackgroundColorCode,
                     logo: selectedLogoDataUrl,
                     defaultGroupId,
-                  };
-                  await organizationService.update(updatedOrganization);
+                  }
+
+                  await organizationService.update(updatedOrganization)
 
                   dispatch({
                     type: SUPER_ADMIN_UPDATE_ORGANIZATION,
                     organization: updatedOrganization,
-                  });
+                  })
 
                   showAlertMessage({
                     title: intl.formatMessage({ id: 'General.Success' }),
-                    message:
-                      'You have sucessfully changed the organization settings!',
+                    message: intl.formatMessage({
+                      id: 'General.SuccessUpdateMessage',
+                    }),
                     type: 'success',
-                  });
-
-                  props.onEdited();
-                  setSubmitting(false);
+                  })
+                  props.onEdited()
+                  setSubmitting(false)
                 } catch (error) {
+                  console.log(
+                    'Got an error while updating the organization:',
+                    error
+                  )
                   showAlertMessage({
-                    title: 'Error',
-                    message: `Error while changing organization settings: ${error}`,
+                    title: intl.formatMessage({ id: 'General.Error' }),
+                    message: intl.formatMessage(
+                      { id: 'General.ErrorUpdateMessage' },
+                      { error: error }
+                    ),
                     type: 'danger',
-                  });
-                  setSubmitting(false);
-                  setStatus(error);
+                  })
+                  setSubmitting(false)
+                  setStatus(error)
                 }
               } else {
                 organizationService
@@ -191,41 +209,38 @@ const OrganizationSettings = (props) => {
                     name,
                     colorCode: selectedColorCode,
                     backgroundColorCode: selectedBackgroundColorCode,
+                    isActive,
                     logo: selectedLogoDataUrl,
-                    defaultGroupId,
                   })
                   .then(
-                    (reponse) => {
+                    reponse => {
                       showAlertMessage({
                         title: intl.formatMessage({ id: 'General.Success' }),
                         message:
                           'You have sucessfully created an organization!',
                         type: 'success',
-                      });
+                      })
 
-                      props.onEdited();
-                      setSubmitting(false);
+                      props.onEdited()
+                      setSubmitting(false)
                     },
-                    (error) => {
+                    error => {
                       showAlertMessage({
-                        title: 'Error',
-                        message: `Error while trying to create an organization: ${error}`,
+                        title: intl.formatMessage({ id: 'General.Error' }),
+                        message: intl.formatMessage(
+                          { id: 'General.ErrorInsertMessage' },
+                          { error: error }
+                        ),
                         type: 'danger',
-                      });
-                      setSubmitting(false);
-                      setStatus(error);
+                      })
+                      setSubmitting(false)
+                      setStatus(error)
                     }
-                  );
+                  )
               }
-
-              themeState.onChangeTheme({
-                backgroundColor: selectedBackgroundColorCode,
-                foregroundColor: selectedColorCode,
-                organizationLogo: selectedLogoDataUrl,
-              });
             }}
           >
-            {(props) => {
+            {formikProps => {
               return (
                 <React.Fragment>
                   {showAlert && alertMessage && (
@@ -239,178 +254,289 @@ const OrganizationSettings = (props) => {
                           color={alertMessage.type}
                           onClick={dismissAlert}
                         >
-                          Dismiss
+                          {intl.formatMessage({ id: 'General.Dismiss' })}
                         </Button>
                       </div>
                     </Alert>
                   )}
+                  {/* START Section 1 */}
                   <Row>
                     <Col lg={12}>
                       <Card className="mb-3">
+                        <CardHeader>
+                          <ul className="nav nav-tabs card-header-tabs">
+                            <li
+                              className="nav-item"
+                              onClick={() => setSelectedTab('general')}
+                            >
+                              <a
+                                className={classNames('nav-link', {
+                                  active: selectedTab === 'general',
+                                })}
+                                href="#"
+                              >
+                                <i className="fa fa-gear mr-2"></i> General
+                              </a>
+                            </li>
+                            <li
+                              className="nav-item"
+                              onClick={() => {
+                                if (!isNil(props.organizationId))
+                                  setSelectedTab('mailServer')
+                              }}
+                            >
+                              <a
+                                className={classNames('nav-link', {
+                                  active: selectedTab === 'mailServer',
+                                  disabled: isNil(props.organizationId),
+                                })}
+                                href="#"
+                              >
+                                <i className="fa fa-server mr-2"></i> Mail
+                                Server
+                              </a>
+                            </li>
+                          </ul>
+                        </CardHeader>
                         <CardBody>
-                          <Form onSubmit={props.handleSubmit}>
-                            <FormGroup row>
-                              <Label for="name" sm={3}>
-                                Name
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  type="text"
-                                  name="name"
-                                  id="name"
-                                  className={
-                                    'bg-white form-control' +
-                                    (props.errors.name && props.touched.name
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  placeholder="Enter Name..."
-                                />
-                                <ErrorMessage
-                                  name="name"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="name" sm={3}>
-                                Logo
-                              </Label>
-                              <Col sm={9}>
-                                <ImageUpload
-                                  maxFileSizeKB={200}
-                                  defaultImage={selectedLogoDataUrl}
-                                  onSelectedImage={(imageDataUrl) => {
-                                    //console.log("Selected image:", imageDataUrl)
-                                    setSelectedLogoDataUrl(imageDataUrl);
-                                  }}
-                                />
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="colorPicker" sm={3}>
-                                Foreground color
-                              </Label>
-                              <Col sm={9}>
-                                <Swatch>
-                                  <SwatchSelectedColor
-                                    onClick={() =>
-                                      setShowColorPicker(!showColorPicker)
+                          {selectedTab === 'general' ? (
+                            <Form onSubmit={formikProps.handleSubmit}>
+                              <FormGroup row>
+                                <Label for="name" sm={3}>
+                                  {intl.formatMessage({ id: 'General.Name' })}
+                                </Label>
+                                <Col sm={9}>
+                                  <Field
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.name &&
+                                      formikProps.touched.name
+                                        ? ' is-invalid'
+                                        : '')
                                     }
-                                    color={selectedColorCode}
+                                    placeholder={intl.formatMessage({
+                                      id: 'General.NamePlaceholder',
+                                    })}
                                   />
-                                </Swatch>
-                                {showColorPicker && (
-                                  <ColorPickerPopover>
-                                    <ColorPickerCover
-                                      onClick={() => setShowColorPicker(false)}
-                                    />
-                                    <SketchPicker
-                                      color={selectedColorCode}
-                                      onChange={(color) => {
-                                        setSelectedColorCode(color.hex);
-                                      }}
-                                    />
-                                  </ColorPickerPopover>
-                                )}
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="colorPicker" sm={3}>
-                                Background color
-                              </Label>
-                              <Col sm={9}>
-                                <Swatch>
-                                  <SwatchSelectedColor
-                                    onClick={() =>
-                                      setShowBackgroundColorPicker(
-                                        !showBackgroundColorPicker
-                                      )
-                                    }
-                                    color={selectedBackgroundColorCode}
+                                  <ErrorMessage
+                                    name="name"
+                                    component="div"
+                                    className="invalid-feedback"
                                   />
-                                </Swatch>
-                                {showBackgroundColorPicker && (
-                                  <ColorPickerPopover>
-                                    <ColorPickerCover
-                                      onClick={() =>
-                                        setShowBackgroundColorPicker(false)
-                                      }
-                                    />
-                                    <SketchPicker
-                                      color={selectedBackgroundColorCode}
-                                      onChange={(color) => {
-                                        setSelectedBackgroundColorCode(
-                                          color.hex
-                                        );
-                                      }}
-                                    />
-                                  </ColorPickerPopover>
-                                )}
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="group" sm={3}>
-                                Default Group
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  component="select"
-                                  name="defaultGroupId"
-                                  id="defaultGroupId"
-                                  className={
-                                    'bg-white form-control' +
-                                    (props.errors.defaultGroupId &&
-                                    props.touched.defaultGroupId
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                >
-                                  <option value="">Select user group...</option>
-                                  {groups.map((group) => {
-                                    return (
-                                      <option
-                                        value={group.groupId}
-                                        selected={
-                                          organization &&
-                                          group.groupId ==
-                                            organization.defaultGroupId
-                                        }
-                                      >
-                                        {group.name}
-                                      </option>
-                                    );
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="name" sm={3}>
+                                  {intl.formatMessage({
+                                    id: 'SuperAdminHome.Logo',
                                   })}
-                                </Field>
-                                {props.errors.defaultGroupId && (
-                                  <InvalidFeedback>
-                                    {props.errors.defaultGroupId}
-                                  </InvalidFeedback>
-                                )}
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Col sm={3} />
-                              <Col sm={9}>
-                                <ThemedButton type="submit">
-                                  {(organization && 'Update') || 'Create'}
-                                </ThemedButton>
-                              </Col>
-                            </FormGroup>
-                          </Form>
+                                </Label>
+                                <Col sm={9}>
+                                  <ImageUpload
+                                    maxFileSizeKB={200}
+                                    defaultImage={selectedLogoDataUrl}
+                                    onSelectedImage={imageDataUrl => {
+                                      setSelectedLogoDataUrl(imageDataUrl)
+                                    }}
+                                  />
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="colorPicker" sm={3}>
+                                  {intl.formatMessage({
+                                    id: 'SuperAdminHome.ForegroundColor',
+                                  })}
+                                </Label>
+                                <Col sm={9}>
+                                  <Swatch>
+                                    <SwatchSelectedColor
+                                      onClick={() =>
+                                        setShowColorPicker(!showColorPicker)
+                                      }
+                                      color={selectedColorCode}
+                                    />
+                                  </Swatch>
+                                  {showColorPicker && (
+                                    <ColorPickerPopover>
+                                      <ColorPickerCover
+                                        onClick={() =>
+                                          setShowColorPicker(false)
+                                        }
+                                      />
+                                      <SketchPicker
+                                        color={selectedColorCode}
+                                        onChange={color => {
+                                          setSelectedColorCode(color.hex)
+                                        }}
+                                      />
+                                    </ColorPickerPopover>
+                                  )}
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="colorPicker" sm={3}>
+                                  {intl.formatMessage({
+                                    id: 'SuperAdminHome.BackgroundColor',
+                                  })}
+                                </Label>
+                                <Col sm={9}>
+                                  <Swatch>
+                                    <SwatchSelectedColor
+                                      onClick={() =>
+                                        setShowBackgroundColorPicker(
+                                          !showBackgroundColorPicker
+                                        )
+                                      }
+                                      color={selectedBackgroundColorCode}
+                                    />
+                                  </Swatch>
+                                  {showBackgroundColorPicker && (
+                                    <ColorPickerPopover>
+                                      <ColorPickerCover
+                                        onClick={() =>
+                                          setShowBackgroundColorPicker(false)
+                                        }
+                                      />
+                                      <SketchPicker
+                                        color={selectedBackgroundColorCode}
+                                        onChange={color => {
+                                          setSelectedBackgroundColorCode(
+                                            color.hex
+                                          )
+                                        }}
+                                      />
+                                    </ColorPickerPopover>
+                                  )}
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label sm={3}>
+                                  {intl.formatMessage({ id: 'General.Status' })}
+                                </Label>
+                                <Col sm={9}>
+                                  <CustomInput
+                                    inline
+                                    type="radio"
+                                    id="statusActive"
+                                    name="isActive"
+                                    label="Active"
+                                    checked={
+                                      formikProps.values.isActive == true
+                                    }
+                                    value="true"
+                                    onChange={event => {
+                                      formikProps.setFieldValue(
+                                        'isActive',
+                                        true
+                                      )
+                                    }}
+                                  />
+                                  <CustomInput
+                                    inline
+                                    type="radio"
+                                    id="statusInactive"
+                                    name="isActive"
+                                    label="Inactive"
+                                    value="false"
+                                    checked={
+                                      formikProps.values.isActive == false
+                                    }
+                                    onChange={event => {
+                                      formikProps.setFieldValue(
+                                        'isActive',
+                                        false
+                                      )
+                                    }}
+                                  />
+                                </Col>
+                              </FormGroup>
+                              {organization && (
+                                <FormGroup row>
+                                  <Label for="group" sm={3}>
+                                    Default Group
+                                  </Label>
+                                  <Col sm={9}>
+                                    <Field
+                                      component="select"
+                                      name="defaultGroupId"
+                                      id="defaultGroupId"
+                                      className={
+                                        'bg-white form-control' +
+                                        (formikProps.errors.defaultGroupId &&
+                                        formikProps.touched.defaultGroupId
+                                          ? ' is-invalid'
+                                          : '')
+                                      }
+                                    >
+                                      <option value="">
+                                        Select user group...
+                                      </option>
+                                      {groups.map(group => {
+                                        return (
+                                          <option
+                                            value={group.groupId}
+                                            selected={
+                                              organization &&
+                                              group.groupId ==
+                                                organization.defaultGroupId
+                                            }
+                                          >
+                                            {group.name}
+                                          </option>
+                                        )
+                                      })}
+                                    </Field>
+                                    {formikProps.errors.defaultGroupId && (
+                                      <InvalidFeedback>
+                                        {formikProps.errors.defaultGroupId}
+                                      </InvalidFeedback>
+                                    )}
+                                  </Col>
+                                </FormGroup>
+                              )}
+                              <FormGroup row>
+                                <Col sm={3} />
+                                <Col sm={9}>
+                                  <ThemedButton type="submit" className="mr-2">
+                                    {(organization &&
+                                      intl.formatMessage({
+                                        id: 'General.Update',
+                                      })) ||
+                                      intl.formatMessage({
+                                        id: 'General.Create',
+                                      })}
+                                  </ThemedButton>
+                                  {location.pathname === '/home' && (
+                                    <Button
+                                      type="button"
+                                      onClick={() => onCancel()}
+                                      color="light"
+                                    >
+                                      {(!organization && 'Cancel') || 'Go back'}
+                                    </Button>
+                                  )}
+                                </Col>
+                              </FormGroup>
+                            </Form>
+                          ) : (
+                            <MailServerSettings organization={organization} />
+                          )}
                         </CardBody>
                       </Card>
                     </Col>
                   </Row>
+                  {/* END Section 2 */}
                 </React.Fragment>
-              );
+              )
             }}
           </Formik>
         )}
       </Consumer>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default OrganizationSettings;
+export default hot(module)(OrganizationSettings)

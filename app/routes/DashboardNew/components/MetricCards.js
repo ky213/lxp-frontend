@@ -99,7 +99,7 @@ const MetricCards = ({ organizationId }) => {
                 >
                   <CardBody>
                     <i
-                      className="fa fa-users fa-fw"
+                      className="fa fa-graduation-cap fa-fw"
                       style={{ fontSize: '30px', color: '#555' }}
                     ></i>
                   </CardBody>
@@ -190,7 +190,7 @@ const MetricCards = ({ organizationId }) => {
                   style={{
                     top: '-30px',
                     left: '5px',
-                    backgroundColor: '#254d77',
+                    backgroundColor: '#5e95b0',
                   }}
                 >
                   <CardBody>

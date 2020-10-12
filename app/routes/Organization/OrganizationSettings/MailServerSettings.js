@@ -189,7 +189,7 @@ const MailsServerSettings = ({ organization }) => {
                 id="Encryption"
                 name="Encryption"
               >
-                <option value="">None</option>
+                <option value=""></option>
                 <option value="SSL">SSL</option>
                 <option value="TLS">TLS</option>
               </Field>

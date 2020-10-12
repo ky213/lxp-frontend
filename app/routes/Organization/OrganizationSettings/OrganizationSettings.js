@@ -509,7 +509,7 @@ const OrganizationSettings = props => {
                                         id: 'General.Create',
                                       })}
                                   </ThemedButton>
-                                  {location.pathname === '/home' && (
+                                  {location.pathname.includes('/home') && (
                                     <Button
                                       type="button"
                                       onClick={() => onCancel()}

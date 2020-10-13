@@ -64,6 +64,7 @@ const MailsServerSettings = ({ organization }) => {
     Email: Yup.string().email().required('Required'),
     Label: Yup.string().required('Required'),
     ServerId: Yup.string().required('Required'),
+    Password: Yup.string().required('Required'),
   })
 
   const initelValues = {
@@ -75,7 +76,7 @@ const MailsServerSettings = ({ organization }) => {
     Body: organization?.Body || '',
     Label: organization?.Label || '',
     ServerId: organization?.ServerId || '',
-    Password: '',
+    Password: organization?.Password || '',
   }
 
   return (

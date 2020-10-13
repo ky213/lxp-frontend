@@ -85,15 +85,7 @@ const MailsServerSettings = ({ organization }) => {
       validationSchema={MailServerSchema}
       onSubmit={handleOnSubmit}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleSubmit,
-        handleBlur,
-        isSubmitting,
-      }) => (
+      {({ values, errors, touched, handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <FormGroup row>
             <Label for="SMTPHost" sm={3}>

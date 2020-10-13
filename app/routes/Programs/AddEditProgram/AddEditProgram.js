@@ -1,15 +1,16 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useIntl } from 'react-intl';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import moment from 'moment';
-import { SketchPicker } from 'react-color';
-import styled from 'styled-components';
-import ThemedButton from '@/components/ThemedButton';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Role } from '@/helpers';
+import React from 'react'
+import { useParams, Link } from 'react-router-dom'
+import { hot } from 'react-hot-loader'
+import { useIntl } from 'react-intl'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import DatePicker, { setDefaultLocale } from 'react-datepicker'
+import moment from 'moment'
+import { SketchPicker } from 'react-color'
+import styled from 'styled-components'
+import ThemedButton from '@/components/ThemedButton'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { Role } from '@/helpers'
 
 import {
   Container,
@@ -28,99 +29,115 @@ import {
   Input,
   FormText,
   Alert,
-} from '@/components';
+} from '@/components'
 import {
   programService,
   authenticationService,
   userService,
   courseManagerService,
-} from '@/services';
-import { Consumer } from '@/components/Theme/ThemeContext';
-import ImageUpload from '@/components/ImageUpload';
-import { useAppState } from '@/components/AppState';
+} from '@/services'
+import { Consumer } from '@/components/Theme/ThemeContext'
+import ImageUpload from '@/components/ImageUpload'
+import { useAppState } from '@/components/AppState'
 
 const InvalidFeedback = styled.section`
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.75rem;
   color: #ed1c24;
-`;
+`
 
-const AddEditProgram = (props) => {
-  const intl = useIntl();
+const AddEditProgram = props => {
+  const intl = useIntl()
 
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const [program, setProgram] = React.useState(null);
-  const [users, setUsers] = React.useState([]);
-  const [showAlert, setShowAlert] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const { onCancelCreate } = props;
-  const inputEl = React.useRef(null);
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
+  const [program, setProgram] = React.useState(null)
+  const [users, setUsers] = React.useState([])
+  const [showAlert, setShowAlert] = React.useState(false)
+  const [alertMessage, setAlertMessage] = React.useState(null)
+  const { onCancelCreate } = props
+  const inputEl = React.useRef(null)
 
   const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
+    setAlertMessage({ title, message, type })
+    setShowAlert(true)
+  }
 
   React.useEffect(() => {
     courseManagerService
       .getAll(1, 999, null, selectedOrganization.organizationId)
-      .then((data) => {
+      .then(data => {
         if (data.users) {
           const usersData = data.users
-            .filter((u) => u.role == Role.ProgramDirector)
-            .map((u) => {
+            .filter(u => u.role == Role.ProgramDirector)
+            .map(u => {
               return {
                 name: `${u.name} ${u.surname}`,
                 employeeId: u.employeeId,
-              };
-            });
-          setUsers(usersData || []);
+              }
+            })
+          setUsers(usersData || [])
         }
 
         /* console.log("usersData: ", usersData); */
-      });
-  }, []);
+      })
+  }, [])
 
   React.useEffect(() => {
     if (props.programId) {
       programService
         .getById(props.programId, selectedOrganization.organizationId)
-        .then((data) => {
-          setProgram(data);
-        });
+        .then(data => {
+          setProgram(data)
+        })
     } else {
-      setProgram(null);
+      setProgram(null)
     }
     if (inputEl && inputEl.current) {
-      inputEl.current.focus();
+      inputEl.current.focus()
     }
-  }, [props.programId]);
+  }, [props.programId])
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    programDirectors: Yup.array()
+      .min(1, 'You need to select at least one program manager')
+      .typeError('Invalid entry'),
+    subject: Yup.string().required('Email subject is required'),
+    body: Yup.string().required('Email body is required'),
+  })
+
+  const emailTemplate = `
+    Hi {UserName},
+    
+    Welcome to our LXP system, we are happy to see you...
+    Your user login: {UserLogin}
+    Your Password: {UserPass}
+    `
+
+  const initialValues = {
+    name: (program && program.name) || '',
+    programDirectors: (program && program.programDirectors) || [],
+    subject: program?.subject || '',
+    body: program?.body || emailTemplate,
+  }
 
   return (
     <Consumer>
-      {(themeState) => (
+      {themeState => (
         <Formik
           {...themeState}
           {...props}
           enableReinitialize={true}
-          initialValues={{
-            name: (program && program.name) || '',
-            programDirectors: (program && program.programDirectors) || [],
-          }}
-          validationSchema={Yup.object().shape({
-            name: Yup.string().required('Name is required'),
-            programDirectors: Yup.array()
-              .min(1, 'You need to select at least one program manager')
-              .typeError('Invalid entry'),
-          })}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
           onSubmit={(
-            { name, programDirectors },
+            { name, programDirectors, subject, body },
             { setStatus, setSubmitting }
           ) => {
             // Updating existing
@@ -128,79 +145,83 @@ const AddEditProgram = (props) => {
               programService
                 .update({
                   name,
+                  subject,
+                  body,
                   programId: program.programId,
                   programDirectors,
                   organizationId: selectedOrganization.organizationId,
                 })
                 .then(
-                  (reponse) => {
+                  reponse => {
                     showAlertMessage({
                       title: intl.formatMessage({ id: 'General.Success' }),
                       message: 'You have sucessfully changed the program!',
                       type: 'success',
-                    });
-                    props.onEdited();
-                    setSubmitting(false);
+                    })
+                    props.onEdited()
+                    setSubmitting(false)
                   },
-                  (error) => {
+                  error => {
                     console.log(
                       `Error while changing the program ${name}:`,
                       error
-                    );
-                    let errorMessage = `Error while trying to change the program ${name}`;
+                    )
+                    let errorMessage = `Error while trying to change the program ${name}`
                     if (error.toLowerCase().includes('unique')) {
-                      errorMessage = `Program with the same name (${name}) already exists`;
+                      errorMessage = `Program with the same name (${name}) already exists`
                     }
 
                     showAlertMessage({
                       title: 'Error',
                       message: errorMessage,
                       type: 'danger',
-                    });
-                    setSubmitting(false);
-                    setStatus(error);
+                    })
+                    setSubmitting(false)
+                    setStatus(error)
                   }
-                );
+                )
             } else {
               programService
                 .create({
                   name,
+                  subject,
+                  body,
                   programDirectors,
                   organizationId: selectedOrganization.organizationId,
                 })
                 .then(
-                  (reponse) => {
+                  reponse => {
                     showAlertMessage({
                       title: intl.formatMessage({ id: 'General.Success' }),
                       message: 'You have sucessfully created a program!',
                       type: 'success',
-                    });
-                    props.onEdited();
-                    setSubmitting(false);
+                    })
+                    props.onEdited()
+                    setSubmitting(false)
                   },
-                  (error) => {
+                  error => {
                     console.log(
                       `Error while trying to create a program:`,
                       error
-                    );
-                    let errorMessage = `Error while trying to create a program`;
+                    )
+                    let errorMessage = `Error while trying to create a program`
                     if (error.toLowerCase().includes('unique')) {
-                      errorMessage = `Program with the same name already exists`;
+                      errorMessage = `Program with the same name already exists`
                     }
 
                     showAlertMessage({
                       title: 'Error',
                       message: errorMessage,
                       type: 'danger',
-                    });
-                    setSubmitting(false);
-                    setStatus(error);
+                    })
+                    setSubmitting(false)
+                    setStatus(error)
                   }
-                );
+                )
             }
           }}
         >
-          {(props) => {
+          {props => {
             return (
               <React.Fragment>
                 <Container>
@@ -272,7 +293,7 @@ const AddEditProgram = (props) => {
                                   }
                                   options={users}
                                   placeholder="Choose a program manager..."
-                                  onChange={(selectedOptions) =>
+                                  onChange={selectedOptions =>
                                     props.setFieldValue(
                                       'programDirectors',
                                       selectedOptions
@@ -290,7 +311,54 @@ const AddEditProgram = (props) => {
                                 </em>
                               </Col>
                             </FormGroup>
-
+                            <FormGroup row>
+                              <Label for="subject" sm={3}>
+                                Email Subject
+                              </Label>
+                              <Col sm={9}>
+                                <Field
+                                  type="text"
+                                  name="subject"
+                                  id="subject"
+                                  className={
+                                    'bg-white form-control' +
+                                    (props.errors.subject &&
+                                    props.touched.subject
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="subject"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                              <Label for="body" sm={3}>
+                                Email Body
+                              </Label>
+                              <Col sm={9}>
+                                <Field
+                                  as="textarea"
+                                  rows="6"
+                                  name="body"
+                                  id="body"
+                                  className={
+                                    'bg-white form-control' +
+                                    (props.errors.body && props.touched.body
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="body"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </Col>
+                            </FormGroup>
                             <FormGroup row>
                               <Col sm={3} />
                               <Col sm={9}>
@@ -315,12 +383,12 @@ const AddEditProgram = (props) => {
                   {/* END Section 2 */}
                 </Container>
               </React.Fragment>
-            );
+            )
           }}
         </Formik>
       )}
     </Consumer>
-  );
-};
+  )
+}
 
-export default AddEditProgram;
+export default hot(module)(AddEditProgram)

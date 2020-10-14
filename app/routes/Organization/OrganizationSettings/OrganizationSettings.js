@@ -146,14 +146,19 @@ const OrganizationSettings = props => {
               isActive:
                 (organization && organization.isActive) || !organization,
               defaultGroupId: organization?.defaultGroupId || '',
+              domain: organization?.domain || '',
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required(
                 intl.formatMessage({ id: 'General.NameIsRequired' })
               ),
+              domain: Yup.string().matches(
+                /^((?:([a-z0-9]\.|[a-z0-9][a-z0-9\-]{0,61}[a-z0-9])\.)+)([a-z0-9]{2,63}|(?:[a-z0-9][a-z0-9\-]{0,61}[a-z0-9]))\.?$/gi,
+                'Domain must be of format: xxxx.yyy'
+              ),
             })}
             onSubmit={async (
-              { name, isActive, defaultGroupId },
+              { name, isActive, defaultGroupId, domain },
               { setStatus, setSubmitting }
             ) => {
               setStatus()
@@ -163,6 +168,7 @@ const OrganizationSettings = props => {
                 try {
                   const updatedOrganization = {
                     name,
+                    domain,
                     organizationId: organization.organizationId,
                     isActive,
                     colorCode: selectedColorCode,
@@ -207,6 +213,7 @@ const OrganizationSettings = props => {
                 organizationService
                   .create({
                     name,
+                    domain,
                     colorCode: selectedColorCode,
                     backgroundColorCode: selectedBackgroundColorCode,
                     isActive,
@@ -497,6 +504,30 @@ const OrganizationSettings = props => {
                                   </Col>
                                 </FormGroup>
                               )}
+                              <FormGroup row>
+                                <Label for="domain" sm={3}>
+                                  Domain
+                                </Label>
+                                <Col sm={9}>
+                                  <Field
+                                    type="text"
+                                    name="domain"
+                                    id="domain"
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.domain &&
+                                      formikProps.touched.domain
+                                        ? ' is-invalid'
+                                        : '')
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="domain"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                              </FormGroup>
                               <FormGroup row>
                                 <Col sm={3} />
                                 <Col sm={9}>

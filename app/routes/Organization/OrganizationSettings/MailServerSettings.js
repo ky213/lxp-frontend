@@ -3,16 +3,18 @@ import { hot } from 'react-hot-loader'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
+import ReactQuill from 'react-quill'
 
 import { Col, FormGroup, Label, Button, Loading } from '@/components'
 import { organizationService } from '@/services'
 
 const MailsServerSettings = ({ organization }) => {
   const [isTesting, setIsTesting] = useState(false)
+  const [Body, setBody] = useState(organization?.Body || '')
 
   const handleOnSubmit = async (values, { setSubmitting }) => {
     try {
-      await organizationService.update({ ...organization, ...values })
+      await organizationService.update({ ...organization, ...values, Body })
       toast.success(
         <div>
           <h4 className="text-success">Success</h4>
@@ -72,8 +74,8 @@ const MailsServerSettings = ({ organization }) => {
     PortNumber: organization?.PortNumber || '',
     Encryption: organization?.Encryption || '',
     Email: organization?.Email || '',
-    Subject: organization?.Subject || '',
     Body: organization?.Body || '',
+    Subject: organization?.Subject || '',
     Label: organization?.Label || '',
     ServerId: organization?.ServerId || '',
     Password: organization?.Password || '',
@@ -261,16 +263,12 @@ const MailsServerSettings = ({ organization }) => {
               Email body
             </Label>
             <Col sm={9}>
-              <Field
-                as="textarea"
-                rows="4"
-                name="Body"
-                id="Body"
-                className={
-                  'bg-white form-control' +
-                  (errors.Body && touched.Body ? ' is-invalid' : '')
-                }
+              <ReactQuill
+                value={Body}
+                onChange={setBody}
+                style={{ border: '1px solid  #80808038', height: '200px' }}
               />
+
               <ErrorMessage
                 name="Body"
                 component="div"

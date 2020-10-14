@@ -1,43 +1,26 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom'
 import { hot } from 'react-hot-loader'
 import { useIntl } from 'react-intl'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import DatePicker, { setDefaultLocale } from 'react-datepicker'
-import moment from 'moment'
-import { SketchPicker } from 'react-color'
 import styled from 'styled-components'
 import ThemedButton from '@/components/ThemedButton'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { Role } from '@/helpers'
-
+import ReactQuill from 'react-quill'
 import {
   Container,
   Row,
   Col,
   Card,
-  CardTitle,
   CardBody,
   Button,
-  InputGroup,
-  InputGroupAddon,
-  CustomInput,
   FormGroup,
   Label,
-  Media,
-  Input,
-  FormText,
   Alert,
 } from '@/components'
-import {
-  programService,
-  authenticationService,
-  userService,
-  courseManagerService,
-} from '@/services'
+import { programService, courseManagerService } from '@/services'
 import { Consumer } from '@/components/Theme/ThemeContext'
-import ImageUpload from '@/components/ImageUpload'
 import { useAppState } from '@/components/AppState'
 
 const InvalidFeedback = styled.section`
@@ -57,6 +40,7 @@ const AddEditProgram = props => {
   const [alertMessage, setAlertMessage] = React.useState(null)
   const { onCancelCreate } = props
   const inputEl = React.useRef(null)
+  const [body, setBody] = React.useState('')
 
   const dismissAlert = () => {
     setAlertMessage(null)
@@ -94,9 +78,11 @@ const AddEditProgram = props => {
         .getById(props.programId, selectedOrganization.organizationId)
         .then(data => {
           setProgram(data)
+          setBody(data.body)
         })
     } else {
       setProgram(null)
+      setBody('')
     }
     if (inputEl && inputEl.current) {
       inputEl.current.focus()
@@ -109,22 +95,13 @@ const AddEditProgram = props => {
       .min(1, 'You need to select at least one program manager')
       .typeError('Invalid entry'),
     subject: Yup.string().required('Email subject is required'),
-    body: Yup.string().required('Email body is required'),
   })
-
-  const emailTemplate = `
-    Hi {UserName},
-    
-    Welcome to our LXP system, we are happy to see you...
-    Your user login: {UserLogin}
-    Your Password: {UserPass}
-    `
 
   const initialValues = {
     name: (program && program.name) || '',
     programDirectors: (program && program.programDirectors) || [],
     subject: program?.subject || '',
-    body: program?.body || emailTemplate,
+    body: program?.body || '',
   }
 
   return (
@@ -137,7 +114,7 @@ const AddEditProgram = props => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(
-            { name, programDirectors, subject, body },
+            { name, programDirectors, subject },
             { setStatus, setSubmitting }
           ) => {
             // Updating existing
@@ -340,17 +317,13 @@ const AddEditProgram = props => {
                                 Email Body
                               </Label>
                               <Col sm={9}>
-                                <Field
-                                  as="textarea"
-                                  rows="6"
-                                  name="body"
-                                  id="body"
-                                  className={
-                                    'bg-white form-control' +
-                                    (props.errors.body && props.touched.body
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
+                                <ReactQuill
+                                  value={body}
+                                  onChange={setBody}
+                                  style={{
+                                    border: '1px solid  #80808038',
+                                    height: '200px',
+                                  }}
                                 />
                                 <ErrorMessage
                                   name="body"

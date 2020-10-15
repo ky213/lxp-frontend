@@ -140,6 +140,7 @@ const MailsServerSettings = ({ organization }) => {
                 type="text"
                 name="ServerId"
                 id="ServerId"
+                autocomplete="off"
                 className={
                   'bg-white form-control' +
                   (errors.ServerId && touched.ServerId ? ' is-invalid' : '')
@@ -161,6 +162,7 @@ const MailsServerSettings = ({ organization }) => {
                 type="password"
                 name="Password"
                 id="Password"
+                autocomplete="new-password"
                 className={
                   'bg-white form-control' +
                   (errors.Password && touched.Password ? ' is-invalid' : '')

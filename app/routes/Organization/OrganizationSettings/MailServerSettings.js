@@ -132,27 +132,6 @@ const MailsServerSettings = ({ organization }) => {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label for="serverPassword" sm={3}>
-              Server Password
-            </Label>
-            <Col sm={9}>
-              <Field
-                type="password"
-                name="Password"
-                id="Password"
-                className={
-                  'bg-white form-control' +
-                  (errors.Password && touched.Password ? ' is-invalid' : '')
-                }
-              />
-              <ErrorMessage
-                name="Password"
-                component="div"
-                className="invalid-feedback"
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
             <Label for="ServerId" sm={3}>
               Server ID
             </Label>
@@ -168,6 +147,27 @@ const MailsServerSettings = ({ organization }) => {
               />
               <ErrorMessage
                 name="ServerId"
+                component="div"
+                className="invalid-feedback"
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="serverPassword" sm={3}>
+              Server Password
+            </Label>
+            <Col sm={9}>
+              <Field
+                type="password"
+                name="Password"
+                id="Password"
+                className={
+                  'bg-white form-control' +
+                  (errors.Password && touched.Password ? ' is-invalid' : '')
+                }
+              />
+              <ErrorMessage
+                name="Password"
                 component="div"
                 className="invalid-feedback"
               />
@@ -218,7 +218,7 @@ const MailsServerSettings = ({ organization }) => {
           </FormGroup>
           <FormGroup row>
             <Label for="Label" sm={3}>
-              Sender Label
+              Sender Name
             </Label>
             <Col sm={9}>
               <Field
@@ -239,7 +239,7 @@ const MailsServerSettings = ({ organization }) => {
           </FormGroup>
           <FormGroup row>
             <Label for="Subject" sm={3}>
-              Email Subject
+              Welcome Email Subject
             </Label>
             <Col sm={9}>
               <Field
@@ -260,7 +260,7 @@ const MailsServerSettings = ({ organization }) => {
           </FormGroup>
           <FormGroup row>
             <Label for="Body" sm={3}>
-              Email body
+              Welcome Email body
             </Label>
             <Col sm={9}>
               <ReactQuill

@@ -322,7 +322,7 @@ const AddEditProgram = props => {
                                   onChange={setBody}
                                   style={{
                                     border: '1px solid  #80808038',
-                                    height: '200px',
+                                    minHeight: '200px',
                                   }}
                                 />
                                 <ErrorMessage

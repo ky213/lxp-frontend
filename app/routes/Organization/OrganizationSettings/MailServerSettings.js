@@ -266,7 +266,7 @@ const MailsServerSettings = ({ organization }) => {
               <ReactQuill
                 value={Body}
                 onChange={setBody}
-                style={{ border: '1px solid  #80808038', height: '200px' }}
+                style={{ border: '1px solid  #80808038', minHeight: '200px' }}
               />
 
               <ErrorMessage

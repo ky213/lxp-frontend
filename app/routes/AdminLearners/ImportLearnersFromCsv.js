@@ -1,72 +1,73 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Card, CardBody, Col, Container, Row, Table } from '@/components';
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { learnerService, groupsService, courseService } from '@/services';
-import ThemedButton from '@/components/ThemedButton';
-import Papa from 'papaparse';
-import { useAppState } from '@/components/AppState';
-import { Loading } from '../../components';
-import moment from 'moment';
-import { isString } from 'lodash';
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { Card, CardBody, Col, Container, Row, Table } from '@/components'
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { learnerService, groupsService, courseService } from '@/services'
+import ThemedButton from '@/components/ThemedButton'
+import Papa from 'papaparse'
+import { useAppState } from '@/components/AppState'
+import { Loading } from '../../components'
+import moment from 'moment'
+import { isString } from 'lodash'
+import { hot } from 'react-hot-loader'
 
 const ImportLearnersFromCsv = () => {
-  let history = useHistory();
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const [showLoading, setShowLoading] = React.useState(false);
-  const [users, setUsers] = React.useState(null);
-  const [importDisabled, setImportDisabled] = React.useState(false);
-  const [groups, setGroups] = React.useState([]);
-  const [courses, setCourses] = React.useState([]);
+  let history = useHistory()
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
+  const [showLoading, setShowLoading] = React.useState(false)
+  const [users, setUsers] = React.useState(null)
+  const [importDisabled, setImportDisabled] = React.useState(false)
+  const [groups, setGroups] = React.useState([])
+  const [courses, setCourses] = React.useState([])
 
-  const inputFile = React.useRef(null);
+  const inputFile = React.useRef(null)
 
   React.useEffect(() => {
     groupsService
       .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups))
-      .catch((error) => {
-        console.log('courses error:', error);
-      });
+      .then(response => setGroups(response.groups))
+      .catch(error => {
+        console.log('courses error:', error)
+      })
 
     courseService
       .getAll(selectedOrganization.organizationId)
-      .then((response) => {
-        setCourses(response.courses);
+      .then(response => {
+        setCourses(response.courses)
       })
-      .catch((error) => {
-        console.log('courses error:', error);
-      });
-  }, []);
+      .catch(error => {
+        console.log('courses error:', error)
+      })
+  }, [])
 
-  const goBack = (event) => {
-    history.goBack();
-  };
+  const goBack = event => {
+    history.goBack()
+  }
 
   const importClick = () => {
-    setShowLoading(true);
+    setShowLoading(true)
     learnerService
       .addBulk(users, selectedOrganization.organizationId)
       .then(() => {
-        history.goBack();
+        history.goBack()
       })
-      .catch((err) => {
-        console.log('userService.addBulk', err);
-        setShowLoading(false);
-      });
-  };
+      .catch(err => {
+        console.log('userService.addBulk', err)
+        setShowLoading(false)
+      })
+  }
 
-  const importFromCsv = (event) => {
-    inputFile.current.click();
-  };
+  const importFromCsv = event => {
+    inputFile.current.click()
+  }
 
-  const showFile = async (e) => {
-    e.preventDefault();
-    setShowLoading(true);
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      let csvUsers = [];
-      const text = e.target.result;
+  const showFile = async e => {
+    e.preventDefault()
+    setShowLoading(true)
+    const reader = new FileReader()
+    reader.onload = async e => {
+      let csvUsers = []
+      const text = e.target.result
       var data = Papa.parse(text, {
         header: true,
         skipEmptyLines: true,
@@ -81,44 +82,44 @@ const ImportLearnersFromCsv = () => {
             courseNames: row.data.Courses,
             organizationId: selectedOrganization.organizationId,
             error: '',
-          };
+          }
 
-          if(user.groupIds && user.groupIds.length>0) {
+          if (user.groupIds && user.groupIds.length > 0) {
             user.groupIds = groups
-                .map(({name, groupId}) => {
-                  if (user.groupNames.includes(name)) return groupId;
-                })
-                .filter((g) => isString(g));
+              .map(({ name, groupId }) => {
+                if (user.groupNames.includes(name)) return groupId
+              })
+              .filter(g => isString(g))
           }
 
-          if(user.joinedCourses && user.joinedCourses.length>0) {
+          if (user.joinedCourses && user.joinedCourses.length > 0) {
             user.joinedCourses = courses
-                .map(({name, courseId}) => {
-                  if (user.courseNames?.includes(name)) return courseId;
-                })
-                .filter((c) => isString(c));
+              .map(({ name, courseId }) => {
+                if (user.courseNames?.includes(name)) return courseId
+              })
+              .filter(c => isString(c))
           }
 
-          csvUsers.push(user);
+          csvUsers.push(user)
         },
         complete: function () {
           learnerService
             .validateBulk(csvUsers, selectedOrganization.organizationId)
-            .then((data) => {
-              console.log('USERS:', data);
-              setUsers(data.data);
-              setImportDisabled(data.numOfRecordsInvalid > 0);
-              setShowLoading(false);
-            });
+            .then(data => {
+              console.log('USERS:', data)
+              setUsers(data.data)
+              setImportDisabled(data.numOfRecordsInvalid > 0)
+              setShowLoading(false)
+            })
         },
-      });
-    };
+      })
+    }
 
-    reader.readAsText(e.target.files[0]);
-    e.target.value = '';
-  };
+    reader.readAsText(e.target.files[0])
+    e.target.value = ''
+  }
 
-  let usersContent = '';
+  let usersContent = ''
 
   if (users != null) {
     usersContent = (
@@ -155,27 +156,13 @@ const ImportLearnersFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
-                      <td>
-                        {groups
-                          .map(({ name, groupId }) => {
-                            if (user.groupIds && user.groupIds.includes(groupId)) return name;
-                          })
-                          .filter((g) => isString(g))
-                          .join(', ')}
-                      </td>
-                      <td>
-                        {courses
-                          .map(({ name, courseId }) => {
-                            if (user.joinedCourses?.includes(courseId)) return name;
-                          })
-                          .filter((c) => isString(c))
-                          .join(', ')}
-                      </td>
+                      <td>{user.groupNames}</td>
+                      <td>{user.courseNames}</td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>
                     </tr>
-                  );
+                  )
                 })}
                 <tr>
                   <td colSpan="9">
@@ -200,7 +187,7 @@ const ImportLearnersFromCsv = () => {
           </div>
         </Col>
       </Row>
-    );
+    )
   }
 
   let fileExample = (
@@ -265,7 +252,7 @@ const ImportLearnersFromCsv = () => {
         </Col>
       </Row>
     </React.Fragment>
-  );
+  )
 
   return (
     <Container>
@@ -295,7 +282,7 @@ const ImportLearnersFromCsv = () => {
         </CardBody>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
-export default ImportLearnersFromCsv;
+export default hot(module)(ImportLearnersFromCsv)

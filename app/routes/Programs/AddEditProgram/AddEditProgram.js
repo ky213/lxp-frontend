@@ -345,6 +345,11 @@ const AddEditProgram = props => {
                                     ],
                                   }}
                                 />
+                                <small>
+                                  Valid placeholders: {'{OrgName}'},{' '}
+                                  {'{UserLogin}'}, {'{UserName}'},{' '}
+                                  {'{UserPass}'}
+                                </small>
                                 <ErrorMessage
                                   name="body"
                                   component="div"

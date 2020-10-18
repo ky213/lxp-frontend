@@ -154,7 +154,7 @@ const OrganizationSettings = props => {
                 intl.formatMessage({ id: 'General.NameIsRequired' })
               ),
               domain: Yup.string().matches(
-                /^((?:([a-z0-9]\.|[a-z0-9][a-z0-9\-]{0,61}[a-z0-9])\.)+)([a-z0-9]{2,63}|(?:[a-z0-9][a-z0-9\-]{0,61}[a-z0-9]))\.?$/gi,
+                /^((?:([a-z0-9]\.|[a-z0-9][a-z0-9\-]{0,61}[a-z0-9])\.)+)([a-z0-9]{2,63}|(?:[a-z0-9][a-z0-9\-]{0,61}[a-z0-9]))\.?$/i,
                 'Domain must be of format: xxxx.yyy'
               ),
             })}

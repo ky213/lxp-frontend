@@ -6,6 +6,7 @@ import { SketchPicker } from 'react-color'
 import styled from 'styled-components'
 import { hot } from 'react-hot-loader'
 import classNames from 'classnames'
+import { isNil } from 'lodash'
 
 import ThemedButton from '@/components/ThemedButton'
 import {
@@ -27,7 +28,7 @@ import { HeaderDemo } from '@/routes/components/HeaderDemo'
 import { useAppState } from '@/components/AppState'
 import { SUPER_ADMIN_UPDATE_ORGANIZATION } from '@/actions'
 import MailServerSettings from './MailServerSettings'
-import { isNil } from 'lodash'
+import { Role } from '@/helpers'
 
 const Swatch = styled.section`
   padding: 5px;
@@ -83,7 +84,7 @@ const OrganizationSettings = props => {
   const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState(null)
   const [groups, setGroups] = React.useState([])
   const [selectedTab, setSelectedTab] = React.useState('general')
-
+  const isSuperAdmin = currentUser?.user?.role === Role.SuperAdmin
   const { onCancel } = props
 
   const dismissAlert = () => {
@@ -504,30 +505,32 @@ const OrganizationSettings = props => {
                                   </Col>
                                 </FormGroup>
                               )}
-                              <FormGroup row>
-                                <Label for="domain" sm={3}>
-                                  Domain
-                                </Label>
-                                <Col sm={9}>
-                                  <Field
-                                    type="text"
-                                    name="domain"
-                                    id="domain"
-                                    className={
-                                      'bg-white form-control' +
-                                      (formikProps.errors.domain &&
-                                      formikProps.touched.domain
-                                        ? ' is-invalid'
-                                        : '')
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="domain"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </Col>
-                              </FormGroup>
+                              {isSuperAdmin && (
+                                <FormGroup row>
+                                  <Label for="domain" sm={3}>
+                                    Domain
+                                  </Label>
+                                  <Col sm={9}>
+                                    <Field
+                                      type="text"
+                                      name="domain"
+                                      id="domain"
+                                      className={
+                                        'bg-white form-control' +
+                                        (formikProps.errors.domain &&
+                                        formikProps.touched.domain
+                                          ? ' is-invalid'
+                                          : '')
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="domain"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </Col>
+                                </FormGroup>
+                              )}
                               <FormGroup row>
                                 <Col sm={3} />
                                 <Col sm={9}>

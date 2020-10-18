@@ -8,7 +8,7 @@ import Papa from 'papaparse'
 import { useAppState } from '@/components/AppState'
 import { Loading } from '../../components'
 import moment from 'moment'
-import { isString } from 'lodash'
+import { isNil, isString } from 'lodash'
 import { hot } from 'react-hot-loader'
 
 const ImportLearnersFromCsv = () => {
@@ -45,9 +45,25 @@ const ImportLearnersFromCsv = () => {
   }
 
   const importClick = () => {
+    const usersData = users.map(user => {
+      user.groupIds = groups
+        .map(({ name, groupId }) => {
+          if (user.groupNames.includes(name)) return { name, groupId }
+        })
+        .filter(g => !isNil(g))
+
+      user.joinedCourses = courses
+        .map(({ name, courseId }) => {
+          if (user.courseNames?.includes(name)) return { name, courseId }
+        })
+        .filter(c => !isNil(c))
+      return user
+    })
+
     setShowLoading(true)
+
     learnerService
-      .addBulk(users, selectedOrganization.organizationId)
+      .addBulk(usersData, selectedOrganization.organizationId)
       .then(() => {
         history.goBack()
       })

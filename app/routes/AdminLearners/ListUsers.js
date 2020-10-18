@@ -94,11 +94,10 @@ const ListUsers = ({
         getUsers()
         setSelectedEmployees([])
       } catch (error) {
-        console.log('Error while deleting learners:', error)
         toast.error(
           <div>
             <h4 className="text-danger">Error</h4>
-            <p>{JSON.stringify(error)}</p>
+            <p>{error}</p>
           </div>
         )
       }

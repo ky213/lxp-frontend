@@ -38,6 +38,8 @@ const ForgotPassword = () => {
     <EmptyLayout>
       <EmptyLayout.Section center>
         <HeaderAuth
+          icon="check"
+          iconClassName="text-success"
           title={
             !success
               ? 'Forgot Password'

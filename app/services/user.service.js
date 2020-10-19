@@ -11,6 +11,7 @@ export const userService = {
   updateProfilePhoto,
   validateBulk,
   changePassword,
+  resetPassword,
   sendPassResetRequest,
   deleteEmployees,
   updateProfileData,
@@ -87,6 +88,17 @@ function updateProfilePhoto(userId, profilePhoto) {
     })
 }
 
+function resetPassword(email, newPassword, token) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, newPassword }),
+  }
+
+  return fetch(`${routePrefixUsers}/reset/${token}`, requestOptions).then(
+    handleResponse
+  )
+}
 function sendPassResetRequest(email) {
   const requestOptions = {
     method: 'POST',

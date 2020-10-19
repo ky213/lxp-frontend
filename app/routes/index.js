@@ -1,64 +1,65 @@
-import React from 'react';
-import { Route, Switch, Redirect } from 'react-router';
+import React from 'react'
+import { Route, Switch, Redirect } from 'react-router'
 
 // ----------- Pages Imports ---------------
-import UserProfile from './UserProfile';
-import AdminLearners from './AdminLearners';
-import ImportLearnersFromCsv from './AdminLearners/ImportLearnersFromCsv';
-import AdminCm from './AdminCm';
-import ImportCmFromCsv from './AdminCm/ImportCmFromCsv';
-import AdminUserRoles from './AdminUserRoles';
-import AdminSuperAdmins from './AdminSuperAdmins';
-import Announcements from './Announcements';
-import AdminAnnouncements from './AdminAnnouncements';
-import AdminCourses from './AdminCourses';
-import ListOrganizations from './Organization/ListOrganizations';
-import OrganizationSettings from './Organization/OrganizationSettings';
+import UserProfile from './UserProfile'
+import AdminLearners from './AdminLearners'
+import ImportLearnersFromCsv from './AdminLearners/ImportLearnersFromCsv'
+import AdminCm from './AdminCm'
+import ImportCmFromCsv from './AdminCm/ImportCmFromCsv'
+import AdminUserRoles from './AdminUserRoles'
+import AdminSuperAdmins from './AdminSuperAdmins'
+import Announcements from './Announcements'
+import AdminAnnouncements from './AdminAnnouncements'
+import AdminCourses from './AdminCourses'
+import ListOrganizations from './Organization/ListOrganizations'
+import OrganizationSettings from './Organization/OrganizationSettings'
 
-import Cards from './Cards/Cards';
+import Cards from './Cards/Cards'
 
-import ActivityCalendar from './Activities';
+import ActivityCalendar from './Activities'
 
-import ComingSoon from './Pages/ComingSoon';
-import Confirmation from './Pages/Confirmation';
-import Danger from './Pages/Danger';
-import Error404 from './Pages/Error404';
-import ForgotPassword from './Pages/ForgotPassword';
-import LockScreen from './Pages/LockScreen';
-import Login from './Pages/Login';
-import Register from './Pages/Register';
-import Success from './Pages/Success';
+import ComingSoon from './Pages/ComingSoon'
+import Confirmation from './Pages/Confirmation'
+import Danger from './Pages/Danger'
+import Error404 from './Pages/Error404'
+import ForgotPassword from './Pages/ForgotPassword'
+import PasswordReset from './Pages/PasswordReset'
+import LockScreen from './Pages/LockScreen'
+import Login from './Pages/Login'
+import Register from './Pages/Register'
+import Success from './Pages/Success'
 
 // ----------- Layout Imports ---------------
-import { DefaultNavbar } from './../layout/components/DefaultNavbar';
-import { DefaultSidebar } from './../layout/components/DefaultSidebar';
+import { DefaultNavbar } from './../layout/components/DefaultNavbar'
+import { DefaultSidebar } from './../layout/components/DefaultSidebar'
 
-import { history, Role } from '@/helpers';
-import { PrivateRoute } from '@/components/PrivateRoute';
-import Organization from './Organization';
+import { history, Role } from '@/helpers'
+import { PrivateRoute } from '@/components/PrivateRoute'
+import Organization from './Organization'
 
-import Programs from './Programs';
-import ProgramSettings from './ProgramSettings';
-import AcademicYears from './AcademicYears';
-import LearnerHome from './LearnerHome';
-import CourseManagerHome from './CourseManagerHome';
-import SuperAdminHome from './SuperAdminHome';
-import Notifications from './Notifications';
-import Courses from './Courses';
-import ActivityTypes from './ActivityTypes';
-import Reporting from './Reporting';
-import GroupTypes from './GroupTypes';
-import Groups from './Groups';
-import Dashboard from './Dashboard';
-import DashboardNew from './DashboardNew';
+import Programs from './Programs'
+import ProgramSettings from './ProgramSettings'
+import AcademicYears from './AcademicYears'
+import LearnerHome from './LearnerHome'
+import CourseManagerHome from './CourseManagerHome'
+import SuperAdminHome from './SuperAdminHome'
+import Notifications from './Notifications'
+import Courses from './Courses'
+import ActivityTypes from './ActivityTypes'
+import Reporting from './Reporting'
+import GroupTypes from './GroupTypes'
+import Groups from './Groups'
+import Dashboard from './Dashboard'
+import DashboardNew from './DashboardNew'
 
-import { useAppState, AppStateContext } from '@/components/AppState';
+import { useAppState, AppStateContext } from '@/components/AppState'
 
 //------ Route Definitions --------
 // eslint-disable-next-line no-unused-vars
-export const RoutedContent = (props) => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
-  const user = currentUser && currentUser.user;
+export const RoutedContent = props => {
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
+  const user = currentUser && currentUser.user
 
   return (
     <Switch>
@@ -243,6 +244,7 @@ export const RoutedContent = (props) => {
       <Route component={Danger} path="/pages/danger" />
       <Route component={Error404} path="/pages/error-404" />
       <Route component={ForgotPassword} path="/pages/forgot-password" />
+      <Route component={PasswordReset} path="/pages/password-reset/:token" />
       <Route component={Login} path="/pages/login" />
       <Route component={Register} path="/pages/register" />
       <Route component={Success} path="/pages/success" />
@@ -250,8 +252,8 @@ export const RoutedContent = (props) => {
       {/*    404    */}
       <Redirect to="/pages/error-404" />
     </Switch>
-  );
-};
+  )
+}
 
 //------ Custom Layout Parts --------
 export const RoutedNavbars = () => (
@@ -259,11 +261,11 @@ export const RoutedNavbars = () => (
     {/* Default Navbar: */}
     <Route component={DefaultNavbar} />
   </Switch>
-);
+)
 
 export const RoutedSidebars = () => (
   <Switch>
     {/* Default Sidebar: */}
     <Route component={DefaultSidebar} />
   </Switch>
-);
+)

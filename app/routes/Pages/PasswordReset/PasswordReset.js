@@ -17,10 +17,9 @@ const PasswordReset = () => {
       .email('Not a valid email!')
       .required('Email is required'),
     password: Yup.string().required('Password is required'),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref('password')],
-      'Passwords must match'
-    ),
+    confirmPassword: Yup.string()
+      .required()
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
   })
 
   const initialValues = {
@@ -29,7 +28,7 @@ const PasswordReset = () => {
     confirmPassword: '',
   }
 
-  const handleSubmit = async (
+  const resetPassword = async (
     { email, password },
     { setStatus, setSubmitting }
   ) => {
@@ -49,10 +48,10 @@ const PasswordReset = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-          render={({ errors, touched, isSubmitting }) => (
+          onSubmit={resetPassword}
+          render={({ errors, touched, isSubmitting, handleSubmit }) => (
             <React.Fragment>
-              <Form className="mb-3">
+              <Form className="mb-3" onSubmit={handleSubmit}>
                 <FormGroup>
                   <Label for="email">Email</Label>
                   <Field

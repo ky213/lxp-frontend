@@ -13,9 +13,7 @@ export const userService = {
   changePassword,
   deleteEmployees,
   updateProfileData,
-  updateBulk,
-  forgotPassowrd,
-  resetPassowrd
+  updateBulk
 };
 
 function validateBulk(users, isLearner) {
@@ -137,31 +135,3 @@ function updateBulk(users, organizationId) {
           return data;
       });
 }
-
-function forgotPassowrd(userEmail) {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify({ userEmail }),
-  };
-
-  return fetch(`${routePrefixUsers}/forgot`, requestOptions)
-  .then(handleResponse)
-  .then((data) => {
-      return data;
-  });
-}
-
-  function resetPassowrd(userEmail, newPassword) {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify({ userEmail, newPassword }),
-    };
-    
-    return fetch(`${routePrefixUsers}/reset/:token`, requestOptions)
-    .then(handleResponse)
-      .then((data) => {
-          return data;
-      });
-  }

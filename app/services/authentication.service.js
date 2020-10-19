@@ -8,7 +8,9 @@ export const authenticationService = {
     login,
     logout,
     currentUser: currentUserSubject.asObservable(),
-    get currentUserValue () { return currentUserSubject.value }
+    get currentUserValue () { return currentUserSubject.value },
+    forgotPassowrd,
+    resetPassowrd
 };
 
 function login(email, password) {
@@ -34,4 +36,32 @@ function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
+}
+
+function forgotPassowrd(userEmail) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userEmail }),
+    };
+  
+    return fetch(`${config.apiUrl}/users/forgot`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+        return data;
+    });
+}
+  
+function resetPassowrd(userEmail, newPassword) {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userEmail, newPassword }),
+      };
+      
+      return fetch(`${config.apiUrl}/users/reset/:token`, requestOptions)
+      .then(handleResponse)
+        .then((data) => {
+            return data;
+        });
 }

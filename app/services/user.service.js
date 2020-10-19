@@ -1,7 +1,7 @@
-import config from '@/config';
-import { authHeader, handleResponse, buildQuery } from '@/helpers';
+import config from '@/config'
+import { authHeader, handleResponse, buildQuery } from '@/helpers'
 
-const routePrefixUsers = `${config.apiUrl}/users`;
+const routePrefixUsers = `${config.apiUrl}/users`
 
 export const userService = {
   getAllActive,
@@ -11,51 +11,52 @@ export const userService = {
   updateProfilePhoto,
   validateBulk,
   changePassword,
+  sendPassResetRequest,
   deleteEmployees,
   updateProfileData,
-  updateBulk
-};
+  updateBulk,
+}
 
 function validateBulk(users, isLearner) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(users),
-  };
+  }
 
-  let query = '';
-  if (isLearner) query = `${config.apiUrl}/learners/validateBulk`;
-  else query = `${config.apiUrl}/cm/validateBulk`;
+  let query = ''
+  if (isLearner) query = `${config.apiUrl}/learners/validateBulk`
+  else query = `${config.apiUrl}/cm/validateBulk`
 
   return fetch(query, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function getAllActive(organizationId) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({ organizationId });
+  const requestOptions = { method: 'GET', headers: authHeader() }
+  let query = buildQuery({ organizationId })
   return fetch(
     `${routePrefixUsers}/getAllActive?${query}`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function getByEmployeeId(id) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(
     `${routePrefixUsers}/getByEmployeeId/${id}`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function getByUserId(id) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(`${routePrefixUsers}/getByUserId/${id}`, requestOptions).then(
     handleResponse
-  );
+  )
 }
 
 function update(user) {
@@ -63,13 +64,13 @@ function update(user) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(user),
-  };
+  }
 
   return fetch(`${routePrefixUsers}/update`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function updateProfilePhoto(userId, profilePhoto) {
@@ -77,13 +78,25 @@ function updateProfilePhoto(userId, profilePhoto) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ userId, profilePhoto }),
-  };
+  }
 
   return fetch(`${routePrefixUsers}/updateProfilePhoto`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
+}
+
+function sendPassResetRequest(email) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(email),
+  }
+
+  return fetch(`${routePrefixUsers}/forgot`, requestOptions).then(
+    handleResponse
+  )
 }
 
 function changePassword(oldPassword, newPassword) {
@@ -91,11 +104,11 @@ function changePassword(oldPassword, newPassword) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ oldPassword, newPassword }),
-  };
+  }
 
   return fetch(`${routePrefixUsers}/change-password`, requestOptions).then(
     handleResponse
-  );
+  )
 }
 
 function deleteEmployees(organizationId, employees) {
@@ -103,11 +116,11 @@ function deleteEmployees(organizationId, employees) {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ organizationId, employees }),
-  };
+  }
 
   return fetch(`${routePrefixUsers}/deleteEmployees`, requestOptions).then(
     handleResponse
-  );
+  )
 }
 
 function updateProfileData(phoneNumber, pagerNumber) {
@@ -115,23 +128,23 @@ function updateProfileData(phoneNumber, pagerNumber) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ phoneNumber, pagerNumber }),
-  };
+  }
 
   return fetch(`${routePrefixUsers}/updateProfileData`, requestOptions).then(
     handleResponse
-  );
+  )
 }
 
-function updateBulk(users, organizationId) {    
+function updateBulk(users, organizationId) {
   const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify({users, organizationId})
-  };
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify({ users, organizationId }),
+  }
 
   return fetch(`${routePrefixUsers}/updateBulk`, requestOptions)
-      .then(handleResponse)
-      .then((data) => {
-          return data;
-      });
+    .then(handleResponse)
+    .then(data => {
+      return data
+    })
 }

@@ -12,6 +12,7 @@ import {
   EmptyLayout,
   ThemeConsumer,
   Loading,
+  Alert,
 } from './../../../components'
 import { HeaderAuth } from '../../components/Pages/HeaderAuth'
 import { FooterAuth } from '../../components/Pages/FooterAuth'
@@ -20,6 +21,7 @@ import { userService } from '@/services'
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [alert, setAlert] = useState(null)
 
   const resetPassword = async event => {
     try {
@@ -28,9 +30,19 @@ const ForgotPassword = () => {
       await userService.sendPassResetRequest({ email: event.target[0].value })
       setLoading(false)
       setSuccess(true)
+      setAlert({
+        color: 'success',
+        title: 'Success',
+        message: 'Please check your email for furthr instructions',
+      })
     } catch (error) {
       setSuccess(false)
       setLoading(false)
+      setAlert({
+        color: 'danger',
+        title: 'Error',
+        message: `${error}`,
+      })
     }
   }
 
@@ -40,52 +52,61 @@ const ForgotPassword = () => {
         <HeaderAuth
           icon="check"
           iconClassName="text-success"
-          title={
-            !success
-              ? 'Forgot Password'
-              : 'Success, please check your email for instructions.'
-          }
+          title={'Forgot Password'}
         />
-        {!success && (
-          <Form className="mb-3" onSubmit={resetPassword}>
-            <FormGroup>
-              <Label for="emailAdress">Email Adress </Label>
-              <Input
-                type="email"
-                name="email"
-                id="emailAdress"
-                placeholder="Enter..."
-                className="bg-white"
-              />
-              <FormText color="muted">
-                We'll never share your email with anyone else.
-              </FormText>
-            </FormGroup>
-            <div className="d-flex">
-              <ThemeConsumer>
-                {() => (
-                  <Button
-                    style={{
-                      backgroundColor: ' #122c49',
-                      borderColor: ' #122c49',
-                    }}
-                    className="align-self-center"
-                    type="submit"
-                  >
-                    {loading ? <Loading small /> : 'Reset Password'}
-                  </Button>
-                )}
-              </ThemeConsumer>
-              <Link
-                to="/"
-                style={{ color: '#f2f7fe' }}
-                className="align-self-center ml-auto pr-0 text-decoration-none"
+        {alert && (
+          <Alert color={alert.color}>
+            <h6 className="mb-1 alert-heading">{alert.title}</h6>
+            {alert.message}
+            <div className="mt-2 d-flex">
+              <Button
+                className="ml-auto"
+                color={alert.color}
+                onClick={() => setAlert(null)}
               >
-                <i className="fa fa-angle-left mr-2"></i> Back
-              </Link>
+                ok
+              </Button>
             </div>
-          </Form>
+          </Alert>
         )}
+        <Form className="mb-3" onSubmit={resetPassword}>
+          <FormGroup>
+            <Label for="emailAdress">Email Adress </Label>
+            <Input
+              type="email"
+              name="email"
+              id="emailAdress"
+              placeholder="Enter..."
+              className="bg-white"
+            />
+            <FormText color="muted">
+              We'll never share your email with anyone else.
+            </FormText>
+          </FormGroup>
+          <div className="d-flex">
+            <ThemeConsumer>
+              {() => (
+                <Button
+                  style={{
+                    backgroundColor: ' #122c49',
+                    borderColor: ' #122c49',
+                  }}
+                  className="align-self-center"
+                  type="submit"
+                >
+                  {loading ? <Loading small /> : 'Reset Password'}
+                </Button>
+              )}
+            </ThemeConsumer>
+            <Link
+              to="/"
+              style={{ color: '#f2f7fe' }}
+              className="align-self-center ml-auto pr-0 text-decoration-none"
+            >
+              <i className="fa fa-angle-left mr-2"></i> Back
+            </Link>
+          </div>
+        </Form>
         <FooterAuth />
       </EmptyLayout.Section>
     </EmptyLayout>

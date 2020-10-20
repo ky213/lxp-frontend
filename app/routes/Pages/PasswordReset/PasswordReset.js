@@ -4,7 +4,14 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { hot } from 'react-hot-loader'
 
-import { FormGroup, Label, EmptyLayout, Alert, Button } from '@/components'
+import {
+  FormGroup,
+  Label,
+  EmptyLayout,
+  Alert,
+  Button,
+  Loading,
+} from '@/components'
 import { HeaderAuth } from '../../components/Pages/HeaderAuth'
 import { FooterAuth } from '../../components/Pages/FooterAuth'
 import { userService } from '@/services'
@@ -149,7 +156,7 @@ const PasswordReset = () => {
                     block
                     disabled={isSubmitting}
                   >
-                    Reset password
+                    {isSubmitting ? <Loading small /> : 'Reset password'}
                   </button>
                 </FormGroup>
               </Form>

@@ -1,16 +1,18 @@
-import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { hot } from 'react-hot-loader'
 
-import { FormGroup, Label, EmptyLayout } from '@/components'
+import { FormGroup, Label, EmptyLayout, Alert, Button } from '@/components'
 import { HeaderAuth } from '../../components/Pages/HeaderAuth'
 import { FooterAuth } from '../../components/Pages/FooterAuth'
 import { userService } from '@/services'
 
 const PasswordReset = () => {
+  const [alert, setAlert] = useState(null)
   const { token } = useParams()
+  const history = useHistory()
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -18,7 +20,7 @@ const PasswordReset = () => {
       .required('Email is required'),
     password: Yup.string().required('Password is required'),
     confirmPassword: Yup.string()
-      .required()
+      .required('Confirm Password is required')
       .oneOf([Yup.ref('password')], 'Passwords must match'),
   })
 
@@ -33,18 +35,50 @@ const PasswordReset = () => {
     { setStatus, setSubmitting }
   ) => {
     try {
-      setStatus()
       await userService.resetPassword(email, password, token)
+
+      setSubmitting(false)
+      setAlert({
+        color: 'success',
+        title: 'Success',
+        message: 'Your password has been reset',
+      })
     } catch (error) {
+      setAlert({
+        color: 'danger',
+        title: 'Error',
+        message: `${error}`,
+      })
       setSubmitting(false)
       setStatus(error)
     }
+  }
+
+  const dismissAlert = () => {
+    if (alert?.title === 'Success') history.push('/')
+
+    setAlert(null)
   }
 
   return (
     <EmptyLayout>
       <EmptyLayout.Section center>
         <HeaderAuth title="Reset Password" />
+        {alert && (
+          <Alert color={alert.color}>
+            <h6 className="mb-1 alert-heading">{alert.title}</h6>
+            {alert.message}
+            <div className="mt-2 d-flex">
+              <Button
+                className="ml-auto"
+                color={alert.color}
+                onClick={dismissAlert}
+              >
+                ok
+              </Button>
+            </div>
+          </Alert>
+        )}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

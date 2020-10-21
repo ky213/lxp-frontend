@@ -20,7 +20,6 @@ import { userService } from '@/services'
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
   const [alert, setAlert] = useState(null)
 
   const resetPassword = async event => {
@@ -29,14 +28,12 @@ const ForgotPassword = () => {
       setLoading(true)
       await userService.sendPassResetRequest({ email: event.target[0].value })
       setLoading(false)
-      setSuccess(true)
       setAlert({
         color: 'success',
         title: 'Success',
         message: 'Please check your email for furthr instructions',
       })
     } catch (error) {
-      setSuccess(false)
       setLoading(false)
       setAlert({
         color: 'danger',

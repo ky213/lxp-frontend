@@ -97,7 +97,7 @@ const ListUsers = ({
         toast.error(
           <div>
             <h4 className="text-danger">Error</h4>
-            <p>{error}</p>
+            <p>Internal server error</p>
           </div>
         )
       }

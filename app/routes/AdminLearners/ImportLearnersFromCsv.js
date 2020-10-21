@@ -45,25 +45,11 @@ const ImportLearnersFromCsv = () => {
   }
 
   const importClick = () => {
-    const usersData = users.map(user => {
-      user.groupIds = groups
-        .map(({ name, groupId }) => {
-          if (user.groupNames.includes(name)) return { name, groupId }
-        })
-        .filter(g => !isNil(g))
-
-      user.joinedCourses = courses
-        .map(({ name, courseId }) => {
-          if (user.courseNames?.includes(name)) return { name, courseId }
-        })
-        .filter(c => !isNil(c))
-      return user
-    })
 
     setShowLoading(true)
 
     learnerService
-      .addBulk(usersData, selectedOrganization.organizationId)
+      .addBulk(users, selectedOrganization.organizationId)
       .then(() => {
         history.goBack()
       })
@@ -94,27 +80,27 @@ const ImportLearnersFromCsv = () => {
             email: row.data.Email,
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
-            groupNames: row.data.Groups,
-            courseNames: row.data.Courses,
+            groupNames: row.data.Groups.split(','),
+            courseNames: row.data.Courses.split(','),
             organizationId: selectedOrganization.organizationId,
             error: '',
           }
 
-          if (user.groupIds && user.groupIds.length > 0) {
-            user.groupIds = groups
-              .map(({ name, groupId }) => {
-                if (user.groupNames.includes(name)) return groupId
-              })
-              .filter(g => isString(g))
-          }
+          // if (user.groupIds && user.groupIds.length > 0) {
+          //   user.groupIds = groups
+          //     .map(({ name, groupId }) => {
+          //       if (user.groupNames.includes(name)) return groupId
+          //     })
+          //     .filter(g => isString(g))
+          // }
 
-          if (user.joinedCourses && user.joinedCourses.length > 0) {
-            user.joinedCourses = courses
-              .map(({ name, courseId }) => {
-                if (user.courseNames?.includes(name)) return courseId
-              })
-              .filter(c => isString(c))
-          }
+          // if (user.joinedCourses && user.joinedCourses.length > 0) {
+          //   user.joinedCourses = courses
+          //     .map(({ name, courseId }) => {
+          //       if (user.courseNames?.includes(name)) return courseId
+          //     })
+          //     .filter(c => isString(c))
+          // }
 
           csvUsers.push(user)
         },
@@ -172,8 +158,24 @@ const ImportLearnersFromCsv = () => {
                           user.gender}
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
-                      <td>{user.groupNames}</td>
-                      <td>{user.courseNames}</td>
+                      <td>
+                        {user.groupIds && user.groupIds
+                            .map(({name, groupId}) => {
+                              return name;
+                            })
+                            .filter((g) => isString(g))
+                            .join(', ')
+                        }
+                      </td>
+                      <td>
+                        {user.joinedCourses && user.joinedCourses
+                            .map(({name, courseId}) => {
+                              return name;
+                            })
+                            .filter((c) => isString(c))
+                            .join(', ')
+                        }
+                      </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

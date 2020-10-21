@@ -38,6 +38,7 @@ const ImportCmFromCsv = () => {
     groupsService
       .getAll(selectedOrganization?.organizationId)
       .then((response) => setGroups(response.groups));
+
   }, []);
 
   const goBack = (event) => {
@@ -82,14 +83,6 @@ const ImportCmFromCsv = () => {
 
           if (loggedInUser && loggedInUser.role === Role.SuperAdmin) {
             user.organizationId = selectedOrganization.organizationId;
-          }
-
-          if(user.groupIds && user.groupIds.length>0) {
-            user.groupIds = groups
-                .map(({name, groupId}) => {
-                  if (user.groupNames.includes(name)) return groupId;
-                })
-                .filter((g) => isString(g));
           }
 
           csvUsers.push(user);
@@ -147,12 +140,13 @@ const ImportCmFromCsv = () => {
                       </td>
                       <td>{user.roleId}</td>
                       <td>
-                        {groups
-                          .map(({ name, groupId }) => {
-                            if (user.groupIds && user.groupIds.includes(groupId)) return name;
-                          })
+                        {user.groupIds && user.groupIds
+                          .map(({name, groupId}) => {
+                          return name;
+                        })
                           .filter((g) => isString(g))
-                          .join(', ')}
+                          .join(', ')
+                        }
                       </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>

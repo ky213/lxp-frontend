@@ -80,10 +80,12 @@ const AddEditProgram = props => {
         .then(data => {
           setProgram(data)
           setBody(data.body)
+          setCertificateBody(data.certificateBody)
         })
     } else {
       setProgram(null)
       setBody('')
+      setCertificateBody('')
     }
     if (inputEl && inputEl.current) {
       inputEl.current.focus()

@@ -38,7 +38,7 @@ const ForgotPassword = () => {
       setAlert({
         color: 'danger',
         title: 'Error',
-        message: error.message,
+        message: JSON.parse(error).error,
       })
     }
   }

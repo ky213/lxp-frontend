@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
 import {
   Card,
   Button,
@@ -35,7 +36,12 @@ let CourseCard = ({
           setCourseIsJoined(true)
         })
         .catch(error => {
-          console.log(error)
+          toast.error(
+            <div>
+              <h4 className="text-danger">Error</h4>
+              <p>{JSON.stringify(error)}</p>
+            </div>
+          )
         })
   }
 

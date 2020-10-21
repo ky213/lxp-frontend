@@ -33,7 +33,7 @@ const ForgotPassword = () => {
         title: 'Success',
         message: 'Please check your email for furthr instructions',
       })
-    } catch (error) {
+    } catch ({ error }) {
       setLoading(false)
       setAlert({
         color: 'danger',

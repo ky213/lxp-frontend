@@ -34,11 +34,12 @@ const ForgotPassword = () => {
         message: 'Please check your email for furthr instructions',
       })
     } catch (error) {
+      console.log(error)
       setLoading(false)
       setAlert({
         color: 'danger',
         title: 'Error',
-        message: error.message,
+        message: JSON.parse(error).message,
       })
     }
   }

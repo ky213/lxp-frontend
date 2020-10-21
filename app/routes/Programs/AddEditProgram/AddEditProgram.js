@@ -41,6 +41,7 @@ const AddEditProgram = props => {
   const { onCancelCreate } = props
   const inputEl = React.useRef(null)
   const [body, setBody] = React.useState('')
+  const [certificateBody, setCertificateBody] = React.useState('')
 
   const dismissAlert = () => {
     setAlertMessage(null)
@@ -94,7 +95,6 @@ const AddEditProgram = props => {
     programDirectors: Yup.array()
       .min(1, 'You need to select at least one program manager')
       .typeError('Invalid entry'),
-    subject: Yup.string().required('Email subject is required'),
   })
 
   const initialValues = {
@@ -102,6 +102,8 @@ const AddEditProgram = props => {
     programDirectors: (program && program.programDirectors) || [],
     subject: program?.subject || '',
     body: program?.body || '',
+    certificateSubject: program?.certificateSubject || '',
+    certificateBody: program?.certificateBody || '',
   }
 
   return (
@@ -114,7 +116,7 @@ const AddEditProgram = props => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(
-            { name, programDirectors, subject },
+            { name, programDirectors, subject, certificateSubject },
             { setStatus, setSubmitting }
           ) => {
             // Updating existing
@@ -124,6 +126,8 @@ const AddEditProgram = props => {
                   name,
                   subject,
                   body,
+                  certificateSubject,
+                  certificateBody,
                   programId: program.programId,
                   programDirectors,
                   organizationId: selectedOrganization.organizationId,
@@ -163,6 +167,8 @@ const AddEditProgram = props => {
                   name,
                   subject,
                   body,
+                  certificateSubject,
+                  certificateBody,
                   programDirectors,
                   organizationId: selectedOrganization.organizationId,
                 })
@@ -352,6 +358,75 @@ const AddEditProgram = props => {
                                 </small>
                                 <ErrorMessage
                                   name="body"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                              <Label for="certificateSubject" sm={3}>
+                                Certificate Subject
+                              </Label>
+                              <Col sm={9}>
+                                <Field
+                                  type="text"
+                                  name="certificateSubject"
+                                  id="certificateSubject"
+                                  className={
+                                    'bg-white form-control' +
+                                    (props.errors.certificateSubject &&
+                                    props.touched.certificateSubject
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="certificateSubject"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                              <Label for="certificateBody" sm={3}>
+                                Certificate Body
+                              </Label>
+                              <Col sm={9}>
+                                <ReactQuill
+                                  value={certificateBody}
+                                  onChange={setCertificateBody}
+                                  style={{
+                                    border: '1px solid  #80808038',
+                                    minHeight: '200px',
+                                  }}
+                                  modules={{
+                                    toolbar: [
+                                      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+                                      ['blockquote', 'code-block', 'link'],
+
+                                      [{ header: 1 }, { header: 2 }], // custom button values
+                                      [{ list: 'ordered' }, { list: 'bullet' }],
+                                      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+                                      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+                                      [{ direction: 'rtl' }], // text direction
+
+                                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+                                      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+                                      [{ font: [] }],
+                                      [{ align: [] }],
+
+                                      ['clean'], // remove formatting button
+                                    ],
+                                  }}
+                                />
+                                <small>
+                                  Valid placeholders: {'{OrgName}'},{' '}
+                                  {'{UserLogin}'}, {'{UserName}'},{' '}
+                                  {'{UserPass}'}
+                                </small>
+                                <ErrorMessage
+                                  name="certificateBody"
                                   component="div"
                                   className="invalid-feedback"
                                 />

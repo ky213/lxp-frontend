@@ -91,7 +91,6 @@ const ImportCmFromCsv = () => {
           courseManagerService
             .validateBulk(csvUsers, selectedOrganization.organizationId)
             .then((data) => {
-              console.log(data)
               setUsers(data.data);
               setImportDisabled(data.numOfRecordsInvalid > 0);
               setShowLoading(false);

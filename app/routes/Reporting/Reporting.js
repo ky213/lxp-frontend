@@ -430,9 +430,6 @@ const Reporting = () => {
                         <th className="align-middle bt-0 text-left" width="20%">
                           Activity name
                         </th>
-                        <th className="align-middle bt-0 text-left" width="20%">
-                          Activity description
-                        </th>
                         <th
                           className="align-middle bt-0 text-center"
                           width="10%"
@@ -463,9 +460,6 @@ const Reporting = () => {
 
                             <td className="align-middle bt-0">
                               {statement.object.definition.name.und}
-                            </td>
-                            <td className="align-middle bt-0">
-                              {statement.object.definition.name.description}
                             </td>
                             <td className="align-middle bt-0">
                               {statement.verb &&

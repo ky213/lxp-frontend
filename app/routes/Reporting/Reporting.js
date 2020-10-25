@@ -486,7 +486,7 @@ const Reporting = () => {
                                 ''}
                             </td>
                             <td className="align-middle bt-0">
-                              {statement.result && statement.result.success}
+                              {`${statement.result?.success}`.toUpperCase()}
                             </td>
                           </tr>
                         ))}

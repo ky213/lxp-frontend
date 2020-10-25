@@ -355,7 +355,7 @@ const AddEditProgram = props => {
                                 />
                                 <small>
                                   Valid placeholders: {'{OrgName}'},{' '}
-                                  {'{UserLogin}'}, {'{UserName}'},{' '}
+                                  {'{UserLogin}'}, {'{UserName}'},{'{UserLastName}'}
                                   {'{UserPass}'}
                                 </small>
                                 <ErrorMessage
@@ -424,7 +424,7 @@ const AddEditProgram = props => {
                                 />
                                 <small>
                                   Valid placeholders: {'{OrgName}'},{' '}
-                                  {'{UserLogin}'}, {'{UserName}'},{' '}
+                                  {'{UserLogin}'}, {'{UserName}'},{'{UserLastName}'}
                                   {'{UserPass}'}
                                 </small>
                                 <ErrorMessage

@@ -292,7 +292,7 @@ const MailsServerSettings = ({ organization }) => {
               />
               <small>
                 Valid placeholders: {'{OrgName}'}, {'{UserLogin}'},{' '}
-                {'{UserName}'}, {'{UserPass}'}
+                {'{UserName}'}, {'{UserLastName}'}, {'{UserPass}'}
               </small>
               <ErrorMessage
                 name="Body"

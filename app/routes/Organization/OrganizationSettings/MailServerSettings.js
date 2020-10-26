@@ -3,14 +3,25 @@ import { hot } from 'react-hot-loader'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
-import ReactQuill from 'react-quill'
 
-import { Col, FormGroup, Label, Button, Loading } from '@/components'
+import {
+  Col,
+  FormGroup,
+  Label,
+  Button,
+  Loading,
+  TextEditor,
+} from '@/components'
 import { organizationService } from '@/services'
 
 const MailsServerSettings = ({ organization }) => {
   const [isTesting, setIsTesting] = useState(false)
   const [Body, setBody] = useState(organization?.Body || '')
+
+  const handleChange = event => {
+    const content = event.editor.getData()
+    setBody(content)
+  }
 
   const handleOnSubmit = async (values, { setSubmitting }) => {
     try {
@@ -265,31 +276,7 @@ const MailsServerSettings = ({ organization }) => {
               Welcome Email body
             </Label>
             <Col sm={9}>
-              <ReactQuill
-                value={Body}
-                onChange={setBody}
-                style={{ border: '1px solid  #80808038', minHeight: '200px' }}
-                modules={{
-                  toolbar: [
-                    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-                    ['blockquote', 'code-block', 'link'],
-
-                    [{ header: 1 }, { header: 2 }], // custom button values
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-                    [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-                    [{ direction: 'rtl' }], // text direction
-
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-                    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                    [{ font: [] }],
-                    [{ align: [] }],
-
-                    ['clean'], // remove formatting button
-                  ],
-                }}
-              />
+              <TextEditor data={Body} onChange={handleChange} />
               <small>
                 Valid placeholders: {'{OrgName}'}, {'{UserLogin}'},{' '}
                 {'{UserName}'}, {'{UserLastName}'}, {'{UserPass}'}

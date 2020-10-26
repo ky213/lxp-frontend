@@ -18,6 +18,7 @@ import {
   FormGroup,
   Label,
   Alert,
+  TextEditor,
 } from '@/components'
 import { programService, courseManagerService } from '@/services'
 import { Consumer } from '@/components/Theme/ThemeContext'
@@ -51,6 +52,15 @@ const AddEditProgram = props => {
   const showAlertMessage = ({ message, type, title }) => {
     setAlertMessage({ title, message, type })
     setShowAlert(true)
+  }
+
+  const handleBodyChange = event => {
+    const content = event.editor.getData()
+    setBody(content)
+  }
+  const handleCertificateBodyChange = event => {
+    const content = event.editor.getData()
+    setCertificateBody(content)
   }
 
   React.useEffect(() => {
@@ -325,37 +335,14 @@ const AddEditProgram = props => {
                                 Email Body
                               </Label>
                               <Col sm={9}>
-                                <ReactQuill
-                                  value={body}
-                                  onChange={setBody}
-                                  style={{
-                                    border: '1px solid  #80808038',
-                                    minHeight: '200px',
-                                  }}
-                                  modules={{
-                                    toolbar: [
-                                      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-                                      ['blockquote', 'code-block', 'link'],
-
-                                      [{ header: 1 }, { header: 2 }], // custom button values
-                                      [{ list: 'ordered' }, { list: 'bullet' }],
-                                      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-                                      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-                                      [{ direction: 'rtl' }], // text direction
-
-                                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-                                      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                                      [{ font: [] }],
-                                      [{ align: [] }],
-
-                                      ['clean'], // remove formatting button
-                                    ],
-                                  }}
+                                <TextEditor
+                                  data={body}
+                                  onChange={handleBodyChange}
                                 />
                                 <small>
                                   Valid placeholders: {'{OrgName}'},{' '}
-                                  {'{UserLogin}'}, {'{UserName}'},{'{UserLastName}'}
+                                  {'{UserLogin}'}, {'{UserName}'},
+                                  {'{UserLastName}'}
                                   {'{UserPass}'}
                                 </small>
                                 <ErrorMessage
@@ -394,37 +381,14 @@ const AddEditProgram = props => {
                                 Certificate Body
                               </Label>
                               <Col sm={9}>
-                                <ReactQuill
-                                  value={certificateBody}
-                                  onChange={setCertificateBody}
-                                  style={{
-                                    border: '1px solid  #80808038',
-                                    minHeight: '200px',
-                                  }}
-                                  modules={{
-                                    toolbar: [
-                                      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-                                      ['blockquote', 'code-block', 'link'],
-
-                                      [{ header: 1 }, { header: 2 }], // custom button values
-                                      [{ list: 'ordered' }, { list: 'bullet' }],
-                                      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-                                      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-                                      [{ direction: 'rtl' }], // text direction
-
-                                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-                                      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                                      [{ font: [] }],
-                                      [{ align: [] }],
-
-                                      ['clean'], // remove formatting button
-                                    ],
-                                  }}
+                                <TextEditor
+                                  data={certificateBody}
+                                  onChange={handleCertificateBodyChange}
                                 />
                                 <small>
                                   Valid placeholders: {'{OrgName}'},{' '}
-                                  {'{UserLogin}'}, {'{UserName}'},{'{UserLastName}'}
+                                  {'{UserLogin}'}, {'{UserName}'},
+                                  {'{UserLastName}'}
                                   {'{UserPass}'}
                                 </small>
                                 <ErrorMessage

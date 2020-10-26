@@ -1,7 +1,7 @@
 steps:
 
   - id: 'npm install'
-    name: 'node:current-buster-slim'
+    name: 'node:buster'
     args: [ "npm","install","--legacy-peer-deps" ]
     waitFor:
       - '-'
@@ -24,7 +24,7 @@ steps:
       - '-'
 
   - id: 'build release'
-    name: 'node:current-buster-slim'
+    name: 'node:buster'
     args: [ "npm", "run", "build:prod" ]
     waitFor:
       - 'prepare env file'

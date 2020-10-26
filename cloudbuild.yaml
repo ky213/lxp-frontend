@@ -2,7 +2,7 @@ steps:
 
   - id: 'npm install'
     name: 'node'
-    args: [ "npm","install" ]
+    args: [ "npm","install","--legacy-peer-deps" ]
     waitFor:
       - '-'
 

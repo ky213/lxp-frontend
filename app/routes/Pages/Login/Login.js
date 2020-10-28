@@ -1,41 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import queryString from 'query-string'
 
-import {
-  FormGroup,
-  FormText,
-  Input,
-  CustomInput,
-  Button,
-  Label,
-  EmptyLayout,
-  Col,
-  ThemeConsumer,
-} from '@/components';
-
-import { HeaderAuth } from '../../components/Pages/HeaderAuth';
-import { FooterAuth } from '../../components/Pages/FooterAuth';
-import { authenticationService } from '@/services';
-import { AppStateContext } from '@/components/AppState';
-import { LOGIN_USER_SUCCESS } from '@/actions';
-import { Consumer } from '@/components/Theme/ThemeContext';
+import { FormGroup, Label, EmptyLayout } from '@/components'
+import { HeaderAuth } from '../../components/Pages/HeaderAuth'
+import { FooterAuth } from '../../components/Pages/FooterAuth'
+import { authenticationService } from '@/services'
+import { AppStateContext } from '@/components/AppState'
+import { LOGIN_USER_SUCCESS } from '@/actions'
+import { Consumer } from '@/components/Theme/ThemeContext'
 
 class Login extends React.Component {
-  static contextType = AppStateContext;
+  static contextType = AppStateContext
 
   constructor(props) {
-    super(props);
-
+    super(props)
     // redirect to home if already logged in
     if (authenticationService.currentUserValue) {
-      this.props.history.push('/');
+      this.props.history.push('/')
+    }
+  }
+
+  async componentDidMount() {
+    const { token } = queryString.parse(this.props.location.search)
+    const user = await authenticationService.loginWithToken(token)
+    const [_, dispatch] = this.context
+
+    if (user) {
+      dispatch({ type: LOGIN_USER_SUCCESS, user })
+      this.props.history.push('/')
     }
   }
 
   render() {
-    const [{ currentUser }, dispatch] = this.context;
+    const [{ currentUser }, dispatch] = this.context
 
     return (
       <EmptyLayout>
@@ -45,7 +45,7 @@ class Login extends React.Component {
           {/* END Header */}
           {/* START Form */}
           <Consumer>
-            {(themeState) => (
+            {themeState => (
               <Formik
                 initialValues={{
                   email: '',
@@ -59,28 +59,28 @@ class Login extends React.Component {
                   { email, password },
                   { setStatus, setSubmitting }
                 ) => {
-                  setStatus();
+                  setStatus()
                   try {
                     const user = await authenticationService.login(
                       email,
                       password
-                    );
-                    dispatch({ type: LOGIN_USER_SUCCESS, user });
+                    )
+                    dispatch({ type: LOGIN_USER_SUCCESS, user })
 
                     themeState.onChangeTheme({
                       backgroundColor: user.user.organizationBackgroundColor,
                       foregroundColor: user.user.organizationForegroundColor,
                       organizationLogo: user.user.organizationLogo,
                       organizationName: user.user.organizationName,
-                    });
+                    })
 
                     const { from } = this.props.location.state || {
                       from: { pathname: '/' },
-                    };
-                    this.props.history.push(from);
+                    }
+                    this.props.history.push(from)
                   } catch (error) {
-                    setSubmitting(false);
-                    setStatus(error);
+                    setSubmitting(false)
+                    setStatus(error)
                   }
                 }}
                 render={({ errors, status, touched, isSubmitting }) => (
@@ -160,8 +160,8 @@ class Login extends React.Component {
           {/* END Footer */}
         </EmptyLayout.Section>
       </EmptyLayout>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

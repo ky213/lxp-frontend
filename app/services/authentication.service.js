@@ -10,7 +10,8 @@ export const authenticationService = {
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     forgotPassowrd,
-    resetPassowrd
+    resetPassowrd,
+    authToken
 };
 
 function login(email, password) {
@@ -27,7 +28,6 @@ function login(email, password) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify(user));
             currentUserSubject.next(user);
-            
             return user;
         });
 }
@@ -63,5 +63,21 @@ function resetPassowrd(userEmail, newPassword) {
       .then(handleResponse)
         .then((data) => {
             return data;
+        });
+}
+
+function authToken(token) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/users/authToken?${query}`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            currentUserSubject.next(user);
+            return user;
         });
 }

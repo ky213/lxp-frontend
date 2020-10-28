@@ -162,7 +162,6 @@ const Reporting = () => {
       'Learner',
       'Program',
       'Activity name',
-      'Activity description',
       'Experience',
       'Result',
       'Success',
@@ -175,7 +174,6 @@ const Reporting = () => {
           statement.actor.name,
           (selectedProgram && selectedProgram.name) || '',
           statement.object.definition.name.und,
-          statement.object.definition.name.description,
           statement.verb &&
             statement.verb.display &&
             (statement.verb.display.en || statement.verb.display['en-US']),

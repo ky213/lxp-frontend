@@ -278,8 +278,9 @@ const MailsServerSettings = ({ organization }) => {
             <Col sm={9}>
               <TextEditor data={Body} onChange={handleChange} />
               <small>
-                Valid placeholders: {'{OrgName}'}, {'{UserLogin}'},{' '}
-                {'{UserName}'}, {'{UserLastName}'}, {'{UserPass}'}
+                Valid placeholders: {'{OrgName}'}, {'{UserCourse}'},{' '}
+                {'{UserLogin}'}, {'{UserName}'}, {'{UserLastName}'},{' '}
+                {'{UserPass}'}
               </small>
               <ErrorMessage
                 name="Body"

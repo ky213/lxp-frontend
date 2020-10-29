@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import styled from 'styled-components';
-import { toast } from 'react-toastify';
-import ProfilePhoto from '@/components/ProfilePhoto';
-import ThemedButton from '@/components/ThemedButton';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Role } from '@/helpers';
+import React, { useState } from 'react'
+import { useIntl } from 'react-intl'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import styled from 'styled-components'
+import { toast } from 'react-toastify'
+import ProfilePhoto from '@/components/ProfilePhoto'
+import ThemedButton from '@/components/ThemedButton'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { Role } from '@/helpers'
 import {
   Alert,
   Container,
@@ -19,53 +19,55 @@ import {
   FormGroup,
   Label,
   Row,
-} from '@/components';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { courseManagerService, roleService, groupsService } from '@/services';
-import { useAppState } from '@/components/AppState';
+} from '@/components'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import { courseManagerService, roleService, groupsService } from '@/services'
+import { useAppState } from '@/components/AppState'
+import { hot } from 'react-hot-loader'
 
 const InvalidFeedback = styled.section`
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.75rem;
   color: #ed1c24;
-`;
+`
 
 const CmEdit = ({ user, onEdited, onCancel }) => {
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const [showAlert, setShowAlert] = React.useState(false);
-  const [roles, setRoles] = React.useState([]);
-  const [groups, setGroups] = useState([]);
-  const intl = useIntl();
-  let selectedGroupNames = [];
+  const [{ selectedOrganization, currentUser }] = useAppState()
+  const [alertMessage, setAlertMessage] = React.useState(null)
+  const [showAlert, setShowAlert] = React.useState(false)
+  const [roles, setRoles] = React.useState([])
+  const [groups, setGroups] = useState([])
+  const intl = useIntl()
+  let selectedGroupNames = []
 
-  const [{ selectedOrganization }] = useAppState();
+  const isSuperAdmin = currentUser.user?.role === Role.SuperAdmin
 
   React.useEffect(() => {
-    roleService.getCmRoles().then((data) => {
-      setRoles(data);
-    });
+    roleService.getCmRoles().then(data => {
+      setRoles(data)
+    })
 
     groupsService
       .getAll(selectedOrganization?.organizationId)
-      .then((response) => {
-        setGroups(response.groups);
-      });
-  }, []);
+      .then(response => {
+        setGroups(response.groups)
+      })
+  }, [])
 
   const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
+    setAlertMessage({ title, message, type })
+    setShowAlert(true)
+  }
 
   const goBack = () => {
-    onCancel();
-  };
+    onCancel()
+  }
 
   return (
     <Formik
@@ -87,19 +89,19 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, userRoleId, isActive },
+        { name, surname, email, gender, userRoleId, isActive, password },
         { setStatus, setSubmitting }
       ) => {
-        if (!confirm('confirm saving data?')) return;
+        if (!confirm('confirm saving data?')) return
 
         const groupIds = groups
-          .filter((group) => selectedGroupNames.includes(group.name))
+          .filter(group => selectedGroupNames.includes(group.name))
           .map(({ name, groupId }) => ({
             name,
             groupId,
-          }));
+          }))
 
-        setStatus();
+        setStatus()
 
         if (user) {
           courseManagerService
@@ -111,6 +113,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 gender,
                 isActive,
                 groupIds,
+                password,
                 userId: user.userId,
                 employeeId: user.employeeId,
                 roleId: userRoleId,
@@ -118,34 +121,34 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
               },
               selectedOrganization.organizationId
             )
-            .then((response) => {
-              setSubmitting(false);
+            .then(response => {
+              setSubmitting(false)
               if (response.isValid) {
-                onEdited();
+                onEdited()
                 toast.success(
                   <div>
                     <h4 className="text-success">Success</h4>
                     <p>User has been updated</p>
                   </div>,
                   { autoClose: 5000 }
-                );
+                )
               } else {
                 toast.error(
                   <div>
                     <h4 className="text-danger">Error</h4>
                     <p>{JSON.stringify(response.errorDetails)}</p>
                   </div>
-                );
+                )
               }
             })
-            .catch((err) =>
+            .catch(err =>
               toast.error(
                 <div>
                   <h4 className="text-danger">Error</h4>
                   <p>{JSON.stringify(err)}</p>
                 </div>
               )
-            );
+            )
         } else {
           courseManagerService
             .add(
@@ -155,16 +158,17 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                 email,
                 gender,
                 groupIds,
+                password,
                 organizationId: selectedOrganization.organizationId,
                 roleId: userRoleId,
               },
               selectedOrganization.organizationId
             )
-            .then((response) => {
-              setSubmitting(false);
+            .then(response => {
+              setSubmitting(false)
 
               if (response.isValid) {
-                onEdited();
+                onEdited()
 
                 toast.success(
                   <div>
@@ -172,30 +176,30 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                     <p>User has been saved</p>
                   </div>,
                   { autoClose: 5000 }
-                );
+                )
               } else {
                 toast.error(
                   <div>
                     <h4 className="text-danger">Error</h4>
                     <p>{JSON.stringify(response.errorDetails)}</p>
                   </div>
-                );
+                )
               }
             })
-            .catch((e) => {
+            .catch(e => {
               toast.error(
                 <div>
                   <h4 className="text-danger">Error</h4>
                   <p>{JSON.stringify(e)}</p>
                 </div>
-              );
-              setSubmitting(false);
-              setStatus(e);
-            });
+              )
+              setSubmitting(false)
+              setStatus(e)
+            })
         }
       }}
     >
-      {(props) => (
+      {props => (
         <React.Fragment>
           <Container>
             {showAlert && alertMessage && (
@@ -302,6 +306,32 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                           />
                         </Col>
                       </FormGroup>
+                      {isSuperAdmin && (
+                        <FormGroup row>
+                          <Label for="password" sm={3}>
+                            Password
+                          </Label>
+                          <Col sm={9}>
+                            <Field
+                              type="password"
+                              name="password"
+                              id="password"
+                              className={
+                                'bg-white form-control' +
+                                (props.errors.password && props.touched.password
+                                  ? ' is-invalid'
+                                  : '')
+                              }
+                              placeholder="Enter password..."
+                            />
+                            <ErrorMessage
+                              name="password"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                          </Col>
+                        </FormGroup>
+                      )}
                       <FormGroup row>
                         <Label for="gender" sm={3}>
                           Gender
@@ -315,8 +345,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             label="Male"
                             checked={props.values.gender == 'M'}
                             value="M"
-                            onChange={(event) => {
-                              props.setFieldValue('gender', event.target.value);
+                            onChange={event => {
+                              props.setFieldValue('gender', event.target.value)
                             }}
                           />
                           <CustomInput
@@ -327,8 +357,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             label="Female"
                             value="F"
                             checked={props.values.gender == 'F'}
-                            onChange={(event) => {
-                              props.setFieldValue('gender', event.target.value);
+                            onChange={event => {
+                              props.setFieldValue('gender', event.target.value)
                             }}
                           />{' '}
                           {props.errors.gender && (
@@ -351,8 +381,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             label="Active"
                             checked={props.values.isActive}
                             value={true}
-                            onChange={(event) => {
-                              props.setFieldValue('isActive', true);
+                            onChange={event => {
+                              props.setFieldValue('isActive', true)
                             }}
                           />
                           <CustomInput
@@ -363,8 +393,8 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             label="Inactive"
                             value={false}
                             checked={!props.values.isActive}
-                            onChange={(event) => {
-                              props.setFieldValue('isActive', false);
+                            onChange={event => {
+                              props.setFieldValue('isActive', false)
                             }}
                           />{' '}
                         </Col>
@@ -387,7 +417,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             }
                           >
                             <option value="">Select user role...</option>
-                            {roles.map((r) => {
+                            {roles.map(r => {
                               return (
                                 <option
                                   key={r.roleId}
@@ -396,7 +426,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                                 >
                                   {r.name}
                                 </option>
-                              );
+                              )
                             })}
                           </Field>
                           {props.errors.userRoleId && (
@@ -417,7 +447,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
                             multiple
                             options={groups.map(({ name }) => name)}
                             selected={user?.groupIds.map(({ name }) => name)}
-                            onChange={(selectedOptions) =>
+                            onChange={selectedOptions =>
                               (selectedGroupNames = selectedOptions)
                             }
                             className={
@@ -459,7 +489,7 @@ const CmEdit = ({ user, onEdited, onCancel }) => {
         </React.Fragment>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default CmEdit;
+export default hot(module)(CmEdit)

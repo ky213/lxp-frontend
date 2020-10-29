@@ -1,15 +1,17 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import styled from 'styled-components';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import DatePicker from 'react-datepicker';
-import { toast } from 'react-toastify';
-import moment from 'moment';
+import React from 'react'
+import { useIntl } from 'react-intl'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import styled from 'styled-components'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import DatePicker from 'react-datepicker'
+import { toast } from 'react-toastify'
+import moment from 'moment'
+import { hot } from 'react-hot-loader'
 
-import ThemedButton from '@/components/ThemedButton';
-import ProfilePhoto from '@/components/ProfilePhoto';
+import { Role } from '@/helpers'
+import ThemedButton from '@/components/ThemedButton'
+import ProfilePhoto from '@/components/ProfilePhoto'
 import {
   Alert,
   Container,
@@ -23,64 +25,65 @@ import {
   FormGroup,
   Label,
   Row,
-} from '@/components';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { learnerService, groupsService, courseService } from '@/services';
-import { useAppState } from '@/components/AppState';
+} from '@/components'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import { learnerService, groupsService, courseService } from '@/services'
+import { useAppState } from '@/components/AppState'
 
 const InvalidFeedback = styled.section`
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.75rem;
   color: #ed1c24;
-`;
+`
 
-const LearnerEdit = (props) => {
-  const { user } = props;
-  const intl = useIntl();
+const LearnerEdit = props => {
+  const { user } = props
+  const intl = useIntl()
 
-  const [{ selectedOrganization }] = useAppState();
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const [showAlert, setShowAlert] = React.useState(false);
-  const [groups, setGroups] = React.useState([]);
-  const [courses, setCourses] = React.useState([]);
+  const [{ selectedOrganization, currentUser }] = useAppState()
+  const [alertMessage, setAlertMessage] = React.useState(null)
+  const [showAlert, setShowAlert] = React.useState(false)
+  const [groups, setGroups] = React.useState([])
+  const [courses, setCourses] = React.useState([])
 
-  let selectedGroupNames = user ? user.groupIds.map(({ name }) => name) : [];
+  const isSuperAdmin = currentUser.user?.role === Role.SuperAdmin
+  let selectedGroupNames = user ? user.groupIds.map(({ name }) => name) : []
   let selectedCoursNames = user
     ? user.joinedCourses.map(({ name }) => name)
-    : [];
+    : []
 
   React.useEffect(() => {
     groupsService
       .getAll(selectedOrganization?.organizationId)
-      .then((response) => setGroups(response.groups))
-      .catch((error) => {
-        console.log('groups error:', error);
-      });
+      .then(response => setGroups(response.groups))
+      .catch(error => {
+        console.log('groups error:', error)
+      })
 
     courseService
       .getAll(selectedOrganization.organizationId)
-      .then((response) => {
-        setCourses(response.courses);
+      .then(response => {
+        setCourses(response.courses)
       })
-      .catch((error) => {
-        console.log('courses error:', error);
-      });
-  }, []);
+      .catch(error => {
+        console.log('courses error:', error)
+      })
+  }, [])
 
   const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
+    setAlertMessage({ title, message, type })
+    setShowAlert(true)
+  }
 
   const cancel = () => {
-    props.onCancel();
-  };
+    props.onCancel()
+  }
 
   return (
     <Formik
@@ -103,26 +106,26 @@ const LearnerEdit = (props) => {
         gender: Yup.string().required('Gender is required'),
       })}
       onSubmit={(
-        { name, surname, email, gender, startDate, isActive },
+        { name, surname, email, gender, startDate, isActive, password },
         { setStatus, setSubmitting }
       ) => {
-        if (!confirm('confirm saving data?')) return;
+        if (!confirm('confirm saving data?')) return
 
         const selectedGroups = groups
-          .filter((group) => selectedGroupNames.includes(group.name))
+          .filter(group => selectedGroupNames.includes(group.name))
           .map(({ name, groupId }) => ({
             name,
             groupId,
-          }));
+          }))
 
         const selectedCourses = courses
-          .filter((course) => selectedCoursNames.includes(course.name))
+          .filter(course => selectedCoursNames.includes(course.name))
           .map(({ name, courseId }) => ({
             name,
             courseId,
-          }));
+          }))
 
-        setStatus();
+        setStatus()
         if (user) {
           learnerService
             .update(
@@ -130,6 +133,7 @@ const LearnerEdit = (props) => {
                 name,
                 surname,
                 email,
+                password,
                 isActive,
                 gender,
                 startDate,
@@ -140,36 +144,36 @@ const LearnerEdit = (props) => {
               },
               selectedOrganization.organizationId
             )
-            .then((response) => {
-              setSubmitting(false);
+            .then(response => {
+              setSubmitting(false)
               if (response.isValid) {
-                props.onEdited();
+                props.onEdited()
                 toast.success(
                   <div>
                     <h4 className="text-success">Success</h4>
                     <p>User has been updated</p>
                   </div>,
                   { autoClose: 5000 }
-                );
+                )
               } else {
                 toast.error(
                   <div>
                     <h4 className="text-danger">Error</h4>
                     <p>{JSON.stringify(response.errorDetails)}</p>
                   </div>
-                );
+                )
               }
             })
-            .catch((e) => {
+            .catch(e => {
               toast.error(
                 <div>
                   <h4 className="text-danger">Error</h4>
                   <p>{JSON.stringify(e)}</p>
                 </div>
-              );
-              setSubmitting(false);
-              setStatus(e);
-            });
+              )
+              setSubmitting(false)
+              setStatus(e)
+            })
         } else {
           learnerService
             .add(
@@ -177,6 +181,7 @@ const LearnerEdit = (props) => {
                 name,
                 surname,
                 email,
+                password,
                 gender,
                 startDate,
                 groupIds: selectedGroups,
@@ -184,41 +189,41 @@ const LearnerEdit = (props) => {
               },
               selectedOrganization.organizationId
             )
-            .then((response) => {
-              setSubmitting(false);
+            .then(response => {
+              setSubmitting(false)
 
               if (response.isValid) {
-                props.onEdited();
+                props.onEdited()
                 toast.success(
                   <div>
                     <h4 className="text-success">Success</h4>
                     <p>User has been saved</p>
                   </div>,
                   { autoClose: 5000 }
-                );
+                )
               } else {
                 toast.error(
                   <div>
                     <h4 className="text-danger">Error</h4>
                     <p>{JSON.stringify(response.errorDetails)}</p>
                   </div>
-                );
+                )
               }
             })
-            .catch((err) => {
+            .catch(err => {
               toast.error(
                 <div>
                   <h4 className="text-danger">Error</h4>
                   <p>{JSON.stringify(err)}</p>
                 </div>
-              );
-              setSubmitting(false);
-              setStatus(err);
-            });
+              )
+              setSubmitting(false)
+              setStatus(err)
+            })
         }
       }}
     >
-      {(props) => (
+      {props => (
         <React.Fragment>
           <Container>
             {showAlert && alertMessage && (
@@ -325,6 +330,32 @@ const LearnerEdit = (props) => {
                           />
                         </Col>
                       </FormGroup>
+                      {isSuperAdmin && (
+                        <FormGroup row>
+                          <Label for="password" sm={3}>
+                            Password
+                          </Label>
+                          <Col sm={9}>
+                            <Field
+                              type="password"
+                              name="password"
+                              id="password"
+                              className={
+                                'bg-white form-control' +
+                                (props.errors.password && props.touched.password
+                                  ? ' is-invalid'
+                                  : '')
+                              }
+                              placeholder="Enter password..."
+                            />
+                            <ErrorMessage
+                              name="password"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                          </Col>
+                        </FormGroup>
+                      )}
                       <FormGroup row>
                         <Label for="gender" sm={3}>
                           Gender
@@ -338,8 +369,8 @@ const LearnerEdit = (props) => {
                             label="Male"
                             checked={props.values.gender == 'M'}
                             value="M"
-                            onChange={(event) => {
-                              props.setFieldValue('gender', event.target.value);
+                            onChange={event => {
+                              props.setFieldValue('gender', event.target.value)
                             }}
                           />
                           <CustomInput
@@ -350,8 +381,8 @@ const LearnerEdit = (props) => {
                             label="Female"
                             value="F"
                             checked={props.values.gender == 'F'}
-                            onChange={(event) => {
-                              props.setFieldValue('gender', event.target.value);
+                            onChange={event => {
+                              props.setFieldValue('gender', event.target.value)
                             }}
                           />{' '}
                           {props.errors.gender && props.touched.gender && (
@@ -384,8 +415,8 @@ const LearnerEdit = (props) => {
                                   : '')
                               }
                               selected={props.values.startDate}
-                              onChange={(date) => {
-                                props.setFieldValue('startDate', date);
+                              onChange={date => {
+                                props.setFieldValue('startDate', date)
                               }}
                             />
                             {props.errors.startDate &&
@@ -408,7 +439,7 @@ const LearnerEdit = (props) => {
                             multiple
                             options={groups.map(({ name }) => name)}
                             selected={selectedGroupNames}
-                            onChange={(selectedOptions) =>
+                            onChange={selectedOptions =>
                               (selectedGroupNames = selectedOptions)
                             }
                             className={
@@ -435,7 +466,7 @@ const LearnerEdit = (props) => {
                             multiple
                             options={courses.map(({ name }) => name)}
                             selected={selectedCoursNames}
-                            onChange={(selectedOptions) =>
+                            onChange={selectedOptions =>
                               (selectedCoursNames = selectedOptions)
                             }
                             className={
@@ -464,8 +495,8 @@ const LearnerEdit = (props) => {
                             label="Active"
                             checked={props.values.isActive}
                             value={true}
-                            onChange={(event) => {
-                              props.setFieldValue('isActive', true);
+                            onChange={event => {
+                              props.setFieldValue('isActive', true)
                             }}
                           />
                           <CustomInput
@@ -476,8 +507,8 @@ const LearnerEdit = (props) => {
                             label="Inactive"
                             value={false}
                             checked={!props.values.isActive}
-                            onChange={(event) => {
-                              props.setFieldValue('isActive', false);
+                            onChange={event => {
+                              props.setFieldValue('isActive', false)
                             }}
                           />{' '}
                         </Col>
@@ -509,7 +540,7 @@ const LearnerEdit = (props) => {
         </React.Fragment>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default LearnerEdit;
+export default hot(module)(LearnerEdit)

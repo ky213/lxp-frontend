@@ -104,9 +104,6 @@ async function launchContent(user, registration, course, launcher) {
       })
       .then(handleResponse)
       .then((res) => {
-        console.log("+++")
-        console.log(res)
-        console.log("+++")
         assetsDomain = res.assetsDomain
       })
       .catch(err=>{
@@ -118,7 +115,7 @@ async function launchContent(user, registration, course, launcher) {
     return
   }
 
-  const launchUrlBase = `https://${assetsDomain}/${course.contentPath}${
+  const launchUrlBase = `${assetsDomain}/${course.contentPath}${
     (!course.contentPath.endsWith('/') && '/') || ''
   }`;
 

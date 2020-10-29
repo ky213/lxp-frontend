@@ -18,7 +18,6 @@ steps:
         echo "APP_KEYWORDS=residents engagement timetable management" >> build/.env.production
         echo "API_URL=$_BACKEND_BASE_URL" >> build/.env.production
         echo "XAPI_URL=$_XBACKEND_BASE_URL" >> build/.env.production
-        echo "UPLOADS_URL=$_UPLOADS_URL" >> build/.env.production
 
     waitFor:
       - '-'
@@ -57,7 +56,6 @@ steps:
         echo "APP_KEYWORDS=residents engagement timetable management" >> env-config.js
         echo "API_URL=$_BACKEND_BASE_URL" >> env-config.js
         echo "XAPI_URL=$_XBACKEND_BASE_URL" >> env-config.js
-        echo "UPLOADS_URL=$_UPLOADS_URL" >> env-config.js
         echo "}" >> env-config.js
 
     waitFor:

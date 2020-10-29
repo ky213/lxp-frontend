@@ -27,7 +27,6 @@ var config = {
   scssIncludes: [],
   apiUrl: process.env.API_URL || 'http://localhost:4008/api',
   xapiUrl: process.env.XAPI_URL || 'http://localhost:4008/xapi',
-  uploadsUrl: process.env.UPLOADS_URL || 'https://static.dev.lxpia.com',
 };
 
 module.exports = config;

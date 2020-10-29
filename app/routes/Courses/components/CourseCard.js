@@ -97,10 +97,10 @@ let CourseCard = ({
               ]}
             />
           </Media>
-          <Media body>
+          {/* <Media body>
             <div className="mt-0 d-flex text-inverse">{'Admin'}</div>
             <span>{'Role'}</span>
-          </Media>
+          </Media> */}
         </Media>
       </CardBody>
       <CardFooter className="bt-0 d-flex justify-content-between">

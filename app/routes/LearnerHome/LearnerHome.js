@@ -135,25 +135,14 @@ const LearnerHome = () => {
     (user && (
       <React.Fragment>
         <Container className="learners-home">
-          <Responsive displayIn={['laptop']}>
-            <HeaderMain title={`Hello, ${user.fullName}`} className=" mt-4" />
-          </Responsive>
-          <Responsive displayIn={['mobile']}>
-            <h5 className="mb-4 mt-4">{`Hello, ${user.fullName}`}</h5>
-          </Responsive>
-          <br />
-          {/* START Content */}
-          <Row>
-            <Col>
-              <Card>
-                <CardBody>
-                  <Profile selectedUser={user} tag={Link} to="/user/profile" />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-
           <Row className="flex-column">
+            <Responsive displayIn={['laptop']}>
+              <HeaderMain title={`Hello, ${user.fullName}`} className=" mt-4" />
+            </Responsive>
+            <Responsive displayIn={['mobile']}>
+              <h5 className="mb-4 mt-4">{`Hello, ${user.fullName}`}</h5>
+            </Responsive>
+            <br />
             <HeaderMain title="My Courses" className="my-4" />
             <Row className="mb-4">
               <Col className="col-3">

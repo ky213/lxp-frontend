@@ -1,5 +1,6 @@
 import TinCan from 'tincanjs';
 import config from '@/config';
+import { authHeader, handleResponse } from '@/helpers';
 
 export const TinCanLaunch = {
   launchContent,
@@ -93,8 +94,31 @@ const readXML = (filename, user, callback) => {
     xobj.send(null);
 } */
 
-function launchContent(user, registration, course, launcher) {
-  const launchUrlBase = `${process.env.UPLOADS_URL}/${course.contentPath}${
+async function launchContent(user, registration, course, launcher) {
+
+  var assetsDomain;
+
+  await fetch( `${config.apiUrl}/organizations/${user.organizationId}/assetsDomain`,   {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', ...authHeader() }
+      })
+      .then(handleResponse)
+      .then((res) => {
+        console.log("+++")
+        console.log(res)
+        console.log("+++")
+        assetsDomain = res.assetsDomain
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+
+  if(!assetsDomain){
+    console.log("ERROR: Cannot find assetsDomain.")
+    return
+  }
+
+  const launchUrlBase = `https://${assetsDomain}/${course.contentPath}${
     (!course.contentPath.endsWith('/') && '/') || ''
   }`;
 

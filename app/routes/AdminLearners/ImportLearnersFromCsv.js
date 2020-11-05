@@ -45,7 +45,6 @@ const ImportLearnersFromCsv = () => {
   }
 
   const importClick = () => {
-
     setShowLoading(true)
 
     learnerService
@@ -108,7 +107,6 @@ const ImportLearnersFromCsv = () => {
           learnerService
             .validateBulk(csvUsers, selectedOrganization.organizationId)
             .then(data => {
-              console.log('USERS:', data)
               setUsers(data.data)
               setImportDisabled(data.numOfRecordsInvalid > 0)
               setShowLoading(false)
@@ -159,22 +157,20 @@ const ImportLearnersFromCsv = () => {
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
                       <td>
-                        {user.groupIds && user.groupIds
-                            .map(({name, groupId}) => {
-                              return name;
+                        {user.groupIds &&
+                          user.groupIds
+                            .map(({ name }) => {
+                              return name
                             })
-                            .filter((g) => isString(g))
-                            .join(', ')
-                        }
+                            .filter(g => isString(g))
+                            .join(', ')}
                       </td>
                       <td>
-                        {user.joinedCourses && user.joinedCourses
-                            .map(({name, courseId}) => {
-                              return name;
-                            })
-                            .filter((c) => isString(c))
-                            .join(', ')
-                        }
+                        {user.joinedCourses &&
+                          user.joinedCourses
+                            .map(({ courseCode }) => courseCode)
+                            .filter(c => isString(c))
+                            .join(', ')}
                       </td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
@@ -254,7 +250,11 @@ const ImportLearnersFromCsv = () => {
               Valid groups names: {groups.map(({ name }) => name).join(', ')}
             </li>
             <li>
-              Valid courses names: {courses.map(({ name }) => name).join(', ')}
+              Valid courses:{' '}
+              {courses
+                .map(({ courseCode }) => courseCode)
+                .filter(el => isString(el))
+                .join(', ')}
             </li>
           </ul>
         </Col>

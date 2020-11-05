@@ -2,14 +2,11 @@ import React from 'react'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import ReactQuill from 'react-quill'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
 import styled from 'styled-components'
 import ThemedButton from '@/components/ThemedButton'
-import { Typeahead } from 'react-bootstrap-typeahead'
 import axios from 'axios'
 import config from '@/config'
-import { authHeader, handleResponse, buildQuery } from '@/helpers'
+import { authHeader } from '@/helpers'
 import ImageUpload from '@/components/ImageUpload'
 
 import {
@@ -18,9 +15,6 @@ import {
   Card,
   CardBody,
   Button,
-  InputGroup,
-  InputGroupAddon,
-  CustomInput,
   FormGroup,
   Label,
   Loading,
@@ -28,18 +22,9 @@ import {
 import { programService } from '@/services'
 import { Consumer } from '@/components/Theme/ThemeContext'
 import { useAppState } from '@/components/AppState'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable'
 import { hot } from 'react-hot-loader'
 
-const EditCourse = ({
-  course,
-  onCancel,
-  finishEdit,
-  finishInsert,
-  showAlertMessage,
-  hideAlertMessage,
-  updateCourseList,
-}) => {
+const EditCourse = ({ course, onCancel, finishInsert }) => {
   const [{ selectedOrganization }] = useAppState()
   const [programs, setPrograms] = React.useState([])
 
@@ -120,13 +105,15 @@ const EditCourse = ({
               logoImage: (course && course.image) || '',
               description: (course && course.description) || '',
               programId: (course && course.programId) || '',
+              courseCode: course?.courseCode || '',
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required('Name is required'),
+              courseCode: Yup.string().required('Course code is required'),
               description: Yup.string().required('Description is required'),
             })}
             onSubmit={async (
-              { name, description, programId, fileData },
+              { name, courseCode, description, programId, fileData },
               { setStatus, setSubmitting, isSubmitting }
             ) => {
               setSubmitting(true)
@@ -134,6 +121,7 @@ const EditCourse = ({
               if (fileData) formData.append('tincan', fileData.name)
               formData.append('logo', selectedLogoDataUrl)
               formData.append('name', name)
+              formData.append('courseCode', courseCode)
               formData.append('description', description)
               formData.append('programId', programId)
               formData.append(
@@ -200,9 +188,7 @@ const EditCourse = ({
                     <Col lg={12}>
                       <Card className="mb-3">
                         <CardBody>
-                          {/* START Form */}
                           <Form onSubmit={formikProps.handleSubmit}>
-                            {/* START Input */}
                             <FormGroup row>
                               <Label for="name" sm={3}>
                                 Name
@@ -228,7 +214,31 @@ const EditCourse = ({
                                 />
                               </Col>
                             </FormGroup>
-
+                            <FormGroup row>
+                              <Label for="courseCode" sm={3}>
+                                Code
+                              </Label>
+                              <Col sm={9}>
+                                <Field
+                                  type="text"
+                                  name="courseCode"
+                                  id="courseCode"
+                                  className={
+                                    'bg-white form-control' +
+                                    (formikProps.errors.courseCode &&
+                                    formikProps.touched.courseCode
+                                      ? ' is-invalid'
+                                      : '')
+                                  }
+                                  placeholder="Enter Code..."
+                                />
+                                <ErrorMessage
+                                  name="courseCode"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </Col>
+                            </FormGroup>
                             <FormGroup row>
                               <Label for="name" sm={3}>
                                 Logo
@@ -356,12 +366,7 @@ const EditCourse = ({
                                     </label>
                                   </div>
                                 </div>
-                                {/* {props.errors.programId && (
-                                  <InvalidFeedback>
-                                    {props.errors.programId}
-                                  </InvalidFeedback>
-                                )} */}
-                                Uploading: {uploadProgress}/100%
+                                {/* Uploading: {uploadProgress}/100% */}
                               </Col>
                             </FormGroup>
 
@@ -381,12 +386,10 @@ const EditCourse = ({
                               </Col>
                             </FormGroup>
                           </Form>
-                          {/* END Form */}
                         </CardBody>
                       </Card>
                     </Col>
                   </Row>
-                  {/* END Section 2 */}
                 </React.Fragment>
               )
             }}

@@ -8,8 +8,9 @@ import Papa from 'papaparse'
 import { useAppState } from '@/components/AppState'
 import { Loading } from '../../components'
 import moment from 'moment'
-import { isNil, isString } from 'lodash'
+import { isString } from 'lodash'
 import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
 
 const ImportLearnersFromCsv = () => {
   let history = useHistory()
@@ -69,7 +70,8 @@ const ImportLearnersFromCsv = () => {
     reader.onload = async e => {
       let csvUsers = []
       const text = e.target.result
-      var data = Papa.parse(text, {
+
+      Papa.parse(text, {
         header: true,
         skipEmptyLines: true,
         step: function (row) {
@@ -80,27 +82,10 @@ const ImportLearnersFromCsv = () => {
             gender: row.data.Gender,
             startDate: moment(row.data.StartDate, 'YYYYMMDD'),
             groupNames: row.data.Groups.split(','),
-            courseNames: row.data.Courses.split(','),
+            courseCodes: row.data.Courses.split(','),
             organizationId: selectedOrganization.organizationId,
             error: '',
           }
-
-          // if (user.groupIds && user.groupIds.length > 0) {
-          //   user.groupIds = groups
-          //     .map(({ name, groupId }) => {
-          //       if (user.groupNames.includes(name)) return groupId
-          //     })
-          //     .filter(g => isString(g))
-          // }
-
-          // if (user.joinedCourses && user.joinedCourses.length > 0) {
-          //   user.joinedCourses = courses
-          //     .map(({ name, courseId }) => {
-          //       if (user.courseNames?.includes(name)) return courseId
-          //     })
-          //     .filter(c => isString(c))
-          // }
-
           csvUsers.push(user)
         },
         complete: function () {
@@ -110,6 +95,14 @@ const ImportLearnersFromCsv = () => {
               setUsers(data.data)
               setImportDisabled(data.numOfRecordsInvalid > 0)
               setShowLoading(false)
+            })
+            .catch(error => {
+              toast.error(
+                <div>
+                  <h4 className="text-danger">Validation Error</h4>
+                  <p>{error.message}</p>
+                </div>
+              )
             })
         },
       })
@@ -157,21 +150,14 @@ const ImportLearnersFromCsv = () => {
                       </td>
                       <td>{moment(user.startDate).format('L')}</td>
                       <td>
-                        {user.groupIds &&
-                          user.groupIds
-                            .map(({ name }) => {
-                              return name
-                            })
-                            .filter(g => isString(g))
-                            .join(', ')}
+                        {user.groupIds
+                          ?.map(({ name }) => {
+                            return name
+                          })
+                          .filter(g => isString(g))
+                          .join(', ')}
                       </td>
-                      <td>
-                        {user.joinedCourses &&
-                          user.joinedCourses
-                            .map(({ courseCode }) => courseCode)
-                            .filter(c => isString(c))
-                            .join(', ')}
-                      </td>
+                      <td>{user.courseCodes?.join(', ')}</td>
                       <td>
                         <span style={{ color: 'red' }}>{user.error}</span>
                       </td>

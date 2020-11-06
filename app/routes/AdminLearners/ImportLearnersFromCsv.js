@@ -8,7 +8,7 @@ import Papa from 'papaparse'
 import { useAppState } from '@/components/AppState'
 import { Loading } from '../../components'
 import moment from 'moment'
-import { isString } from 'lodash'
+import { isEmpty, isString } from 'lodash'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
 
@@ -47,14 +47,23 @@ const ImportLearnersFromCsv = () => {
 
   const importClick = () => {
     setShowLoading(true)
+    const usersList = {
+      users: users?.filter(u => isEmpty(u.error)) || [],
+      existUsers: users?.filter(u => !isEmpty(u.error)) || [],
+    }
 
     learnerService
-      .addBulk(users, selectedOrganization.organizationId)
+      .addBulk(usersList, selectedOrganization.organizationId)
       .then(() => {
         history.goBack()
       })
-      .catch(err => {
-        console.log('userService.addBulk', err)
+      .catch(error => {
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{error}</p>
+          </div>
+        )
         setShowLoading(false)
       })
   }
@@ -166,11 +175,7 @@ const ImportLearnersFromCsv = () => {
                 })}
                 <tr>
                   <td colSpan="9">
-                    <ThemedButton
-                      type="button"
-                      onClick={importClick}
-                      disabled={importDisabled}
-                    >
+                    <ThemedButton type="button" onClick={importClick}>
                       Import
                     </ThemedButton>
                     <button

@@ -424,7 +424,7 @@ const EditCourse = ({ course, onCancel, finishInsert }) => {
                               </FormGroup>
                             </Form>
                           ) : (
-                            <CourseLearners />
+                            <CourseLearners course={course} />
                           )}
                         </CardBody>
                       </Card>

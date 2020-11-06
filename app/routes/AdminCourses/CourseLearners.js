@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import { toast } from 'react-toastify'
 
 import { useAppState } from '@/components/AppState'
 import { Paginations } from '@/routes/components/Paginations'
@@ -10,19 +11,44 @@ import {
   Button,
   Row,
   Col,
-  Label,
   Table,
   UncontrolledTooltip,
 } from '@/components'
 
-const CourseLearners = () => {
+const CourseLearners = ({ course }) => {
   const [learners, setLearners] = useState([])
   const [pageId, setPageId] = useState(1)
   const [totalNumberOfRecords, setTotlalNuberOfRecords] = useState(5)
-  const [recordsPerPage, setRecordsPerPage] = useState(0)
+  const [recordsPerPage, setRecordsPerPage] = useState(10)
   const [{ selectedOrganization }] = useAppState()
 
-  const onDelete = () => {}
+  useEffect(() => {
+    getLearners()
+  }, [])
+
+  const getLearners = async () => {
+    try {
+      const response = await courseService.getLearners(
+        course.programId,
+        course.courseId,
+        selectedOrganization.organizationId,
+        pageId,
+        recordsPerPage
+      )
+
+      setLearners(response.courseUsers)
+      setTotlalNuberOfRecords(response.totalNumberOfRecords)
+    } catch (error) {
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error getting learners</h4>
+          <p>{JSON.stringify(error.message)}</p>
+        </div>
+      )
+    }
+  }
+
+  const onUnjoin = () => {}
 
   return (
     <>
@@ -39,11 +65,11 @@ const CourseLearners = () => {
         </Col>
         <Col>
           <ButtonGroup className="mr-2 pull-right">
-            <Button onClick={onDelete} id="tooltipDelete">
+            <Button onClick={onUnjoin} id="tooltipDelete">
               <i className="fa fa-fw fa-trash"></i>
             </Button>
             <UncontrolledTooltip placement="bottom" target="tooltipDelete">
-              Delete
+              Unjoin
             </UncontrolledTooltip>
           </ButtonGroup>
         </Col>
@@ -65,7 +91,7 @@ const CourseLearners = () => {
           </Table>
         </Col>
       </Row>
-      <Row>
+      <Row className="mt-2">
         <Col className="d-flex justify-content-center pb-0">
           {learners.length > 0 ? (
             <Paginations

@@ -61,7 +61,7 @@ const ImportLearnersFromCsv = () => {
         toast.error(
           <div>
             <h4 className="text-danger">Error</h4>
-            <p>{error}</p>
+            <p>{JSON.stringify(error)}</p>
           </div>
         )
         setShowLoading(false)

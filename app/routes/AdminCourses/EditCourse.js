@@ -5,14 +5,17 @@ import ReactQuill from 'react-quill'
 import styled from 'styled-components'
 import ThemedButton from '@/components/ThemedButton'
 import axios from 'axios'
+import classNames from 'classnames'
+import { hot } from 'react-hot-loader'
+
 import config from '@/config'
 import { authHeader } from '@/helpers'
 import ImageUpload from '@/components/ImageUpload'
-
 import {
   Row,
   Col,
   Card,
+  CardHeader,
   CardBody,
   Button,
   FormGroup,
@@ -22,7 +25,7 @@ import {
 import { programService } from '@/services'
 import { Consumer } from '@/components/Theme/ThemeContext'
 import { useAppState } from '@/components/AppState'
-import { hot } from 'react-hot-loader'
+import CourseLearners from './CourseLearners'
 
 const EditCourse = ({ course, onCancel, finishInsert }) => {
   const [{ selectedOrganization }] = useAppState()
@@ -33,6 +36,7 @@ const EditCourse = ({ course, onCancel, finishInsert }) => {
   const [uploadProgress, setUploadProgress] = React.useState(0)
   const [selectedLogoDataUrl, setSelectedLogoDataUrl] = React.useState('')
   const [courseFileName, setCourseFileName] = React.useState('')
+  const [selectedTab, setSelectedTab] = React.useState('settings')
 
   React.useEffect(() => {
     programService
@@ -187,205 +191,241 @@ const EditCourse = ({ course, onCancel, finishInsert }) => {
                   <Row>
                     <Col lg={12}>
                       <Card className="mb-3">
+                        <CardHeader>
+                          <ul className="nav nav-tabs card-header-tabs">
+                            <li
+                              className="nav-item"
+                              onClick={() => setSelectedTab('settings')}
+                            >
+                              <a
+                                className={classNames('nav-link', {
+                                  active: selectedTab === 'settings',
+                                })}
+                                href="#"
+                              >
+                                <i className="fa fa-gear mr-2"></i> Settings
+                              </a>
+                            </li>
+                            <li
+                              className="nav-item"
+                              onClick={() => {
+                                setSelectedTab('learners')
+                              }}
+                            >
+                              <a
+                                className={classNames('nav-link', {
+                                  active: selectedTab === 'learners',
+                                })}
+                                href="#"
+                              >
+                                <i className="fa fa-users mr-2"></i> Learners
+                              </a>
+                            </li>
+                          </ul>
+                        </CardHeader>
                         <CardBody>
-                          <Form onSubmit={formikProps.handleSubmit}>
-                            <FormGroup row>
-                              <Label for="name" sm={3}>
-                                Name
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  type="text"
-                                  name="name"
-                                  id="name"
-                                  className={
-                                    'bg-white form-control' +
-                                    (formikProps.errors.name &&
-                                    formikProps.touched.name
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  placeholder="Enter Name..."
-                                />
-                                <ErrorMessage
-                                  name="name"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="courseCode" sm={3}>
-                                Code
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  type="text"
-                                  name="courseCode"
-                                  id="courseCode"
-                                  className={
-                                    'bg-white form-control' +
-                                    (formikProps.errors.courseCode &&
-                                    formikProps.touched.courseCode
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  placeholder="Enter Code..."
-                                />
-                                <ErrorMessage
-                                  name="courseCode"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="name" sm={3}>
-                                Logo
-                              </Label>
-                              <Col sm={9}>
-                                <ImageUpload
-                                  name="logoImage"
-                                  maxFileSizeKB={200}
-                                  defaultImage={selectedLogoDataUrl}
-                                  onSelectedImage={imageDataUrl => {
-                                    setSelectedLogoDataUrl(imageDataUrl)
-                                  }}
-                                />
-                              </Col>
-                            </FormGroup>
+                          {selectedTab === 'settings' ? (
+                            <Form onSubmit={formikProps.handleSubmit}>
+                              <FormGroup row>
+                                <Label for="name" sm={3}>
+                                  Name
+                                </Label>
+                                <Col sm={9}>
+                                  <Field
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.name &&
+                                      formikProps.touched.name
+                                        ? ' is-invalid'
+                                        : '')
+                                    }
+                                    placeholder="Enter Name..."
+                                  />
+                                  <ErrorMessage
+                                    name="name"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="courseCode" sm={3}>
+                                  Code
+                                </Label>
+                                <Col sm={9}>
+                                  <Field
+                                    type="text"
+                                    name="courseCode"
+                                    id="courseCode"
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.courseCode &&
+                                      formikProps.touched.courseCode
+                                        ? ' is-invalid'
+                                        : '')
+                                    }
+                                    placeholder="Enter Code..."
+                                  />
+                                  <ErrorMessage
+                                    name="courseCode"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="name" sm={3}>
+                                  Logo
+                                </Label>
+                                <Col sm={9}>
+                                  <ImageUpload
+                                    name="logoImage"
+                                    maxFileSizeKB={200}
+                                    defaultImage={selectedLogoDataUrl}
+                                    onSelectedImage={imageDataUrl => {
+                                      setSelectedLogoDataUrl(imageDataUrl)
+                                    }}
+                                  />
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="ann" sm={3}>
+                                  Description
+                                </Label>
+                                <Col sm={9}>
+                                  <ReactQuill
+                                    value={formikProps.values.description}
+                                    name="text"
+                                    onChange={x =>
+                                      formikProps.setFieldValue(
+                                        'description',
+                                        x
+                                      )
+                                    }
+                                    modules={modules}
+                                    formats={formats}
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.description &&
+                                      formikProps.touched.description
+                                        ? ' is-invalid'
+                                        : '')
+                                    }
+                                    placeholder="Enter Description..."
+                                    style={{
+                                      minHeight: '180px',
+                                    }}
+                                  />
 
-                            <FormGroup row>
-                              <Label for="ann" sm={3}>
-                                Description
-                              </Label>
-                              <Col sm={9}>
-                                <ReactQuill
-                                  value={formikProps.values.description}
-                                  name="text"
-                                  onChange={x =>
-                                    formikProps.setFieldValue('description', x)
-                                  }
-                                  modules={modules}
-                                  formats={formats}
-                                  className={
-                                    'bg-white form-control' +
-                                    (formikProps.errors.description &&
-                                    formikProps.touched.description
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  placeholder="Enter Description..."
-                                  style={{
-                                    minHeight: '180px',
-                                  }}
-                                />
+                                  <ErrorMessage
+                                    name="description"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="programId" sm={3}>
+                                  Program
+                                </Label>
+                                <Col sm={9}>
+                                  <Field
+                                    component="select"
+                                    name="programId"
+                                    id="programId"
+                                    className={
+                                      'bg-white form-control' +
+                                      (formikProps.errors.programId &&
+                                      formikProps.touched.programId
+                                        ? ' is-invalid'
+                                        : '')
+                                    }
+                                    required
+                                  >
+                                    <option value="">Select a program</option>
+                                    {programs.map(p => {
+                                      return (
+                                        <option value={p.programId}>
+                                          {p.name}
+                                        </option>
+                                      )
+                                    })}
+                                  </Field>
+                                  {formikProps.errors.programId &&
+                                    formikProps.touched.programId && (
+                                      <InvalidFeedback>
+                                        {formikProps.errors.programId}
+                                      </InvalidFeedback>
+                                    )}
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Label for="courseFile" sm={3}>
+                                  Course file (.zip)
+                                </Label>
+                                <Col sm={9}>
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <span
+                                        class="input-group-text"
+                                        id="inputGroupFileAddon02"
+                                      >
+                                        {course ? 'Update' : 'Upload'}
+                                      </span>
+                                    </div>
 
-                                <ErrorMessage
-                                  name="description"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                              <Label for="programId" sm={3}>
-                                Program
-                              </Label>
-                              <Col sm={9}>
-                                <Field
-                                  component="select"
-                                  name="programId"
-                                  id="programId"
-                                  className={
-                                    'bg-white form-control' +
-                                    (formikProps.errors.programId &&
-                                    formikProps.touched.programId
-                                      ? ' is-invalid'
-                                      : '')
-                                  }
-                                  required
-                                >
-                                  <option value="">Select a program</option>
-                                  {programs.map(p => {
-                                    return (
-                                      <option value={p.programId}>
-                                        {p.name}
-                                      </option>
-                                    )
-                                  })}
-                                </Field>
-                                {formikProps.errors.programId &&
-                                  formikProps.touched.programId && (
-                                    <InvalidFeedback>
-                                      {formikProps.errors.programId}
-                                    </InvalidFeedback>
-                                  )}
-                              </Col>
-                            </FormGroup>
+                                    <div class="custom-file">
+                                      <input
+                                        type="file"
+                                        id="courseFile"
+                                        name="courseFile"
+                                        className="custom-file-input"
+                                        required={!course}
+                                        onChange={f => {
+                                          formikProps.setFieldValue(
+                                            'fileData',
+                                            f.target.files[0]
+                                          )
 
-                            <FormGroup row>
-                              <Label for="courseFile" sm={3}>
-                                Course file (.zip)
-                              </Label>
-                              <Col sm={9}>
-                                <div class="input-group mb-3">
-                                  <div class="input-group-prepend">
-                                    <span
-                                      class="input-group-text"
-                                      id="inputGroupFileAddon02"
-                                    >
-                                      {course ? 'Update' : 'Upload'}
-                                    </span>
+                                          setCourseFileName(
+                                            f.target.files[0].name
+                                          )
+                                        }}
+                                        accept=".zip"
+                                      />
+                                      <label
+                                        class="custom-file-label"
+                                        for="courseFile"
+                                      >
+                                        {courseFileName || 'Choose a fille'}
+                                      </label>
+                                    </div>
                                   </div>
-
-                                  <div class="custom-file">
-                                    <input
-                                      type="file"
-                                      id="courseFile"
-                                      name="courseFile"
-                                      className="custom-file-input"
-                                      required={!course}
-                                      onChange={f => {
-                                        formikProps.setFieldValue(
-                                          'fileData',
-                                          f.target.files[0]
-                                        )
-
-                                        setCourseFileName(
-                                          f.target.files[0].name
-                                        )
-                                      }}
-                                      accept=".zip"
-                                    />
-                                    <label
-                                      class="custom-file-label"
-                                      for="courseFile"
-                                    >
-                                      {courseFileName || 'Choose a fille'}
-                                    </label>
-                                  </div>
-                                </div>
-                                {/* Uploading: {uploadProgress}/100% */}
-                              </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                              <Col sm={3} />
-                              <Col sm={9}>
-                                <ThemedButton type="submit">
-                                  {(course && 'Update') || 'Create'}
-                                </ThemedButton>{' '}
-                                <Button
-                                  type="button"
-                                  onClick={cancel}
-                                  color="light"
-                                >
-                                  Back
-                                </Button>
-                              </Col>
-                            </FormGroup>
-                          </Form>
+                                  {/* Uploading: {uploadProgress}/100% */}
+                                </Col>
+                              </FormGroup>
+                              <FormGroup row>
+                                <Col sm={3} />
+                                <Col sm={9}>
+                                  <ThemedButton type="submit">
+                                    {(course && 'Update') || 'Create'}
+                                  </ThemedButton>{' '}
+                                  <Button
+                                    type="button"
+                                    onClick={cancel}
+                                    color="light"
+                                  >
+                                    Back
+                                  </Button>
+                                </Col>
+                              </FormGroup>
+                            </Form>
+                          ) : (
+                            <CourseLearners />
+                          )}
                         </CardBody>
                       </Card>
                     </Col>

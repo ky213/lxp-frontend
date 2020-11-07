@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 
 import { useAppState } from '@/components/AppState'
 import { Paginations } from '@/routes/components/Paginations'
@@ -12,6 +13,7 @@ import {
   Row,
   Col,
   Table,
+  CustomInput,
   UncontrolledTooltip,
 } from '@/components'
 
@@ -25,6 +27,10 @@ const CourseLearners = ({ course }) => {
   useEffect(() => {
     getLearners()
   }, [])
+
+  useEffect(() => {
+    getLearners()
+  }, [pageId])
 
   const getLearners = async () => {
     try {
@@ -87,7 +93,24 @@ const CourseLearners = ({ course }) => {
                 <th className="bt-0 text-center">Status</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {learners.map(learner => (
+                <tr>
+                  <td>
+                    <CustomInput
+                      type="checkbox"
+                      onClick={e => {}}
+                      id={`${learner.userId}`}
+                    />
+                  </td>
+                  <td>{learner.firstName}</td>
+                  <td>{learner.lastName}</td>
+                  <td>{learner.email}</td>
+                  <td>{moment(learner.joininDate).format('L')}</td>
+                  <td>{learner.status}</td>
+                </tr>
+              ))}
+            </tbody>
           </Table>
         </Col>
       </Row>

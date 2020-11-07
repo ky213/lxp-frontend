@@ -1,116 +1,117 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { Container, Button, Alert } from '@/components';
-import { courseService } from '@/services';
-import { Loading } from '@/components';
-import { useAppState } from '@/components/AppState';
+import React from 'react'
+import { useIntl } from 'react-intl'
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { Container, Button, Alert } from '@/components'
+import { courseService } from '@/services'
+import { Loading } from '@/components'
+import { useAppState } from '@/components/AppState'
 
-import CourseList from './CourseList';
-import EditCourse from './EditCourse';
+import CourseList from './CourseList'
+import EditCourse from './EditCourse'
+import { hot } from 'react-hot-loader'
 
-const recordsPerPage = 20;
+const recordsPerPage = 20
 
 const AdminCourses = () => {
-  const intl = useIntl();
+  const intl = useIntl()
 
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
 
-  const [courses, setCourses] = React.useState(null);
-  const [course, setCourse] = React.useState(null);
-  const [showAlert, setShowAlert] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const [editForm, setEditForm] = React.useState(false);
-  const [pageId, setPageId] = React.useState(1);
-
-  React.useEffect(() => {
-    getAllCourses();
-  }, []);
+  const [courses, setCourses] = React.useState(null)
+  const [course, setCourse] = React.useState(null)
+  const [showAlert, setShowAlert] = React.useState(false)
+  const [alertMessage, setAlertMessage] = React.useState(null)
+  const [editForm, setEditForm] = React.useState(false)
+  const [pageId, setPageId] = React.useState(1)
 
   React.useEffect(() => {
-    getAllCourses();
-  }, [pageId]);
+    getAllCourses()
+  }, [])
+
+  React.useEffect(() => {
+    getAllCourses()
+  }, [pageId])
 
   const dismissAlert = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const showAlertMessage = ({ message, type, title }) => {
-    setAlertMessage({ title, message, type });
-    setShowAlert(true);
-  };
+    setAlertMessage({ title, message, type })
+    setShowAlert(true)
+  }
 
   const hideAlertMessage = () => {
-    setAlertMessage(null);
-    setShowAlert(false);
-  };
+    setAlertMessage(null)
+    setShowAlert(false)
+  }
 
   const getAllCourses = () => {
-    setCourse(null);
+    setCourse(null)
     courseService
       .getAll(selectedOrganization.organizationId, null, pageId, recordsPerPage)
-      .then((data) => {
-        setCourses(data);
-      });
-  };
+      .then(data => {
+        setCourses(data)
+      })
+  }
 
   const handleCourseEdit = (e, courseId) => {
-    e.preventDefault();
-    hideAlertMessage();
+    e.preventDefault()
+    hideAlertMessage()
     courseService
       .getById(courseId, selectedOrganization.organizationId)
-      .then((data) => {
-        setEditForm(true);
-        setCourse(data);
-      });
-  };
+      .then(data => {
+        setCourse(data)
+        setEditForm(true)
+      })
+  }
 
   const addNewClick = () => {
-    setEditForm(true);
-    setCourse(null);
-  };
+    setEditForm(true)
+    setCourse(null)
+  }
 
   const handleCancel = () => {
-    hideAlertMessage();
-    setEditForm(false);
-    setCourse(null);
-  };
+    hideAlertMessage()
+    setEditForm(false)
+    setCourse(null)
+  }
 
   const finishEdit = () => {
-    setEditForm(false);
-    setCourse(null);
-    getAllCourses();
+    setEditForm(false)
+    setCourse(null)
+    getAllCourses()
     showAlertMessage({
       title: intl.formatMessage({ id: 'General.Success' }),
       message: 'You have sucessfully updated the course',
       type: 'success',
-    });
-  };
+    })
+  }
 
   const finishInsert = () => {
-    setEditForm(false);
-    setCourse(null);
-    getAllCourses();
+    setEditForm(false)
+    setCourse(null)
+    getAllCourses()
     showAlertMessage({
       title: intl.formatMessage({ id: 'General.Success' }),
       message: 'You have sucessfully saved the course',
       type: 'success',
-    });
-  };
+    })
+  }
 
   // refresh num of files after add/delete on Edit
-  const updateCourseList = (fileNum) => {
-    let x = courses.courses.map((c) => {
+  const updateCourseList = fileNum => {
+    let x = courses.courses.map(c => {
       if (c.course_id == course.courseId)
         return {
           ...c,
           fileNum,
-        };
-      else return c;
-    });
-    setCourses(x);
-  };
+        }
+      else return c
+    })
+    setCourses(x)
+  }
 
   return (
     <React.Fragment>
@@ -162,7 +163,7 @@ const AdminCourses = () => {
         )}
       </Container>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default AdminCourses;
+export default hot(module)(AdminCourses)

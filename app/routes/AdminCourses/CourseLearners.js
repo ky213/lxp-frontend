@@ -19,6 +19,8 @@ import {
 
 const CourseLearners = ({ course }) => {
   const [learners, setLearners] = useState([])
+  const [selectedLearners, setSelectedLearners] = useState([])
+  const [status, setStatus] = useState('All')
   const [pageId, setPageId] = useState(1)
   const [totalNumberOfRecords, setTotlalNuberOfRecords] = useState(5)
   const [recordsPerPage, setRecordsPerPage] = useState(10)
@@ -42,7 +44,12 @@ const CourseLearners = ({ course }) => {
         recordsPerPage
       )
 
-      setLearners(response.courseUsers)
+      setLearners(
+        response.courseUsers.map(user => {
+          user.selected = false
+          return user
+        })
+      )
       setTotlalNuberOfRecords(response.totalNumberOfRecords)
     } catch (error) {
       toast.error(
@@ -54,7 +61,43 @@ const CourseLearners = ({ course }) => {
     }
   }
 
-  const onUnjoin = () => {}
+  const onSelected = (learnerId, e) => {
+    setLearners(
+      learners.map(learner => {
+        learner.selected = e.target.checked && learner.userId === learnerId
+        return learner
+      })
+    )
+  }
+
+  const onSelectAll = e =>
+    setLearners(
+      learners.map(learner => {
+        learner.selected = e.target.checked
+        return learner
+      })
+    )
+
+  const onUnjoin = async () => {
+    if (!confirm('Are you sure you want to unjoin learners?')) return
+
+    const learnersList = learners.map(learner => {
+      if (learner.selected) return learner.userId
+    })
+
+    try {
+      await courseService.unjoinLearners(course.courseId, learnersList)
+
+      getLearners()
+    } catch (error) {
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error unjoining learners</h4>
+          <p>{JSON.stringify(error)}</p>
+        </div>
+      )
+    }
+  }
 
   return (
     <>
@@ -66,12 +109,17 @@ const CourseLearners = ({ course }) => {
             name="status"
             className="mt-1"
             options={['All', 'Not Started', 'In Progress']}
-            onChange={selectedOptions => selectedOptions}
+            onChange={setStatus}
+            clearButton
           />
         </Col>
         <Col>
           <ButtonGroup className="mr-2 pull-right">
-            <Button onClick={onUnjoin} id="tooltipDelete">
+            <Button
+              onClick={onUnjoin}
+              id="tooltipDelete"
+              disabled={!learners.filter(l => l.selected).length > 0}
+            >
               <i className="fa fa-fw fa-trash"></i>
             </Button>
             <UncontrolledTooltip placement="bottom" target="tooltipDelete">
@@ -85,7 +133,13 @@ const CourseLearners = ({ course }) => {
           <Table className="mb-0" hover responsive>
             <thead>
               <tr>
-                <th className="bt-0"></th>
+                <th className="bt-0">
+                  <CustomInput
+                    id="select-all"
+                    type="checkbox"
+                    onClick={onSelectAll}
+                  />
+                </th>
                 <th className="bt-0">First Name</th>
                 <th className="bt-0">Laste Name</th>
                 <th className="bt-0">Email</th>
@@ -98,9 +152,10 @@ const CourseLearners = ({ course }) => {
                 <tr>
                   <td>
                     <CustomInput
+                      id={learner.userId}
                       type="checkbox"
-                      onClick={e => {}}
-                      id={`${learner.userId}`}
+                      onClick={e => onSelected(learner.userId, e)}
+                      checked={learner.selected}
                     />
                   </td>
                   <td>{learner.firstName}</td>
@@ -124,7 +179,7 @@ const CourseLearners = ({ course }) => {
               recordsPerPage={recordsPerPage}
             />
           ) : (
-            'No learners...'
+            'no learners...'
           )}
         </Col>
       </Row>

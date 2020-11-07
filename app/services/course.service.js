@@ -14,6 +14,7 @@ export const courseService = {
   attemptedUsers,
   notAttemptedUsers,
   completedUsers,
+  unjoinLearners,
 }
 
 function getAll(organizationId, programId, page, take, filter) {
@@ -181,4 +182,18 @@ function completedUsers(organizationId, programId, courseId, offset, pageSize) {
     .then(data => {
       return data
     })
+}
+
+function unjoinLearners(courseId, learnersList) {
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(learnersList),
+    headers: authHeader(),
+  }
+  let query = buildQuery({
+    courseId,
+  })
+  return fetch(`${routePrefix}/unjoinCourse?${query}`, requestOptions).then(
+    handleResponse
+  )
 }

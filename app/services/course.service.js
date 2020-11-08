@@ -194,13 +194,13 @@ function completedUsers(organizationId, programId, courseId, offset, pageSize) {
 
 function unjoinLearners(courseId, learnersList) {
   const requestOptions = {
-    method: 'POST',
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(learnersList),
-    headers: authHeader(),
   }
-  let query = buildQuery({
-    courseId,
-  })
+  
+  let query = buildQuery({ courseId });
+
   return fetch(`${routePrefix}/unjoinCourse?${query}`, requestOptions).then(
     handleResponse
   )

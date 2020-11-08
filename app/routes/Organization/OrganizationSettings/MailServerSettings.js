@@ -17,15 +17,23 @@ import { organizationService } from '@/services'
 const MailsServerSettings = ({ organization }) => {
   const [isTesting, setIsTesting] = useState(false)
   const [Body, setBody] = useState(organization?.Body || '')
+  const [UpdateBody, setUpdateBody] = useState(organization?.UpdateBody || '')
 
-  const handleChange = event => {
+  const handleChange = (event, field) => {
     const content = event.editor.getData()
-    setBody(content)
+    console.log('HADLE CHANGE:', content, field)
+    if (field === 'welcomeEmailBody') setBody(content)
+    if (field === 'updateEmailBody') setUpdateBody(content)
   }
 
   const handleOnSubmit = async (values, { setSubmitting }) => {
     try {
-      await organizationService.update({ ...organization, ...values, Body })
+      await organizationService.update({
+        ...organization,
+        ...values,
+        Body,
+        UpdateBody,
+      })
       toast.success(
         <div>
           <h4 className="text-success">Success</h4>
@@ -87,6 +95,8 @@ const MailsServerSettings = ({ organization }) => {
     Email: organization?.Email || '',
     Body: organization?.Body || '',
     Subject: organization?.Subject || '',
+    UpdateBody: organization?.UpdateBody || '',
+    UpdateSubject: organization?.UpdateSubject || '',
     Label: organization?.Label || '',
     ServerId: organization?.ServerId || '',
     Password: organization?.Password || '',
@@ -276,7 +286,10 @@ const MailsServerSettings = ({ organization }) => {
               Welcome Email body
             </Label>
             <Col sm={9}>
-              <TextEditor data={Body} onChange={handleChange} />
+              <TextEditor
+                data={Body}
+                onChange={e => handleChange(e, 'welcomeEmailBody')}
+              />
               <small>
                 Valid placeholders: {'{OrgName}'}, {'{UserCourse}'},{' '}
                 {'{UserLogin}'}, {'{UserName}'}, {'{UserLastName}'},{' '}
@@ -284,6 +297,50 @@ const MailsServerSettings = ({ organization }) => {
               </small>
               <ErrorMessage
                 name="Body"
+                component="div"
+                className="invalid-feedback"
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="UpdateSubject" sm={3}>
+              Update email subject
+            </Label>
+            <Col sm={9}>
+              <Field
+                type="text"
+                name="UpdateSubject"
+                id="UpdateSubject"
+                className={
+                  'bg-white form-control' +
+                  (errors.UpdateSubject && touched.UpdateSubject
+                    ? ' is-invalid'
+                    : '')
+                }
+              />
+              <ErrorMessage
+                name="UpdateSubject"
+                component="div"
+                className="invalid-feedback"
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="UpdateBody" sm={3}>
+              Update Email body
+            </Label>
+            <Col sm={9}>
+              <TextEditor
+                data={UpdateBody}
+                onChange={e => handleChange(e, 'updateEmailBody')}
+              />
+              <small>
+                Valid placeholders: {'{OrgName}'}, {'{UserCourse}'},{' '}
+                {'{UserLogin}'}, {'{UserName}'}, {'{UserLastName}'},{' '}
+                {'{UserPass}'}
+              </small>
+              <ErrorMessage
+                name="UpdateBody"
                 component="div"
                 className="invalid-feedback"
               />

@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import {
-  Container,
   Card,
   CardFooter,
   CardBody,
@@ -23,7 +22,6 @@ import { Paginations } from '@/routes/components/Paginations'
 import ThemedButton from '@/components/ThemedButton'
 import { useAppState } from '@/components/AppState'
 import { userService, groupsService, courseService } from '@/services'
-import { uniq } from 'lodash'
 import { toast } from 'react-toastify'
 import { hot } from 'react-hot-loader'
 
@@ -35,7 +33,6 @@ const ListUsers = ({
   onUserEdit,
   onSearch,
   totalNumberOfRecords,
-  searchText,
   onAddNew,
   getUsers,
 }) => {
@@ -160,11 +157,21 @@ const ListUsers = ({
             <Col lg={12}>
               <div className="d-lg-flex justify-content-end">
                 <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
-                  <InputGroup>
+                  <InputGroup className="col-8">
                     <Input
-                      onKeyUp={e => onSearch(e)}
-                      placeholder="Search for name..."
-                      defaultValue={searchText}
+                      onKeyUp={e => onSearch(e, 'filterName')}
+                      placeholder="Search by names..."
+                    />
+                    <InputGroupAddon addonType="append">
+                      <Button color="secondary" outline>
+                        <i className="fa fa-search"></i>
+                      </Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <InputGroup className=" col-8">
+                    <Input
+                      onKeyUp={e => onSearch(e, 'filterEmail')}
+                      placeholder="Search by emails..."
                     />
                     <InputGroupAddon addonType="append">
                       <Button color="secondary" outline>

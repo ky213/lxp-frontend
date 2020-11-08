@@ -58,6 +58,7 @@ function getAll(
   pageId,
   recordsPerPage,
   filterName,
+  filterEmail,
   filterOrganizationId,
   filterProgramId
 ) {
@@ -66,6 +67,7 @@ function getAll(
     pageId,
     recordsPerPage,
     filterName,
+    filterEmail,
     filterOrganizationId,
     filterProgramId,
   })

@@ -33,12 +33,20 @@ function getById(courseId, organizationId) {
   )
 }
 
-function getLearners(programId, courseId, organizationId, offset, pageSize) {
+function getLearners(
+  programId,
+  courseId,
+  organizationId,
+  status,
+  offset,
+  pageSize
+) {
   const requestOptions = { method: 'GET', headers: authHeader() }
   let query = buildQuery({
     programId,
     courseId,
     organizationId,
+    status,
     pageSize,
   })
   return fetch(

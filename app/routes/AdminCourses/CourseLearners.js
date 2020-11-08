@@ -20,7 +20,7 @@ import {
 const CourseLearners = ({ course }) => {
   const [learners, setLearners] = useState([])
   const [selectedLearners, setSelectedLearners] = useState([])
-  const [status, setStatus] = useState('All')
+  const [status, setStatus] = useState('')
   const [pageId, setPageId] = useState(1)
   const [totalNumberOfRecords, setTotlalNuberOfRecords] = useState(5)
   const [recordsPerPage, setRecordsPerPage] = useState(10)
@@ -32,7 +32,7 @@ const CourseLearners = ({ course }) => {
 
   useEffect(() => {
     getLearners()
-  }, [pageId])
+  }, [pageId, status])
 
   const getLearners = async () => {
     try {
@@ -40,6 +40,7 @@ const CourseLearners = ({ course }) => {
         course.programId,
         course.courseId,
         selectedOrganization.organizationId,
+        status,
         pageId,
         recordsPerPage
       )
@@ -64,7 +65,8 @@ const CourseLearners = ({ course }) => {
   const onSelected = (learnerId, e) => {
     setLearners(
       learners.map(learner => {
-        learner.selected = e.target.checked && learner.userId === learnerId
+        if (learner.userId === learnerId) learner.selected = e.target.checked
+
         return learner
       })
     )
@@ -81,9 +83,9 @@ const CourseLearners = ({ course }) => {
   const onUnjoin = async () => {
     if (!confirm('Are you sure you want to unjoin learners?')) return
 
-    const learnersList = learners.map(learner => {
-      if (learner.selected) return learner.userId
-    })
+    const learnersList = learners
+      .filter(learner => learner.selected)
+      .map(learner => learner.userId)
 
     try {
       await courseService.unjoinLearners(course.courseId, learnersList)
@@ -108,7 +110,7 @@ const CourseLearners = ({ course }) => {
             id="status"
             name="status"
             className="mt-1"
-            options={['All', 'Not Started', 'In Progress']}
+            options={['Completed', 'Not Started', 'In Progress']}
             onChange={setStatus}
             clearButton
           />

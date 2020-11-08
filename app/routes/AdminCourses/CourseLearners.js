@@ -15,6 +15,7 @@ import {
   Table,
   CustomInput,
   UncontrolledTooltip,
+  Loading,
 } from '@/components'
 
 const CourseLearners = ({ course }) => {
@@ -25,6 +26,7 @@ const CourseLearners = ({ course }) => {
   const [totalNumberOfRecords, setTotlalNuberOfRecords] = useState(5)
   const [recordsPerPage, setRecordsPerPage] = useState(10)
   const [{ selectedOrganization }] = useAppState()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getLearners()
@@ -36,6 +38,7 @@ const CourseLearners = ({ course }) => {
 
   const getLearners = async () => {
     try {
+      setLoading(true)
       const response = await courseService.getLearners(
         course.programId,
         course.courseId,
@@ -52,7 +55,9 @@ const CourseLearners = ({ course }) => {
         })
       )
       setTotlalNuberOfRecords(response.totalNumberOfRecords)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       toast.error(
         <div>
           <h4 className="text-danger">Error getting learners</h4>
@@ -150,23 +155,31 @@ const CourseLearners = ({ course }) => {
               </tr>
             </thead>
             <tbody>
-              {learners.map(learner => (
+              {!loading ? (
+                learners.map(learner => (
+                  <tr>
+                    <td>
+                      <CustomInput
+                        id={learner.userId}
+                        type="checkbox"
+                        onClick={e => onSelected(learner.userId, e)}
+                        checked={learner.selected}
+                      />
+                    </td>
+                    <td>{learner.firstName}</td>
+                    <td>{learner.lastName}</td>
+                    <td>{learner.email}</td>
+                    <td>{moment(learner.joininDate).format('L')}</td>
+                    <td>{learner.status}</td>
+                  </tr>
+                ))
+              ) : (
                 <tr>
-                  <td>
-                    <CustomInput
-                      id={learner.userId}
-                      type="checkbox"
-                      onClick={e => onSelected(learner.userId, e)}
-                      checked={learner.selected}
-                    />
+                  <td colSpan={6}>
+                    <Loading />
                   </td>
-                  <td>{learner.firstName}</td>
-                  <td>{learner.lastName}</td>
-                  <td>{learner.email}</td>
-                  <td>{moment(learner.joininDate).format('L')}</td>
-                  <td>{learner.status}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </Table>
         </Col>

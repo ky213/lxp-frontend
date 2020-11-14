@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
+import { isNil } from 'lodash'
+
 import {
   Card,
   Button,
@@ -9,6 +11,7 @@ import {
   AvatarAddOn,
   CardFooter,
   CardBody,
+  Progress,
 } from '@/components'
 import { courseService } from '@/services'
 
@@ -102,6 +105,14 @@ let CourseCard = ({
             <span>{'Role'}</span>
           </Media> */}
         </Media>
+        {!isNil(course?.courseProgress) && (
+          <>
+            <div className="text-right">
+              {Math.floor(course.courseProgress * 100)}%
+            </div>
+            <Progress slim value={course.courseProgress * 100} max={100} />
+          </>
+        )}
       </CardBody>
       <CardFooter className="bt-0 d-flex justify-content-between">
         <span className="mr-3">

@@ -110,7 +110,12 @@ let CourseCard = ({
             <div className="text-right">
               {Math.floor(course.courseProgress * 100)}%
             </div>
-            <Progress slim value={course.courseProgress * 100} max={100} />
+            <Progress
+              value={course.courseProgress * 100}
+              color={course.courseProgress >= 1 ? 'success' : ''}
+              max={100}
+              slim
+            />
           </>
         )}
       </CardBody>

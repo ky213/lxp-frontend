@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
 import { isNil } from 'lodash'
@@ -30,6 +31,8 @@ let CourseCard = ({
   const createMarkup = html => {
     return { __html: html }
   }
+
+  const location = useLocation()
 
   const handleJoinCourse = () => {
     if (!courseIsJoined)
@@ -128,8 +131,14 @@ let CourseCard = ({
       </CardBody>
       <CardFooter className="bt-0 d-flex justify-content-between">
         <span className="mr-3">
-          <i className="fa fa-eye mr-1"></i>
-          <span className="text-inverse">{course.NumofUsersInProgress}</span>
+          {location.pathname === '/courses' && (
+            <>
+              <i className="fa fa-eye mr-1"></i>
+              <span className="text-inverse">
+                {course.NumofUsersInProgress}
+              </span>
+            </>
+          )}
         </span>
         {isLearner && (
           <Button

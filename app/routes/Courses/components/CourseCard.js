@@ -108,11 +108,18 @@ let CourseCard = ({
         {!isNil(course?.courseProgress) && (
           <>
             <div className="text-right">
-              {Math.floor(course.courseProgress * 100)}%
+              {course.isCompleted
+                ? '100'
+                : Math.floor(course.courseProgress * 100)}
+              %
             </div>
             <Progress
-              value={course.courseProgress * 100}
-              color={course.courseProgress >= 1 ? 'success' : ''}
+              value={course.isCompleted ? 100 : course.courseProgress * 100}
+              color={
+                course.courseProgress >= 1 || course.isCompleted
+                  ? 'success'
+                  : ''
+              }
               max={100}
               slim
             />

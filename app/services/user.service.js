@@ -16,6 +16,7 @@ export const userService = {
   deleteEmployees,
   updateProfileData,
   updateBulk,
+  downloadCertificateAsPDF
 }
 
 function validateBulk(users, isLearner) {
@@ -159,4 +160,11 @@ function updateBulk(users, organizationId) {
     .then(data => {
       return data
     })
+}
+
+function downloadCertificateAsPDF(id , userId) {
+  const requestOptions = { method: 'GET', headers: authHeader() }
+  return fetch(`${routePrefixUsers}/${id}/downloadPDF/${userId}`, requestOptions).then(
+    handleResponse
+  )
 }

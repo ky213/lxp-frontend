@@ -3,6 +3,7 @@ import { useLocation } from 'react-router'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
 import { isNil } from 'lodash'
+import html2pdf from 'html2pdf.js'
 
 import {
   Card,
@@ -14,7 +15,8 @@ import {
   CardBody,
   Progress,
 } from '@/components'
-import { courseService } from '@/services'
+import { courseService, userService } from '@/services'
+import { useAppState } from '@/components/AppState'
 
 let CourseCard = ({
   course,
@@ -24,6 +26,7 @@ let CourseCard = ({
   isSuperAdmin,
   ...otherProps
 }) => {
+  const [{ currentUser }] = useAppState()
   const [courseIsJoined, setCourseIsJoined] = useState(
     joinedCourses.includes(course.courseId)
   )
@@ -49,6 +52,31 @@ let CourseCard = ({
             </div>
           )
         })
+  }
+
+  const downloadCertificate = async () => {
+    try {
+      const { htmlBody } = await userService.downloadCertificateAsPDF(
+        course.courseId,
+        currentUser.user.userId
+      )
+      if (htmlBody)
+        html2pdf()
+          .set({
+            margin: 1,
+            filename: `${course.name}-certificate.pdf`,
+            // jsPDF: { orientation: 'landscape' },
+          })
+          .from(htmlBody)
+          .save()
+    } catch (error) {
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{error.message}</p>
+        </div>
+      )
+    }
   }
 
   return (
@@ -130,7 +158,7 @@ let CourseCard = ({
         )}
       </CardBody>
       <CardFooter className="bt-0 d-flex justify-content-between">
-        <span className="mr-3">
+        <span className="">
           {location.pathname === '/courses' && (
             <>
               <i className="fa fa-eye mr-1"></i>
@@ -139,15 +167,22 @@ let CourseCard = ({
               </span>
             </>
           )}
+          {course.isCompleted && (
+            <a href="#" onClick={downloadCertificate}>
+              Download certificate
+            </a>
+          )}
         </span>
         {isLearner && (
-          <Button
-            color={courseIsJoined ? 'success' : 'primary'}
-            onClick={handleJoinCourse}
-            disabled={courseIsJoined}
-          >
-            {courseIsJoined ? 'Joined' : 'Join Course'}
-          </Button>
+          <>
+            <Button
+              color={courseIsJoined ? 'success' : 'primary'}
+              onClick={handleJoinCourse}
+              disabled={courseIsJoined}
+            >
+              {courseIsJoined ? 'Joined' : 'Join Course'}
+            </Button>
+          </>
         )}
       </CardFooter>
     </Card>

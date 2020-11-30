@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Modal,
   ModalHeader,
@@ -15,27 +15,28 @@ import {
   InputGroup,
   InputGroupAddon,
   InvalidFeedback,
-} from '@/components';
+} from '@/components'
 
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import moment from 'moment';
-import { AddonInput } from '@/routes/Forms/DatePicker/components';
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import DatePicker, { setDefaultLocale } from 'react-datepicker'
+import moment from 'moment'
+import { AddonInput } from '@/routes/Forms/DatePicker/components'
 import {
   activityService,
   learnerService,
   subspecialtiesService,
   courseService,
   programService,
-} from '@/services';
-import { useAppState } from '@/components/AppState';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Role } from '@/helpers';
-import ThemedButton from '@/components/ThemedButton';
-import RRuleGenerator from 'react-rrule-generator';
+} from '@/services'
+import { useAppState } from '@/components/AppState'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { Role } from '@/helpers'
+import ThemedButton from '@/components/ThemedButton'
+import RRuleGenerator from 'react-rrule-generator'
+import { hot } from 'react-hot-loader'
 
-export const AssignActivity = ({
+const AssignActivity = ({
   toggle,
   isOpen,
   eventStart,
@@ -44,21 +45,21 @@ export const AssignActivity = ({
   currentProgramId,
   userPrograms,
 }) => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
   const currentUserRole =
-    currentUser && currentUser.user && currentUser.user.role;
-  const [users, setUsers] = React.useState([]);
-  const [activityTypes, setActivityTypes] = React.useState([]);
-  const [timeDifference, setTimeDifference] = React.useState(30);
-  const [courses, setCourses] = React.useState([]);
-  const [rrule, setRRule] = React.useState([]);
+    currentUser && currentUser.user && currentUser.user.role
+  const [users, setUsers] = React.useState([])
+  const [activityTypes, setActivityTypes] = React.useState([])
+  const [timeDifference, setTimeDifference] = React.useState(30)
+  const [courses, setCourses] = React.useState([])
+  const [rrule, setRRule] = React.useState([])
   //const [userPrograms, setUserPrograms] = React.useState([]);
-  const [selectedProgram, setSelectedProgram] = React.useState(null);
+  const [selectedProgram, setSelectedProgram] = React.useState(null)
   const currentProgram =
     (currentProgramId &&
       userPrograms &&
-      userPrograms.filter((p) => p.programId == currentProgramId)) ||
-    [];
+      userPrograms.filter(p => p.programId == currentProgramId)) ||
+    []
 
   React.useEffect(() => {
     if (isOpen) {
@@ -66,10 +67,10 @@ export const AssignActivity = ({
         try {
           const activityTypes = await activityService.getActivityTypes(
             selectedOrganization.organizationId
-          );
-          setActivityTypes(activityTypes);
+          )
+          setActivityTypes(activityTypes)
         } catch (error) {
-          console.log('Error while fetching activity types:', error);
+          console.log('Error while fetching activity types:', error)
         }
 
         try {
@@ -77,13 +78,13 @@ export const AssignActivity = ({
             selectedOrganization.organizationId,
             currentProgramId,
             1
-          );
+          )
 
           if (data && data.courses) {
-            setCourses(data.courses);
+            setCourses(data.courses)
           }
         } catch (err) {
-          console.log('Error while fetching courses:', err);
+          console.log('Error while fetching courses:', err)
         }
 
         if (currentUser && currentUser.user) {
@@ -95,35 +96,35 @@ export const AssignActivity = ({
                 null,
                 selectedOrganization.organizationId,
                 currentProgramId
-              );
+              )
               setUsers(
-                learners.users.map((usr) => ({
+                learners.users.map(usr => ({
                   employeeId: usr.employeeId,
                   name: `${usr.name} ${usr.surname}`,
                 }))
-              );
+              )
             } catch (error) {
-              console.log('Error while fetching learners:', error);
+              console.log('Error while fetching learners:', error)
             }
           }
         }
-      };
+      }
 
-      fetchData();
+      fetchData()
     }
 
-    setRRule(false);
-  }, [isOpen]);
+    setRRule(false)
+  }, [isOpen])
 
-  const eventStartObj = (eventStart && moment(eventStart).toObject()) || null;
-  const eventEndObj = (eventEnd && moment(eventEnd).toObject()) || null;
-  const remainder = 30 - (moment().minute() % 30);
+  const eventStartObj = (eventStart && moment(eventStart).toObject()) || null
+  const eventEndObj = (eventEnd && moment(eventEnd).toObject()) || null
+  const remainder = 30 - (moment().minute() % 30)
 
   const changePriority = (formikProps, priority) => {
-    formikProps.setFieldValue('priority', priority);
-    formikProps.setFieldValue('courses', []);
-    formikProps.setFieldValue('learners', []);
-  };
+    formikProps.setFieldValue('priority', priority)
+    formikProps.setFieldValue('courses', [])
+    formikProps.setFieldValue('learners', [])
+  }
 
   return (
     <Modal
@@ -139,7 +140,7 @@ export const AssignActivity = ({
           description: '',
           program: (currentProgramId &&
             userPrograms &&
-            userPrograms.filter((p) => p.programId == currentProgramId)) || [
+            userPrograms.filter(p => p.programId == currentProgramId)) || [
             { name: '' },
           ],
           start:
@@ -184,6 +185,7 @@ export const AssignActivity = ({
           activityType: Yup.string().required(
             'You need to select the activity type'
           ),
+          repeat: Yup.boolean(),
           end: Yup.date()
             .required('Ending time of the activity is required')
             .when('start', (start, schema) =>
@@ -216,28 +218,29 @@ export const AssignActivity = ({
             activityType,
             location,
             courses,
+            repeat,
           },
           { setStatus, setSubmitting }
         ) => {
-          setStatus();
-          setSubmitting(false);
+          setStatus()
+          setSubmitting(false)
 
           if (!program || (program && program.length == 0)) {
-            alert(`You need to select a program first!`);
-            return;
+            alert(`You need to select a program first!`)
+            return
           }
 
           if (priority == 3 && learners && learners.length == 0) {
-            alert(`You need to select some learners first! :)`);
-            return;
+            alert(`You need to select some learners first! :)`)
+            return
           }
 
           if (priority == 2 && (!courses || (courses && courses.length == 0))) {
-            alert(`You must choose a course!`);
-            return;
+            alert(`You must choose a course!`)
+            return
           }
 
-          setSubmitting(true);
+          setSubmitting(true)
 
           const activity = {
             programId: program[0].programId,
@@ -252,32 +255,32 @@ export const AssignActivity = ({
             courses: courses,
             rrule: (rrule && rrule.toString()) || null,
             organizationId: selectedOrganization.organizationId,
-          };
-
+            repeat,
+          }
+          console.log('Repeat:', repeat)
           try {
-            const response = await activityService.create(activity);
-            alert(`You have successfully assigned an activity!`);
+            const response = await activityService.create(activity)
+            alert(`You have successfully assigned an activity!`)
             if (response.warning) {
-              alert(response.warning);
+              alert(response.warning)
             }
-
-            toggle();
+            toggle()
             if (onSuccess) {
-              onSuccess();
+              onSuccess()
             }
           } catch (error) {
-            console.log('Error while creating activity:', error);
-            setStatus(error);
+            console.log('Error while creating activity:', error)
+            setStatus(error)
 
             alert(
               `We're sorry but something went wrong while trying to assign the activity: ${error}`
-            );
+            )
           }
 
-          setSubmitting(false);
+          setSubmitting(false)
         }}
       >
-        {(formikProps) => {
+        {formikProps => {
           return (
             <React.Fragment>
               <Form onSubmit={formikProps.handleSubmit}>
@@ -311,21 +314,21 @@ export const AssignActivity = ({
                                     : ''
                                 }
                                 placeholder="Select a program..."
-                                onChange={(selectedOptions) => {
+                                onChange={selectedOptions => {
                                   formikProps.setFieldValue(
                                     'program',
                                     selectedOptions || []
-                                  );
+                                  )
                                   //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null)
-                                  changePriority(formikProps, 1);
+                                  changePriority(formikProps, 1)
                                 }}
-                                onInputChange={(selectedOptions) => {
+                                onInputChange={selectedOptions => {
                                   formikProps.setFieldValue(
                                     'program',
                                     selectedOptions || []
-                                  );
+                                  )
                                   //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null);
-                                  changePriority(formikProps, 1);
+                                  changePriority(formikProps, 1)
                                 }}
                               />
                               <ErrorMessage
@@ -381,14 +384,14 @@ export const AssignActivity = ({
                                     : ''
                                 }
                                 selected={formikProps.values.start}
-                                onChange={(e) => {
-                                  formikProps.setFieldValue('start', e);
+                                onChange={e => {
+                                  formikProps.setFieldValue('start', e)
                                   formikProps.setFieldValue(
                                     'end',
                                     moment(e)
                                       .add(timeDifference, 'minutes')
                                       .toDate()
-                                  );
+                                  )
                                 }}
                               />
                               {formikProps.errors.start &&
@@ -421,16 +424,16 @@ export const AssignActivity = ({
                                     : ''
                                 }
                                 selected={formikProps.values.end}
-                                onChange={(e) => {
-                                  formikProps.setFieldValue('end', e);
+                                onChange={e => {
+                                  formikProps.setFieldValue('end', e)
                                   const calculatedTimeDifference = moment
                                     .duration(
                                       moment(e).diff(
                                         moment(formikProps.values.start)
                                       )
                                     )
-                                    .asMinutes();
-                                  setTimeDifference(calculatedTimeDifference);
+                                    .asMinutes()
+                                  setTimeDifference(calculatedTimeDifference)
                                 }}
                               />
                               {formikProps.errors.end &&
@@ -441,7 +444,7 @@ export const AssignActivity = ({
                                 )}
                             </Col>
                           </FormGroup>
-                                            
+
                           <FormGroup row>
                             <Label for="type" sm={3}>
                               Activity type
@@ -461,13 +464,13 @@ export const AssignActivity = ({
                                 placeholder="Activity type..."
                               >
                                 <option value="">Activity type...</option>
-                                {activityTypes.map((at) => {
+                                {activityTypes.map(at => {
                                   //console.log("Map each at:", at)
                                   return (
                                     <option value={at.activityTypeId}>
                                       {at.activityTypeName}
                                     </option>
-                                  );
+                                  )
                                 })}
                               </Field>
                               <ErrorMessage
@@ -528,6 +531,31 @@ export const AssignActivity = ({
                             </Col>
                           </FormGroup>
                           <FormGroup row>
+                            <Label for="repeat" sm={3}>
+                              Repeat
+                            </Label>
+                            <Col className="col-1">
+                              <Field
+                                type="checkbox"
+                                name="repeat"
+                                id="repeat"
+                                className={
+                                  'form-control bg-white ' +
+                                  (formikProps.errors.repeat &&
+                                  formikProps.touched.repeat
+                                    ? ' is-invalid'
+                                    : '')
+                                }
+                              />
+                              <ErrorMessage
+                                name="repeat"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+                            </Col>
+                          </FormGroup>
+
+                          <FormGroup row>
                             <Label for="priority" sm={3}>
                               Assign to
                             </Label>
@@ -542,11 +570,11 @@ export const AssignActivity = ({
                                     label="Program"
                                     checked={formikProps.values.priority == 1}
                                     value="1"
-                                    onChange={(event) => {
+                                    onChange={event => {
                                       changePriority(
                                         formikProps,
                                         event.target.value
-                                      );
+                                      )
                                     }}
                                   />
                                   <CustomInput
@@ -557,15 +585,15 @@ export const AssignActivity = ({
                                     label="Courses"
                                     value="2"
                                     checked={formikProps.values.priority == 2}
-                                    onChange={(event) => {
+                                    onChange={event => {
                                       formikProps.setFieldValue(
                                         'priority',
                                         event.target.value
-                                      );
+                                      )
                                       changePriority(
                                         formikProps,
                                         event.target.value
-                                      );
+                                      )
                                     }}
                                   />
                                 </>
@@ -583,15 +611,15 @@ export const AssignActivity = ({
                                 }
                                 value="3"
                                 checked={formikProps.values.priority == 3}
-                                onChange={(event) => {
+                                onChange={event => {
                                   formikProps.setFieldValue(
                                     'priority',
                                     event.target.value
-                                  );
+                                  )
                                   changePriority(
                                     formikProps,
                                     event.target.value
-                                  );
+                                  )
                                 }}
                               />
                             </Col>
@@ -617,13 +645,13 @@ export const AssignActivity = ({
                                         : ''
                                     }
                                     placeholder="Select courses..."
-                                    onChange={(selectedOptions) =>
+                                    onChange={selectedOptions =>
                                       formikProps.setFieldValue(
                                         'courses',
                                         selectedOptions
                                       )
                                     }
-                                    onInputChange={(selectedOptions) =>
+                                    onInputChange={selectedOptions =>
                                       formikProps.setFieldValue(
                                         'courses',
                                         selectedOptions
@@ -659,13 +687,13 @@ export const AssignActivity = ({
                                         : ''
                                     }
                                     placeholder="Select learners..."
-                                    onChange={(selectedOptions) =>
+                                    onChange={selectedOptions =>
                                       formikProps.setFieldValue(
                                         'learners',
                                         selectedOptions
                                       )
                                     }
-                                    onInputChange={(selectedOptions) =>
+                                    onInputChange={selectedOptions =>
                                       formikProps.setFieldValue(
                                         'learners',
                                         selectedOptions
@@ -695,9 +723,11 @@ export const AssignActivity = ({
                 </ModalFooter>
               </Form>
             </React.Fragment>
-          );
+          )
         }}
       </Formik>
     </Modal>
-  );
-};
+  )
+}
+
+export default hot(module)(AssignActivity)

@@ -1,90 +1,90 @@
-import React from 'react';
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import React from 'react'
+import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
 
-import { Container, Row, Col } from '@/components';
+import { Container, Row, Col } from '@/components'
 
-import { HeaderMain } from '@/routes/components/HeaderMain';
-import { HeaderDemo } from '@/routes/components/HeaderDemo';
-import { activityService, programService } from '@/services';
-import { AssignActivity } from './AssignActivity';
-import { EditActivity } from './EditActivity';
-import { LogActivity } from './LogActivity';
-import { useAppState } from '@/components/AppState';
-import { Role } from '@/helpers';
-import { Loading } from '@/components';
+import { HeaderMain } from '@/routes/components/HeaderMain'
+import { HeaderDemo } from '@/routes/components/HeaderDemo'
+import { activityService, programService } from '@/services'
+import AssignActivity from './AssignActivity'
+import { EditActivity } from './EditActivity'
+import { LogActivity } from './LogActivity'
+import { useAppState } from '@/components/AppState'
+import { Role } from '@/helpers'
+import { Loading } from '@/components'
 import {
   Responsive,
   isMobileDevice,
   isTabletDevice,
   isLaptopDevice,
   isBiggerThanLaptop,
-} from 'responsive-react';
+} from 'responsive-react'
 
-import MobileToolbar from '@/components/Calendar/MobileToolbar';
-import CustomCalendarToolbar from './components/CustomCalendarToolbar';
+import MobileToolbar from '@/components/Calendar/MobileToolbar'
+import CustomCalendarToolbar from './components/CustomCalendarToolbar'
 //const Calendar = BigCalendar
-const localizer = momentLocalizer(moment);
+const localizer = momentLocalizer(moment)
 
-export const ActivityCalendar = (props) => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+export const ActivityCalendar = props => {
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
   const currentUserRole =
-    currentUser && currentUser.user && currentUser.user.role;
+    currentUser && currentUser.user && currentUser.user.role
   //const currentProgramId = currentUser && currentUser.user && currentUser.user.programId;
 
-  const [events, setEvents] = React.useState(null);
-  const [eventStart, setEventStart] = React.useState(null);
-  const [eventEnd, setEventEnd] = React.useState(null);
-  const [meetingsModal, setMeetingsModal] = React.useState(false);
-  const [showLogActivityModal, setShowLogActivityModal] = React.useState(false);
-  const [showEditEventModal, setShowEditEventModal] = React.useState(false);
-  const [selectedActivity, setSelectedActivity] = React.useState(null);
-  const [selectedLogActivity, setSelectedLogActivity] = React.useState(null);
-  const [calendarView, setCalendarView] = React.useState('month');
-  const [calendarDate, setCalendarDate] = React.useState(new Date());
-  const [userPrograms, setUserPrograms] = React.useState(null);
+  const [events, setEvents] = React.useState(null)
+  const [eventStart, setEventStart] = React.useState(null)
+  const [eventEnd, setEventEnd] = React.useState(null)
+  const [meetingsModal, setMeetingsModal] = React.useState(false)
+  const [showLogActivityModal, setShowLogActivityModal] = React.useState(false)
+  const [showEditEventModal, setShowEditEventModal] = React.useState(false)
+  const [selectedActivity, setSelectedActivity] = React.useState(null)
+  const [selectedLogActivity, setSelectedLogActivity] = React.useState(null)
+  const [calendarView, setCalendarView] = React.useState('month')
+  const [calendarDate, setCalendarDate] = React.useState(new Date())
+  const [userPrograms, setUserPrograms] = React.useState(null)
   const [currentProgramId, setCurrentProgramId] = React.useState(
     (currentUser && currentUser.user && currentUser.user.programId) || null
-  );
+  )
 
   React.useEffect(() => {
     try {
       const fetchData = async () => {
         const programs = await programService.getByCurrentUser(
           selectedOrganization.organizationId
-        );
-        setUserPrograms(programs);
+        )
+        setUserPrograms(programs)
         if (programs && programs.length == 1) {
-          setCurrentProgramId(programs[0].programId);
+          setCurrentProgramId(programs[0].programId)
         }
-      };
+      }
 
-      fetchData();
+      fetchData()
     } catch (error) {
-      console.log('Error while fetching programs:', error);
+      console.log('Error while fetching programs:', error)
     }
-  }, []);
+  }, [])
 
   const getActivities = async () => {
-    const currentDate = moment(calendarDate);
-    let dateFrom = null;
-    let dateTo = null;
+    const currentDate = moment(calendarDate)
+    let dateFrom = null
+    let dateTo = null
 
     switch (calendarView) {
       case 'day':
-        dateFrom = currentDate.clone();
-        dateTo = currentDate.clone();
-        break;
+        dateFrom = currentDate.clone()
+        dateTo = currentDate.clone()
+        break
 
       case 'week':
-        dateFrom = currentDate.clone().startOf('week');
-        dateTo = currentDate.clone().endOf('week');
-        break;
+        dateFrom = currentDate.clone().startOf('week')
+        dateTo = currentDate.clone().endOf('week')
+        break
 
       case 'month':
-        dateFrom = currentDate.clone().startOf('month').startOf('week');
-        dateTo = currentDate.clone().endOf('month').endOf('week');
-        break;
+        dateFrom = currentDate.clone().startOf('month').startOf('week')
+        dateTo = currentDate.clone().endOf('month').endOf('week')
+        break
     }
 
     const activities = await activityService.getAll(
@@ -92,10 +92,10 @@ export const ActivityCalendar = (props) => {
       dateFrom.format('DDMMYYYY'),
       (dateTo && dateTo.format('DDMMYYYY')) || dateFrom.format('DDMMYYYY'),
       selectedOrganization.organizationId
-    );
+    )
     //console.log("Got activities: ", activities);
 
-    const calendarEvents = activities.map((ev) => {
+    const calendarEvents = activities.map(ev => {
       if (ev.status != 3) {
         return {
           id: ev.activityId,
@@ -106,82 +106,82 @@ export const ActivityCalendar = (props) => {
           status: ev.status,
           source: ev.source,
           priority: ev.priority,
-        };
+        }
       }
-    });
+    })
 
-    setEvents(calendarEvents);
-  };
+    setEvents(calendarEvents)
+  }
 
   React.useEffect(() => {
-    getActivities();
-  }, [calendarView, calendarDate, currentProgramId]);
+    getActivities()
+  }, [calendarView, calendarDate, currentProgramId])
 
   React.useEffect(() => {
     if (!showLogActivityModal) {
-      setSelectedLogActivity(null);
+      setSelectedLogActivity(null)
     }
-  }, [showLogActivityModal]);
+  }, [showLogActivityModal])
 
   React.useEffect(() => {
     if (!showEditEventModal) {
-      setSelectedActivity(null);
+      setSelectedActivity(null)
     }
-  }, [showEditEventModal]);
+  }, [showEditEventModal])
 
   const onCreatedEvent = async () => {
-    setSelectedActivity(null);
-    setSelectedLogActivity(null);
-    await getActivities();
-  };
+    setSelectedActivity(null)
+    setSelectedLogActivity(null)
+    await getActivities()
+  }
 
   const onEditedEvent = async () => {
-    setSelectedActivity(null);
-    setSelectedLogActivity(null);
-    await getActivities();
-  };
+    setSelectedActivity(null)
+    setSelectedLogActivity(null)
+    await getActivities()
+  }
 
-  const newEvent = (event) => {
-    const start = moment(event.start).clone().toDate() || null;
-    const end = moment(event.end).clone().toDate() || null;
-    setEventStart(start);
-    setEventEnd(end);
+  const newEvent = event => {
+    const start = moment(event.start).clone().toDate() || null
+    const end = moment(event.end).clone().toDate() || null
+    setEventStart(start)
+    setEventEnd(end)
 
-    const today = moment().startOf('day');
+    const today = moment().startOf('day')
 
     if (currentUserRole == Role.Learner) {
-      toggleLogActivityModal();
+      toggleLogActivityModal()
     } else {
       if (
         moment(start).clone().startOf('day').isBefore(today) ||
         moment(end).clone().startOf('day').isBefore(today)
       ) {
-        alert(`You cannot assign an activity in the past!`);
-        return;
+        alert(`You cannot assign an activity in the past!`)
+        return
       }
 
-      toggleMeetingsModal();
+      toggleMeetingsModal()
     }
-  };
+  }
 
   const toggleMeetingsModal = () => {
-    setMeetingsModal(!meetingsModal);
-  };
+    setMeetingsModal(!meetingsModal)
+  }
 
   const toggleLogActivityModal = () => {
-    setShowLogActivityModal(!showLogActivityModal);
-  };
+    setShowLogActivityModal(!showLogActivityModal)
+  }
 
   const toggleEditEventModal = () => {
-    setShowEditEventModal(!showEditEventModal);
-  };
+    setShowEditEventModal(!showEditEventModal)
+  }
 
-  const showEvent = async (event) => {
+  const showEvent = async event => {
     if (event.source == 'assigned') {
       const eventDetails = await activityService.getById(
         event.id,
         selectedOrganization.organizationId
-      );
+      )
       /*
             if(eventDetails.repeat) {
                 eventDetails.start = event.start;
@@ -190,25 +190,25 @@ export const ActivityCalendar = (props) => {
             */
       //eventDetails.start = moment(moment(event.start).format('DDMMYYYY') + ' ' + moment(eventDetails.start).format('HH:mm'), 'DDMMYYYY HH:mm').toDate();
       //eventDetails.end = moment(moment(event.end).format('DDMMYYYY') + ' ' + moment(eventDetails.end).format('HH:mm'), 'DDMMYYYY HH:mm').toDate();
-      setSelectedActivity(eventDetails);
-      toggleEditEventModal();
+      setSelectedActivity(eventDetails)
+      toggleEditEventModal()
     } else {
       const eventDetails = await activityService.getLogActivityById(
         event.id,
         selectedOrganization.organizationId
-      );
-      setSelectedLogActivity(eventDetails);
-      toggleLogActivityModal();
+      )
+      setSelectedLogActivity(eventDetails)
+      toggleLogActivityModal()
     }
-  };
+  }
 
-  const handleCalendarChangeView = (view) => {
-    setCalendarView(view);
-  };
+  const handleCalendarChangeView = view => {
+    setCalendarView(view)
+  }
 
   const handleCalendarNavigate = (date, view) => {
-    setCalendarDate(date);
-  };
+    setCalendarDate(date)
+  }
 
   return (
     <Container>
@@ -230,7 +230,7 @@ export const ActivityCalendar = (props) => {
               localizer={localizer}
               events={events}
               components={{
-                toolbar: (props) => (
+                toolbar: props => (
                   <CustomCalendarToolbar
                     {...props}
                     onAddNew={() =>
@@ -243,7 +243,7 @@ export const ActivityCalendar = (props) => {
                 ),
               }}
               onNavigate={(date, view) => handleCalendarNavigate(date, view)}
-              onView={(view) => handleCalendarChangeView(view)}
+              onView={view => handleCalendarChangeView(view)}
               eventPropGetter={(event, start, end, isSelected) => {
                 return {
                   className:
@@ -251,7 +251,7 @@ export const ActivityCalendar = (props) => {
                       event && event.priority && 'priority-' + event.priority
                     }` || '',
                   style: {},
-                };
+                }
               }}
               onSelectSlot={newEvent}
               onSelectEvent={showEvent}
@@ -287,5 +287,5 @@ export const ActivityCalendar = (props) => {
         onSuccess={onEditedEvent}
       />
     </Container>
-  );
-};
+  )
+}

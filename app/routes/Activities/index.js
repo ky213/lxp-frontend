@@ -1,4 +1,4 @@
-import { ActivityCalendar } from './ActivityCalendar';
-export { AssignActivity } from './AssignActivity';
+import { ActivityCalendar } from './ActivityCalendar'
+export { default as AssignActivity } from './AssignActivity'
 
-export default ActivityCalendar;
+export default ActivityCalendar

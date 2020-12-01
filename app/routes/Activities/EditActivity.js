@@ -651,6 +651,79 @@ export const EditActivity = ({
                                       </FormGroup>
                                     )}
                                     <FormGroup row>
+                                      <Label for="description" sm={3}>
+                                        Repeat?
+                                      </Label>
+                                      <Col sm={9}>
+                                        <CustomInput
+                                          inline
+                                          disabled={
+                                            currentUserRole == Role.Learner
+                                          }
+                                          type="radio"
+                                          id="repeatYes"
+                                          name="repeat"
+                                          label="Yes"
+                                          value="1"
+                                          defaultChecked={showRepeatOptions}
+                                          onChange={(event) => {
+                                            setShowRepeatOptions(true);
+                                          }}
+                                        />
+                                        <CustomInput
+                                          inline
+                                          type="radio"
+                                          id="repeatNo"
+                                          name="repeat"
+                                          label="No"
+                                          value="0"
+                                          disabled={
+                                            currentUserRole == Role.Learner
+                                          }
+                                          defaultChecked={!showRepeatOptions}
+                                          onChange={(event) => {
+                                            setShowRepeatOptions(false);
+                                          }}
+                                        />
+                                      </Col>
+                                    </FormGroup>
+                                    {showRepeatOptions &&
+                                      currentUserRole != Role.Learner && (
+                                        <FormGroup row>
+                                          <Col
+                                            sm={12}
+                                            style={{ whiteSpace: 'nowrap' }}
+                                          >
+                                            <RRuleGenerator
+                                              value={selectedActivity.rrule}
+                                              onChange={(rrule) => {
+                                                setRRule(rrule);
+                                              }}
+                                              //config={{end: ['Never', 'After']}}
+                                            />
+                                          </Col>
+                                        </FormGroup>
+                                      )}
+                                    {showRepeatOptions &&
+                                      currentUserRole == Role.Learner && (
+                                        <FormGroup row>
+                                          <Label sm={3}>Repeating</Label>
+                                          <Col
+                                            sm={9}
+                                            style={{ whiteSpace: 'nowrap' }}
+                                          >
+                                            <Label className="col-form-label">
+                                              <strong>
+                                                {selectedActivity.rrule &&
+                                                  rrulestr(
+                                                    selectedActivity.rrule
+                                                  ).toText()}
+                                              </strong>
+                                            </Label>
+                                          </Col>
+                                        </FormGroup>
+                                      )}
+                                    <FormGroup row>
                                       <Label for="type" sm={3}>
                                         Activity type
                                       </Label>

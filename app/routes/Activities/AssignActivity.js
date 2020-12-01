@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Modal,
   ModalHeader,
@@ -53,6 +53,7 @@ const AssignActivity = ({
   const [timeDifference, setTimeDifference] = React.useState(30)
   const [courses, setCourses] = React.useState([])
   const [rrule, setRRule] = React.useState([])
+  const [showRepeatOptions, setShowRepeatOptions] = React.useState(false);
   //const [userPrograms, setUserPrograms] = React.useState([]);
   const [selectedProgram, setSelectedProgram] = React.useState(null)
   const currentProgram =
@@ -114,6 +115,7 @@ const AssignActivity = ({
     }
 
     setRRule(false)
+    setShowRepeatOptions(false);
   }, [isOpen])
 
   const eventStartObj = (eventStart && moment(eventStart).toObject()) || null
@@ -250,6 +252,7 @@ const AssignActivity = ({
             priority: priority,
             activityTypeId: activityType,
             location: location,
+            repeat: showRepeatOptions,
             description: description,
             participants: learners,
             courses: courses,
@@ -444,7 +447,44 @@ const AssignActivity = ({
                                 )}
                             </Col>
                           </FormGroup>
-
+                          <FormGroup row>
+                            <Label for="description" sm={3}>
+                                Repeat?
+                            </Label>
+                            <Col sm={9}>
+                              <CustomInput inline
+                                type="radio" 
+                                id="repeatYes" 
+                                name="repeat"
+                                label="Yes"
+                                value="1"
+                                 onChange={(event) => {setShowRepeatOptions(true)}}
+                              />
+                              <CustomInput inline
+                                type="radio" 
+                                id="repeatNo" 
+                                name="repeat"
+                                label="No"
+                                value="0"
+                                defaultChecked  
+                                onChange={(event) => {
+                                setShowRepeatOptions(false)
+                               }}
+                              />
+                                                    
+                            </Col>                                                    
+                          </FormGroup>
+                            {showRepeatOptions && (
+                          <FormGroup row>
+                            <Col sm={12} style={{whiteSpace: 'nowrap'}}>
+                              <RRuleGenerator onChange={(rrule) => {
+                                  console.log(`RRule changed, now it's ${rrule}`);
+                                  setRRule(rrule);
+                                }}                           
+                             />
+                            </Col>
+                          </FormGroup>
+                          )}
                           <FormGroup row>
                             <Label for="type" sm={3}>
                               Activity type
@@ -529,32 +569,7 @@ const AssignActivity = ({
                                 className="invalid-feedback"
                               />
                             </Col>
-                          </FormGroup>
-                          <FormGroup row>
-                            <Label for="repeat" sm={3}>
-                              Repeat
-                            </Label>
-                            <Col className="col-1">
-                              <Field
-                                type="checkbox"
-                                name="repeat"
-                                id="repeat"
-                                className={
-                                  'form-control bg-white ' +
-                                  (formikProps.errors.repeat &&
-                                  formikProps.touched.repeat
-                                    ? ' is-invalid'
-                                    : '')
-                                }
-                              />
-                              <ErrorMessage
-                                name="repeat"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </Col>
-                          </FormGroup>
-
+                          </FormGroup>                        
                           <FormGroup row>
                             <Label for="priority" sm={3}>
                               Assign to

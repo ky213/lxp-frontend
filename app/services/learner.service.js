@@ -80,15 +80,19 @@ function getAllActive(
   pageId,
   recordsPerPage,
   filterName,
-  filterOrganizationId
+  filterEmail,
+  filterOrganizationId,
+  filterProgramId
 ) {
   const requestOptions = { method: 'GET', headers: authHeader() }
   let query = buildQuery({
     pageId,
     recordsPerPage,
     filterName,
+    filterEmail,
     filterOrganizationId,
-  })
+    filterProgramId
+  });
   return fetch(`${routePrefix}/filterActive?${query}`, requestOptions).then(
     handleResponse
   )

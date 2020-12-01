@@ -60,7 +60,6 @@ const Courses = props => {
   let rowContent = React.useRef()
 
   React.useEffect(() => {
-    setDeviceIsMobile(isMobileDevice())
     programService
       .getByCurrentUser(selectedOrganization.organizationId)
       .then(data => {
@@ -76,29 +75,17 @@ const Courses = props => {
       .then(error => {
         console.log(error)
       })
-  }, [])
 
-  React.useEffect(() => {
-    if (programs && programs.length == 1)
-      setSelectedProgramId(programs[0].programId)
-    else setSelectedProgramId(null)
-  }, [programs])
+    loadCourses()
+  }, [])
 
   React.useEffect(() => {
     setShowAlert(alertMessage ? true : false)
   }, [alertMessage])
 
   React.useEffect(() => {
-    if (selectedProgramId) {
-      loadCourses()
-    } else {
-      setCoursesData(null)
-    }
-  }, [selectedProgramId])
-
-  React.useEffect(() => {
     loadCourses()
-  }, [startSearch, pageId])
+  }, [startSearch, pageId, selectedProgramId])
 
   const handleSearch = async () => {
     await loadCourses()
@@ -107,32 +94,30 @@ const Courses = props => {
   const loadCourses = async () => {
     setCoursesData(null)
 
-    if (selectedProgramId) {
-      setIsLoading(true)
-      dismissAlert()
+    setIsLoading(true)
+    dismissAlert()
 
-      try {
-        const data = await courseService.getAll(
-          selectedOrganization.organizationId,
-          selectedProgramId,
-          pageId,
-          recordsPerPage,
-          filter
-        )
+    try {
+      const data = await courseService.getAll(
+        selectedOrganization.organizationId,
+        selectedProgramId,
+        pageId,
+        recordsPerPage,
+        filter
+      )
 
-        if (data) {
-          setCoursesData(data)
-        }
-      } catch (err) {
-        showAlertMessage({
-          title: 'Error',
-          message: err,
-          type: 'danger',
-        })
+      if (data) {
+        setCoursesData(data)
       }
-
-      setIsLoading(false)
+    } catch (err) {
+      showAlertMessage({
+        title: 'Error',
+        message: err,
+        type: 'danger',
+      })
     }
+
+    setIsLoading(false)
   }
 
   const dismissAlert = () => {
@@ -203,16 +188,6 @@ const Courses = props => {
                       clearButton
                       id="programs"
                       labelKey="name"
-                      selected={
-                        (selectedProgramId &&
-                          programs && [
-                            programs.find(
-                              p => p.programId == selectedProgramId
-                            ),
-                          ]) ||
-                        (programs && programs.length == 1 && [programs[0]]) ||
-                        []
-                      }
                       options={programs}
                       placeholder="Program..."
                       onChange={e => onProgramChange(e)}

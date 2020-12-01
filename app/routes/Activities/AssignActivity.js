@@ -257,7 +257,6 @@ const AssignActivity = ({
             organizationId: selectedOrganization.organizationId,
             repeat,
           }
-          console.log('Repeat:', repeat)
           try {
             const response = await activityService.create(activity)
             alert(`You have successfully assigned an activity!`)

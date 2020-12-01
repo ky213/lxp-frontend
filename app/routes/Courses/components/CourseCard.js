@@ -26,7 +26,7 @@ let CourseCard = ({
   isSuperAdmin,
   ...otherProps
 }) => {
-  const [{ currentUser }] = useAppState()
+  const [{ currentUser, selectedOrganization }] = useAppState()
   const [courseIsJoined, setCourseIsJoined] = useState(
     joinedCourses.includes(course.courseId)
   )
@@ -57,6 +57,7 @@ let CourseCard = ({
   const downloadCertificate = async () => {
     try {
       const { htmlBody } = await userService.downloadCertificateAsPDF(
+        selectedOrganization.organizationId,
         course.courseId,
         currentUser.user.userId
       )

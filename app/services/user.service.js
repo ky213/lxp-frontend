@@ -164,7 +164,8 @@ function updateBulk(users, organizationId) {
 
 function downloadCertificateAsPDF(id , userId) {
   const requestOptions = { method: 'GET', headers: authHeader() }
-  return fetch(`${routePrefixUsers}/${id}/downloadPDF/${userId}`, requestOptions).then(
+  let query = buildQuery({ organizationId, userId, courseId })
+  return fetch(`${routePrefixUsers}/downloadPDF?${query}`, requestOptions).then(
     handleResponse
   )
 }

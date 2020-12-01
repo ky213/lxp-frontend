@@ -124,6 +124,7 @@ export const EditActivity = ({
               1,
               999,
               null,
+              null,
               selectedOrganization.organizationId,
               selectedActivity.programId
             );

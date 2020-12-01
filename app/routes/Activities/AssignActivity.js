@@ -95,6 +95,7 @@ const AssignActivity = ({
                 1,
                 999,
                 null,
+                null,
                 selectedOrganization.organizationId,
                 currentProgramId
               )

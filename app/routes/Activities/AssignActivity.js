@@ -1,27 +1,27 @@
 import React from 'react';
 import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  FormGroup,
-  Label,
-  CustomInput,
-  InputGroup,
-  InputGroupAddon,
-  InvalidFeedback,
-} from '@/components'
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    Row,
+    Col,
+    Card,
+    CardBody,
+    FormGroup,
+    Label,
+    CustomInput,
+    InputGroup,
+    InputGroupAddon,
+    InvalidFeedback
+  } from "@/components";
 
-import { Formik, Field, Form, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
-import DatePicker, { setDefaultLocale } from 'react-datepicker'
-import moment from 'moment'
-import { AddonInput } from '@/routes/Forms/DatePicker/components'
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import DatePicker, { setDefaultLocale } from 'react-datepicker';
+import moment from 'moment';
+import {AddonInput} from '@/routes/Forms/DatePicker/components';
 import {
   activityService,
   learnerService,
@@ -114,9 +114,9 @@ const AssignActivity = ({
       fetchData()
     }
 
-    setRRule(false)
+    setRRule(false);
     setShowRepeatOptions(false);
-  }, [isOpen])
+  }, [isOpen]);
 
   const eventStartObj = (eventStart && moment(eventStart).toObject()) || null
   const eventEndObj = (eventEnd && moment(eventEnd).toObject()) || null
@@ -224,8 +224,8 @@ const AssignActivity = ({
           },
           { setStatus, setSubmitting }
         ) => {
-          setStatus()
-          setSubmitting(false)
+          setStatus();
+          setSubmitting(false);
 
           if (!program || (program && program.length == 0)) {
             alert(`You need to select a program first!`)
@@ -242,7 +242,7 @@ const AssignActivity = ({
             return
           }
 
-          setSubmitting(true)
+          setSubmitting(true);
 
           const activity = {
             programId: program[0].programId,
@@ -258,29 +258,28 @@ const AssignActivity = ({
             courses: courses,
             rrule: (rrule && rrule.toString()) || null,
             organizationId: selectedOrganization.organizationId,
-            repeat,
           }
           console.log('Repeat:', repeat)
           try {
-            const response = await activityService.create(activity)
-            alert(`You have successfully assigned an activity!`)
+            const response = await activityService.create(activity);
+            alert(`You have successfully assigned an activity!`);
             if (response.warning) {
               alert(response.warning)
             }
-            toggle()
+            toggle();
             if (onSuccess) {
-              onSuccess()
+              onSuccess();
             }
           } catch (error) {
-            console.log('Error while creating activity:', error)
-            setStatus(error)
+            console.log('Error while creating activity:', error);
+            setStatus(error);
 
             alert(
               `We're sorry but something went wrong while trying to assign the activity: ${error}`
             )
           }
 
-          setSubmitting(false)
+          setSubmitting(false);
         }}
       >
         {formikProps => {
@@ -439,12 +438,7 @@ const AssignActivity = ({
                                   setTimeDifference(calculatedTimeDifference)
                                 }}
                               />
-                              {formikProps.errors.end &&
-                                formikProps.touched.end && (
-                                  <InvalidFeedback>
-                                    {formikProps.errors.end}
-                                  </InvalidFeedback>
-                                )}
+                              {formikProps.errors.end && formikProps.touched.end && (<InvalidFeedback> {formikProps.errors.end}</InvalidFeedback> )}
                             </Col>
                           </FormGroup>
                           <FormGroup row>
@@ -458,7 +452,9 @@ const AssignActivity = ({
                                 name="repeat"
                                 label="Yes"
                                 value="1"
-                                 onChange={(event) => {setShowRepeatOptions(true)}}
+                                 onChange={(event) => {
+                                     setShowRepeatOptions(true)
+                                 }}
                               />
                               <CustomInput inline
                                 type="radio" 

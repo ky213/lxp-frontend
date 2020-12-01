@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react'
 
 import {
   Container,
@@ -8,21 +8,25 @@ import {
   CardHeader,
   Card,
   CardFooter,
-} from '@/components';
-import { ActivityReplyLeft } from './ActivityReplyLeft';
-import { ActivityReplyRight } from './ActivityReplyRight';
-import { ActivityRepliesFooter } from './ActivityRepliesFooter';
-import { ActivityRepliesHeader } from './ActivityRepliesHeader';
-import { activityService } from '@/services';
-import { useAppState } from '@/components/AppState';
-import { Role } from '@/helpers';
+} from '@/components'
+import { ActivityReplyLeft } from './ActivityReplyLeft'
+import { ActivityReplyRight } from './ActivityReplyRight'
+import { ActivityRepliesFooter } from './ActivityRepliesFooter'
+import { ActivityRepliesHeader } from './ActivityRepliesHeader'
+import { activityService } from '@/services'
+import { useAppState } from '@/components/AppState'
+import { Role } from '@/helpers'
 
-const ActivityReplies = (props) => {
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+const ActivityReplies = props => {
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
   const [replies, setReplies] = React.useState(
     (props.selectedActivity && props.selectedActivity.replies) || []
-  );
-  const { destination } = props;
+  )
+  const { destination } = props
+
+  useEffect(() => {
+    getReplies()
+  }, [])
 
   const getReplies = async () => {
     const replies =
@@ -33,14 +37,14 @@ const ActivityReplies = (props) => {
         ))) ||
       (await activityService.getReplies(
         props.selectedActivity && props.selectedActivity.activityId
-      ));
+      ))
 
-    setReplies(replies);
-  };
+    setReplies(replies)
+  }
 
-  const handleSendReply = async (reply) => {
+  const handleSendReply = async reply => {
     //console.log("Triggered send reply:", {text:reply, activityId: props.selectedActivity && props.selectedActivity.activityId || null})
-    (destination &&
+    ;(destination &&
       destination == 'log-activity' &&
       (await activityService.addLogActivityReply({
         text: reply,
@@ -51,26 +55,26 @@ const ActivityReplies = (props) => {
         text: reply,
         activityId:
           (props.selectedActivity && props.selectedActivity.activityId) || null,
-      }));
-    await getReplies();
-  };
+      }))
+    await getReplies()
+  }
 
-  const handleDeleteReply = async (replyId) => {
+  const handleDeleteReply = async replyId => {
     //console.log("Delete reply:", replyId)
     try {
-      (destination &&
+      ;(destination &&
         destination == 'log-activity' &&
         (await activityService.deleteLogActivityReply(replyId))) ||
-        (await activityService.deleteReply(replyId));
+        (await activityService.deleteReply(replyId))
 
-      await getReplies();
+      await getReplies()
     } catch (error) {
-      alert(error);
+      alert(error)
     }
-  };
+  }
 
-  let currentReplyEmployeeId = null;
-  let altDirection = false;
+  let currentReplyEmployeeId = null
+  let altDirection = false
   return (
     <React.Fragment>
       <Container>
@@ -87,10 +91,10 @@ const ActivityReplies = (props) => {
                     currentReplyEmployeeId &&
                     currentReplyEmployeeId != reply.employeeId
                   ) {
-                    altDirection = !altDirection;
+                    altDirection = !altDirection
                   }
 
-                  currentReplyEmployeeId = reply.employeeId;
+                  currentReplyEmployeeId = reply.employeeId
                   return !altDirection ? (
                     <ActivityReplyLeft
                       currentUser={currentUser && currentUser.user}
@@ -111,7 +115,7 @@ const ActivityReplies = (props) => {
                         ind % 2 == 0 ? 'bg-gray-300 b-0' : ''
                       } text-dark`}
                     />
-                  );
+                  )
                 })}
               </CardBody>
               {currentUser &&
@@ -127,7 +131,7 @@ const ActivityReplies = (props) => {
         {/* END Content */}
       </Container>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default ActivityReplies;
+export default ActivityReplies

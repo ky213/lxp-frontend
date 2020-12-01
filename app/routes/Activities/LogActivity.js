@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import { hot } from 'react-hot-loader'
 import {
   Modal,
   ModalHeader,
@@ -19,22 +20,22 @@ import {
   Nav,
   NavItem,
   UncontrolledTabs,
-} from '@/components';
+} from '@/components'
 
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import moment from 'moment';
-import { AddonInput } from '@/routes/Forms/DatePicker/components';
-import { activityService, courseManagerService } from '@/services';
-import { useAppState, AppStateContext } from '@/components/AppState';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Role } from '@/helpers';
-import ThemedButton from '@/components/ThemedButton';
-import { Loading, FileList } from '@/components';
-import ActivityReplies from './components/ActivityReplies';
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import DatePicker, { setDefaultLocale } from 'react-datepicker'
+import moment from 'moment'
+import { AddonInput } from '@/routes/Forms/DatePicker/components'
+import { activityService, courseManagerService } from '@/services'
+import { useAppState, AppStateContext } from '@/components/AppState'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { Role } from '@/helpers'
+import ThemedButton from '@/components/ThemedButton'
+import { Loading, FileList } from '@/components'
+import ActivityReplies from './components/ActivityReplies'
 
-export const LogActivity = ({
+const LogActivity = ({
   toggle,
   isOpen,
   eventStart,
@@ -42,36 +43,36 @@ export const LogActivity = ({
   onSuccess,
   selectedActivity,
 }) => {
-  const [files, setFiles] = React.useState([]);
-  const [urls, setUrls] = React.useState([]);
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+  const [files, setFiles] = React.useState([])
+  const [urls, setUrls] = React.useState([])
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
   const currentUserRole =
-    currentUser && currentUser.user && currentUser.user.role;
-  const [supervisors, setSupervisors] = React.useState([]);
-  const [activityTypes, setActivityTypes] = React.useState([]);
-  const [timeDifference, setTimeDifference] = React.useState(30);
+    currentUser && currentUser.user && currentUser.user.role
+  const [supervisors, setSupervisors] = React.useState([])
+  const [activityTypes, setActivityTypes] = React.useState([])
+  const [timeDifference, setTimeDifference] = React.useState(30)
 
   React.useEffect(() => {
     activityService
       .getActivityTypes(selectedOrganization.organizationId)
-      .then((types) => {
-        setActivityTypes(types);
-      });
+      .then(types => {
+        setActivityTypes(types)
+      })
 
     courseManagerService
       .getAllActive(1, 999, null, selectedOrganization.organizationId)
-      .then((users) => {
+      .then(users => {
         setSupervisors(
-          users.users.map((usr) => {
+          users.users.map(usr => {
             if (usr.employeeId != currentUser.user.employeeId) {
               return {
                 employeeId: usr.employeeId,
                 name: `${usr.name} ${usr.surname}`,
-              };
+              }
             }
           })
-        );
-      });
+        )
+      })
 
     if (selectedActivity) {
       const calculatedTimeDifference = Math.round(
@@ -81,147 +82,145 @@ export const LogActivity = ({
           )
           .add(remainder, 'minutes')
           .asMinutes()
-      );
-      setTimeDifference(calculatedTimeDifference);
+      )
+      setTimeDifference(calculatedTimeDifference)
 
-      setFiles(selectedActivity.files);
-      setUrls(selectedActivity.links);
+      setFiles(selectedActivity.files)
+      setUrls(selectedActivity.links)
     }
-  }, [selectedActivity]);
+  }, [selectedActivity])
 
-  const eventStartObj = (eventStart && moment(eventStart).toObject()) || null;
-  const eventEndObj = (eventStart && moment(eventEnd).toObject()) || null;
-  const remainder = 30 - (moment().minute() % 30);
+  const eventStartObj = (eventStart && moment(eventStart).toObject()) || null
+  const eventEndObj = (eventStart && moment(eventEnd).toObject()) || null
+  const remainder = 30 - (moment().minute() % 30)
 
-  const updateActivityStatus = async (status) => {
+  const updateActivityStatus = async status => {
     if (selectedActivity) {
       try {
         await activityService.updateLogActivityStatus(
           selectedActivity.activityId,
           status
-        );
-        alert(`You have successfully deleted the logged activity!`);
-        onSuccess();
+        )
+        alert(`You have successfully deleted the logged activity!`)
+        onSuccess()
       } catch (error) {
         alert(
           "We're sorry but something went wrong while we were changing the status of your logged activity!"
-        );
+        )
       }
 
-      toggle();
+      toggle()
     }
-  };
+  }
 
-  const handleUploadFile = async (file) => {
+  const handleUploadFile = async file => {
     file = {
       ...file,
       logActivityId: selectedActivity.activityId,
       status: 'uploaded',
-    };
+    }
 
     activityService
       .addLogActivityFile(file)
-      .then((logActivityFileId) => {
+      .then(logActivityFileId => {
         //updateAnnouncementInList(files.length + 1);
         file = {
           ...file,
           logActivityFileId: logActivityFileId,
           status: 'uploaded',
-        };
-        setFiles((z) =>
-          z.map((f) => {
-            if (f.name != file.name) return f;
+        }
+        setFiles(z =>
+          z.map(f => {
+            if (f.name != file.name) return f
 
-            return file;
+            return file
           })
-        );
+        )
 
-        alert('The file has been uploaded');
+        alert('The file has been uploaded')
       })
-      .catch((error) => {
-        console.log('Error while uploading the file:', error);
-        file = { ...file, status: 'error' };
-        setFiles((z) =>
-          z.map((f) => {
-            if (f.name != file.name) return f;
+      .catch(error => {
+        console.log('Error while uploading the file:', error)
+        file = { ...file, status: 'error' }
+        setFiles(z =>
+          z.map(f => {
+            if (f.name != file.name) return f
 
-            return file;
+            return file
           })
-        );
-        alert(`Error while uploading the file`);
-      });
-  };
+        )
+        alert(`Error while uploading the file`)
+      })
+  }
 
-  const handleDownloadFile = async (file) => {
-    return await activityService.downloadLogActivityFile(
-      file.logActivityFileId
-    );
-  };
+  const handleDownloadFile = async file => {
+    return await activityService.downloadLogActivityFile(file.logActivityFileId)
+  }
 
-  const handleRemoveFile = async (file) => {
+  const handleRemoveFile = async file => {
     if (file) {
       if (file.logActivityFileId) {
-        await activityService.deleteLogActivityFile(file.logActivityFileId);
+        await activityService.deleteLogActivityFile(file.logActivityFileId)
         //updateAnnouncementInList(files.length - 1);
-        setFiles((z) =>
-          z.filter((f) => f.logActivityFileId != file.logActivityFileId)
-        );
+        setFiles(z =>
+          z.filter(f => f.logActivityFileId != file.logActivityFileId)
+        )
 
-        alert('The file has been deleted');
+        alert('The file has been deleted')
       } else {
-        setFiles((z) => z.filter((f) => f.name != file.name));
+        setFiles(z => z.filter(f => f.name != file.name))
       }
     }
-  };
+  }
 
-  const handleRemoveLink = async (link) => {
+  const handleRemoveLink = async link => {
     if (link) {
       if (link.logActivityLinkId) {
-        await activityService.deleteLogActivityLink(link.logActivityLinkId);
+        await activityService.deleteLogActivityLink(link.logActivityLinkId)
         //updateAnnouncementInList(files.length - 1);
-        setUrls((z) =>
-          z.filter((f) => f.logActivityLinkId != link.logActivityLinkId)
-        );
+        setUrls(z =>
+          z.filter(f => f.logActivityLinkId != link.logActivityLinkId)
+        )
 
-        alert('The link has been deleted');
+        alert('The link has been deleted')
       } else {
-        setUrls((z) => z.filter((f) => f.url != link.url));
+        setUrls(z => z.filter(f => f.url != link.url))
       }
     }
-  };
+  }
 
-  const handleAddLink = async (url) => {
-    const linkField = document.querySelector('.tab-pane.active input');
-    let link = { url: url, logActivityId: selectedActivity.activityId };
+  const handleAddLink = async url => {
+    const linkField = document.querySelector('.tab-pane.active input')
+    let link = { url: url, logActivityId: selectedActivity.activityId }
     activityService
       .addLogActivityLink(link)
-      .then((logActivityLinkId) => {
+      .then(logActivityLinkId => {
         link = {
           ...link,
           logActivityLinkId: logActivityLinkId,
           status: 'uploaded',
-        };
+        }
 
-        setUrls((oldUrls) => oldUrls.concat(link));
+        setUrls(oldUrls => oldUrls.concat(link))
 
-        linkField.value = '';
+        linkField.value = ''
 
-        alert('The link has sucessfully been added!');
-        return link;
+        alert('The link has sucessfully been added!')
+        return link
       })
-      .catch((error) => {
-        link = { ...link, status: 'error' };
-        setUrls((z) =>
-          z.map((f) => {
-            if (f.url != link.url) return f;
+      .catch(error => {
+        link = { ...link, status: 'error' }
+        setUrls(z =>
+          z.map(f => {
+            if (f.url != link.url) return f
 
-            return link;
+            return link
           })
-        );
+        )
 
-        alert(`Error while adding the link to the activity!`);
-      });
-  };
+        alert(`Error while adding the link to the activity!`)
+      })
+  }
 
   return (
     <Modal
@@ -308,8 +307,8 @@ export const LogActivity = ({
           },
           { setStatus, setSubmitting }
         ) => {
-          setStatus();
-          setSubmitting(true);
+          setStatus()
+          setSubmitting(true)
 
           try {
             if (selectedActivity) {
@@ -323,10 +322,10 @@ export const LogActivity = ({
                 details: details,
                 participationLevel: participationLevel,
                 supervisors: supervisors,
-              };
+              }
 
-              await activityService.updateLogActivity(activity);
-              alert(`You have successfully updated the logged activity!`);
+              await activityService.updateLogActivity(activity)
+              alert(`You have successfully updated the logged activity!`)
             } else {
               const activity = {
                 programId:
@@ -342,28 +341,28 @@ export const LogActivity = ({
                 details: details,
                 participationLevel: participationLevel,
                 supervisors: supervisors,
-              };
+              }
 
-              await activityService.logActivity(activity);
-              alert(`You have successfully logged an activity!`);
+              await activityService.logActivity(activity)
+              alert(`You have successfully logged an activity!`)
             }
 
-            toggle();
+            toggle()
             if (onSuccess) {
-              onSuccess();
+              onSuccess()
             }
           } catch (error) {
-            console.log(error);
-            setStatus(error);
+            console.log(error)
+            setStatus(error)
             alert(
               `We're sorry but something went wrong while trying to assign the activity.`
-            );
+            )
           }
 
-          setSubmitting(false);
+          setSubmitting(false)
         }}
       >
-        {(formikProps) => {
+        {formikProps => {
           return (
             <React.Fragment>
               <Form onSubmit={formikProps.handleSubmit}>
@@ -461,14 +460,14 @@ export const LogActivity = ({
                                           : ''
                                       }
                                       selected={formikProps.values.start}
-                                      onChange={(e) => {
-                                        formikProps.setFieldValue('start', e);
+                                      onChange={e => {
+                                        formikProps.setFieldValue('start', e)
                                         formikProps.setFieldValue(
                                           'end',
                                           moment(e)
                                             .add(timeDifference, 'minutes')
                                             .toDate()
-                                        );
+                                        )
                                       }}
                                     />
                                     {formikProps.errors.start &&
@@ -500,18 +499,18 @@ export const LogActivity = ({
                                           : ''
                                       }
                                       selected={formikProps.values.end}
-                                      onChange={(e) => {
-                                        formikProps.setFieldValue('end', e);
+                                      onChange={e => {
+                                        formikProps.setFieldValue('end', e)
                                         const calculatedTimeDifference = moment
                                           .duration(
                                             moment(e).diff(
                                               moment(formikProps.values.start)
                                             )
                                           )
-                                          .asMinutes();
+                                          .asMinutes()
                                         setTimeDifference(
                                           calculatedTimeDifference
-                                        );
+                                        )
                                       }}
                                     />
                                     {formikProps.errors.end &&
@@ -557,6 +556,7 @@ export const LogActivity = ({
                                       id="supervisors"
                                       labelKey="name"
                                       options={supervisors}
+                                      selected={selectedActivity?.supervisors}
                                       className={
                                         formikProps.errors.supervisor &&
                                         formikProps.touched.supervisor
@@ -564,13 +564,13 @@ export const LogActivity = ({
                                           : ''
                                       }
                                       placeholder="Select a supervisor..."
-                                      onChange={(selectedOptions) =>
+                                      onChange={selectedOptions =>
                                         formikProps.setFieldValue(
                                           'supervisors',
                                           selectedOptions
                                         )
                                       }
-                                      onInputChange={(selectedOptions) =>
+                                      onInputChange={selectedOptions =>
                                         formikProps.setFieldValue(
                                           'supervisors',
                                           selectedOptions
@@ -605,7 +605,7 @@ export const LogActivity = ({
                                       <option key={9999} value="">
                                         Activity type...
                                       </option>
-                                      {activityTypes.map((at) => {
+                                      {activityTypes.map(at => {
                                         //console.log("Map each at:", at)
                                         return (
                                           <option
@@ -614,7 +614,7 @@ export const LogActivity = ({
                                           >
                                             {at.activityTypeName}
                                           </option>
-                                        );
+                                        )
                                       })}
                                     </Field>
                                     <ErrorMessage
@@ -729,9 +729,11 @@ export const LogActivity = ({
                 </ModalFooter>
               </Form>
             </React.Fragment>
-          );
+          )
         }}
       </Formik>
     </Modal>
-  );
-};
+  )
+}
+
+export default hot(module)(LogActivity)

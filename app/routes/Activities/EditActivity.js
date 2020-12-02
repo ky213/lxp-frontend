@@ -998,9 +998,9 @@ export const EditActivity = ({
                         selectedActivity.assignedBy ==
                           currentUser.user.employeeId) && (
                         <>
-                          <ThemedButton type="submit" color="primary">
+                          {/* <ThemedButton type="submit" color="primary">
                             Edit
-                          </ThemedButton>
+                          </ThemedButton> */}
                           <Button
                             type="button"
                             color="danger"

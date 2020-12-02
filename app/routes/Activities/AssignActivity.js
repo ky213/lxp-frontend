@@ -53,14 +53,9 @@ const AssignActivity = ({
   const [timeDifference, setTimeDifference] = React.useState(30)
   const [courses, setCourses] = React.useState([])
   const [rrule, setRRule] = React.useState([])
-  const [showRepeatOptions, setShowRepeatOptions] = React.useState(false);
+  const [showRepeatOptions, setShowRepeatOptions] = React.useState(false)
   //const [userPrograms, setUserPrograms] = React.useState([]);
   const [selectedProgram, setSelectedProgram] = React.useState(null)
-  const currentProgram =
-    (currentProgramId &&
-      userPrograms &&
-      userPrograms.filter(p => p.programId == currentProgramId)) ||
-    []
 
   React.useEffect(() => {
     if (isOpen) {
@@ -77,7 +72,7 @@ const AssignActivity = ({
         try {
           const data = await courseService.getAll(
             selectedOrganization.organizationId,
-            currentProgramId,
+            currentProgramId || selectedProgram[0]?.programId,
             1
           )
 
@@ -89,25 +84,23 @@ const AssignActivity = ({
         }
 
         if (currentUser && currentUser.user) {
-          if (currentProgramId) {
-            try {
-              const learners = await learnerService.getAllActive(
-                1,
-                999,
-                null,
-                null,
-                selectedOrganization.organizationId,
-                currentProgramId
-              )
-              setUsers(
-                learners.users.map(usr => ({
-                  employeeId: usr.employeeId,
-                  name: `${usr.name} ${usr.surname}`,
-                }))
-              )
-            } catch (error) {
-              console.log('Error while fetching learners:', error)
-            }
+          try {
+            const learners = await learnerService.getAllActive(
+              1,
+              999,
+              null,
+              null,
+              selectedOrganization.organizationId,
+              currentProgramId || selectedProgram[0]?.programId
+            )
+            setUsers(
+              learners.users.map(usr => ({
+                employeeId: usr.employeeId,
+                name: `${usr.name} ${usr.surname}`,
+              }))
+            )
+          } catch (error) {
+            console.log('Error while fetching learners:', error)
           }
         }
       }
@@ -115,9 +108,9 @@ const AssignActivity = ({
       fetchData()
     }
 
-    setRRule(false);
-    setShowRepeatOptions(false);
-  }, [isOpen])
+    setRRule(false)
+    setShowRepeatOptions(false)
+  }, [selectedProgram])
 
   const eventStartObj = (eventStart && moment(eventStart).toObject()) || null
   const eventEndObj = (eventEnd && moment(eventEnd).toObject()) || null
@@ -141,11 +134,10 @@ const AssignActivity = ({
         initialValues={{
           activityName: '',
           description: '',
-          program: (currentProgramId &&
-            userPrograms &&
-            userPrograms.filter(p => p.programId == currentProgramId)) || [
-            { name: '' },
-          ],
+          program:
+            (currentProgramId &&
+              userPrograms?.filter(p => p.programId == currentProgramId)) ||
+            [],
           start:
             eventStart ||
             (eventStartObj &&
@@ -228,17 +220,17 @@ const AssignActivity = ({
           setStatus()
           setSubmitting(false)
 
-          if (!program || (program && program.length == 0)) {
+          if (!program || program?.length == 0) {
             alert(`You need to select a program first!`)
             return
           }
 
-          if (priority == 3 && learners && learners.length == 0) {
+          if (priority == 3 && learners?.length == 0) {
             alert(`You need to select some learners first! :)`)
             return
           }
 
-          if (priority == 2 && (!courses || (courses && courses.length == 0))) {
+          if (priority == 2 && (!courses || courses?.length == 0)) {
             alert(`You must choose a course!`)
             return
           }
@@ -322,7 +314,7 @@ const AssignActivity = ({
                                     'program',
                                     selectedOptions || []
                                   )
-                                  //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null)
+                                  setSelectedProgram(selectedOptions)
                                   changePriority(formikProps, 1)
                                 }}
                                 onInputChange={selectedOptions => {
@@ -449,41 +441,47 @@ const AssignActivity = ({
                           </FormGroup>
                           <FormGroup row>
                             <Label for="description" sm={3}>
-                                Repeat?
+                              Repeat?
                             </Label>
                             <Col sm={9}>
-                              <CustomInput inline
-                                type="radio" 
-                                id="repeatYes" 
+                              <CustomInput
+                                inline
+                                type="radio"
+                                id="repeatYes"
                                 name="repeat"
                                 label="Yes"
                                 value="1"
-                                 onChange={(event) => {setShowRepeatOptions(true)}}
+                                onChange={event => {
+                                  setShowRepeatOptions(true)
+                                }}
                               />
-                              <CustomInput inline
-                                type="radio" 
-                                id="repeatNo" 
+                              <CustomInput
+                                inline
+                                type="radio"
+                                id="repeatNo"
                                 name="repeat"
                                 label="No"
                                 value="0"
-                                defaultChecked  
-                                onChange={(event) => {
-                                setShowRepeatOptions(false)
-                               }}
+                                defaultChecked
+                                onChange={event => {
+                                  setShowRepeatOptions(false)
+                                }}
                               />
-                                                    
-                            </Col>                                                    
-                          </FormGroup>
-                            {showRepeatOptions && (
-                          <FormGroup row>
-                            <Col sm={12} style={{whiteSpace: 'nowrap'}}>
-                              <RRuleGenerator onChange={(rrule) => {
-                                  console.log(`RRule changed, now it's ${rrule}`);
-                                  setRRule(rrule);
-                                }}                           
-                             />
                             </Col>
                           </FormGroup>
+                          {showRepeatOptions && (
+                            <FormGroup row>
+                              <Col sm={12} style={{ whiteSpace: 'nowrap' }}>
+                                <RRuleGenerator
+                                  onChange={rrule => {
+                                    console.log(
+                                      `RRule changed, now it's ${rrule}`
+                                    )
+                                    setRRule(rrule)
+                                  }}
+                                />
+                              </Col>
+                            </FormGroup>
                           )}
                           <FormGroup row>
                             <Label for="type" sm={3}>
@@ -569,7 +567,7 @@ const AssignActivity = ({
                                 className="invalid-feedback"
                               />
                             </Col>
-                          </FormGroup>                         
+                          </FormGroup>
                           <FormGroup row>
                             <Label for="priority" sm={3}>
                               Assign to

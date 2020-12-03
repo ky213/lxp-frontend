@@ -25,7 +25,7 @@ const MetricCards = ({ organizationId }) => {
 
   const getLearners = () => {
     learnerService
-      .getAll(0, 10, '', organizationId)
+      .getAll(0, 10, '',  '' ,  organizationId)
       .then(data => {
         setLearners(data.totalNumberOfRecords)
       })

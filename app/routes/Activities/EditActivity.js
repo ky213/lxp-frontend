@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Modal,
   ModalHeader,
@@ -21,28 +21,28 @@ import {
   Nav,
   NavItem,
   UncontrolledTabs,
-} from '@/components';
+} from '@/components'
 
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import moment from 'moment';
-import { AddonInput } from '@/routes/Forms/DatePicker/components';
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import DatePicker, { setDefaultLocale } from 'react-datepicker'
+import moment from 'moment'
+import { AddonInput } from '@/routes/Forms/DatePicker/components'
 import {
   activityService,
   learnerService,
   courseService,
   expLevelService,
   programService,
-} from '@/services';
-import { useAppState } from '@/components/AppState';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Role } from '@/helpers';
-import ThemedButton from '@/components/ThemedButton';
-import ActivityReplies from './components/ActivityReplies';
-import RRuleGenerator from 'react-rrule-generator';
-import { RRule, RRuleSet, rrulestr } from 'rrule';
-import { Loading, FileList } from '@/components';
+} from '@/services'
+import { useAppState } from '@/components/AppState'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { Role } from '@/helpers'
+import ThemedButton from '@/components/ThemedButton'
+import ActivityReplies from './components/ActivityReplies'
+import RRuleGenerator from 'react-rrule-generator'
+import { RRule, RRuleSet, rrulestr } from 'rrule'
+import { Loading, FileList } from '@/components'
 
 export const EditActivity = ({
   toggle,
@@ -55,56 +55,56 @@ export const EditActivity = ({
   //console.log("Selected learner for calendar:", selectedLearner)
   //const minDate = moment().toDate();
   if (!selectedActivity) {
-    return (isOpen && <Loading />) || null;
+    return (isOpen && <Loading />) || null
   }
 
-  const [files, setFiles] = React.useState([]);
-  const [urls, setUrls] = React.useState([]);
-  const [{ currentUser, selectedOrganization }, dispatch] = useAppState();
+  const [files, setFiles] = React.useState([])
+  const [urls, setUrls] = React.useState([])
+  const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
   const currentUserRole =
-    currentUser && currentUser.user && currentUser.user.role;
-  const [users, setUsers] = React.useState([]);
-  const [activityTypes, setActivityTypes] = React.useState([]);
-  const [selectedPriority, setSelectedPriority] = React.useState(1);
-  const [timeDifference, setTimeDifference] = React.useState(30);
+    currentUser && currentUser.user && currentUser.user.role
+  const [users, setUsers] = React.useState([])
+  const [activityTypes, setActivityTypes] = React.useState([])
+  const [selectedPriority, setSelectedPriority] = React.useState(1)
+  const [timeDifference, setTimeDifference] = React.useState(30)
   const [remainder, setRemainder] = React.useState(
     (selectedActivity && 30 - (moment(selectedActivity.start).minute() % 30)) ||
       0
-  );
-  const [courses, setCourses] = React.useState([]);
-  const [experienceLevels, setExperienceLevels] = React.useState([]);
-  const [rrule, setRRule] = React.useState(selectedActivity.rrule);
+  )
+  const [courses, setCourses] = React.useState([])
+  const [experienceLevels, setExperienceLevels] = React.useState([])
+  const [rrule, setRRule] = React.useState(selectedActivity.rrule)
   const [showRepeatOptions, setShowRepeatOptions] = React.useState(
     selectedActivity.repeat
-  );
-  const [selectedProgram, setSelectedProgram] = React.useState(null);
+  )
+  const [selectedProgram, setSelectedProgram] = React.useState(null)
   const currentProgram =
     (selectedActivity &&
       selectedActivity.programId &&
       userPrograms &&
-      userPrograms.filter((p) => p.programId == selectedActivity.programId)) ||
-    [];
+      userPrograms.filter(p => p.programId == selectedActivity.programId)) ||
+    []
 
-  const updateActivityStatus = async (status) => {
+  const updateActivityStatus = async status => {
     try {
-      await activityService.updateStatus(selectedActivity.activityId, status);
+      await activityService.updateStatus(selectedActivity.activityId, status)
       alert(
         `You have successfully ${
           (status == 4 && 'accepted') ||
           (status == '5' && 'declined') ||
           'deleted'
         } the activity!`
-      );
-      onSuccess();
+      )
+      onSuccess()
     } catch (error) {
-      console.log('Error while updating status of the activity:', error);
+      console.log('Error while updating status of the activity:', error)
       alert(
         "We're sorry but something went wrong while we were updating the activity!"
-      );
+      )
     }
 
-    toggle();
-  };
+    toggle()
+  }
 
   React.useEffect(() => {
     if (selectedActivity) {
@@ -112,10 +112,10 @@ export const EditActivity = ({
         try {
           const activityTypes = await activityService.getActivityTypes(
             selectedOrganization.organizationId
-          );
-          setActivityTypes(activityTypes);
+          )
+          setActivityTypes(activityTypes)
         } catch (error) {
-          console.log('Error while fetching activity types:', error);
+          console.log('Error while fetching activity types:', error)
         }
 
         if (currentUser && currentUser.user) {
@@ -127,15 +127,15 @@ export const EditActivity = ({
               null,
               selectedOrganization.organizationId,
               selectedActivity.programId
-            );
+            )
             setUsers(
-              learners.users.map((usr) => ({
+              learners.users.map(usr => ({
                 employeeId: usr.employeeId,
                 name: `${usr.name} ${usr.surname}`,
               }))
-            );
+            )
           } catch (error) {
-            console.log('Error while fetching learners:', error);
+            console.log('Error while fetching learners:', error)
           }
 
           try {
@@ -143,18 +143,18 @@ export const EditActivity = ({
               selectedOrganization.organizationId,
               currentProgramId,
               1
-            );
+            )
 
             if (data && data.courses) {
-              setCourses(data.courses);
+              setCourses(data.courses)
             }
           } catch (err) {
-            console.log('Error while fetching courses:', err);
+            console.log('Error while fetching courses:', err)
           }
         }
-      };
+      }
 
-      fetchData();
+      fetchData()
 
       const calculatedTimeDifference = Math.round(
         moment
@@ -163,123 +163,121 @@ export const EditActivity = ({
           )
           .add(remainder, 'minutes')
           .asMinutes()
-      );
+      )
       //console.log("Initial time diff:", calculatedTimeDifference)
-      setTimeDifference(calculatedTimeDifference);
-      setSelectedPriority(selectedActivity.priority);
-      setShowRepeatOptions(selectedActivity.repeat);
-      setRRule(selectedActivity.rrule);
-      setFiles(selectedActivity.files);
-      setUrls(selectedActivity.links.filter((l) => l?.url?.length > 0));
+      setTimeDifference(calculatedTimeDifference)
+      setSelectedPriority(selectedActivity.priority)
+      setShowRepeatOptions(selectedActivity.repeat)
+      setRRule(selectedActivity.rrule)
+      setFiles(selectedActivity.files)
+      setUrls(selectedActivity.links.filter(l => l?.url?.length > 0))
     }
-  }, [selectedActivity]);
+  }, [selectedActivity])
 
   const changePriority = (formikProps, priority) => {
-    formikProps.setFieldValue('priority', priority);
-    formikProps.setFieldValue('learners', []);
-    formikProps.setFieldValue('courses', []);
-  };
+    formikProps.setFieldValue('priority', priority)
+    formikProps.setFieldValue('learners', [])
+    formikProps.setFieldValue('courses', [])
+  }
 
-  const handleUploadFile = async (file) => {
+  const handleUploadFile = async file => {
     file = {
       ...file,
       activityId: selectedActivity.activityId,
       status: 'uploaded',
-    };
+    }
 
     activityService
       .addActivityFile(file)
-      .then((activityFileId) => {
+      .then(activityFileId => {
         //updateAnnouncementInList(files.length + 1);
-        file = { ...file, activityFileId: activityFileId, status: 'uploaded' };
-        setFiles((z) =>
-          z.map((f) => {
-            if (f.name != file.name) return f;
+        file = { ...file, activityFileId: activityFileId, status: 'uploaded' }
+        setFiles(z =>
+          z.map(f => {
+            if (f.name != file.name) return f
 
-            return file;
+            return file
           })
-        );
+        )
 
-        alert('The file has been uploaded');
+        alert('The file has been uploaded')
       })
-      .catch((error) => {
-        file = { ...file, status: 'error' };
-        setFiles((z) =>
-          z.map((f) => {
-            if (f.name != file.name) return f;
+      .catch(error => {
+        file = { ...file, status: 'error' }
+        setFiles(z =>
+          z.map(f => {
+            if (f.name != file.name) return f
 
-            return file;
+            return file
           })
-        );
-        alert(`Error while uploading the file`, error);
-      });
-  };
+        )
+        alert(`Error while uploading the file`, error)
+      })
+  }
 
-  const handleDownloadFile = async (file) => {
-    return await activityService.downloadActivityFile(file.activityFileId);
-  };
+  const handleDownloadFile = async file => {
+    return await activityService.downloadActivityFile(file.activityFileId)
+  }
 
-  const handleRemoveFile = async (file) => {
+  const handleRemoveFile = async file => {
     if (file) {
       if (file.activityFileId) {
-        await activityService.deleteActivityFile(file.activityFileId);
+        await activityService.deleteActivityFile(file.activityFileId)
         //updateAnnouncementInList(files.length - 1);
-        setFiles((z) =>
-          z.filter((f) => f.activityFileId != file.activityFileId)
-        );
+        setFiles(z => z.filter(f => f.activityFileId != file.activityFileId))
 
-        alert('The file has been deleted');
+        alert('The file has been deleted')
       } else {
-        setFiles((z) => z.filter((f) => f.name != file.name));
+        setFiles(z => z.filter(f => f.name != file.name))
       }
     }
-  };
+  }
 
-  const handleRemoveLink = async (link) => {
-    if (!confirm('Confirm delete link?')) return;
+  const handleRemoveLink = async link => {
+    if (!confirm('Confirm delete link?')) return
 
     if (link?.activityLinkId) {
-      await activityService.deleteActivityLink(link.activityLinkId);
+      await activityService.deleteActivityLink(link.activityLinkId)
 
-      setUrls((z) => z.filter((f) => f.activityLinkId != link.activityLinkId));
+      setUrls(z => z.filter(f => f.activityLinkId != link.activityLinkId))
 
-      alert('The link has been deleted');
+      alert('The link has been deleted')
     } else {
-      setUrls((z) => z.filter((f) => f.url != link.url));
+      setUrls(z => z.filter(f => f.url != link.url))
     }
-  };
+  }
 
-  const handleAddLink = async (url) => {
-    let link = { url: url, activityId: selectedActivity.activityId };
+  const handleAddLink = async url => {
+    let link = { url: url, activityId: selectedActivity.activityId }
 
     if (url)
       activityService
         .addActivityLink(link)
-        .then((activityLinkId) => {
+        .then(activityLinkId => {
           link = {
             ...link,
             activityLinkId: activityLinkId,
             status: 'uploaded',
-          };
+          }
 
-          setUrls([...urls, link]);
+          setUrls([...urls, link])
 
-          alert('The link has sucessfully been added!');
-          return link;
+          alert('The link has sucessfully been added!')
+          return link
         })
-        .catch((error) => {
-          link = { ...link, status: 'error' };
-          setUrls((z) =>
-            z.map((f) => {
-              if (f.url != link.url) return f;
+        .catch(error => {
+          link = { ...link, status: 'error' }
+          setUrls(z =>
+            z.map(f => {
+              if (f.url != link.url) return f
 
-              return link;
+              return link
             })
-          );
+          )
 
-          alert(`Error while adding the link to the activity!`, error);
-        });
-  };
+          alert(`Error while adding the link to the activity!`, error)
+        })
+  }
 
   //console.log("Selected activity:", selectedActivity, userPrograms, userPrograms.filter(up => up.programId == selectedActivity.programId))
 
@@ -359,36 +357,36 @@ export const EditActivity = ({
               },
               { setStatus, setSubmitting }
             ) => {
-              setStatus();
-              setSubmitting(false);
+              setStatus()
+              setSubmitting(false)
               if (
                 selectedActivity.repeat &&
                 !confirm(
                   'This is a repeating activity. By changing the values here you are changing the original starting activity and changing all the repeating events. Are you sure you want to continue?'
                 )
               ) {
-                return;
+                return
               }
 
               if (!program || (program && program.length == 0)) {
-                alert(`You need to select a program first!`);
-                return;
+                alert(`You need to select a program first!`)
+                return
               }
 
               if (priority == 3 && learners && learners.length == 0) {
-                alert(`You need to select some learners first! :)`);
-                return;
+                alert(`You need to select some learners first! :)`)
+                return
               }
 
               if (
                 priority == 2 &&
                 (!courses || (courses && courses.length == 0))
               ) {
-                alert(`You must choose a level!`);
-                return;
+                alert(`You must choose a level!`)
+                return
               }
 
-              setSubmitting(true);
+              setSubmitting(true)
 
               const activity = {
                 programId: program[0].programId,
@@ -405,28 +403,28 @@ export const EditActivity = ({
                 courses: courses || null,
                 rrule: (rrule && rrule.toString()) || null,
                 organizationId: selectedOrganization.organizationId,
-              };
+              }
 
               try {
-                await activityService.update(activity);
-                alert(`You have successfully updated an activity!`);
-                toggle();
+                await activityService.update(activity)
+                alert(`You have successfully updated an activity!`)
+                toggle()
                 if (onSuccess) {
-                  onSuccess();
+                  onSuccess()
                 }
               } catch (error) {
-                console.log(error);
-                setStatus(error);
+                console.log(error)
+                setStatus(error)
 
                 alert(
                   `We're sorry but something went wrong while trying to update the activity.`
-                );
+                )
               }
 
-              setSubmitting(false);
+              setSubmitting(false)
             }}
           >
-            {(formikProps) => {
+            {formikProps => {
               //console.log("Selected priority:", selectedPriority)
               return (
                 <React.Fragment>
@@ -487,21 +485,21 @@ export const EditActivity = ({
                                               : ''
                                           }
                                           placeholder="Select a program..."
-                                          onChange={(selectedOptions) => {
+                                          onChange={selectedOptions => {
                                             formikProps.setFieldValue(
                                               'program',
                                               selectedOptions || []
-                                            );
+                                            )
                                             //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null)
-                                            changePriority(formikProps, 1);
+                                            changePriority(formikProps, 1)
                                           }}
-                                          onInputChange={(selectedOptions) => {
+                                          onInputChange={selectedOptions => {
                                             formikProps.setFieldValue(
                                               'program',
                                               selectedOptions || []
-                                            );
+                                            )
                                             //setSelectedProgramid(selectedOptions && selectedOptions.length > 0 && selectedOptions[0].programId || null);
-                                            changePriority(formikProps, 1);
+                                            changePriority(formikProps, 1)
                                           }}
                                         />
                                         <ErrorMessage
@@ -566,17 +564,17 @@ export const EditActivity = ({
                                               : ''
                                           }
                                           selected={formikProps.values.start}
-                                          onChange={(e) => {
+                                          onChange={e => {
                                             formikProps.setFieldValue(
                                               'start',
                                               e
-                                            );
+                                            )
                                             formikProps.setFieldValue(
                                               'end',
                                               moment(e)
                                                 .add(timeDifference, 'minutes')
                                                 .toDate()
-                                            );
+                                            )
                                           }}
                                           disabled={
                                             currentUserRole == Role.Learner &&
@@ -615,25 +613,25 @@ export const EditActivity = ({
                                                 : ''
                                             }
                                             selected={formikProps.values.end}
-                                            onChange={(e) => {
+                                            onChange={e => {
                                               formikProps.setFieldValue(
                                                 'end',
                                                 e
-                                              );
-                                              const end = moment(e);
+                                              )
+                                              const end = moment(e)
                                               const start = moment(
                                                 formikProps.values.start
-                                              );
+                                              )
 
                                               const calculatedTimeDifference = Math.round(
                                                 moment
                                                   .duration(end.diff(start))
                                                   .add(remainder, 'minutes')
                                                   .asMinutes()
-                                              );
+                                              )
                                               setTimeDifference(
                                                 calculatedTimeDifference
-                                              );
+                                              )
                                             }}
                                             disabled={
                                               currentUserRole == Role.Learner &&
@@ -666,8 +664,8 @@ export const EditActivity = ({
                                           label="Yes"
                                           value="1"
                                           defaultChecked={showRepeatOptions}
-                                          onChange={(event) => {
-                                            setShowRepeatOptions(true);
+                                          onChange={event => {
+                                            setShowRepeatOptions(true)
                                           }}
                                         />
                                         <CustomInput
@@ -681,8 +679,8 @@ export const EditActivity = ({
                                             currentUserRole == Role.Learner
                                           }
                                           defaultChecked={!showRepeatOptions}
-                                          onChange={(event) => {
-                                            setShowRepeatOptions(false);
+                                          onChange={event => {
+                                            setShowRepeatOptions(false)
                                           }}
                                         />
                                       </Col>
@@ -696,8 +694,8 @@ export const EditActivity = ({
                                           >
                                             <RRuleGenerator
                                               value={selectedActivity.rrule}
-                                              onChange={(rrule) => {
-                                                setRRule(rrule);
+                                              onChange={rrule => {
+                                                setRRule(rrule)
                                               }}
                                               //config={{end: ['Never', 'After']}}
                                             />
@@ -748,13 +746,13 @@ export const EditActivity = ({
                                           <option value="">
                                             - choose activity type -
                                           </option>
-                                          {activityTypes.map((at) => {
+                                          {activityTypes.map(at => {
                                             //console.log("Map each at:", at)
                                             return (
                                               <option value={at.activityTypeId}>
                                                 {at.activityTypeName}
                                               </option>
-                                            );
+                                            )
                                           })}
                                         </Field>
                                         <ErrorMessage
@@ -840,11 +838,11 @@ export const EditActivity = ({
                                                 selectedActivity.priority == 1
                                               }
                                               value="1"
-                                              onChange={(event) => {
+                                              onChange={event => {
                                                 changePriority(
                                                   formikProps,
                                                   event.target.value
-                                                );
+                                                )
                                               }}
                                             />
                                             <CustomInput
@@ -857,11 +855,11 @@ export const EditActivity = ({
                                               defaultChecked={
                                                 selectedActivity.priority == 2
                                               }
-                                              onChange={(event) => {
+                                              onChange={event => {
                                                 changePriority(
                                                   formikProps,
                                                   event.target.value
-                                                );
+                                                )
                                               }}
                                             />
                                             <CustomInput
@@ -874,11 +872,11 @@ export const EditActivity = ({
                                               defaultChecked={
                                                 selectedActivity.priority == 3
                                               }
-                                              onChange={(event) => {
+                                              onChange={event => {
                                                 changePriority(
                                                   formikProps,
                                                   event.target.value
-                                                );
+                                                )
                                               }}
                                             />
                                           </>
@@ -914,7 +912,7 @@ export const EditActivity = ({
                                               labelKey="name"
                                               options={courses || []}
                                               selected={
-                                                formikProps.values.courses
+                                                selectedActivity?.courses || []
                                               }
                                               multiple
                                               className={
@@ -924,15 +922,13 @@ export const EditActivity = ({
                                                   : ''
                                               }
                                               placeholder="Select courses..."
-                                              onChange={(selectedOptions) =>
+                                              onChange={selectedOptions =>
                                                 formikProps.setFieldValue(
                                                   'courses',
                                                   selectedOptions
                                                 )
                                               }
-                                              onInputChange={(
-                                                selectedOptions
-                                              ) =>
+                                              onInputChange={selectedOptions =>
                                                 formikProps.setFieldValue(
                                                   'courses',
                                                   selectedOptions
@@ -963,7 +959,8 @@ export const EditActivity = ({
                                               options={users}
                                               multiple
                                               selected={
-                                                formikProps.values.learners
+                                                selectedActivity?.participants ||
+                                                []
                                               }
                                               className={
                                                 formikProps.errors.learners &&
@@ -972,15 +969,13 @@ export const EditActivity = ({
                                                   : ''
                                               }
                                               placeholder="Select learners..."
-                                              onChange={(selectedOptions) =>
+                                              onChange={selectedOptions =>
                                                 formikProps.setFieldValue(
                                                   'learners',
                                                   selectedOptions
                                                 )
                                               }
-                                              onInputChange={(
-                                                selectedOptions
-                                              ) =>
+                                              onInputChange={selectedOptions =>
                                                 formikProps.setFieldValue(
                                                   'learners',
                                                   selectedOptions
@@ -1089,11 +1084,11 @@ export const EditActivity = ({
                     </ModalFooter>
                   </Form>
                 </React.Fragment>
-              );
+              )
             }}
           </Formik>
         </Modal>
       )}
     </>
-  );
-};
+  )
+}

@@ -251,7 +251,6 @@ const AssignActivity = ({
             courses: courses,
             rrule: (rrule && rrule.toString()) || null,
             organizationId: selectedOrganization.organizationId,
-            repeat,
           }
           try {
             const response = await activityService.create(activity)

@@ -105,6 +105,7 @@ const Reporting = () => {
         1,
         999,
         null,
+        null,
         selectedOrganization.organizationId,
         selectedProgram?.programId || null
       )

@@ -108,6 +108,7 @@ const Dashboard = () => {
           1,
           999,
           null,
+          null,
           selectedOrganization.organizationId,
           (selectedProgram && selectedProgram.programId) || null
         );

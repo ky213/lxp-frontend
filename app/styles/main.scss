@@ -446,3 +446,8 @@ body {
   color: #f4f4f7 !important;
   cursor: none;
 }
+
+.rbt-menu.dropdown-menu.show {
+  overflow: visible !important;
+  width: auto !important;
+}

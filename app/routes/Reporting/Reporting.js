@@ -366,9 +366,8 @@ const Reporting = () => {
                               name="toDate"
                               className="mr-2"
                               customInput={<AddonInput />}
-                              dateFormat="dd/MM/yyyy h:mm aa"
+                              dateFormat="dd/MM/yyyy"
                               autoComplete="off"
-                              showTimeSelect
                               showMonthDropdown
                               showYearDropdown
                               selected={fromDate}
@@ -383,9 +382,8 @@ const Reporting = () => {
                               id="toDate"
                               name="toDate"
                               customInput={<AddonInput />}
-                              dateFormat="dd/MM/yyyy h:mm aa"
+                              dateFormat="dd/MM/yyyy"
                               autoComplete="off"
-                              showTimeSelect
                               showMonthDropdown
                               showYearDropdown
                               selected={toDate}

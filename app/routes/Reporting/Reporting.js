@@ -477,7 +477,9 @@ const Reporting = () => {
                                 ''}
                             </td>
                             <td className="align-middle bt-0">
-                              {`${statement.result?.success}`.toUpperCase()}
+                              {`${
+                                statement.result?.completion ? 'True' : 'False'
+                              }`}
                             </td>
                           </tr>
                         ))}

@@ -31,6 +31,7 @@ export const activityService = {
   addLogActivityReply,
   updateLogActivityReply,
   deleteLogActivityReply,
+  evaluate
 };
 
 function getAll(programId, from, to, selectedOrganizationId) {
@@ -426,6 +427,20 @@ function deleteLogActivityReply(replyId) {
     `${config.apiUrl}/activities/log-activity/reply/${replyId}`,
     requestOptions
   )
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function evaluate(activityReply) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(activityReply),
+  };
+
+  return fetch(`${config.apiUrl}/activities/evaluate/${activityId}`, requestOptions)
     .then(handleResponse)
     .then((data) => {
       return data;

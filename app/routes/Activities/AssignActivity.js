@@ -17,6 +17,7 @@ import {
   Nav,
   NavItem,
   TabPane,
+  FileList,
 } from '@/components'
 
 import { Formik, Field, Form, ErrorMessage } from 'formik'
@@ -58,6 +59,9 @@ const AssignActivity = ({
   const [showRepeatOptions, setShowRepeatOptions] = React.useState(false)
   //const [userPrograms, setUserPrograms] = React.useState([]);
   const [selectedProgram, setSelectedProgram] = React.useState(null)
+  const [selectedActivity, setSelectedActivity] = React.useState(null)
+  const [files, setFiles] = React.useState([])
+  const [urls, setUrls] = React.useState([])
 
   React.useEffect(() => {
     if (isOpen) {
@@ -124,9 +128,115 @@ const AssignActivity = ({
     formikProps.setFieldValue('learners', [])
   }
 
+  const handleUploadFile = async file => {
+    file = {
+      ...file,
+      activityId: selectedActivity,
+      status: 'uploaded',
+    }
+
+    activityService
+      .addActivityFile(file)
+      .then(activityFileId => {
+        //updateAnnouncementInList(files.length + 1);
+        file = { ...file, activityFileId: activityFileId, status: 'uploaded' }
+        setFiles(z =>
+          z.map(f => {
+            if (f.name != file.name) return f
+
+            return file
+          })
+        )
+
+        alert('The file has been uploaded')
+      })
+      .catch(error => {
+        file = { ...file, status: 'error' }
+        setFiles(z =>
+          z.map(f => {
+            if (f.name != file.name) return f
+
+            return file
+          })
+        )
+        alert(`Error while uploading the file`, error)
+      })
+  }
+
+  const handleDownloadFile = async file => {
+    return await activityService.downloadActivityFile(file.activityFileId)
+  }
+
+  const handleRemoveFile = async file => {
+    if (file) {
+      if (file.activityFileId) {
+        await activityService.deleteActivityFile(file.activityFileId)
+        //updateAnnouncementInList(files.length - 1);
+        setFiles(z => z.filter(f => f.activityFileId != file.activityFileId))
+
+        alert('The file has been deleted')
+      } else {
+        setFiles(z => z.filter(f => f.name != file.name))
+      }
+    }
+  }
+
+  const handleRemoveLink = async link => {
+    if (!confirm('Confirm delete link?')) return
+
+    if (link?.activityLinkId) {
+      await activityService.deleteActivityLink(link.activityLinkId)
+
+      setUrls(z => z.filter(f => f.activityLinkId != link.activityLinkId))
+
+      alert('The link has been deleted')
+    } else {
+      setUrls(z => z.filter(f => f.url != link.url))
+    }
+  }
+
+  const handleAddLink = async url => {
+    let link = { url: url, activityId: selectedActivity }
+
+    if (url)
+      activityService
+        .addActivityLink(link)
+        .then(activityLinkId => {
+          link = {
+            ...link,
+            activityLinkId: activityLinkId,
+            status: 'uploaded',
+          }
+
+          setUrls([...urls, link])
+
+          alert('The link has sucessfully been added!')
+          return link
+        })
+        .catch(error => {
+          link = { ...link, status: 'error' }
+          setUrls(z =>
+            z.map(f => {
+              if (f.url != link.url) return f
+
+              return link
+            })
+          )
+
+          alert(`Error while adding the link to the activity!`, error)
+        })
+  }
+
+  const handleClose = () => {
+    toggle()
+    setUrls([])
+    setFiles([])
+    setSelectedActivity(null)
+  }
+
   return (
     <Modal
-      toggle={toggle}
+      toggle={handleClose}
       isOpen={isOpen}
       className="modal-outline-primary"
       size="lg"
@@ -260,7 +370,8 @@ const AssignActivity = ({
             if (response.warning) {
               alert(response.warning)
             }
-            toggle()
+            // toggle()
+            setSelectedActivity(response.activityId[0])
             if (onSuccess) {
               onSuccess()
             }
@@ -296,7 +407,10 @@ const AssignActivity = ({
                         </UncontrolledTabs.NavLink>
                       </NavItem>
                       <NavItem>
-                        <UncontrolledTabs.NavLink tabId="files">
+                        <UncontrolledTabs.NavLink
+                          tabId="files"
+                          disabled={!selectedActivity}
+                        >
                           Links & Files
                         </UncontrolledTabs.NavLink>
                       </NavItem>
@@ -758,13 +872,27 @@ const AssignActivity = ({
                           </Col>
                         </Row>
                       </TabPane>
-                      <TabPane tabId="files"></TabPane>
+                      <TabPane tabId="files">
+                        <FileList
+                          files={files}
+                          urls={urls}
+                          setFiles={setFiles}
+                          setUrls={setUrls}
+                          onUploadFile={handleUploadFile}
+                          onDownloadFile={handleDownloadFile}
+                          onRemoveFile={handleRemoveFile}
+                          onAddLink={handleAddLink}
+                          onRemoveLink={handleRemoveLink}
+                        />
+                      </TabPane>
                     </UncontrolledTabs.TabContent>
                   </UncontrolledTabs>
                 </ModalBody>
                 <ModalFooter>
-                  <ThemedButton type="submit">Assign</ThemedButton>{' '}
-                  <Button type="button" onClick={toggle} color="light">
+                  <ThemedButton type="submit" disabled={selectedActivity}>
+                    Save
+                  </ThemedButton>
+                  <Button type="button" onClick={handleClose} color="light">
                     Close
                   </Button>
                 </ModalFooter>

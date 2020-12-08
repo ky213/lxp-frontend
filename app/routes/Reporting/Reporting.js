@@ -436,10 +436,7 @@ const Reporting = () => {
                         <th className="align-middle bt-0 text-right" width="5%">
                           Result
                         </th>
-                        <th
-                          className="align-middle bt-0 text-center"
-                          width="10%"
-                        >
+                        <th className="align-middle bt-0" width="10%">
                           Success
                         </th>
                       </tr>

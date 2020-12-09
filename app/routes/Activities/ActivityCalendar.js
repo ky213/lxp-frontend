@@ -131,7 +131,7 @@ export const ActivityCalendar = props => {
 
   const onCreatedEvent = async () => {
     setSelectedActivity(null)
-    setSelectedLogActivity(null)
+    // setSelectedLogActivity(null)
     await getActivities()
   }
 
@@ -278,6 +278,7 @@ export const ActivityCalendar = props => {
         eventEnd={eventEnd}
         onSuccess={onCreatedEvent}
         selectedActivity={selectedLogActivity}
+        setSelectedActivity={setSelectedLogActivity}
       />
       <EditActivity
         toggle={toggleEditEventModal}

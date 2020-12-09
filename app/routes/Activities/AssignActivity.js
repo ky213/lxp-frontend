@@ -67,10 +67,10 @@ const AssignActivity = ({
     if (isOpen) {
       const fetchData = async () => {
         try {
-          const activityTypes = await activityService.getActivityTypes(
+          const response = await activityService.getActivityTypes(
             selectedOrganization.organizationId
           )
-          setActivityTypes(activityTypes)
+          setActivityTypes(response)
         } catch (error) {
           console.log('Error while fetching activity types:', error)
         }
@@ -643,7 +643,6 @@ const AssignActivity = ({
                                     >
                                       <option value="">Activity type...</option>
                                       {activityTypes.map(at => {
-                                        //console.log("Map each at:", at)
                                         return (
                                           <option value={at.activityTypeId}>
                                             {at.activityTypeName}

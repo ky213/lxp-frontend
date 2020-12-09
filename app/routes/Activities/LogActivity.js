@@ -42,6 +42,7 @@ const LogActivity = ({
   eventEnd,
   onSuccess,
   selectedActivity,
+  setSelectedActivity,
 }) => {
   const [files, setFiles] = React.useState([])
   const [urls, setUrls] = React.useState([])
@@ -85,8 +86,8 @@ const LogActivity = ({
       )
       setTimeDifference(calculatedTimeDifference)
 
-      setFiles(selectedActivity.files)
-      setUrls(selectedActivity.links)
+      setFiles(selectedActivity.files || [])
+      setUrls(selectedActivity.links || [])
     }
   }, [selectedActivity])
 
@@ -201,7 +202,7 @@ const LogActivity = ({
           status: 'uploaded',
         }
 
-        setUrls(oldUrls => oldUrls.concat(link))
+        setUrls([...urls, link])
 
         linkField.value = ''
 
@@ -217,7 +218,6 @@ const LogActivity = ({
             return link
           })
         )
-
         alert(`Error while adding the link to the activity!`)
       })
   }
@@ -343,11 +343,13 @@ const LogActivity = ({
                 supervisors: supervisors,
               }
 
-              await activityService.logActivity(activity)
+              const response = await activityService.logActivity(activity)
+              response.activityId = response?.activityId[0]
+              setSelectedActivity(response)
               alert(`You have successfully logged an activity!`)
             }
 
-            toggle()
+            // toggle()
             if (onSuccess) {
               onSuccess()
             }
@@ -376,34 +378,31 @@ const LogActivity = ({
                       (selectedActivity && 'replies') || 'details'
                     }
                   >
-                    {/* START Pills Nav */}
-                    {selectedActivity && (
-                      <Nav
-                        pills
-                        className="mb-4 flex-column flex-md-row mt-4 mt-lg-0"
-                      >
-                        {selectedActivity && (
-                          <NavItem>
-                            <UncontrolledTabs.NavLink tabId="replies">
-                              Replies
-                            </UncontrolledTabs.NavLink>
-                          </NavItem>
-                        )}
+                    <Nav
+                      pills
+                      className="mb-4 flex-column flex-md-row mt-4 mt-lg-0"
+                    >
+                      {selectedActivity && (
                         <NavItem>
-                          <UncontrolledTabs.NavLink tabId="details">
-                            Details
+                          <UncontrolledTabs.NavLink tabId="replies">
+                            Replies
                           </UncontrolledTabs.NavLink>
                         </NavItem>
-                        {selectedActivity && (
-                          <NavItem>
-                            <UncontrolledTabs.NavLink tabId="files">
-                              Links & Files
-                            </UncontrolledTabs.NavLink>
-                          </NavItem>
-                        )}
-                      </Nav>
-                    )}
-                    {/* END Pills Nav */}
+                      )}
+                      <NavItem>
+                        <UncontrolledTabs.NavLink tabId="details">
+                          Details
+                        </UncontrolledTabs.NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <UncontrolledTabs.NavLink
+                          tabId="files"
+                          disabled={!selectedActivity}
+                        >
+                          Links & Files
+                        </UncontrolledTabs.NavLink>
+                      </NavItem>
+                    </Nav>
                     <UncontrolledTabs.TabContent>
                       <TabPane tabId="details">
                         <Row>
@@ -675,29 +674,27 @@ const LogActivity = ({
                         </Row>
                       </TabPane>
                       {selectedActivity && (
-                        <>
-                          <TabPane tabId="replies">
-                            <ActivityReplies
-                              destination="log-activity"
-                              selectedActivity={selectedActivity}
-                              currentUser={currentUser && currentUser.user}
-                            />
-                          </TabPane>
-                          <TabPane tabId="files">
-                            <FileList
-                              files={files}
-                              urls={urls}
-                              setFiles={setFiles}
-                              setUrls={setUrls}
-                              onUploadFile={handleUploadFile}
-                              onDownloadFile={handleDownloadFile}
-                              onRemoveFile={handleRemoveFile}
-                              onAddLink={handleAddLink}
-                              onRemoveLink={handleRemoveLink}
-                            />
-                          </TabPane>
-                        </>
+                        <TabPane tabId="replies">
+                          <ActivityReplies
+                            destination="log-activity"
+                            selectedActivity={selectedActivity}
+                            currentUser={currentUser && currentUser.user}
+                          />
+                        </TabPane>
                       )}
+                      <TabPane tabId="files">
+                        <FileList
+                          files={files}
+                          urls={urls}
+                          setFiles={setFiles}
+                          setUrls={setUrls}
+                          onUploadFile={handleUploadFile}
+                          onDownloadFile={handleDownloadFile}
+                          onRemoveFile={handleRemoveFile}
+                          onAddLink={handleAddLink}
+                          onRemoveLink={handleRemoveLink}
+                        />
+                      </TabPane>
                     </UncontrolledTabs.TabContent>
                   </UncontrolledTabs>
                 </ModalBody>
@@ -707,22 +704,19 @@ const LogActivity = ({
                       <ThemedButton type="submit">Log Activity</ThemedButton>{' '}
                     </>
                   )}
-                  {selectedActivity &&
-                    selectedActivity.loggedBy ==
-                      currentUser.user.employeeId && (
-                      <>
-                        <ThemedButton type="submit">
-                          Update activity
-                        </ThemedButton>{' '}
-                        <Button
-                          type="button"
-                          color="danger"
-                          onClick={() => updateActivityStatus(3)}
-                        >
-                          Delete
-                        </Button>{' '}
-                      </>
-                    )}
+                  {selectedActivity?.loggedBy ==
+                    currentUser.user.employeeId && (
+                    <>
+                      <ThemedButton type="submit">Update activity</ThemedButton>{' '}
+                      <Button
+                        type="button"
+                        color="danger"
+                        onClick={() => updateActivityStatus(3)}
+                      >
+                        Delete
+                      </Button>{' '}
+                    </>
+                  )}
                   <Button type="button" onClick={toggle} color="light">
                     Close
                   </Button>

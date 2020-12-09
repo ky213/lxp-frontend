@@ -172,22 +172,18 @@ const Reporting = () => {
       data.statements.map(statement =>
         exportData.push([
           moment(statement.timestamp).format('LLL'),
-          statement.actor.name,
-          (selectedProgram && selectedProgram.name) || '',
-          statement.object.definition.name.und,
-          statement.verb &&
-            statement.verb.display &&
-            (statement.verb.display.en || statement.verb.display['en-US']),
-          (statement.result &&
-            statement.result.score &&
-            statement.result.score.scaled &&
+          statement.actor?.name,
+          selectedProgram?.name || '',
+          statement.object?.definition?.name?.und,
+          statement.verb?.display?.en || statement.verb?.display['en-US'],
+          (statement.result?.score?.scaled &&
             `${decimalAdjust(
               'round',
               statement.result.score.scaled * 100,
               -2
             )}%`) ||
             '',
-          statement.result && statement.result.success,
+          statement.result?.completion ? 'True' : 'False',
         ])
       )
 

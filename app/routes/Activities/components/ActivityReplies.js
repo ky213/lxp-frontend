@@ -9,18 +9,19 @@ import {
   Card,
   CardFooter,
 } from '@/components'
-import { ActivityReplyLeft } from './ActivityReplyLeft'
-import { ActivityReplyRight } from './ActivityReplyRight'
+import ActivityReplyLeft from './ActivityReplyLeft'
+import ActivityReplyRight from './ActivityReplyRight'
 import { ActivityRepliesFooter } from './ActivityRepliesFooter'
 import { ActivityRepliesHeader } from './ActivityRepliesHeader'
 import { activityService } from '@/services'
 import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
+import { hot } from 'react-hot-loader'
 
 const ActivityReplies = props => {
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
   const [replies, setReplies] = React.useState(
-    (props.selectedActivity && props.selectedActivity.replies) || []
+    props.selectedActivity?.replies || []
   )
   const { destination } = props
 
@@ -73,8 +74,6 @@ const ActivityReplies = props => {
     }
   }
 
-  let currentReplyEmployeeId = null
-  let altDirection = false
   return (
     <React.Fragment>
       <Container>
@@ -85,25 +84,16 @@ const ActivityReplies = props => {
               <CardHeader className="d-flex bb-0 bg-white">
                 <ActivityRepliesHeader currentUser={props.currentUser} />
               </CardHeader>
-              <CardBody>
+              <CardBody style={{ maxHeight: '50vh', 'overflow-y': 'scroll' }}>
                 {replies.map((reply, ind) => {
-                  if (
-                    currentReplyEmployeeId &&
-                    currentReplyEmployeeId != reply.employeeId
-                  ) {
-                    altDirection = !altDirection
-                  }
-
-                  currentReplyEmployeeId = reply.employeeId
-                  return !altDirection ? (
+                  return props.selectedActivity.assignedBy !==
+                    reply.employeeId ? (
                     <ActivityReplyLeft
                       currentUser={currentUser && currentUser.user}
                       key={ind}
                       onDelete={handleDeleteReply}
                       reply={reply}
-                      cardClassName={`${
-                        ind % 2 == 0 ? 'bg-gray-300 b-0' : ''
-                      } text-dark`}
+                      cardClassName={`text-dark`}
                     />
                   ) : (
                     <ActivityReplyRight
@@ -111,9 +101,7 @@ const ActivityReplies = props => {
                       key={ind}
                       onDelete={handleDeleteReply}
                       reply={reply}
-                      cardClassName={`${
-                        ind % 2 == 0 ? 'bg-gray-300 b-0' : ''
-                      } text-dark`}
+                      cardClassName={`bg-gray-300 b-0 text-dark`}
                     />
                   )
                 })}
@@ -134,4 +122,4 @@ const ActivityReplies = props => {
   )
 }
 
-export default ActivityReplies
+export default hot(module)(ActivityReplies)

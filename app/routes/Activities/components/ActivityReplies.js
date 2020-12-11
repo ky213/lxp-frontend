@@ -12,7 +12,7 @@ import {
 import ActivityReplyLeft from './ActivityReplyLeft'
 import ActivityReplyRight from './ActivityReplyRight'
 import { ActivityRepliesFooter } from './ActivityRepliesFooter'
-import { ActivityRepliesHeader } from './ActivityRepliesHeader'
+import ActivityRepliesHeader from './ActivityRepliesHeader'
 import { activityService } from '@/services'
 import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
@@ -81,8 +81,14 @@ const ActivityReplies = props => {
         <Row>
           <Col lg={12}>
             <Card className="mb-3">
-              <CardHeader className="d-flex bb-0 bg-white">
-                <ActivityRepliesHeader currentUser={props.currentUser} />
+              <CardHeader
+                className="d-flex bg-white bb-0"
+                style={{ 'box-shadow': '0px 1px 12px -6px grey' }}
+              >
+                <ActivityRepliesHeader
+                  selectedActivity={props.selectedActivity}
+                  currentUser={props.currentUser}
+                />
               </CardHeader>
               <CardBody style={{ maxHeight: '50vh', 'overflow-y': 'scroll' }}>
                 {replies.map((reply, ind) => {

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import classNames from 'classnames'
+import { hot } from 'react-hot-loader'
 
 import {
   Card,
@@ -13,9 +14,11 @@ import {
   Input,
   Button,
 } from '@/components'
-import { hot } from 'react-hot-loader'
+import { useAppState } from '@/components/AppState'
+import { Role } from '@/helpers'
 
 const PointsForm = ({ reply }) => {
+  const [{ currentUser }] = useAppState()
   const [openPointsForm, setOpenPointsForm] = useState(true)
   const [points, setPoints] = useState(0)
   const [error, setError] = useState(false)
@@ -54,30 +57,36 @@ const PointsForm = ({ reply }) => {
       <h5 onClick={handleSetPointsClick} className="position-relative">
         <Badge color="primary">{reply?.points || 0} points</Badge>
       </h5>
-      <Form
-        className={classNames([
-          { 'd-none': openPointsForm },
-          'position-absolute',
-        ])}
-        style={{ top: 2, right: 40 }}
-        inline
-      >
-        <FormGroup>
-          <Input
-            id="points"
-            name="points"
-            type="number"
-            defaultValue={reply?.points || 0}
-            onChange={handlePointsChange}
-          />
-          <Button color="primary" type="button" onClick={handleSaveReplyPoints}>
-            ok
-          </Button>
-        </FormGroup>
-        <small className={classNames([{ 'd-none': !error }, 'text-danger'])}>
-          should be a positif number
-        </small>
-      </Form>
+      {currentUser.user.role != Role.Learner && (
+        <Form
+          className={classNames([
+            { 'd-none': openPointsForm },
+            'position-absolute',
+          ])}
+          style={{ top: 2, right: 40 }}
+          inline
+        >
+          <FormGroup>
+            <Input
+              id="points"
+              name="points"
+              type="number"
+              defaultValue={reply?.points || 0}
+              onChange={handlePointsChange}
+            />
+            <Button
+              color="primary"
+              type="button"
+              onClick={handleSaveReplyPoints}
+            >
+              ok
+            </Button>
+          </FormGroup>
+          <small className={classNames([{ 'd-none': !error }, 'text-danger'])}>
+            should be a positif number
+          </small>
+        </Form>
+      )}
     </div>
   )
 }

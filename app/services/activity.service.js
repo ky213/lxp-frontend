@@ -1,5 +1,5 @@
-import config from '@/config';
-import { authHeader, handleResponse, buildQuery } from '@/helpers';
+import config from '@/config'
+import { authHeader, handleResponse, buildQuery } from '@/helpers'
 
 export const activityService = {
   getAll,
@@ -31,39 +31,39 @@ export const activityService = {
   addLogActivityReply,
   updateLogActivityReply,
   deleteLogActivityReply,
-  evaluate
-};
+  evaluate,
+}
 
 function getAll(programId, from, to, selectedOrganizationId) {
   const requestOptions = {
     method: 'GET',
     headers: authHeader(),
     //credentials: 'include'
-  };
+  }
 
-  let query = buildQuery({ from, to, selectedOrganizationId });
+  let query = buildQuery({ from, to, selectedOrganizationId })
   return fetch(`${config.apiUrl}/activities?${query}`, requestOptions).then(
     handleResponse
-  );
+  )
 
   //return fetch(`${config.apiUrl}/activities`, requestOptions).then(handleResponse);
 }
 
 function getActivityTypes(selectedOrganizationId) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
-  let query = buildQuery({ selectedOrganizationId });
+  const requestOptions = { method: 'GET', headers: authHeader() }
+  let query = buildQuery({ selectedOrganizationId })
   return fetch(
     `${config.apiUrl}/activities/types?${query}`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function getById(id, selectedOrganizationId) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(
     `${config.apiUrl}/activities/${id}?selectedOrganizationId=${selectedOrganizationId}`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function create(activity) {
@@ -72,13 +72,13 @@ function create(activity) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(activity),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function update(activity) {
@@ -86,13 +86,13 @@ function update(activity) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(activity),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function updateStatus(activityId, statusId) {
@@ -100,16 +100,16 @@ function updateStatus(activityId, statusId) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ statusId }),
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/${activityId}/status`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function logActivity(activity) {
@@ -118,13 +118,13 @@ function logActivity(activity) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(activity),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/log`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function updateLogActivity(activity) {
@@ -132,28 +132,28 @@ function updateLogActivity(activity) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(activity),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/log`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function getParticipationLevels() {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(
     `${config.apiUrl}/activities/participation-levels`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function getLogActivityById(id) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(`${config.apiUrl}/activities/log/${id}`, requestOptions).then(
     handleResponse
-  );
+  )
 }
 
 function updateLogActivityStatus(activityId, statusId) {
@@ -161,24 +161,24 @@ function updateLogActivityStatus(activityId, statusId) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ statusId }),
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/log/${activityId}/status`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function getReplies(activityId) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(
     `${config.apiUrl}/activities/${activityId}/replies`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function addReply(reply) {
@@ -187,13 +187,13 @@ function addReply(reply) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(reply),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/reply`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function updateReply(replyId, message) {
@@ -201,13 +201,13 @@ function updateReply(replyId, message) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ text: message }),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/reply/${replyId}`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function deleteReply(replyId) {
@@ -215,13 +215,13 @@ function deleteReply(replyId) {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: null,
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/reply/${replyId}`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function addActivityFile(file) {
@@ -229,45 +229,45 @@ function addActivityFile(file) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(file),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/addActivityFile`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function deleteActivityFile(activityFileId) {
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/deleteActivityFile/${activityFileId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function downloadActivityFile(activityFileId) {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/downloadActivityFile/${activityFileId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function addLogActivityFile(file) {
@@ -275,45 +275,45 @@ function addLogActivityFile(file) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(file),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/addLogActivityFile`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function deleteLogActivityFile(logActivityFileId) {
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/deleteLogActivityFile/${logActivityFileId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function downloadLogActivityFile(logActivityFileId) {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/downloadLogActivityFile/${logActivityFileId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function addActivityLink(link) {
@@ -321,29 +321,29 @@ function addActivityLink(link) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(link),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/addActivityLink`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function deleteActivityLink(activityLinkId) {
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/deleteActivityLink/${activityLinkId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function addLogActivityLink(link) {
@@ -351,37 +351,37 @@ function addLogActivityLink(link) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(link),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/addLogActivityLink`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function deleteLogActivityLink(logActivityLinkId) {
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/deleteLogActivityLink/${logActivityLinkId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function getLogActivityReplies(activityId) {
-  const requestOptions = { method: 'GET', headers: authHeader() };
+  const requestOptions = { method: 'GET', headers: authHeader() }
   return fetch(
     `${config.apiUrl}/activities/${activityId}/log-activity/replies`,
     requestOptions
-  ).then(handleResponse);
+  ).then(handleResponse)
 }
 
 function addLogActivityReply(reply) {
@@ -390,13 +390,13 @@ function addLogActivityReply(reply) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(reply),
-  };
+  }
 
   return fetch(`${config.apiUrl}/activities/log-activity/reply`, requestOptions)
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function updateLogActivityReply(replyId, message) {
@@ -404,16 +404,16 @@ function updateLogActivityReply(replyId, message) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify({ text: message }),
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/log-activity/reply/${replyId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
 function deleteLogActivityReply(replyId) {
@@ -421,28 +421,31 @@ function deleteLogActivityReply(replyId) {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: null,
-  };
+  }
 
   return fetch(
     `${config.apiUrl}/activities/log-activity/reply/${replyId}`,
     requestOptions
   )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }
 
-function evaluate(activityReply) {
+function evaluate(activityId, replies) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify(activityReply),
-  };
+    body: JSON.stringify(replies),
+  }
 
-  return fetch(`${config.apiUrl}/activities/evaluate/${activityId}`, requestOptions)
+  return fetch(
+    `${config.apiUrl}/activities/evaluate/${activityId}`,
+    requestOptions
+  )
     .then(handleResponse)
-    .then((data) => {
-      return data;
-    });
+    .then(data => {
+      return data
+    })
 }

@@ -1,9 +1,86 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import classNames from 'classnames'
 
-import { Card, Media, Avatar, Badge } from '@/components'
+import {
+  Card,
+  Media,
+  Avatar,
+  Badge,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+} from '@/components'
 import { hot } from 'react-hot-loader'
+
+const PointsForm = ({ reply }) => {
+  const [openPointsForm, setOpenPointsForm] = useState(true)
+  const [points, setPoints] = useState(0)
+  const [error, setError] = useState(false)
+
+  const handleSetPointsClick = e => {
+    setOpenPointsForm(false)
+  }
+
+  const handlePointsChange = e => {
+    e.persist()
+
+    const replyPoints = e.target.value
+
+    if (isNaN(replyPoints) || replyPoints < 0) {
+      setError(true)
+      return
+    }
+
+    setPoints(+replyPoints)
+    setError(false)
+  }
+
+  const handleSaveReplyPoints = e => {
+    e.preventDefault()
+
+    if (!error) reply.points = points
+
+    setOpenPointsForm(true)
+  }
+
+  return (
+    <div
+      className="position-absolute mb-4"
+      style={{ top: 5, right: 10, cursor: 'pointer' }}
+    >
+      <h5 onClick={handleSetPointsClick} className="position-relative">
+        <Badge color="primary">{reply?.points || 0} points</Badge>
+      </h5>
+      <Form
+        className={classNames([
+          { 'd-none': openPointsForm },
+          'position-absolute',
+        ])}
+        style={{ top: 2, right: 40 }}
+        inline
+      >
+        <FormGroup>
+          <Input
+            id="points"
+            name="points"
+            type="number"
+            defaultValue={reply?.points || 0}
+            onChange={handlePointsChange}
+          />
+          <Button color="primary" type="button" onClick={handleSaveReplyPoints}>
+            ok
+          </Button>
+        </FormGroup>
+        <small className={classNames([{ 'd-none': !error }, 'text-danger'])}>
+          should be a positif number
+        </small>
+      </Form>
+    </div>
+  )
+}
 
 const ActivityReplyLeft = props => {
   const handleDeleteReply = e => {
@@ -12,8 +89,6 @@ const ActivityReplyLeft = props => {
       props.onDelete(props.reply.activityReplyId)
     }
   }
-
-  const handleEditReply = e => {}
 
   return (
     <React.Fragment>
@@ -31,14 +106,8 @@ const ActivityReplyLeft = props => {
             className={`mb-2 ${props.cardClassName}`}
             style={{ position: 'relative' }}
           >
-            <h5
-              className="position-absolute mb-4"
-              style={{ top: 5, right: 10, cursor: 'pointer' }}
-            >
-              <Badge color="primary">
-                {props.reply?.activityPoints || 0} points
-              </Badge>
-            </h5>
+            <PointsForm reply={props.reply} />
+
             <p className="mb-0 mt-2">
               {props.reply && props.reply.text}
 

@@ -32,6 +32,7 @@ export const activityService = {
   updateLogActivityReply,
   deleteLogActivityReply,
   evaluate,
+  getAllByLearner,
 }
 
 function getAll(programId, from, to, selectedOrganizationId) {
@@ -448,4 +449,17 @@ function evaluate(activityId, replies) {
     .then(data => {
       return data
     })
+}
+
+function getAllByLearner(employeeId, userId, organizationId) {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+  }
+
+  let query = buildQuery({ employeeId, userId, organizationId })
+  return fetch(
+    `${config.apiUrl}/activities/byLearner?${query}`,
+    requestOptions
+  ).then(handleResponse)
 }

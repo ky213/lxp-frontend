@@ -44,7 +44,6 @@ const ActivityReplies = props => {
   }
 
   const handleSendReply = async reply => {
-    //console.log("Triggered send reply:", {text:reply, activityId: props.selectedActivity && props.selectedActivity.activityId || null})
     ;(destination &&
       destination == 'log-activity' &&
       (await activityService.addLogActivityReply({
@@ -74,6 +73,14 @@ const ActivityReplies = props => {
     }
   }
 
+  const handleSetActivityReplyPoints = (replyId, points) => {
+    props.selectedActivity?.replies?.forEach(reply => {
+      if (reply.activityReplyId === replyId) reply.points = points
+    })
+
+    setReplies(props.selectedActivity?.replies)
+  }
+
   return (
     <React.Fragment>
       <Container>
@@ -100,6 +107,7 @@ const ActivityReplies = props => {
                       onDelete={handleDeleteReply}
                       reply={reply}
                       cardClassName={`text-dark`}
+                      setReplyPoints={handleSetActivityReplyPoints}
                     />
                   ) : (
                     <ActivityReplyRight

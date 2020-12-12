@@ -17,7 +17,7 @@ import {
 import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
 
-const PointsForm = ({ reply }) => {
+const PointsForm = ({ reply, setReplyPoints }) => {
   const [{ currentUser }] = useAppState()
   const [openPointsForm, setOpenPointsForm] = useState(true)
   const [points, setPoints] = useState(0)
@@ -44,7 +44,7 @@ const PointsForm = ({ reply }) => {
   const handleSaveReplyPoints = e => {
     e.preventDefault()
 
-    if (!error) reply.points = points
+    if (!error) setReplyPoints(reply.activityReplyId, points)
 
     setOpenPointsForm(true)
   }
@@ -115,14 +115,16 @@ const ActivityReplyLeft = props => {
             className={`mb-2 ${props.cardClassName}`}
             style={{ position: 'relative' }}
           >
-            <PointsForm reply={props.reply} />
+            <PointsForm
+              reply={props.reply}
+              setReplyPoints={props.setReplyPoints}
+            />
 
             <p className="mb-0 mt-2">
-              {props.reply && props.reply.text}
+              {props.reply?.text}
 
               {props.currentUser &&
-                props.reply &&
-                props.reply.employeeId == props.currentUser.employeeId && (
+                props.reply?.employeeId == props.currentUser.employeeId && (
                   <a
                     href="#"
                     onClick={handleDeleteReply}
@@ -138,12 +140,9 @@ const ActivityReplyLeft = props => {
             </p>
           </Card>
           <div className="mb-2">
-            <span className="text-inverse mr-2">
-              {props.reply && props.reply.learner}
-            </span>
+            <span className="text-inverse mr-2">{props.reply?.learner}</span>
             <span className="small">
-              {props.reply &&
-                props.reply.modifiedAt &&
+              {props.reply?.modifiedAt &&
                 moment(props.reply.modifiedAt).format('LLLL')}
             </span>
           </div>

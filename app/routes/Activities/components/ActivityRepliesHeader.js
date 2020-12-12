@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
 
 import { activityService } from '@/services'
-import { Row, Col, Button } from '@/components'
+import { Row, Col, Button, Loading } from '@/components'
 import { Role } from '@/helpers'
 
 const ActivityRepliesHeader = ({ currentUser, selectedActivity }) => {
+  const [loading, setLoading] = useState(false)
+
   const handleEvalute = async e => {
     const replies = selectedActivity.replies.filter(
       reply => reply.employeeId !== selectedActivity.assignedBy
     )
     try {
+      setLoading(true)
       await activityService.evaluate(selectedActivity.activityId, replies)
-    } catch (error) {}
+      setLoading(false)
+
+      alert('Activity evaluated successfuly')
+    } catch (error) {
+      setLoading(false)
+      alert('Error evaluating successfuly')
+    }
   }
 
   return (
@@ -26,7 +35,7 @@ const ActivityRepliesHeader = ({ currentUser, selectedActivity }) => {
       <Col className="text-right">
         {currentUser?.role != Role.Learner && (
           <Button color="info" onClick={handleEvalute}>
-            Evaluate
+            {loading ? <Loading small /> : 'Evaluate'}
           </Button>
         )}
       </Col>

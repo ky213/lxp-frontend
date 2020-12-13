@@ -309,6 +309,7 @@ export const EditActivity = ({
               priority: selectedActivity.priority || 1,
               activityType: selectedActivity.activityTypeId || '',
               courses: selectedActivity.courses || [],
+              totalPoints: selectedActivity.totalPoints || 0,
             }}
             validationSchema={Yup.object().shape({
               program: Yup.array().min(1, 'You need to select a program'),
@@ -341,6 +342,9 @@ export const EditActivity = ({
                 is: '3',
                 then: Yup.array().min(1, 'You need to select a learner'),
               }),
+              totalPoints: Yup.number().required(
+                'You need to set total points'
+              ),
             })}
             onSubmit={async (
               {
@@ -354,6 +358,7 @@ export const EditActivity = ({
                 activityType,
                 location,
                 courses,
+                totalPoints,
               },
               { setStatus, setSubmitting }
             ) => {
@@ -403,6 +408,7 @@ export const EditActivity = ({
                 courses: courses || null,
                 rrule: (rrule && rrule.toString()) || null,
                 organizationId: selectedOrganization.organizationId,
+                totalPoints,
               }
 
               try {
@@ -534,6 +540,31 @@ export const EditActivity = ({
                                         />
                                         <ErrorMessage
                                           name="activityName"
+                                          component="div"
+                                          className="invalid-feedback"
+                                        />
+                                      </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                      <Label for="totalPoints" sm={3}>
+                                        Total Points
+                                      </Label>
+                                      <Col sm={9}>
+                                        <Field
+                                          type="number"
+                                          name="totalPoints"
+                                          id="totalPoints"
+                                          className={
+                                            'bg-white form-control' +
+                                            (formikProps.errors.totalPoints &&
+                                            formikProps.touched.totalPoints
+                                              ? ' is-invalid'
+                                              : '')
+                                          }
+                                          placeholder="Total points..."
+                                        />
+                                        <ErrorMessage
+                                          name="totalPoints"
                                           component="div"
                                           className="invalid-feedback"
                                         />

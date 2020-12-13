@@ -17,14 +17,14 @@ import {
 import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
 
-const PointsForm = ({ reply, setReplyPoints }) => {
+const PointsForm = ({ reply, setReplyPoints, activityStatus }) => {
   const [{ currentUser }] = useAppState()
   const [openPointsForm, setOpenPointsForm] = useState(true)
   const [points, setPoints] = useState(0)
   const [error, setError] = useState(false)
 
   const handleSetPointsClick = e => {
-    setOpenPointsForm(false)
+    if (activityStatus !== 'Closed') setOpenPointsForm(false)
   }
 
   const handlePointsChange = e => {
@@ -118,6 +118,7 @@ const ActivityReplyLeft = props => {
             <PointsForm
               reply={props.reply}
               setReplyPoints={props.setReplyPoints}
+              activityStatus={props.activityStatus}
             />
 
             <p className="mb-0 mt-2">

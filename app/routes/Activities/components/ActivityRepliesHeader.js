@@ -20,7 +20,7 @@ const ActivityRepliesHeader = ({ currentUser, selectedActivity }) => {
       alert('Activity evaluated successfuly')
     } catch (error) {
       setLoading(false)
-      alert('Error evaluating successfuly')
+      alert('Error evaluating activity')
     }
   }
 
@@ -34,7 +34,11 @@ const ActivityRepliesHeader = ({ currentUser, selectedActivity }) => {
       </Col>
       <Col className="text-right">
         {currentUser?.role != Role.Learner && (
-          <Button color="info" onClick={handleEvalute}>
+          <Button
+            color="info"
+            onClick={handleEvalute}
+            disabled={selectedActivity.status === 'Closed'}
+          >
             {loading ? <Loading small /> : 'Evaluate'}
           </Button>
         )}

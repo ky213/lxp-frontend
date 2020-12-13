@@ -279,6 +279,7 @@ const AssignActivity = ({
           priority: 1,
           activityType: '',
           courses: [],
+          totalPoints: 0,
         }}
         validationSchema={Yup.object().shape({
           program: Yup.array().min(1, 'You need to select a program'),
@@ -312,6 +313,7 @@ const AssignActivity = ({
             is: '3',
             then: Yup.array().min(1, 'You need to select a learner'),
           }),
+          totalPoints: Yup.number().required('You need to set total points'),
         })}
         onSubmit={async (
           {
@@ -326,6 +328,7 @@ const AssignActivity = ({
             location,
             courses,
             repeat,
+            totalPoints,
           },
           { setStatus, setSubmitting }
         ) => {
@@ -363,6 +366,7 @@ const AssignActivity = ({
             courses: courses,
             rrule: (rrule && rrule.toString()) || null,
             organizationId: selectedOrganization.organizationId,
+            totalPoints,
           }
           try {
             const response = await activityService.create(activity)
@@ -488,6 +492,31 @@ const AssignActivity = ({
                                     />
                                     <ErrorMessage
                                       name="activityName"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                  <Label for="totalPoints" sm={3}>
+                                    Total Points
+                                  </Label>
+                                  <Col sm={9}>
+                                    <Field
+                                      type="number"
+                                      name="totalPoints"
+                                      id="totalPoints"
+                                      className={
+                                        'bg-white form-control' +
+                                        (formikProps.errors.totalPoints &&
+                                        formikProps.touched.totalPoints
+                                          ? ' is-invalid'
+                                          : '')
+                                      }
+                                      placeholder="Total points..."
+                                    />
+                                    <ErrorMessage
+                                      name="totalPoints"
                                       component="div"
                                       className="invalid-feedback"
                                     />

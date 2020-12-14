@@ -99,11 +99,19 @@ const ActivityReplies = props => {
               <CardBody style={{ maxHeight: '50vh', 'overflow-y': 'scroll' }}>
                 {replies.map((reply, ind) => {
                   const isLearner = currentUser.user.role === Role.Learner
-                  const isLearnerReply =
-                    reply.employeeId !== props.selectedActivity.loggedBy ||
-                    reply.employeeId === props.selectedActivity.assignedBy
+                  let isAdminReply
 
-                  return !isLearnerReply ? (
+                  // Assigned activity
+                  if (props.selectedActivity.assignedBy)
+                    isAdminReply =
+                      reply.employeeId === props.selectedActivity.assignedBy
+
+                  // Logged Activity
+                  if (props.selectedActivity.loggedBy)
+                    isAdminReply =
+                      reply.employeeId !== props.selectedActivity.loggedBy
+
+                  return !isAdminReply ? (
                     <ActivityReplyLeft
                       currentUser={currentUser && currentUser.user}
                       key={ind}

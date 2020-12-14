@@ -60,7 +60,6 @@ const ActivityReplies = props => {
   }
 
   const handleDeleteReply = async replyId => {
-    //console.log("Delete reply:", replyId)
     try {
       ;(destination &&
         destination == 'log-activity' &&
@@ -99,8 +98,12 @@ const ActivityReplies = props => {
               </CardHeader>
               <CardBody style={{ maxHeight: '50vh', 'overflow-y': 'scroll' }}>
                 {replies.map((reply, ind) => {
-                  return props.selectedActivity.assignedBy !==
-                    reply.employeeId ? (
+                  const isLearner = currentUser.user.role === Role.Learner
+                  const isLearnerReply =
+                    reply.employeeId !== props.selectedActivity.loggedBy ||
+                    reply.employeeId === props.selectedActivity.assignedBy
+
+                  return !isLearnerReply ? (
                     <ActivityReplyLeft
                       currentUser={currentUser && currentUser.user}
                       key={ind}
@@ -109,6 +112,7 @@ const ActivityReplies = props => {
                       cardClassName={`text-dark`}
                       setReplyPoints={handleSetActivityReplyPoints}
                       activityStatus={props.selectedActivity.status}
+                      canEvaluate={!isLearner}
                     />
                   ) : (
                     <ActivityReplyRight

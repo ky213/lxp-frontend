@@ -310,6 +310,7 @@ export const EditActivity = ({
               activityType: selectedActivity.activityTypeId || '',
               courses: selectedActivity.courses || [],
               totalPoints: selectedActivity.totalPoints || 0,
+              isPublic: selectedActivity?.isPublic || false,
             }}
             validationSchema={Yup.object().shape({
               program: Yup.array().min(1, 'You need to select a program'),
@@ -345,6 +346,7 @@ export const EditActivity = ({
               totalPoints: Yup.number().required(
                 'You need to set total points'
               ),
+              isPublic: Yup.boolean(),
             })}
             onSubmit={async (
               {
@@ -359,6 +361,7 @@ export const EditActivity = ({
                 location,
                 courses,
                 totalPoints,
+                isPublic,
               },
               { setStatus, setSubmitting }
             ) => {
@@ -409,6 +412,7 @@ export const EditActivity = ({
                 rrule: (rrule && rrule.toString()) || null,
                 organizationId: selectedOrganization.organizationId,
                 totalPoints,
+                isPublic,
               }
 
               try {
@@ -679,6 +683,21 @@ export const EditActivity = ({
                                         </Col>
                                       </FormGroup>
                                     )}
+                                    <FormGroup row>
+                                      <Label for="isPublic" sm={3}>
+                                        is public?
+                                      </Label>
+                                      <Col sm={9}>
+                                        <Field
+                                          type="checkbox"
+                                          name="isPublic"
+                                          id="isPublic"
+                                          className="form-control"
+                                          style={{ width: '25px' }}
+                                        />
+                                      </Col>
+                                    </FormGroup>
+
                                     <FormGroup row>
                                       <Label for="description" sm={3}>
                                         Repeat?

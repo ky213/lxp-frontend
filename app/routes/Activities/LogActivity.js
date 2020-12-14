@@ -13,8 +13,6 @@ import {
   FormGroup,
   Label,
   CustomInput,
-  InputGroup,
-  InputGroupAddon,
   InvalidFeedback,
   TabPane,
   Nav,
@@ -269,6 +267,7 @@ const LogActivity = ({
           activityType:
             (selectedActivity && selectedActivity.activityTypeId) || '',
           location: (selectedActivity && selectedActivity.location) || '',
+          isPublic: selectedActivity?.isPublic || false,
         }}
         validationSchema={Yup.object().shape({
           activityName: Yup.string().required(
@@ -293,6 +292,7 @@ const LogActivity = ({
                   ).format('LLLL')})`
               )
             ),
+          isPublic: Yup.boolean(),
         })}
         onSubmit={async (
           {
@@ -304,6 +304,7 @@ const LogActivity = ({
             activityType,
             participationLevel,
             location,
+            isPublic,
           },
           { setStatus, setSubmitting }
         ) => {
@@ -322,6 +323,7 @@ const LogActivity = ({
                 details: details,
                 participationLevel: participationLevel,
                 supervisors: supervisors,
+                isPublic,
               }
 
               await activityService.updateLogActivity(activity)
@@ -334,13 +336,14 @@ const LogActivity = ({
                     currentUser.user.programId) ||
                   null,
                 name: activityName,
-                start: start,
-                end: end,
+                start,
+                end,
                 activityTypeId: activityType,
-                location: location,
-                details: details,
-                participationLevel: participationLevel,
-                supervisors: supervisors,
+                location,
+                details,
+                participationLevel,
+                supervisors,
+                isPublic,
               }
 
               const response = await activityService.logActivity(activity)
@@ -620,6 +623,20 @@ const LogActivity = ({
                                       name="activityType"
                                       component="div"
                                       className="invalid-feedback"
+                                    />
+                                  </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                  <Label for="isPublic" sm={3}>
+                                    is public?
+                                  </Label>
+                                  <Col sm={9}>
+                                    <Field
+                                      type="checkbox"
+                                      name="isPublic"
+                                      id="isPublic"
+                                      className="form-control"
+                                      style={{ width: '25px' }}
                                     />
                                   </Col>
                                 </FormGroup>

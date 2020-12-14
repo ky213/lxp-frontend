@@ -280,6 +280,7 @@ const AssignActivity = ({
           activityType: '',
           courses: [],
           totalPoints: 0,
+          isPublic: false,
         }}
         validationSchema={Yup.object().shape({
           program: Yup.array().min(1, 'You need to select a program'),
@@ -314,6 +315,7 @@ const AssignActivity = ({
             then: Yup.array().min(1, 'You need to select a learner'),
           }),
           totalPoints: Yup.number().required('You need to set total points'),
+          isPublic: Yup.boolean(),
         })}
         onSubmit={async (
           {
@@ -329,6 +331,7 @@ const AssignActivity = ({
             courses,
             repeat,
             totalPoints,
+            isPublic,
           },
           { setStatus, setSubmitting }
         ) => {
@@ -367,6 +370,7 @@ const AssignActivity = ({
             rrule: (rrule && rrule.toString()) || null,
             organizationId: selectedOrganization.organizationId,
             totalPoints,
+            isPublic,
           }
           try {
             const response = await activityService.create(activity)
@@ -603,6 +607,21 @@ const AssignActivity = ({
                                           {formikProps.errors.end}
                                         </InvalidFeedback>
                                       )}
+                                  </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                  <Label for="isPublic" sm={3}>
+                                    is public?
+                                  </Label>
+                                  <Col sm={9}>
+                                    <Field
+                                      inline
+                                      type="checkbox"
+                                      id="isPublic"
+                                      name="isPublic"
+                                      className="form-control"
+                                      style={{ width: '25px' }}
+                                    />
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>

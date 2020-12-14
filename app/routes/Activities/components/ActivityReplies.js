@@ -73,11 +73,12 @@ const ActivityReplies = props => {
   }
 
   const handleSetActivityReplyPoints = (replyId, points) => {
-    props.selectedActivity?.replies?.forEach(reply => {
+    replies?.forEach(reply => {
       if (reply.activityReplyId === replyId) reply.points = points
     })
 
-    setReplies(props.selectedActivity?.replies)
+    setReplies(replies)
+    if (props.selectedActivity) props.selectedActivity.replies = replies
   }
 
   return (

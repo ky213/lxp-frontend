@@ -667,6 +667,9 @@ const AssignActivity = ({
                                           )
                                           setRRule(rrule)
                                         }}
+                                        config={{
+                                          weekStartsOnSunday: true,
+                                        }}
                                       />
                                     </Col>
                                   </FormGroup>

@@ -9,9 +9,22 @@ const ActivityRepliesHeader = ({ currentUser, selectedActivity }) => {
   const [loading, setLoading] = useState(false)
 
   const handleEvalute = async e => {
-    const replies = selectedActivity.replies.filter(
-      reply => reply.employeeId !== selectedActivity.assignedBy
-    )
+    const replies = selectedActivity.replies
+      .map(reply => {
+        if (!reply.points) reply.points = 0
+        return reply
+      })
+      .filter(reply => reply.employeeId !== selectedActivity.assignedBy)
+
+    const totalPoints = replies.reduce((total, reply) => {
+      return total + reply.points
+    }, 0)
+
+    if (totalPoints > selectedActivity.totalPoints) {
+      alert("Total points can't be greater than activity points")
+      return
+    }
+
     try {
       setLoading(true)
       await activityService.evaluate(selectedActivity.activityId, replies)
@@ -30,6 +43,9 @@ const ActivityRepliesHeader = ({ currentUser, selectedActivity }) => {
         <h6 className="">
           {(currentUser?.role == Role.Learner && 'My feedback/comments') ||
             'Replies to this activity'}
+        </h6>
+        <h6 className="">
+          Total points: {selectedActivity.totalPoints || 'N/A'}
         </h6>
       </Col>
       <Col className="text-right">

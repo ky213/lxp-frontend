@@ -348,6 +348,8 @@ const LogActivity = ({
 
               const response = await activityService.logActivity(activity)
               response.activityId = response?.activityId[0]
+              response.loggedByFirstName = currentUser.user.firstName
+              response.loggedByLastName = currentUser.user.lastName
               setSelectedActivity(response)
               alert(`You have successfully logged an activity!`)
             }

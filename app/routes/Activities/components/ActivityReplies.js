@@ -120,7 +120,7 @@ const ActivityReplies = props => {
                       reply={reply}
                       cardClassName={`text-dark`}
                       setReplyPoints={handleSetActivityReplyPoints}
-                      activityStatus={props.selectedActivity.status}
+                      selectedActivity={props.selectedActivity}
                       canEvaluate={!isLearner}
                     />
                   ) : (

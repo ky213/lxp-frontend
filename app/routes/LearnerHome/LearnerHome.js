@@ -7,21 +7,22 @@ import styled from 'styled-components'
 import { Typeahead } from 'react-bootstrap-typeahead'
 
 import {
-  Card,
-  CardBody,
   CardColumns,
   Col,
   Container,
   Row,
-  Form,
-  FormGroup,
+  UncontrolledTabs,
+  Nav,
+  NavItem,
+  TabPane,
 } from '@/components'
+import ActivityCard from '@/routes/Activities/components/ActivityCard'
 import { useAppState } from '@/components/AppState'
 import { TinCanLaunch } from '@/helpers'
 import { HeaderMain } from '@/routes/components/HeaderMain'
 import { Profile } from '@/routes/components/Profile'
 import { CourseCard } from '@/routes/Courses/components/CourseCard'
-import { userService, programService } from '@/services'
+import { userService, programService, activityService } from '@/services'
 import { Responsive } from 'responsive-react'
 import { Role } from '@/helpers'
 
@@ -75,11 +76,12 @@ const EventStatusIcon = styled.i`
 
 const LearnerHome = () => {
   const [{ currentUser }] = useAppState()
-  const user = currentUser && currentUser.user
+  const user = currentUser?.user
   const [todayEvents, setTodayEvents] = React.useState(null)
   const [upcomingEvents, setUpcomingEvents] = React.useState(null)
   const [joinedCourses, setJoinedCourses] = React.useState([])
   const [programs, setPrograms] = React.useState([])
+  const [activities, setActivities] = React.useState([])
   const isLearner = user.role === Role.Learner
 
   React.useEffect(() => {
@@ -99,6 +101,13 @@ const LearnerHome = () => {
           </div>
         )
       })
+
+    activityService
+      .getAllByLearner(user.employeeId, user.userId, user.organizationId)
+      .then(response => {
+        setActivities(response)
+      })
+      .catch(error => {})
   }, [])
 
   const getJoinedCourses = () => {
@@ -135,44 +144,67 @@ const LearnerHome = () => {
     (user && (
       <React.Fragment>
         <Container className="learners-home">
-          <Row className="flex-column">
+          <Row className="flex-column mb-5 ml-2">
             <Responsive displayIn={['laptop']}>
               <HeaderMain title={`Hello, ${user.fullName}`} className=" mt-4" />
             </Responsive>
             <Responsive displayIn={['mobile']}>
-              <h5 className="mb-4 mt-4">{`Hello, ${user.fullName}`}</h5>
+              <h5 className="mb-5 mt-4">{`Hello, ${user.fullName}`}</h5>
             </Responsive>
-            <br />
-            <HeaderMain title="My Courses" className="my-4" />
-            <Row className="mb-4">
-              <Col className="col-3">
-                <Typeahead
-                  clearButton
-                  id="programs"
-                  labelKey="name"
-                  options={programs}
-                  placeholder="Program..."
-                  onChange={filterCourses}
-                />
-              </Col>
-            </Row>
-            <CardColumns>
-              {joinedCourses
-                .sort((a, b) => a.name < b.name)
-                .map(course => (
-                  <CourseCard
-                    key={course.courseId}
-                    course={course}
-                    onLaunch={handleLaunch}
-                    joinedCourses={joinedCourses.map(
-                      ({ courseId }) => courseId
-                    )}
-                    isLearner={isLearner}
-                  />
-                ))}
-            </CardColumns>
+            {/* <HeaderMain title="My Courses" className="my-4" /> */}
           </Row>
-          <br />
+          <UncontrolledTabs initialActiveTabId="courses">
+            <Nav pills className="mb-4 flex-column flex-md-row mt-4 mt-lg-0">
+              <NavItem>
+                <UncontrolledTabs.NavLink tabId="courses">
+                  Courses
+                </UncontrolledTabs.NavLink>
+              </NavItem>
+              <NavItem>
+                <UncontrolledTabs.NavLink tabId="activities">
+                  Activities
+                </UncontrolledTabs.NavLink>
+              </NavItem>
+            </Nav>
+            <UncontrolledTabs.TabContent>
+              <TabPane tabId="courses">
+                <Row>
+                  <Col className="col-3">
+                    <Typeahead
+                      clearButton
+                      id="programs"
+                      labelKey="name"
+                      options={programs}
+                      placeholder="Program..."
+                      onChange={filterCourses}
+                    />
+                  </Col>
+                </Row>
+                <CardColumns className="mt-3">
+                  {joinedCourses
+                    .sort((a, b) => a.name < b.name)
+                    .map(course => (
+                      <CourseCard
+                        key={course.courseId}
+                        course={course}
+                        onLaunch={handleLaunch}
+                        joinedCourses={joinedCourses.map(
+                          ({ courseId }) => courseId
+                        )}
+                        isLearner={isLearner}
+                      />
+                    ))}
+                </CardColumns>
+              </TabPane>
+              <TabPane tabId="activities">
+                <CardColumns className="mt-3">
+                  {activities.map(activity => (
+                    <ActivityCard activity={activity} />
+                  ))}
+                </CardColumns>
+              </TabPane>
+            </UncontrolledTabs.TabContent>
+          </UncontrolledTabs>
           <Row>
             <Col lg={4}>
               {todayEvents && (

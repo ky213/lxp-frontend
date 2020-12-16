@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import classNames from 'classnames'
+import { isNil } from 'lodash'
 import { hot } from 'react-hot-loader'
 
 import {
   Card,
+  CardHeader,
   Media,
   Avatar,
   Badge,
@@ -92,6 +94,8 @@ const PointsForm = ({ reply, setReplyPoints, activityStatus }) => {
 }
 
 const ActivityReplyLeft = props => {
+  const [selectedTab, setSelectedTab] = useState('content')
+
   const handleDeleteReply = e => {
     e.preventDefault()
     if (confirm('Are you sure you want to delete this reply?')) {
@@ -100,16 +104,47 @@ const ActivityReplyLeft = props => {
   }
 
   return (
-    <React.Fragment>
-      <Media className="mb-2">
-        <Media left className="mr-3">
-          <Avatar.Image
-            size="md"
-            src={props.reply && props.reply.avatar}
-            className="mr-2"
-          />
-        </Media>
-        <Media body style={{ 'overflow-x': 'auto' }}>
+    <Media className="mb-2">
+      <Media left className="mr-3">
+        <Avatar.Image
+          size="md"
+          src={props.reply && props.reply.avatar}
+          className="mr-2"
+        />
+      </Media>
+      <Media body style={{ 'overflow-x': 'auto' }}>
+        <CardHeader className="bg-white border-0">
+          <ul className="nav nav-tabs card-header-tabs">
+            <li className="nav-item" onClick={() => setSelectedTab('content')}>
+              <a
+                className={classNames('nav-link', {
+                  active: selectedTab === 'content',
+                })}
+                href="#"
+              >
+                <small>
+                  <i className="fa fa-pencil mr-2"></i> Content
+                </small>
+              </a>
+            </li>
+            <li
+              className="nav-item"
+              onClick={() => setSelectedTab('attachements')}
+            >
+              <a
+                className={classNames('nav-link', {
+                  active: selectedTab === 'attachements',
+                })}
+                href="#"
+              >
+                <small>
+                  <i className="fa fa-plus mr-2"></i> Attachements
+                </small>
+              </a>
+            </li>
+          </ul>
+        </CardHeader>
+        {selectedTab === 'content' && (
           <Card
             body
             className={`mb-2 ${props.cardClassName}`}
@@ -120,7 +155,6 @@ const ActivityReplyLeft = props => {
               setReplyPoints={props.setReplyPoints}
               activityStatus={props.activityStatus}
             />
-
             <p className="mb-0 mt-2">
               {props.reply?.text}
 
@@ -140,16 +174,25 @@ const ActivityReplyLeft = props => {
                 )}
             </p>
           </Card>
-          <div className="mb-2">
-            <span className="text-inverse mr-2">{props.reply?.learner}</span>
-            <span className="small">
-              {props.reply?.modifiedAt &&
-                moment(props.reply.modifiedAt).format('LLLL')}
-            </span>
-          </div>
-        </Media>
+        )}
+        {selectedTab === 'attachements' && (
+          <Card
+            body
+            className={`mb-2 ${props.cardClassName}`}
+            style={{ position: 'relative' }}
+          >
+            att
+          </Card>
+        )}
+        <div className="mb-2">
+          <span className="text-inverse mr-2">{props.reply?.learner}</span>
+          <span className="small">
+            {props.reply?.modifiedAt &&
+              moment(props.reply.modifiedAt).format('LLLL')}
+          </span>
+        </div>
       </Media>
-    </React.Fragment>
+    </Media>
   )
 }
 

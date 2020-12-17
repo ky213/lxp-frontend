@@ -1,0 +1,95 @@
+.main{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter';
+}
+.block{
+    width: calc(100% - 20px);
+    border-radius: 2.5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    background-color: white;
+}
+.infoBlock{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+.infoBlock p{
+    color: #3d3d3d;
+    font-size: 14px;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+.infoBlock h3{
+    color: #3d3d3d;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+.infoBlock label{
+    color: #757575;
+    font-size: 14px;
+}
+.infoBlock span{
+    color: #42a678;
+    opacity: 1;
+}
+
+.programs{
+    padding-bottom: 10px;
+}
+.programsHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.programsHeader h4{
+    margin-block-end: 0;
+    margin-block-start: 0;
+    color: #3d3d3d;
+}
+.programsHeader a{
+    text-decoration: none;
+    color: #3d3d3d;
+    font-size: 14px;
+    font-weight: 500;
+}
+.programsHeader a:hover{
+    text-decoration: underline;
+}
+.progressBlock{
+    display: flex;
+    flex-direction: column;
+}
+.progressBlock span{
+    font-size: 12px;
+    color: #3d3d3d;
+    font-weight: 700;
+    margin-left: 7px;
+}
+.progressContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.progressBlock label{
+    color: #757575;
+    font-size: 14px;
+    margin-top: 8px;
+}
+.progressContainer progress{
+    height: 30px;
+    width: 83%;
+}
+.block h4{
+    margin-block-end: 0;
+    margin-block-start: 0;
+    color: #3d3d3d;
+}
+.stats{
+    height: 181px;
+}

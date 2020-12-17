@@ -97,8 +97,10 @@ const PointsForm = ({ reply, setReplyPoints, activityStatus }) => {
 
 const ActivityReplyLeft = props => {
   const [selectedTab, setSelectedTab] = useState('content')
-  const [files, setFiles] = useState([])
-  const [urls, setUrls] = useState([])
+  const [files, setFiles] = useState(props.reply?.activitiesReplyFiles || [])
+  const [urls, setUrls] = useState(
+    props.reply?.activitiesReplyLinks?.filter(l => l?.url?.length > 0) || []
+  )
 
   const { selectedActivity } = props
 
@@ -114,6 +116,7 @@ const ActivityReplyLeft = props => {
       ...file,
       activityId: selectedActivity.activityId,
       status: 'uploaded',
+      activityReplyId: props.reply.activityReplyId,
     }
 
     activityService
@@ -177,7 +180,11 @@ const ActivityReplyLeft = props => {
   }
 
   const handleAddLink = async url => {
-    let link = { url: url, activityId: selectedActivity.activityId }
+    let link = {
+      url: url,
+      activityId: selectedActivity.activityId,
+      activityReplyId: props.reply.activityReplyId,
+    }
 
     if (url)
       activityService

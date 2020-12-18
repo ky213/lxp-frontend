@@ -3,11 +3,15 @@ import thunkMiddleWare from 'redux-thunk';
 import multi from 'redux-multi';
 import userReducer from './userReducer';
 import commonReducer from './commonReducer';
+import coursesReducer from './coursesReducer';
+import activitiesReducer from './activitiesReducer';
 
 
 let reducers = combineReducers({
     user: userReducer,
-    common: commonReducer
+    common: commonReducer,
+    courses: coursesReducer,
+    activities: activitiesReducer
 });
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleWare, multi));

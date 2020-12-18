@@ -8,10 +8,26 @@ const Home = (props) => {
     return(
         <div className={classes.main}>
             <div className={classes.container}>
-                <Statistic user={props.user}/>
-                <HomeCourses/>
-                <HomeActivities/>
+                <div className={classes.leftSide}>
+                    <div className={classes.containerLeft}>
+                        <div className={classes.statistic}>
+                            <Statistic user={props.user}/>
+                        </div>
+                        <div className={classes.courses}>
+                            <HomeCourses courses={props.courses}/>
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.rightSide}>
+                    <div className={classes.containerRight}>
+                        <div className={classes.activities}>
+                            <HomeActivities activities={props.activities}/>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
+            
             
         </div>
     );

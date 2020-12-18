@@ -35,15 +35,10 @@ export const login = (email, password) => async (dispatch) => {
     try{
         let response = await userApi.login(email, password);
         localStorage.setItem('usertoken', response.token);
-        console.log(response);
         dispatch([setUserData(response.user), setIsAuth(true), setIsFetching(false)]);
     }catch(err){
         dispatch(setIsFetching(false));
     }
-}
-
-export const getProfile = (token) => async (dispatch) => {
-    
 }
 
 

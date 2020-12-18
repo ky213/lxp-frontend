@@ -1,11 +1,83 @@
 .main{
-    width: calc(100% - 120px);
-    height: calc(100vh - 210px);
-    padding: 60px;
+    width: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
 }
 .container{
     display: flex;
-    width: 100%;
+    width: 1440px;
+    justify-content: center;
+}
+.leftSide{
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.rightSide{
+    background-color: #f6f6f6;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 50px;
+    height: max-content;
+}
+.containerLeft{
+    display: flex;
+}
+.courses{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+@media screen and (max-width: 1440px){
+    .container{
+        width: 1280px;
+    }
+}
+@media screen and (max-width: 1279px){
+    .container{
+        width: 1024px;
+        flex-direction: column;
+    }
+    .containerLeft{
+        width: 100%;
+        justify-content: space-between;
+    }
+    .main{
+        height: max-content;
+    }
+    .statistic{
+        width: 35%;
+    }
+    .courses{
+        margin-left: 50px;
+        margin-right: 0px;
+        width: 60%;
+    }
+}
+@media screen and (max-width: 1024px){
+    .containerLeft{
+        width: 100%;
+        padding-left: 32px;
+        justify-content: space-between;
+        padding-right: 32px;
+    }
+}
+@media screen and (max-width: 1000px){
+    .container{
+        width: 768px;
+    }
+}
+
+@media screen and (max-width: 610px){
+    .statistic{
+        width: 100%;
+    }
+    .containerLeft{
+        flex-direction: column;
+    }
+    .courses{
+        width: 100%;
+        margin-left: 0;
+    }
 }

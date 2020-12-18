@@ -4,12 +4,12 @@ import Preloader from '../Common/Preloader/Preloader';
 import Home from './Home';
 
 const HomeContainer = (props) => {
-    //FOR TEST HARDCODE USER DATA
-
     return(
         <>
             {props.isFetching && <Preloader/>}
-            {props.isAuth && <Home user={props.user}/>}
+            {props.isAuth && <Home user={props.user}
+                                    courses={props.courses}
+                                    activities={props.activities}/>}
         </>
         
     );
@@ -18,9 +18,9 @@ const HomeContainer = (props) => {
 let mapStateToProps = (state) => ({
     isFetching: state.common.isFetching,
     user: state.user.user,
-    isAuth: state.user.isAuth
+    isAuth: state.user.isAuth,
+    courses: state.courses.courses,
+    activities: state.activities.activities
 });
 
-export default connect(mapStateToProps, {
-    
-})(HomeContainer);
+export default connect(mapStateToProps, {})(HomeContainer);

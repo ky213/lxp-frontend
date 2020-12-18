@@ -1,7 +1,7 @@
 .main{
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 100%;
 }
 .activitiesHeader{
     display: flex;
@@ -29,4 +29,10 @@
 }
 .activitiesHeader a:hover{
     text-decoration: underline;
+}
+.itemsList{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 18px;
 }

@@ -1,7 +1,7 @@
 .main{
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 542px;
 }
 .coursesHeader{
     display: flex;
@@ -29,4 +29,30 @@
 }
 .coursesHeader a:hover{
     text-decoration: underline;
+}
+.itemsList{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+
+
+@media screen and (max-width: 1440px){
+    .main{
+        width: 500px;
+    }
+}
+@media screen and (max-width: 1279px){
+    .main{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 730px){
+    .itemsList{
+        overflow-x: scroll;
+        max-height: 550px;
+    }
 }

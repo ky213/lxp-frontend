@@ -1,14 +1,15 @@
 .main{
-    width: 250px;
+    width: 261px;
     display: flex;
     flex-direction: column;
     font-family: 'Inter';
+    margin-left: 45px;
 }
 .block{
-    width: calc(100% - 20px);
+    width: calc(100% - 28px);
     border-radius: 2.5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-    padding: 10px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 14px;
     padding-bottom: 0;
     margin-bottom: 20px;
     background-color: white;
@@ -17,6 +18,18 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+.withoutPadding{
+    padding: 0;
+    padding-top: 16px;
+    width: 100%;
+}
+.line{
+    background-color: #efefef;
+    height: 1px;
+    border: none;
 }
 .infoBlock p{
     color: #3d3d3d;
@@ -39,7 +52,7 @@
 }
 
 .programs{
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 .programsHeader{
     display: flex;
@@ -67,9 +80,9 @@
 }
 .progressBlock span{
     font-size: 12px;
-    color: #3d3d3d;
+    color: #6e798c;
     font-weight: 700;
-    margin-left: 7px;
+    margin-left: 13px;
 }
 .progressContainer{
     display: flex;
@@ -80,10 +93,7 @@
     color: #757575;
     font-size: 14px;
     margin-top: 8px;
-}
-.progressContainer progress{
-    height: 30px;
-    width: 83%;
+    margin-bottom: 6px;
 }
 .block h4{
     margin-block-end: 0;
@@ -92,4 +102,16 @@
 }
 .stats{
     height: 181px;
+}
+
+@media screen and (max-width: 1440px){
+    .main{
+        width: 240px;
+    }
+}
+@media screen and (max-width: 1279px){
+    .main{
+        width: 100%;
+        margin-left: 0;
+    }
 }

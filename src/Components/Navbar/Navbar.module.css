@@ -1,13 +1,20 @@
 .main{
     width: calc(100% - 48px);
-    height: 90px;
+    height: 100px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding-left: 24px;
     padding-right: 24px;
-    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.04), inset 0 1px 0 0 #5bb98e;
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.04), inset 0 1px 0 0 #5bb98e;
     background-color: white;
+}
+.container{
+    width: 1440px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: calc(100% - 1px);
 }
 .leftSideNav{
     display: flex;
@@ -147,4 +154,49 @@
 .userMenu span{
     margin-left: 5px;
     color: #3d3d3d;
+}
+.burger{
+    display: none;
+}
+
+@media screen and (max-width: 1440px){
+    .container{
+        width: 1280px;
+    }
+}
+@media screen and (max-width: 1279px){
+    .container{
+        width: 1024px;
+    }
+    .leftSideNav{
+        width: max-content;
+    }
+    .links{
+        margin-left: 10%;
+    }
+}
+@media screen and (max-width: 1023px){
+    .links{
+        display: none;
+    }
+    .burger{
+        display: block;
+        margin-left: 10px;
+    }
+}
+@media screen and (max-width: 414px){
+    .userMenu{
+        padding-right: 0;
+    }
+    .userMenu span{
+        display: none;
+    }
+}
+@media screen and (max-width: 374px){
+    .logo{
+        display: none;
+    }
+    .searchBut{
+        margin-right: 18px;
+    }
 }

@@ -1,0 +1,322 @@
+.main{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+}
+.container{
+    width: 1130px;
+    display: flex;
+
+}
+
+.leftSide{
+    width: max-content;
+    margin-right: 30px;
+}
+.block{
+    width: calc(100% - 28px);
+    border-radius: 2.5px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 14px;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    background-color: white;
+}
+.infoBlock{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+.withoutPadding{
+    padding: 0;
+    padding-top: 16px;
+    padding-bottom: 3px;
+    width: 100%;
+}
+.line{
+    background-color: #efefef;
+    height: 1px;
+    border: none;
+}
+.infoBlock p{
+    color: #3d3d3d;
+    font-size: 14px;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+.infoBlock h3{
+    color: #3d3d3d;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+.infoBlock label{
+    color: #757575;
+    font-size: 14px;
+}
+.infoBlock span{
+    color: #42a678;
+    opacity: 1;
+}
+
+.programs{
+    padding-bottom: 15px;
+}
+.programsHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.programsHeader h4{
+    margin-block-end: 0;
+    margin-block-start: 0;
+    color: #3d3d3d;
+}
+.programsHeader a{
+    text-decoration: none;
+    color: #3d3d3d;
+    font-size: 14px;
+    font-weight: 500;
+}
+.programsHeader a:hover{
+    text-decoration: underline;
+}
+.progressBlock{
+    display: flex;
+    flex-direction: column;
+}
+.progressBlock span{
+    font-size: 12px;
+    color: #6e798c;
+    font-weight: 700;
+    margin-left: 13px;
+}
+.progressContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.progressBlock label{
+    color: #757575;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+.block h4{
+    margin-block-end: 0;
+    margin-block-start: 0;
+    color: #3d3d3d;
+}
+.stats{
+    height: 181px;
+}
+
+
+.rightSide{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 280px);
+}
+.tabHeader{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.tabHeader h1{
+    font-size: 24px;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+.tabHeader span{
+    padding: 4px 24px;
+    border-radius: 17.5px;
+    background-color: rgba(102, 113, 171, 0.2);
+    color: #3d3d3d;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+.activity{
+    width: calc(100% - 32px);
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    margin-bottom: 16px;
+}
+.activityHeader{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.fullPath{
+    color: #747474;
+    font-weight: bold;
+    font-size: 14px;
+}
+.path{
+    font-weight: normal
+}
+.headerRightSide{
+    display: flex;
+}
+.headerRightSide button{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+.headerRightSide button i{
+    margin-right: 8px;
+}
+.headerRightSide button:hover{
+    text-decoration: underline;
+}
+.editBut{
+    color: #747474;
+}
+.removeBut{
+    color: #e02929;
+}
+.activity h2{
+    font-size: 20px;
+    margin-block-start: 15px;
+    margin-block-end: 20px;
+}
+.activityFoot{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.activityProgressBlock{
+    width: 30%;
+    display: flex;
+    align-items: center;
+}
+.activityProgressBlock span{
+    font-size: 13px;
+    font-weight: 600;
+    color: #6e798c;
+    margin-left: 13px;
+    position: relative;
+    top: -2px;
+}
+.activityFootRight{
+    display: flex;
+    align-items: center;
+}
+.activityFootRight span{
+    color: #747474;
+    font-size: 12px;
+    font-weight: 400;
+}
+.mark{
+    padding: 6px 20px;
+    background-color: #42a678;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: 'Inter';
+    margin-left: 8px;
+}
+.videoBlock{
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    width: calc(100% - 24px);
+    height: calc(490px - 24px);
+    background-color: white;
+    padding: 12px;
+}
+.video{
+    border-radius: 5px;
+    background-color: #cdd8ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.video button{
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+.video i{
+    font-size: 75px;
+    color: #6e7b8c;
+}
+
+@media screen and (max-width: 1440px){
+    
+}
+@media screen and (max-width: 1279px){
+    .container{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+@media screen and (max-width: 1024px){
+    .container{
+        flex-direction: column;
+    }
+    .leftSide{
+        width: 100%;
+    }
+    .rightSide{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 568px){
+    .activity h2{
+        font-size: 16px;
+    }
+    .mark{
+        padding: 4px 16px;
+    }
+    .activityHeader{
+        flex-direction: column;
+    }
+    .headerRightSide{
+        align-items: center;
+    }
+    .headerRightSide button{
+        margin-top: 10px;
+    }
+    .activityFoot{
+        flex-direction: column;
+    }
+    .activityProgressBlock{
+        width: 100%;
+        margin-bottom: 25px;
+    }
+    .activityFootRight{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .videoBlock{
+        height: 250px;
+        margin-bottom: 20px;
+    }
+}
+@media screen and (max-width: 320px){
+    .tabHeader h1{
+        font-size: 20px;
+    }
+}

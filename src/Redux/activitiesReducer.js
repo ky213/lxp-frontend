@@ -1,3 +1,5 @@
+const SET_CURRENT_ACTIVITY = 'SET_CURRENT_ACTIVITY';
+
 let initialState = {
     activities: [
         {
@@ -48,14 +50,22 @@ let initialState = {
             task: 'Research the top 3 security threats',
             progress: 78
         },   
-    ]
+    ],
+    currentActivity: null
 }
 
 const activitiesReducer = (state = initialState, action) => {
     switch(action.type){
+        case SET_CURRENT_ACTIVITY: {
+            return { ...state, currentActivity: action.currentActivity }
+        }
         default:
             return state;
     }
 }
+
+export const setCurrentActivity = (currentActivity) => ({
+    type: SET_CURRENT_ACTIVITY, currentActivity
+});
 
 export default activitiesReducer;

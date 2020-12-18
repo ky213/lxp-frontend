@@ -78,7 +78,7 @@ const AssignActivity = ({
         try {
           const data = await courseService.getAll(
             selectedOrganization.organizationId,
-            currentProgramId || selectedProgram[0]?.programId,
+            selectedProgram[0]?.programId,
             1
           )
 
@@ -97,7 +97,7 @@ const AssignActivity = ({
               null,
               null,
               selectedOrganization.organizationId,
-              currentProgramId || selectedProgram[0]?.programId
+              selectedProgram[0]?.programId
             )
             setUsers(
               learners.users.map(usr => ({

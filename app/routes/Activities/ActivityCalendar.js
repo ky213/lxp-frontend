@@ -44,7 +44,7 @@ export const ActivityCalendar = props => {
   const [calendarDate, setCalendarDate] = React.useState(new Date())
   const [userPrograms, setUserPrograms] = React.useState(null)
   const [currentProgramId, setCurrentProgramId] = React.useState(
-    (currentUser && currentUser.user && currentUser.user.programId) || null
+    currentUser.user?.programId || null
   )
 
   React.useEffect(() => {

@@ -6,6 +6,7 @@ import { myreporticon } from '../../Assets/Images/myreport.js';
 import { activitiesicon } from '../../Assets/Images/activities.js';
 import { coursesicon } from '../../Assets/Images/courses.js';
 import { notificationicon } from '../../Assets/Images/notification.js';
+import { homeicon } from '../../Assets/Images/homeicon.js';
 import Burger from './Burger/Burger';
 
 const Navbar = (props) => {
@@ -23,7 +24,7 @@ const Navbar = (props) => {
                     <div className={classes.links}>
                         <div className={classes.menuItem}>
                             <NavLink to="/home" activeClassName={classes.active}>
-                                <i className="fas fa-home"></i>
+                                {homeicon}
                                 Home
                             </NavLink>
                         </div>

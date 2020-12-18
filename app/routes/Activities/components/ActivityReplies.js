@@ -23,6 +23,7 @@ const ActivityReplies = props => {
   const [replies, setReplies] = React.useState(
     props.selectedActivity?.replies || []
   )
+  const [loading, setLoading] = React.useState(false)
   const { destination } = props
 
   useEffect(() => {
@@ -81,6 +82,37 @@ const ActivityReplies = props => {
     if (props.selectedActivity) props.selectedActivity.replies = replies
   }
 
+  const handleEvalute = async () => {
+    const { selectedActivity } = props
+    const finalReplies = selectedActivity.replies
+      .map(reply => {
+        if (!reply.points) reply.points = 0
+        return reply
+      })
+      .filter(reply => reply.employeeId !== selectedActivity.assignedBy)
+
+    const totalPoints = finalReplies.reduce((total, reply) => {
+      return total + reply.points
+    }, 0)
+
+    if (totalPoints > selectedActivity.totalPoints) {
+      alert("Total points can't be greater than activity points")
+      return
+    }
+
+    try {
+      setLoading(true)
+      await activityService.evaluate(selectedActivity.activityId, finalReplies)
+
+      selectedActivity.status = 'Closed'
+      setLoading(false)
+      alert('Activity evaluated successfuly')
+    } catch (error) {
+      setLoading(false)
+      alert('Error evaluating activity')
+    }
+  }
+
   return (
     <React.Fragment>
       <Container>
@@ -95,6 +127,8 @@ const ActivityReplies = props => {
                 <ActivityRepliesHeader
                   selectedActivity={props.selectedActivity}
                   currentUser={props.currentUser}
+                  handleEvalute={handleEvalute}
+                  loading={loading}
                 />
               </CardHeader>
               <CardBody style={{ maxHeight: '50vh', 'overflow-y': 'scroll' }}>
@@ -122,6 +156,7 @@ const ActivityReplies = props => {
                       setReplyPoints={handleSetActivityReplyPoints}
                       selectedActivity={props.selectedActivity}
                       canEvaluate={!isLearner}
+                      loading={loading}
                     />
                   ) : (
                     <ActivityReplyRight

@@ -265,7 +265,7 @@ const ActivityReplyLeft = props => {
             <PointsForm
               reply={props.reply}
               setReplyPoints={props.setReplyPoints}
-              activityStatus={props.activityStatus}
+              activityStatus={selectedActivity.status}
             />
             <p className="mb-0 mt-2">
               {props.reply?.text}

@@ -9,7 +9,7 @@ const Courses = (props) => {
     const [notStarted, setNotStarted] = useState(false);
 
     let courses = props.courses.map(item => {
-        return <CourseItemView item={item} key={item.title + item.id}/>
+        return <CourseItemView item={item} key={item.courseId}/>
     })
 
     return(

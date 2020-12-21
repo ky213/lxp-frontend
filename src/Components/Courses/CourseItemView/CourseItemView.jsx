@@ -6,15 +6,17 @@ const CourseItem = (props) => {
     return(
         <div className={classes.main}>
             <NavLink to={`/courses/${props.item.id}`}>
-                <img src={props.item.img}/>
+                {(props.item.image != "null") ? <img src={props.item.image}/> : <div className={classes.defaultImg}></div>}
                 <div className={classes.itemInfo}>
-                    <label>{props.item.program}</label>
-                    <h2>{props.item.title}</h2>
+                    <label>{props.item.description}</label>
+                    <h2>{props.item.name}</h2>
                     <div className={classes.itemFoot}>
                         <span className={classes.status + " " + 
-                            ((props.item.status === 'In Progress' && classes.inProgress) ||
-                            (props.item.status === 'Completed' && classes.completed))}>{props.item.status}</span>
-                        <span className={classes.time}>{props.item.time}</span>
+                            ((props.item.inProgress && classes.inProgress) ||
+                            (!props.item.inProgress && classes.completed))}>
+                                {((props.item.inProgress && "In Progress") ||
+                                (!props.item.inProgress && "Completed"))}</span>
+                        <span className={classes.time}>{props.item.startingDate ? props.item.startingDate : "Overdue"}</span>
                     </div>
                 </div>
                 

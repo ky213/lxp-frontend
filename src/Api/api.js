@@ -21,3 +21,18 @@ export const userApi = {
         .then(response => response.data);
     }
 }
+
+export const coursesApi = {
+    getCourses(organizationId, page, take){
+        return instance.get(`courses?organizationId=${organizationId}&page=${page}&take=${take}`)
+        .then(response => response.data);
+    }
+}
+
+
+export const activitiesApi = {
+    getActivities(employeeId, userId, organizationId){
+        return instance.get(`activities/byLearner?employeeId=${employeeId}&userId=${userId}&organizationId=${organizationId}`)
+        .then(response => response.data);
+    }
+}

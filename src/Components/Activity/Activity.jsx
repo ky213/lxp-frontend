@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import ProgressBar from '../Common/ProgressBar/ProgressBar';
 import classes from './Activity.module.css';
@@ -6,6 +6,7 @@ import { setCurrentActivity } from '../../Redux/activitiesReducer';
 import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../Common/Preloader/Preloader';
 import { setIsFetching } from '../../Redux/commonReducer';
+import { getActivities } from '../../Redux/activitiesReducer';
 
 
 const Activity = (props) => {
@@ -13,13 +14,33 @@ const Activity = (props) => {
     let heightProgressBar = 16;
 
     useEffect(()=>{
+        props.getActivities(props.user.employeeId, props.user.userId, props.user.orgranizationId);
         let activityId = props.match.params.activityId;
         props.activities.forEach(item => {
-            if(item.id == activityId){
+            if(item.activityId == activityId){
                 props.setCurrentActivity(item);
             }
         });
-    },[]);
+    },[props.activities]);
+
+    const [daysLag, setDaysLag] = useState(0);
+    useEffect(()=>{
+        if(props.activity){
+            const endTime = new Date(props.activity.end);
+            const now = new Date();
+
+            var newDaysLag = Math.ceil(Math.abs(endTime.getTime() - now.getTime()) / (1000 * 3600 * 24));
+            
+            if(endTime >= now) {
+                newDaysLag = newDaysLag + " days left";
+            }else{
+                newDaysLag = newDaysLag + " days ago";
+            }  
+            setDaysLag(newDaysLag);
+        }
+        
+    },[props.activity]);
+    
 
     return(
         <div className={classes.main}>
@@ -81,14 +102,14 @@ const Activity = (props) => {
                                 </button>
                             </div>
                         </div>
-                        <h2>{props.activity.task}</h2>
+                        <h2>{props.activity.name}</h2>
                         <div className={classes.activityFoot}>
                             <div className={classes.activityProgressBlock}>
-                                <ProgressBar width={widthProgressBar} height={heightProgressBar} progress={props.activity.progress}/>
-                                <span>{props.activity.progress}%</span>
+                                <ProgressBar width={widthProgressBar} height={heightProgressBar} progress={props.activity.totalPoints}/>
+                                <span>{props.activity.totalPoints}%</span>
                             </div>
                             <div className={classes.activityFootRight}>
-                                <span>{props.activity.time}</span>
+                                <span>{daysLag}</span>
                                 <button className={classes.mark}>Mark as complete</button>
                             </div>
                         </div>
@@ -118,5 +139,6 @@ let mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     setCurrentActivity,
-    setIsFetching
+    setIsFetching,
+    getActivities
 })(WithUrlDataContainerComponent);

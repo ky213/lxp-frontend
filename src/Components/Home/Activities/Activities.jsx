@@ -8,7 +8,7 @@ const HomeActivities = (props) => {
     let maxActivitiesToView = 6;
     let activities = props.activities.map((item, index) => {
         if(index < maxActivitiesToView){
-            return <ActivityItem item={item}  key={item.task + item.id}/>
+            return <ActivityItem item={item} key={item.activityId}/>
         }
     });
     return(

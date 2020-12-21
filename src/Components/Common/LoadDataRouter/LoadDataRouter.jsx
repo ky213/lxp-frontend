@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { login } from '../../../Redux/userReducer';
 
 const LoadDataRouter = ({Component, isAuth, login}) => {
-    const [email, setEmail] = useState('hello.learner@alwasaet.com');
+    const [email, setEmail] = useState('mais.o@awarnessorg.com');
     const [password, setPassword] = useState('admin');
     useEffect(()=>{
         if(!isAuth){

@@ -8,7 +8,7 @@ const HomeCourses = (props) => {
     let maxCoursesToView = 6;
     let courses = props.courses.map((item, index) => {
         if(index < maxCoursesToView){
-            return <CourseItem item={item} key={item.title + item.id}/>
+            return <CourseItem item={item} key={item.courseId}/>
         }
     });
     return(

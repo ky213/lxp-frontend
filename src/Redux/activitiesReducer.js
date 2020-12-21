@@ -1,56 +1,11 @@
+import { activitiesApi } from "../Api/api";
+import { setIsFetching } from "./commonReducer";
+
 const SET_CURRENT_ACTIVITY = 'SET_CURRENT_ACTIVITY';
+const SET_ACTIVITIES_DATA = 'SET_ACTIVITIES_DATA';
 
 let initialState = {
-    activities: [
-        {
-            id: 1,
-            program: 'Cybersecurity',
-            status: 'In Progres',
-            time: '3 days left',
-            task: 'Sketching out ideas',
-            progress: 78
-        },
-        {
-            id: 2,
-            program: 'Cybersecurity',
-            status: 'In Progres',
-            time: '3 days left',
-            task: 'Brainstorming session with your work mates',
-            progress: 78
-        },
-        {
-            id: 3,
-            program: 'Cybersecurity',
-            status: 'In Progres',
-            time: '3 days left',
-            task: 'Research the top 3 security threats',
-            progress: 78
-        },
-        {
-            id: 4,
-            program: 'Cybersecurity',
-            status: 'In Progres',
-            time: '3 days left',
-            task: 'Sketching out ideas',
-            progress: 78
-        },
-        {
-            id: 5,
-            program: 'Cybersecurity',
-            status: 'In Progres',
-            time: '3 days left',
-            task: 'Brainstorming session with your work mates',
-            progress: 78
-        },
-        {
-            id: 6,
-            program: 'Cybersecurity',
-            status: 'In Progres',
-            time: '3 days left',
-            task: 'Research the top 3 security threats',
-            progress: 78
-        },   
-    ],
+    activities: [],
     currentActivity: null
 }
 
@@ -58,6 +13,9 @@ const activitiesReducer = (state = initialState, action) => {
     switch(action.type){
         case SET_CURRENT_ACTIVITY: {
             return { ...state, currentActivity: action.currentActivity }
+        }
+        case SET_ACTIVITIES_DATA: {
+            return { ...state, activities: action.activities }
         }
         default:
             return state;
@@ -67,5 +25,18 @@ const activitiesReducer = (state = initialState, action) => {
 export const setCurrentActivity = (currentActivity) => ({
     type: SET_CURRENT_ACTIVITY, currentActivity
 });
+export const setActivitiesData = (activities) => ({
+    type: SET_ACTIVITIES_DATA, activities
+});
+
+export const getActivities = (employeeId, userId, organizationId) => async (dispatch) => {
+    dispatch(setIsFetching(true));
+    try{
+        let response = await activitiesApi.getActivities(employeeId, userId, organizationId);
+        dispatch([setActivitiesData(response), setIsFetching(false)]);
+    }catch(err){
+        dispatch(setIsFetching(false));
+    }
+}
 
 export default activitiesReducer;

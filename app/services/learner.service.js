@@ -1,5 +1,6 @@
 import config from '@/config'
 import { authHeader, handleResponse, buildQuery } from '@/helpers'
+import { authenticationService } from '@/services';
 
 const routePrefix = `${config.apiUrl}/learners`
 
@@ -50,6 +51,8 @@ function update(user, organizationId) {
   return fetch(`${routePrefix}/update`, requestOptions)
     .then(handleResponse)
     .then(data => {
+      if(data && data.isActive == false)
+        authenticationService.logout();
       return data
     })
 }

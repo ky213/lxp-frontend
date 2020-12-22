@@ -1,5 +1,6 @@
 import config from '@/config';
 import { authHeader, handleResponse, buildQuery } from '@/helpers';
+import { authenticationService } from '@/services';
 
 const routePrefix = `${config.apiUrl}/cm`;
 
@@ -51,7 +52,10 @@ function update(user, organizationId) {
     .then(handleResponse)
     .then((data) => {
       {
-        return data;
+        if(data && data.isActive == false)
+          authenticationService.logout();
+        
+        return data
       }
     });
 }

@@ -15,7 +15,7 @@ export const authenticationService = {
     return currentUserSubject.value
   },
   forgotPassowrd,
-  resetPassowrd,
+  resetPassowrd
 }
 
 function loginWithToken(token) {

@@ -29,7 +29,7 @@ import LockScreen from './Pages/LockScreen'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Success from './Pages/Success'
-
+import SpeechRecognition from './Pages/SpeechRecognition'
 // ----------- Layout Imports ---------------
 import { DefaultNavbar } from './../layout/components/DefaultNavbar'
 import { DefaultSidebar } from './../layout/components/DefaultSidebar'
@@ -248,6 +248,7 @@ export const RoutedContent = props => {
       <Route component={Login} path="/pages/login" />
       <Route component={Register} path="/pages/register" />
       <Route component={Success} path="/pages/success" />
+      <Route component={SpeechRecognition} path="/pages/speech-recognition" />
 
       {/*    404    */}
       <Redirect to="/pages/error-404" />

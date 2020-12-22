@@ -19,3 +19,5 @@ export * from './reporting.service';
 export * from './group_type.service';
 export * from './groups.service';
 export * from './dashboard.service';
+export * from './competency_type';
+export * from './competencies';

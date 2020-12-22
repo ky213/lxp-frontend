@@ -52,9 +52,6 @@ function update(user, organizationId) {
     .then(handleResponse)
     .then((data) => {
       {
-        if(data && data.isActive == false)
-          authenticationService.logout();
-        
         return data
       }
     });

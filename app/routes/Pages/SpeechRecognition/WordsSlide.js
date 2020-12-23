@@ -4,13 +4,34 @@ import { Carousel, CarouselItem, CarouselControl, Card } from 'reactstrap'
 
 const items = [
   {
-    text: 'heelo',
+    text: 'مرحبا',
   },
   {
-    text: 'hi',
+    text: 'شجرة',
   },
   {
-    text: 'kool',
+    text: 'الماء',
+  },
+  {
+    text: 'القمر',
+  },
+  {
+    text: 'سيارة',
+  },
+  {
+    text: 'هاتف',
+  },
+  {
+    text: 'خبز',
+  },
+  {
+    text: 'نظارات',
+  },
+  {
+    text: 'منزل',
+  },
+  {
+    text: 'باب',
   },
 ]
 

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { useReactMediaRecorder } from 'react-media-recorder'
+import { isNil } from 'lodash'
 
+import WordsSlide from './WordsSlide'
 import {
   EmptyLayout,
   Container,
@@ -12,7 +14,6 @@ import {
   Card,
   Loading,
 } from '@/components'
-import { isNil } from 'lodash'
 
 const SpeechRecognition = () => {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -27,6 +28,10 @@ const SpeechRecognition = () => {
     error,
   } = useReactMediaRecorder({ audio: true })
   const recording = status === 'recording'
+
+  useEffect(() => {
+    if (status === 'stopped') handleRecognition(mediaBlobUrl)
+  }, [status])
 
   if (error) setErrorMessage(error)
 
@@ -82,10 +87,6 @@ const SpeechRecognition = () => {
     }
   }
 
-  useEffect(() => {
-    if (status === 'stopped') handleRecognition(mediaBlobUrl)
-  }, [status])
-
   return (
     <EmptyLayout className="bg-white">
       <Container className="w-50 mt-5">
@@ -137,19 +138,21 @@ const SpeechRecognition = () => {
                         }`}
                       ></i>
                       <span>
-                        {recording ? 'Stop Recording' : 'Start Recording'}
+                        {recording ? ' Stop Recording' : ' Start Recording'}
                       </span>
                     </>
                   )}
                 </Button>
               </Col>
-              <audio
-                src={mediaBlobUrl}
-                controls
-                autoplay
-                loop
-                style={{ maxHeight: '40px' }}
-              />
+              <Col>
+                <audio
+                  src={mediaBlobUrl}
+                  controls
+                  autoplay
+                  loop
+                  style={{ maxHeight: '40px', width: '100%' }}
+                />
+              </Col>
             </Row>
           </Col>
         </Row>

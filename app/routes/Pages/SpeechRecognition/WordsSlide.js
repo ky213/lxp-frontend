@@ -1,0 +1,73 @@
+import React, { useState } from 'react'
+import { hot } from 'react-hot-loader'
+import { Carousel, CarouselItem, CarouselControl, Card } from 'reactstrap'
+
+const items = [
+  {
+    text: 'heelo',
+  },
+  {
+    text: 'hi',
+  },
+  {
+    text: 'kool',
+  },
+]
+
+const WordsSlide = props => {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [animating, setAnimating] = useState(false)
+
+  const next = () => {
+    if (animating) return
+    const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1
+    setActiveIndex(nextIndex)
+  }
+
+  const previous = () => {
+    if (animating) return
+    const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1
+    setActiveIndex(nextIndex)
+  }
+
+  const slides = items.map(item => {
+    return (
+      <CarouselItem
+        onExiting={() => setAnimating(true)}
+        onExited={() => setAnimating(false)}
+        key={item.text}
+        tag="h1"
+      >
+        <Card className="p-5" style={{ height: '300px' }}>
+          <h1 className="text-center mt-5">{item.text}</h1>
+        </Card>
+      </CarouselItem>
+    )
+  })
+
+  return (
+    <Carousel
+      activeIndex={activeIndex}
+      next={next}
+      previous={previous}
+      autoPlay={false}
+      interval={false}
+    >
+      {slides}
+      <CarouselControl
+        direction="prev"
+        directionText="Previous"
+        onClickHandler={previous}
+        className="text-danger bg-info h-50 m-auto"
+      />
+      <CarouselControl
+        direction="next"
+        directionText="Next"
+        onClickHandler={next}
+        className="text-danger bg-info h-50 m-auto"
+      />
+    </Carousel>
+  )
+}
+
+export default hot(module)(WordsSlide)

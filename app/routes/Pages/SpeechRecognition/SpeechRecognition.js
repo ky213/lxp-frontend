@@ -105,9 +105,10 @@ const SpeechRecognition = () => {
         </Row>
         <Row>
           <Col className="h-50  mb-4 text-right" style={{ height: '200px' }}>
-            <Card className="p-5" style={{ height: '200px' }}>
-              <h1 className="text-center"> مرحبا </h1>
-            </Card>
+            {/* <Card className="p-5" style={{ height: '200px' }}> */}
+            {/* <h1 className="text-center"> مرحبا </h1> */}
+            {/* </Card> */}
+            <WordsSlide />
           </Col>
         </Row>
         <Row>

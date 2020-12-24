@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { Carousel, CarouselItem, CarouselControl, Card } from 'reactstrap'
 
-const WordsSlide = ({ setCurrentWord }) => {
+const WordsSlide = ({ setCurrentWord, answerStatus, setAnswerStatus }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [animating, setAnimating] = useState(false)
   const items = [
@@ -40,6 +40,7 @@ const WordsSlide = ({ setCurrentWord }) => {
 
   useEffect(() => {
     setCurrentWord(items[activeIndex].text)
+    if (answerStatus) setAnswerStatus(null)
   }, [activeIndex])
 
   const next = () => {

@@ -19,6 +19,7 @@ const SpeechRecognition = () => {
   const [recognizing, setRecognizing] = useState(false)
   const [recognitionResult, setRecognitionResult] = useState(null)
   const [currentWord, setCurrentWord] = useState('')
+  const [answerStatus, setAnswerStatus] = useState(null)
   const {
     status,
     startRecording,
@@ -31,9 +32,8 @@ const SpeechRecognition = () => {
 
   useEffect(() => {
     if (status === 'stopped') handleRecognition(mediaBlobUrl)
-  }, [status])
-
-  if (error) setErrorMessage(error)
+    if (error) setErrorMessage(error)
+  }, [status, error])
 
   const getSpeechRecognition = async data => {
     try {
@@ -104,8 +104,30 @@ const SpeechRecognition = () => {
           </Col>
         </Row>
         <Row>
-          <Col className="h-50  mb-4 text-right" style={{ height: '200px' }}>
-            <WordsSlide setCurrentWord={setCurrentWord} />
+          <Col
+            className="h-50 my-4 position-relative"
+            style={{ height: '200px' }}
+          >
+            <WordsSlide
+              setCurrentWord={setCurrentWord}
+              setAnswerStatus={setAnswerStatus}
+              answerStatus={answerStatus}
+            />
+            <h3
+              className="position-absolute text-center w-100 "
+              style={{ bottom: '30px', left: '0' }}
+            >
+              {answerStatus === 'correct' && (
+                <span className="text-info">
+                  <i className={`fa fa-fw fa-check-circle`}></i>Correct
+                </span>
+              )}
+              {answerStatus === 'wrong' && (
+                <span className="text-danger">
+                  <i className={`fa fa-fw fa-times-circle`}></i>Wrong
+                </span>
+              )}
+            </h3>
           </Col>
         </Row>
         <Row>

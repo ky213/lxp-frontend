@@ -324,6 +324,7 @@ const LogActivity = ({
                 participationLevel: participationLevel,
                 supervisors: supervisors,
                 isPublic,
+                organizationId: selectedOrganization.organizationId
               }
 
               await activityService.updateLogActivity(activity)
@@ -336,6 +337,7 @@ const LogActivity = ({
                     currentUser.user.programId) ||
                   null,
                 name: activityName,
+                organizationId: selectedOrganization.organizationId,
                 start,
                 end,
                 activityTypeId: activityType,

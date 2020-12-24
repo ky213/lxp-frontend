@@ -26,14 +26,14 @@ const SpeechRecognition = () => {
     stopRecording,
     clearBlobUrl,
     mediaBlobUrl,
-    error,
+    error: recorderError,
   } = useReactMediaRecorder({ audio: true })
   const recording = status === 'recording'
 
   useEffect(() => {
     if (status === 'stopped') handleRecognition(mediaBlobUrl)
-    if (error) setErrorMessage(error)
-  }, [status, error])
+    if (recorderError) setErrorMessage(recorderError)
+  }, [status, recorderError])
 
   const getSpeechRecognition = async data => {
     try {

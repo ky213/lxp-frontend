@@ -1,43 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { Carousel, CarouselItem, CarouselControl, Card } from 'reactstrap'
 
-const items = [
-  {
-    text: 'مرحبا',
-  },
-  {
-    text: 'شجرة',
-  },
-  {
-    text: 'الماء',
-  },
-  {
-    text: 'القمر',
-  },
-  {
-    text: 'سيارة',
-  },
-  {
-    text: 'هاتف',
-  },
-  {
-    text: 'خبز',
-  },
-  {
-    text: 'نظارات',
-  },
-  {
-    text: 'منزل',
-  },
-  {
-    text: 'باب',
-  },
-]
-
-const WordsSlide = props => {
+const WordsSlide = ({ setCurrentWord }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [animating, setAnimating] = useState(false)
+  const items = [
+    {
+      text: 'مرحبا',
+    },
+    {
+      text: 'شجرة',
+    },
+    {
+      text: 'الماء',
+    },
+    {
+      text: 'القمر',
+    },
+    {
+      text: 'سيارة',
+    },
+    {
+      text: 'هاتف',
+    },
+    {
+      text: 'خبز',
+    },
+    {
+      text: 'نظارات',
+    },
+    {
+      text: 'منزل',
+    },
+    {
+      text: 'باب',
+    },
+  ]
+
+  useEffect(() => {
+    setCurrentWord(items[activeIndex].text)
+  }, [activeIndex])
 
   const next = () => {
     if (animating) return

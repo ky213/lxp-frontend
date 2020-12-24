@@ -11,7 +11,6 @@ import {
   Col,
   Alert,
   Button,
-  Card,
   Loading,
 } from '@/components'
 
@@ -19,6 +18,7 @@ const SpeechRecognition = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [recognizing, setRecognizing] = useState(false)
   const [recognitionResult, setRecognitionResult] = useState(null)
+  const [currentWord, setCurrentWord] = useState('')
   const {
     status,
     startRecording,
@@ -105,10 +105,7 @@ const SpeechRecognition = () => {
         </Row>
         <Row>
           <Col className="h-50  mb-4 text-right" style={{ height: '200px' }}>
-            {/* <Card className="p-5" style={{ height: '200px' }}> */}
-            {/* <h1 className="text-center"> مرحبا </h1> */}
-            {/* </Card> */}
-            <WordsSlide />
+            <WordsSlide setCurrentWord={setCurrentWord} />
           </Col>
         </Row>
         <Row>

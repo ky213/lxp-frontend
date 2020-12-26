@@ -24,7 +24,6 @@ const SpeechRecognition = () => {
     status,
     startRecording,
     stopRecording,
-    clearBlobUrl,
     mediaBlobUrl,
     error: recorderError,
   } = useReactMediaRecorder({ audio: true })
@@ -55,7 +54,6 @@ const SpeechRecognition = () => {
   }
 
   const handleRecognition = async () => {
-    console.log(mediaBlobUrl)
     const reader = new FileReader()
     const response = await fetch(mediaBlobUrl)
     const blob = await response.blob()

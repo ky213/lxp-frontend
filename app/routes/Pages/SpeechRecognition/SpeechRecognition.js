@@ -3,6 +3,7 @@ import { hot } from 'react-hot-loader'
 import { useReactMediaRecorder } from 'react-media-recorder'
 import { isNil } from 'lodash'
 
+import { speechService } from '@/services'
 import WordsSlide from './WordsSlide'
 import {
   EmptyLayout,
@@ -19,7 +20,6 @@ const SpeechRecognition = () => {
   const [recognizing, setRecognizing] = useState(false)
   const [recognitionResult, setRecognitionResult] = useState(null)
   const [currentWord, setCurrentWord] = useState('')
-  const [answerStatus, setAnswerStatus] = useState(null)
   const {
     status,
     startRecording,
@@ -38,36 +38,11 @@ const SpeechRecognition = () => {
   const getSpeechRecognition = async data => {
     try {
       setRecognizing(true)
+      setRecognitionResult(null)
 
-      const response = await fetch(
-        'https://speech.googleapis.com/v1/speech:recognize',
-        {
-          method: 'POST',
-          headers: {
-            Authorization:
-              'Bearer ya29.a0AfH6SMAZPgd8H5jgoPIPHPC2uJM9-5UaXp826ZSqkC9T7EfOiHU8_btRujvEtbJL8qtLkbGlBxi2MeJgm7ZgLOnOsLQwxR7rjJAD-TuEHjwfeChvIcDHfQt9xCK0Ka70R88u40na6cpDJ01ZbaAdy6t0F4GeUMw65yEBpT43Dq9jsg',
-          },
-          body: JSON.stringify({
-            audio: {
-              content: data,
-            },
-            config: {
-              //enableAutomaticPunctuation: true,
-              //enableSpeakerDiarization: true,
-              audioChannelCount: 2,
-              //enableSeparateRecognitionPerChannel: true,
-              encoding: 'FLAC',
-              sampleRateHertz: 48000,
-              languageCode: 'ar-SA',
-              model: 'default',
-            },
-          }),
-        }
-      )
-      const result = await response.json()
+      const result = await speechService.recognizeSpeech(data, currentWord)
 
-      if (result.error) setErrorMessage('error performing recognition')
-      else setRecognitionResult(result)
+      setRecognitionResult(result)
       setRecognizing(false)
     } catch (error) {
       setRecognizing(false)
@@ -110,23 +85,24 @@ const SpeechRecognition = () => {
           >
             <WordsSlide
               setCurrentWord={setCurrentWord}
-              setAnswerStatus={setAnswerStatus}
-              answerStatus={answerStatus}
+              setRecognitionResult={setRecognitionResult}
             />
             <h3
               className="position-absolute text-center w-100 "
               style={{ bottom: '30px', left: '0' }}
             >
-              {answerStatus === 'correct' && (
-                <span className="text-info">
-                  <i className={`fa fa-fw fa-check-circle`}></i>Correct
-                </span>
-              )}
-              {answerStatus === 'wrong' && (
-                <span className="text-danger">
-                  <i className={`fa fa-fw fa-times-circle`}></i>Wrong
-                </span>
-              )}
+              {recognitionResult?.found &&
+                recognitionResult?.transcription === currentWord && (
+                  <span className="text-info">
+                    <i className={`fa fa-fw fa-check-circle`}></i>Correct
+                  </span>
+                )}
+              {recognitionResult &&
+                recognitionResult.transcription !== currentWord && (
+                  <span className="text-danger">
+                    <i className={`fa fa-fw fa-times-circle`}></i>Try again
+                  </span>
+                )}
             </h3>
           </Col>
         </Row>

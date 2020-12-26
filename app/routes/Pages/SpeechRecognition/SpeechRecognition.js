@@ -26,7 +26,9 @@ const SpeechRecognition = () => {
     stopRecording,
     mediaBlobUrl,
     error: recorderError,
-  } = useReactMediaRecorder({ audio: true })
+  } = useReactMediaRecorder({
+    audio: true,
+  })
   const recording = status === 'recording'
 
   useEffect(() => {
@@ -97,13 +99,19 @@ const SpeechRecognition = () => {
               {recognitionResult?.found &&
                 recognitionResult?.transcription === currentWord && (
                   <span className="text-info">
-                    <i className={`fa fa-fw fa-check`}></i> أحسنت
+                    <img
+                      src="/static/very_good.png"
+                      style={{ height: '52px', width: '166px' }}
+                    />
                   </span>
                 )}
               {recognitionResult &&
                 recognitionResult.transcription !== currentWord && (
                   <span className="text-danger">
-                    <i className={`fa fa-fw fa-refresh`}></i> حاول مرة أخرى
+                    <img
+                      src="/static/try_again.png"
+                      style={{ height: '52px', width: '166px' }}
+                    />
                   </span>
                 )}
             </h3>

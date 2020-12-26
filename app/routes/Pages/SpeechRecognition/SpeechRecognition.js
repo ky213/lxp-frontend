@@ -31,9 +31,12 @@ const SpeechRecognition = () => {
   const recording = status === 'recording'
 
   useEffect(() => {
-    if (status === 'stopped') handleRecognition()
+    if (mediaBlobUrl) handleRecognition()
+  }, [mediaBlobUrl])
+
+  useEffect(() => {
     if (recorderError) setErrorMessage(recorderError)
-  }, [status, recorderError])
+  }, [recorderError])
 
   const getSpeechRecognition = async data => {
     try {
@@ -52,6 +55,7 @@ const SpeechRecognition = () => {
   }
 
   const handleRecognition = async () => {
+    console.log(mediaBlobUrl)
     const reader = new FileReader()
     const response = await fetch(mediaBlobUrl)
     const blob = await response.blob()

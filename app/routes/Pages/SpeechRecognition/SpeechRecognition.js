@@ -99,19 +99,13 @@ const SpeechRecognition = () => {
               {recognitionResult?.found &&
                 recognitionResult?.transcription === currentWord && (
                   <span className="text-info">
-                    <img
-                      src="/static/very_good.png"
-                      style={{ height: '52px', width: '166px' }}
-                    />
+                    <i className={`fa fa-fw fa-check`}></i> أحسنت
                   </span>
                 )}
               {recognitionResult &&
                 recognitionResult.transcription !== currentWord && (
                   <span className="text-danger">
-                    <img
-                      src="/static/try_again.png"
-                      style={{ height: '52px', width: '166px' }}
-                    />
+                    <i className={`fa fa-fw fa-refresh`}></i> حاول مرة أخرى
                   </span>
                 )}
             </h3>

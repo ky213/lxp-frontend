@@ -94,13 +94,13 @@ const SpeechRecognition = () => {
               {recognitionResult?.found &&
                 recognitionResult?.transcription === currentWord && (
                   <span className="text-info">
-                    <i className={`fa fa-fw fa-check-circle`}></i>Correct
+                    <i className={`fa fa-fw fa-check`}></i> أحسنت
                   </span>
                 )}
               {recognitionResult &&
                 recognitionResult.transcription !== currentWord && (
                   <span className="text-danger">
-                    <i className={`fa fa-fw fa-times-circle`}></i>Try again
+                    <i className={`fa fa-fw fa-refresh`}></i> حاول مرة أخرى
                   </span>
                 )}
             </h3>

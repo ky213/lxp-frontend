@@ -21,7 +21,7 @@ import { activityService } from '@/services'
 import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
 
-const PointsForm = ({ reply, setReplyPoints, activityStatus }) => {
+const PointsForm = ({ reply, setReplyPoints, activityStatus, totalPoints }) => {
   const [{ currentUser }] = useAppState()
   const [openPointsForm, setOpenPointsForm] = useState(true)
   const [points, setPoints] = useState(0)
@@ -262,11 +262,13 @@ const ActivityReplyLeft = props => {
             className={`mb-2 ${props.cardClassName}`}
             style={{ position: 'relative' }}
           >
-            <PointsForm
-              reply={props.reply}
-              setReplyPoints={props.setReplyPoints}
-              activityStatus={selectedActivity.status}
-            />
+            {props.selectedActivity?.totalPoints > 0 && (
+              <PointsForm
+                reply={props.reply}
+                setReplyPoints={props.setReplyPoints}
+                activityStatus={selectedActivity.status}
+              />
+            )}
             <p className="mb-0 mt-2">
               {props.reply?.text}
 

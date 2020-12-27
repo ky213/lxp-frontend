@@ -315,8 +315,9 @@ const AssignActivity = ({
             then: Yup.array().min(1, 'You need to select a learner'),
           }),
           totalPoints: Yup.number()
-            .positive('should be positive')
-            .required('You need to set total points'),
+            .min(0)
+            .required('You need to set total points')
+            .default(0),
           isPublic: Yup.boolean(),
         })}
         onSubmit={async (

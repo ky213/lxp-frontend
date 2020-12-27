@@ -18,12 +18,10 @@ const ActivityRepliesHeader = ({
           {(currentUser?.role == Role.Learner && 'My feedback/comments') ||
             'Replies to this activity'}
         </h6>
-        <h6 className="">
-          Total points: {selectedActivity.totalPoints || 'N/A'}
-        </h6>
+        <h6 className="">Total points: {selectedActivity?.totalPoints}</h6>
       </Col>
       <Col className="text-right">
-        {currentUser?.role != Role.Learner && (
+        {currentUser?.role != Role.Learner && selectedActivity.totalPoints > 0 && (
           <Button
             color="info"
             onClick={handleEvalute}

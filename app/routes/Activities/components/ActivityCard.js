@@ -37,6 +37,7 @@ const ActivityCard = ({ organizationId, activity, setSelectedActivity }) => {
     <StyledCard onClick={getActivity}>
       <CardBody>
         <h2 className="text-primary">{activity.name}</h2>
+        <p>Type: {activity.activityTypeName}</p>
         <h6>From: {moment(activity.start).format('L')}</h6>
         <h6>To: {moment(activity.end).format('L')}</h6>
         <p className="mt-4">{activity.description || 'no description'}</p>

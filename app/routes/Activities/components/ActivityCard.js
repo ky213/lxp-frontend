@@ -1,13 +1,40 @@
 import React from 'react'
+import { hot } from 'react-hot-loader'
 import moment from 'moment'
 import classNames from 'classnames'
+import styled from 'styled-components'
+import { toast } from 'react-toastify'
 
-import { Row, Col, Card, CardHeader, CardBody, CardFooter } from '@/components'
-import { hot } from 'react-hot-loader'
+import { activityService } from '@/services'
+import { Row, Col, Card, CardBody, CardFooter } from '@/components'
 
-const ActivityCard = ({ activity }) => {
+const StyledCard = styled(Card)`
+  cursor: pointer;
+  &:hover {
+    background-color: #0000;
+  }
+`
+
+const ActivityCard = ({ organizationId, activity, setSelectedActivity }) => {
+  const getActivity = async () => {
+    try {
+      const activityDetails = await activityService.getById(
+        activity.activityId,
+        organizationId
+      )
+      setSelectedActivity(activityDetails)
+    } catch (error) {
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{JSON.stringify(error.message)}</p>
+        </div>
+      )
+    }
+  }
+
   return (
-    <Card>
+    <StyledCard onClick={getActivity}>
       <CardBody>
         <h2 className="text-primary">{activity.name}</h2>
         <h6>From: {moment(activity.start).format('L')}</h6>
@@ -32,7 +59,7 @@ const ActivityCard = ({ activity }) => {
           </Col>
         </Row>
       </CardFooter>
-    </Card>
+    </StyledCard>
   )
 }
 

@@ -61,8 +61,7 @@ export const EditActivity = ({
   const [files, setFiles] = React.useState([])
   const [urls, setUrls] = React.useState([])
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
-  const currentUserRole =
-    currentUser && currentUser.user && currentUser.user.role
+  const currentUserRole = currentUser?.user?.role
   const [users, setUsers] = React.useState([])
   const [activityTypes, setActivityTypes] = React.useState([])
   const [selectedPriority, setSelectedPriority] = React.useState(1)
@@ -79,10 +78,8 @@ export const EditActivity = ({
   )
   const [selectedProgram, setSelectedProgram] = React.useState(null)
   const currentProgram =
-    (selectedActivity &&
-      selectedActivity.programId &&
-      userPrograms &&
-      userPrograms.filter(p => p.programId == selectedActivity.programId)) ||
+    (selectedActivity?.programId &&
+      userPrograms?.filter(p => p.programId == selectedActivity.programId)) ||
     []
 
   const updateActivityStatus = async status => {

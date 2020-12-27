@@ -2,9 +2,9 @@ import React from 'react'
 import moment from 'moment'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import { isNil } from 'lodash'
 
 import {
   CardColumns,
@@ -17,10 +17,11 @@ import {
   TabPane,
 } from '@/components'
 import ActivityCard from '@/routes/Activities/components/ActivityCard'
+import { EditActivity } from '@/routes/Activities/EditActivity'
+
 import { useAppState } from '@/components/AppState'
 import { TinCanLaunch } from '@/helpers'
 import { HeaderMain } from '@/routes/components/HeaderMain'
-import { Profile } from '@/routes/components/Profile'
 import { CourseCard } from '@/routes/Courses/components/CourseCard'
 import { userService, programService, activityService } from '@/services'
 import { Responsive } from 'responsive-react'
@@ -82,6 +83,7 @@ const LearnerHome = () => {
   const [joinedCourses, setJoinedCourses] = React.useState([])
   const [programs, setPrograms] = React.useState([])
   const [activities, setActivities] = React.useState([])
+  const [selectedActivity, setSelectedActivity] = React.useState(null)
   const isLearner = user.role === Role.Learner
 
   React.useEffect(() => {
@@ -197,11 +199,24 @@ const LearnerHome = () => {
                 </CardColumns>
               </TabPane>
               <TabPane tabId="activities">
-                <CardColumns className="mt-3">
-                  {activities.map(activity => (
-                    <ActivityCard activity={activity} />
-                  ))}
-                </CardColumns>
+                <>
+                  <CardColumns className="mt-3">
+                    {activities.map(activity => (
+                      <ActivityCard
+                        activity={activity}
+                        setSelectedActivity={setSelectedActivity}
+                        organizationId={currentUser.user.organizationId}
+                      />
+                    ))}
+                  </CardColumns>
+                  <EditActivity
+                    currentProgramId={selectedActivity?.programId}
+                    selectedActivity={selectedActivity}
+                    isOpen={!isNil(selectedActivity)}
+                    toggle={() => setSelectedActivity(null)}
+                    userPrograms={programs}
+                  />
+                </>
               </TabPane>
             </UncontrolledTabs.TabContent>
           </UncontrolledTabs>

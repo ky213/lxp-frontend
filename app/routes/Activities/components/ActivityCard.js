@@ -24,11 +24,10 @@ const ActivityCard = ({ organizationId, activity, setSelectedActivity }) => {
       )
       setSelectedActivity(activityDetails)
     } catch (error) {
-      console.log(error)
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>
-          <p>{error.message}</p>
+          <p>{error}</p>
         </div>
       )
     }

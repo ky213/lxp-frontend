@@ -27,7 +27,7 @@ const ActivityCard = ({ organizationId, activity, setSelectedActivity }) => {
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>
-          <p>{JSON.stringify(error.message)}</p>
+          <p>{error.message}</p>
         </div>
       )
     }

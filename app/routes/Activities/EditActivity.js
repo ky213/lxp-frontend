@@ -83,6 +83,9 @@ export const EditActivity = ({
     []
 
   const updateActivityStatus = async status => {
+    if (status === 3) {
+      if (!confirm('are you sure you want to delete this activity?')) return
+    }
     try {
       await activityService.updateStatus(selectedActivity.activityId, status)
       alert(
@@ -1116,13 +1119,15 @@ export const EditActivity = ({
                           {/* <ThemedButton type="submit" color="primary">
                             Edit
                           </ThemedButton> */}
-                          <Button
-                            type="button"
-                            color="danger"
-                            onClick={() => updateActivityStatus(3)}
-                          >
-                            Delete
-                          </Button>{' '}
+                          {selectedActivity.replies?.length == 0 && (
+                            <Button
+                              type="button"
+                              color="danger"
+                              onClick={() => updateActivityStatus(3)}
+                            >
+                              Delete
+                            </Button>
+                          )}{' '}
                         </>
                       )}
                       <Button type="button" onClick={toggle} color="light">

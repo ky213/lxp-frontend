@@ -32,6 +32,7 @@ import { Role } from '@/helpers'
 import ThemedButton from '@/components/ThemedButton'
 import { Loading, FileList } from '@/components'
 import ActivityReplies from './components/ActivityReplies'
+import { isEmpty } from 'lodash'
 
 const LogActivity = ({
   toggle,
@@ -94,6 +95,10 @@ const LogActivity = ({
   const remainder = 30 - (moment().minute() % 30)
 
   const updateActivityStatus = async status => {
+    if (status === 3) {
+      if (!confirm('are you sure you want to delete this activity?')) return
+    }
+
     if (selectedActivity) {
       try {
         await activityService.updateLogActivityStatus(
@@ -324,7 +329,7 @@ const LogActivity = ({
                 participationLevel: participationLevel,
                 supervisors: supervisors,
                 isPublic,
-                organizationId: selectedOrganization.organizationId
+                organizationId: selectedOrganization.organizationId,
               }
 
               await activityService.updateLogActivity(activity)
@@ -729,13 +734,15 @@ const LogActivity = ({
                     currentUser.user.employeeId && (
                     <>
                       <ThemedButton type="submit">Update activity</ThemedButton>{' '}
-                      <Button
-                        type="button"
-                        color="danger"
-                        onClick={() => updateActivityStatus(3)}
-                      >
-                        Delete
-                      </Button>{' '}
+                      {isEmpty(selectedActivity.replies) && (
+                        <Button
+                          type="button"
+                          color="danger"
+                          onClick={() => updateActivityStatus(3)}
+                        >
+                          Delete
+                        </Button>
+                      )}
                     </>
                   )}
                   <Button type="button" onClick={toggle} color="light">

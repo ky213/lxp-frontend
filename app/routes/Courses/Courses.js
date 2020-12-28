@@ -138,7 +138,7 @@ const Courses = props => {
   }
 
   const handleLaunch = course => {
-    TinCanLaunch.launchContent(user, selectedProgramId, course, launchLink => {
+    TinCanLaunch.launchContent(user, course.programId, course, launchLink => {
       window.open(launchLink)
     })
   }

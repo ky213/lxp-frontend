@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import styled from 'styled-components'
 import { toast } from 'react-toastify'
 
-import { activityService } from '@/services'
+import { activityService, getLogActivityById } from '@/services'
 import { Row, Col, Card, CardBody, CardFooter } from '@/components'
 
 const StyledCard = styled(Card)`
@@ -17,8 +17,11 @@ const StyledCard = styled(Card)`
 
 const ActivityCard = ({ organizationId, activity, setSelectedActivity }) => {
   const getActivity = async () => {
+    const activityApi =
+      activity.source === 'assigned' ? 'getById' : 'getLogActivityById'
+
     try {
-      const activityDetails = await activityService.getById(
+      const activityDetails = await activityService[activityApi](
         activity.activityId,
         organizationId
       )

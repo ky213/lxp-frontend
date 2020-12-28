@@ -1048,7 +1048,13 @@ export const EditActivity = ({
                                       <Col sm={9}>
                                         <Label className="col-form-label">
                                           <strong>
-                                            {`${selectedActivity.assignedByFirstName} ${selectedActivity.assignedByLastName}`}
+                                            {`${
+                                              selectedActivity.assignedByFirstName ||
+                                              selectedActivity.loggedByFirstName
+                                            } ${
+                                              selectedActivity.assignedByLastName ||
+                                              selectedActivity.loggedByLastName
+                                            }`}
                                             {currentUser &&
                                               currentUser.user &&
                                               (selectedActivity.assignedBy ==

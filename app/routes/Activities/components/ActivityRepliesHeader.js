@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
+import { isNil } from 'lodash'
 
 import { activityService } from '@/services'
 import { Row, Col, Button, Loading } from '@/components'
@@ -18,7 +19,9 @@ const ActivityRepliesHeader = ({
           {(currentUser?.role == Role.Learner && 'My feedback/comments') ||
             'Replies to this activity'}
         </h6>
-        <h6 className="">Total points: {selectedActivity?.totalPoints}</h6>
+        {!isNil(selectedActivity?.totalPoints) && (
+          <h6 className="">Total points: {selectedActivity.totalPoints}</h6>
+        )}
       </Col>
       <Col className="text-right">
         {currentUser?.role != Role.Learner && selectedActivity.totalPoints > 0 && (

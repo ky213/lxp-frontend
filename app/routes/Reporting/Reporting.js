@@ -161,6 +161,7 @@ const Reporting = () => {
     exportData.push([
       'Time',
       'Learner',
+      'Email',
       'Program',
       'Activity name',
       'Experience',
@@ -173,6 +174,7 @@ const Reporting = () => {
         exportData.push([
           moment(statement.timestamp).format('LLL'),
           statement.actor?.name,
+          statement.actor?.mbox?.split(':')[1],
           selectedProgram?.name || '',
           statement.object?.definition?.name?.und,
           statement.verb?.display?.en || statement.verb?.display['en-US'],
@@ -420,6 +422,9 @@ const Reporting = () => {
                         <th className="align-middle bt-0 text-left" width="15%">
                           Learner
                         </th>
+                        <th className="align-middle bt-0 text-left" width="15%">
+                          Email
+                        </th>
                         <th className="align-middle bt-0 text-left" width="20%">
                           Activity name
                         </th>
@@ -447,7 +452,9 @@ const Reporting = () => {
                             <td className="align-middle bt-0">
                               {statement.actor.name}
                             </td>
-
+                            <td className="align-middle bt-0">
+                              {statement.actor?.mbox?.split(':')[1]}
+                            </td>
                             <td className="align-middle bt-0">
                               {statement.object.definition.name.und}
                             </td>

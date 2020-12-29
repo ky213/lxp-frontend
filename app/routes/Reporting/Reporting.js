@@ -48,8 +48,8 @@ const Reporting = () => {
 
   React.useEffect(() => {
     const queryParams = queryString.parse(location.search)
-
-    fetchData(queryParams)
+    console.log('Query params\n', queryParams)
+    if (queryParams) fetchData(queryParams)
   }, [])
 
   React.useEffect(() => {
@@ -127,7 +127,7 @@ const Reporting = () => {
         setSelectedLearner([{ fullName: `${name} ${surname}`, email }])
       }
     } catch (error) {
-      console.log("Reporting Error: \n",error);
+      console.log('Reporting Error: \n', error)
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>

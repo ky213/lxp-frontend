@@ -8,6 +8,7 @@ import { activitiesicon } from '../../Assets/Images/activities.js';
 import { coursesicon } from '../../Assets/Images/courses.js';
 import { notificationicon } from '../../Assets/Images/notification.js';
 import { homeicon } from '../../Assets/Images/homeicon.js';
+import { searchicon } from '../../Assets/Images/searchicon.js';
 import Burger from './Burger/Burger';
 import { useTranslation } from 'react-i18next';
 import SearchModal from '../Common/SearchModal/SearchModal';
@@ -85,8 +86,7 @@ const Navbar = (props) => {
                 <button onClick={()=>{props.changeLanguage('ar')}}>AR</button>
                 <div className={classes.rightSideNav}>
                     <StyledBut className={classes.searchBut + " " + (props.isOpenSearchModal && classes.activeSearch)} direction={props.direction} onClick={()=>{props.setIsOpenSearchModal(!props.isOpenSearchModal)}}>
-                        <i className="fas fa-search"></i>
-                        
+                        {searchicon}
                     </StyledBut>
                     {props.isOpenSearchModal && <SearchModal/>}
                     <StyledNotifications className={classes.notifications} direction={props.direction}>

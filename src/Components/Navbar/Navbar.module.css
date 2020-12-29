@@ -103,10 +103,16 @@
     transition-duration: 0.4s;
     outline: none;
 }
+.searchBut svg{
+    transition-duration: .4;
+}
 .activeSearch{
     background-color: #5bb98e;
     border: #5bb98e;
     color: white;
+}
+.activeSearch svg path{
+    fill: white;
 }
 
 .notifications{

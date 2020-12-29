@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CustomSelect from '../Cutsom/Select/CustomSelect';
 import classes from './SearchModal.module.css';
+import { searchicon } from '../../../Assets/Images/searchicon.js';
 
 
 const SearchModal = (props) => {
@@ -22,7 +23,7 @@ const SearchModal = (props) => {
             <div className={classes.body}>
                 <div className={classes.searchField}>
                     <button>
-                        <i className="fas fa-search"></i>
+                        {searchicon}
                     </button>
                     <input placeholder="Search..." name={"value"} onChange={(e)=>{setSearchValue(e.target.value)}}/>
                 </div>

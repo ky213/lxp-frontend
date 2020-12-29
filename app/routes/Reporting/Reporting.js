@@ -224,7 +224,7 @@ const Reporting = () => {
       setTotalNumberOfRecords(data.totalNumberOfRecords)
       setLoading(false)
     } catch (error) {
-      console.log('Reporting Error1: \n', error)
+      console.log('Reporting Error2: \n', error)
       setLoading(false)
       toast.error(
         <div>

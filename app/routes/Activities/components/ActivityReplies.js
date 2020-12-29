@@ -173,7 +173,10 @@ const ActivityReplies = props => {
                 currentUser.user &&
                 currentUser.user.role != Role.SuperAdmin && (
                   <CardFooter>
-                    <ActivityRepliesFooter onSendReply={handleSendReply} />
+                    <ActivityRepliesFooter
+                      onSendReply={handleSendReply}
+                      selectedActivity={props.selectedActivity}
+                    />
                   </CardFooter>
                 )}
             </Card>

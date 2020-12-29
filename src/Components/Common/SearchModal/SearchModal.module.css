@@ -1,7 +1,7 @@
 .main{
     position: absolute;
     width: 820px;
-    transform: translateY(80px) translateX(-743px); 
+    transform: translateY(100px) translateX(-743px); 
     display: flex;
     flex-direction: column;
 
@@ -37,14 +37,22 @@
     border-right: 9px solid white;
 }
 .searchField{
-    width: 100%;
-    border: 1px solid #5bb98e;
+    width: calc(100% - 10px);
+    border: 2px solid #5bb98e;
+    border-radius: 20px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
 
 }
 .searchField input{
     width: 95%;
     border: none;
     outline: none;
+    height: 28px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #565656;
 }
 .searchField button{
     background-color: transparent;
@@ -52,4 +60,15 @@
     cursor: pointer;
     color: #a7a7a7;
     border: none;
+    font-size: 18px;
+}
+.searchField button i{
+    position: relative;
+    top: 1px;
+}
+.filters{
+    margin-top: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }

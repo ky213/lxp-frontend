@@ -65,15 +65,17 @@ const ExpandRow = ({ user, course, experience }) => {
                 <Col>
                   <Row className="pt-2">
                     <Col>
-                      <Link
-                        to={`/reporting/?programId=${course.programId}&userId=${user.userId}&experience=${experience}`}
-                        className="stretched-link text-nowrap"
-                        style={{
-                          color: '#007bff !important',
-                        }}
-                      >
-                        More details on {user.name} {user.surname}...
-                      </Link>
+                      {experience !== 'Not started' && (
+                        <Link
+                          to={`/reporting/?programId=${course.programId}&userId=${user.userId}&experience=${experience}`}
+                          className="stretched-link text-nowrap"
+                          style={{
+                            color: '#007bff !important',
+                          }}
+                        >
+                          More details on {user.name} {user.surname}...
+                        </Link>
+                      )}{' '}
                     </Col>
                   </Row>
                 </Col>

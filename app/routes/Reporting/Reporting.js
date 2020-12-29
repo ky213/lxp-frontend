@@ -127,7 +127,7 @@ const Reporting = () => {
         setSelectedLearner([{ fullName: `${name} ${surname}`, email }])
       }
     } catch (error) {
-      console.log('Reporting Error: \n', error)
+      console.log('Reporting Error1: \n', error)
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>
@@ -224,6 +224,7 @@ const Reporting = () => {
       setTotalNumberOfRecords(data.totalNumberOfRecords)
       setLoading(false)
     } catch (error) {
+      console.log('Reporting Error1: \n', error)
       setLoading(false)
       toast.error(
         <div>

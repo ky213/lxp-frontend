@@ -1,8 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 import HomeActivities from './Activities/Activities';
 import HomeCourses from './Courses/Courses';
 import classes from './Home.module.css';
 import Statistic from './Statistic/Statistic';
+
+const StyledCoursesContainer = styled.div`
+    @media screen and (max-width: 1279px){
+        margin-left: ${({ direction }) => direction === "ltr" ? "50px" : "0"};
+        margin-right: ${({ direction }) => direction === "rtl" ? "50px" : "0"};
+    }
+    @media screen and (max-width: 610px){
+        margin-left: 0;
+        margin-right: 0;
+    }
+`;
 
 const Home = (props) => {
     return(
@@ -13,9 +25,9 @@ const Home = (props) => {
                         <div className={classes.statistic}>
                             <Statistic user={props.user}/>
                         </div>
-                        <div className={classes.courses}>
+                        <StyledCoursesContainer direction={props.direction} className={classes.courses}>
                             <HomeCourses courses={props.courses}/>
-                        </div>
+                        </StyledCoursesContainer>
                     </div>
                 </div>
                 <div className={classes.rightSide}>

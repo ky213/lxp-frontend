@@ -13,7 +13,7 @@ const CoursesContainer = (props) => {
     return(
         <>
             {props.isFetching ? <Preloader/> :
-            <Courses courses={props.courses}/>}
+            <Courses courses={props.courses} direction={props.direction}/>}
         </>
         
     );
@@ -24,7 +24,8 @@ let mapStateToProps = (state) => ({
     user: state.user.user,
     isFetching: state.common.isFetching,
     page: state.courses.page,
-    take: state.courses.take
+    take: state.courses.take,
+    direction: state.common.direction
 });
 
 export default connect(mapStateToProps, {

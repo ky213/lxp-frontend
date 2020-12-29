@@ -7,12 +7,29 @@ import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../Common/Preloader/Preloader';
 import { setIsFetching } from '../../Redux/commonReducer';
 import { getActivities } from '../../Redux/activitiesReducer';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 
+const StyledMarkButton = styled.button`
+    margin-left: ${({ direction }) => direction === "ltr" ? "8px" : "0"};
+    margin-right: ${({ direction }) => direction === "rtl" ? "8px" : "0"};
+`;
+
+const StyledLeftSide = styled.div`
+    margin-left: ${({ direction }) => direction === "rtl" ? "30px" : "0"};
+    margin-right: ${({ direction }) => direction === "ltr" ? "30px" : "0"};
+`;
+
+const StyledProgressSpan = styled.span`
+    margin-left: ${({ direction }) => direction === "ltr" ? "13px" : "0"};
+    margin-right: ${({ direction }) => direction === "rtl" ? "13px" : "0"};
+`;
 
 const Activity = (props) => {
+    const {t, i18n} = useTranslation();
     let widthProgressBar = 83;
     let heightProgressBar = 16;
-
+    
     useEffect(()=>{
         props.getActivities(props.user.employeeId, props.user.userId, props.user.orgranizationId);
         let activityId = props.match.params.activityId;
@@ -31,11 +48,11 @@ const Activity = (props) => {
 
             var newDaysLag = Math.ceil(Math.abs(endTime.getTime() - now.getTime()) / (1000 * 3600 * 24));
             
-            if(endTime >= now) {
-                newDaysLag = newDaysLag + " days left";
+            if(endTime >= now){
+                newDaysLag = newDaysLag + t("activityMini.daysLeft");
             }else{
-                newDaysLag = newDaysLag + " days ago";
-            }  
+                newDaysLag = newDaysLag + t("activityMini.daysAgo");
+            }
             setDaysLag(newDaysLag);
         }
         
@@ -46,26 +63,26 @@ const Activity = (props) => {
         <div className={classes.main}>
             {!props.activity ? <Preloader/> :
             <div className={classes.container}>
-                <div className={classes.leftSide}>
+                <StyledLeftSide className={classes.leftSide} direction={props.direction}>
                     <div className={classes.block + " " + classes.withoutPadding}>
                         <div className={classes.infoBlock}>
-                            <p>Welcome back,</p>
+                            <p>{t("home.statistic.infoUser.welcome")}</p>
                             <h3>{props.user.fullName}</h3>
                         </div>
                         <div className={classes.infoBlock}>
-                            <label>Learning Hours</label>
-                            <span><strong>34 hrs</strong> and <strong>54 mins</strong></span>
+                            <label>{t("home.statistic.infoUser.learningHours")}</label>
+                            <span><strong>34 {t("home.statistic.infoUser.hours")}</strong> {t("home.statistic.infoUser.and")} <strong>54 {t("home.statistic.infoUser.mins")}</strong></span>
                         </div>
                         <hr className={classes.line}/>
                         <div className={classes.infoBlock}>
-                            <label>Annual Learning Goal</label>
-                            <span><strong>34 hrs</strong></span>
+                            <label>{t("home.statistic.infoUser.learningGoal")}</label>
+                            <span><strong>34 {t("home.statistic.infoUser.hours")}</strong></span>
                         </div>
                     </div>
                     <div className={classes.block + " " + classes.programs}>
                         <div className={classes.programsHeader}>
-                            <h4>Related activities</h4>
-                            <NavLink to="/programs">View all</NavLink>
+                            <h4>{t("home.statistic.programs.related")}</h4>
+                            <NavLink to="/programs">{t("home.statistic.programs.viewAll")}</NavLink>
                         </div>
                         <div className={classes.progressBlock}>
                             <label>Sketching out ideas for securin....</label>
@@ -82,11 +99,11 @@ const Activity = (props) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </StyledLeftSide>
                 <div className={classes.rightSide}>
                     <div className={classes.tabHeader}>
-                        <h1>Activity details</h1>
-                        <span>Private</span>
+                        <h1>{t("activityDetails.title")}</h1>
+                        <span>{t("activityDetails.label")}</span>
                     </div>
                     <div className={classes.activity}>
                         <div className={classes.activityHeader}>
@@ -94,11 +111,11 @@ const Activity = (props) => {
                             <div className={classes.headerRightSide}>
                                 <button className={classes.editBut}>
                                     <i className="far fa-edit"></i>
-                                    edit
+                                    {t("activityDetails.edit")}
                                 </button>
                                 <button className={classes.removeBut}>
                                     <i className="far fa-trash-alt"></i>
-                                    delete
+                                    {t("activityDetails.delete")}
                                 </button>
                             </div>
                         </div>
@@ -106,11 +123,11 @@ const Activity = (props) => {
                         <div className={classes.activityFoot}>
                             <div className={classes.activityProgressBlock}>
                                 <ProgressBar width={widthProgressBar} height={heightProgressBar} progress={props.activity.totalPoints}/>
-                                <span>{props.activity.totalPoints}%</span>
+                                <StyledProgressSpan direction={props.direction}>{props.activity.totalPoints}%</StyledProgressSpan>
                             </div>
                             <div className={classes.activityFootRight}>
                                 <span>{daysLag}</span>
-                                <button className={classes.mark}>Mark as complete</button>
+                                <StyledMarkButton className={classes.mark} direction={props.direction}>{t("activityDetails.butComplete")}</StyledMarkButton>
                             </div>
                         </div>
                     </div>
@@ -134,7 +151,8 @@ let mapStateToProps = (state) => ({
     isFetching: state.common.isFetching,
     activity: state.activities.currentActivity,
     activities: state.activities.activities,
-    user: state.user.user
+    user: state.user.user,
+    direction: state.common.direction
 })
 
 export default connect(mapStateToProps, {

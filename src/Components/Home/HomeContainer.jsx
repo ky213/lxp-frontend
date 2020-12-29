@@ -15,7 +15,8 @@ const HomeContainer = (props) => {
             {props.isFetching && <Preloader/>}
             {props.isAuth && <Home user={props.user}
                                     courses={props.courses}
-                                    activities={props.activities}/>}
+                                    activities={props.activities}
+                                    direction={props.direction}/>}
         </>
         
     );
@@ -28,7 +29,8 @@ let mapStateToProps = (state) => ({
     courses: state.courses.courses,
     activities: state.activities.activities,
     page: state.courses.page,
-    take: state.courses.take
+    take: state.courses.take,
+    direction: state.common.direction
 });
 
 export default connect(mapStateToProps, {

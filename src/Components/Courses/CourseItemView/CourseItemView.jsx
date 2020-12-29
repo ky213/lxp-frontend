@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classes from './CourseItemView.module.css';
+import { useTranslation } from 'react-i18next';
 
 const CourseItem = (props) => {
+    const {t, i18n} = useTranslation();
     return(
         <div className={classes.main}>
             <NavLink to={`/courses/${props.item.id}`}>
@@ -14,9 +16,9 @@ const CourseItem = (props) => {
                         <span className={classes.status + " " + 
                             ((props.item.inProgress && classes.inProgress) ||
                             (!props.item.inProgress && classes.completed))}>
-                                {((props.item.inProgress && "In Progress") ||
-                                (!props.item.inProgress && "Completed"))}</span>
-                        <span className={classes.time}>{props.item.startingDate ? props.item.startingDate : "Overdue"}</span>
+                                {((props.item.inProgress && t('courseMini.inProgress')) ||
+                                (!props.item.inProgress && t('courseMini.progressComplete')))}</span>
+                        <span className={classes.time}>{props.item.startingDate ? props.item.startingDate : t('courseMini.overdue')}</span>
                     </div>
                 </div>
                 

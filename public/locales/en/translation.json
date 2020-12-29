@@ -1,0 +1,64 @@
+{
+    "navbar": {
+        "logo": "Brand",
+        "home": "Home",
+        "programs": "Programs",
+        "courses": "Courses",
+        "activities": "Activities",
+        "myreport": "My Report"
+    },
+    "home":{
+        "statistic": {
+            "infoUser":{
+                "welcome": "Welcome back, ",
+                "learningHours": "Learning Hours",
+                "hours": "hrs",
+                "and": "and",
+                "mins": "mins",
+                "learningGoal": "Annual Learning Goal"
+            },
+            "programs": {
+                "programs": "programs",
+                "viewAll": "View all",
+                "related": "Related activities"
+            },
+            "stats": {
+                "stats": "stats"
+            }
+        },
+        "courses": {
+            "title": "Courses",
+            "viewAll": "View all"
+        },
+        "activities": {
+            "title": "Activities",
+            "viewAll": "View all"
+        }
+    },
+    "courseMini":{
+        "inPprogress": "In Progress",
+        "progressComplete": "Completed",
+        "overdue": "Overdue"
+    },
+    "courses":{
+        "title": "CyberSecurity Awareness Courses",
+        "filters": {
+            "notStarted": "Not Started",
+            "inProgress": "In Progress",
+            "completed": "Completed",
+            "all": "All"
+        }
+    },
+    "activityMini":{
+        "daysLeft": " days left",
+        "daysAgo": " days ago",
+        "empty": "Empty"
+    },
+    "activityDetails": {
+        "title": "Activity details",
+        "label": "Private",
+        "edit": "edit",
+        "delete": "delete",
+        "butComplete": "Mark as complete"
+    }
+}

@@ -3,8 +3,10 @@ import classes from './Activities.module.css';
 import { activitiesicon } from '../../../Assets/Images/activities';
 import { NavLink } from 'react-router-dom';
 import ActivityItem from './ActivityItem/ActivityItem';
+import { useTranslation } from 'react-i18next';
 
 const HomeActivities = (props) => {
+    const {t, i18n} = useTranslation();
     let maxActivitiesToView = 6;
     let activities = props.activities.map((item, index) => {
         if(index < maxActivitiesToView){
@@ -16,9 +18,9 @@ const HomeActivities = (props) => {
             <div className={classes.activitiesHeader}>
                 <div className={classes.activitiesHeaderBlock}>
                     {activitiesicon}
-                    <span>Activities</span>
+                    <span>{t("home.activities.title")}</span>
                 </div>
-                <NavLink to="/activities">View all</NavLink>
+                <NavLink to="/activities">{t("home.activities.viewAll")}</NavLink>
             </div>
             <div className={classes.itemsList}>
                 {activities}

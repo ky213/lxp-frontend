@@ -1,0 +1,31 @@
+{
+    "navbar": {
+        "home": "Домой",
+        "programs": "Программы",
+        "courses": "Курсы",
+        "activities": "Активности",
+        "myreport": "Мои отчеты"
+    },
+    "home":{
+        "statistic": {
+            "infoUser":{
+                "welcome": "Добро пожаловать, ",
+                "learningHours": "Часы обучения",
+                "hours": "ч.",
+                "and": "и",
+                "mins": "мин.",
+                "learningGoal": "Годовая Учебная Цель"
+            },
+            "programs": {
+                "programs": "Программы",
+                "cybersecurity": "Кибербезопасность",
+                "writing": "Письмо",
+                "tech": "Информационные Технологии"
+            },
+            "stats": {
+                "stats": "Статистика"
+            }
+
+        }
+    } 
+}

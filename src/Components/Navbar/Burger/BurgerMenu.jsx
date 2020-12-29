@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import classes from '../Navbar.module.css';
+import { useTranslation } from 'react-i18next';
 
 const Menu = styled.div`
     width: 100%;
@@ -28,23 +29,24 @@ const Menu = styled.div`
 
 
 const BurgerMenu = ({open, setOpen}) => {
+    const {t, i18n} = useTranslation();
     return(
         <Menu open={open}>
             <nav className={"nav"}>
                 <div className={classes.menuItem}>
-                    <NavLink to="/home" activeClassName={"active"}>Home</NavLink>
+                    <NavLink to="/home" activeClassName={"active"}>{t("navbar.home")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/programs" activeClassName={"active"}>Programs</NavLink>
+                    <NavLink to="/programs" activeClassName={"active"}>{t("navbar.programs")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/courses" activeClassName={"active"}>Courses</NavLink>
+                    <NavLink to="/courses" activeClassName={"active"}>{t("navbar.courses")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/activities" activeClassName={"active"}>Activities</NavLink>
+                    <NavLink to="/activities" activeClassName={"active"}>{t("navbar.activities")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/report" activeClassName={"active"}>My Report</NavLink>
+                    <NavLink to="/report" activeClassName={"active"}>{t("navbar.myreport")}</NavLink>
                 </div>
             </nav>
         </Menu>

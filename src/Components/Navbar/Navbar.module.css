@@ -39,7 +39,6 @@
     opacity: 0.5;
 }
 .logoBlock a span{
-    margin-left: 5px;
     font-weight: bold;
 }
 .links{
@@ -48,7 +47,6 @@
     height: 100%;
     width: 500px;
     justify-content: space-between;
-    margin-left: 60px;
 }
 .menuItem{
     height: 100%;
@@ -104,14 +102,15 @@
     font-size: 18px;
     transition-duration: 0.4s;
     outline: none;
-    margin-right: 24px;
 }
-.searchBut:hover{
-    background-color: white;
+.activeSearch{
+    background-color: #5bb98e;
+    border: #5bb98e;
+    color: white;
 }
+
 .notifications{
     height: 100%;
-    margin-right: 24px;
 }
 .notifications a{
     height: 100%;
@@ -143,6 +142,7 @@
     border-radius: 25px;
     height: 38px;
     padding-right: 12px;
+    direction: ltr;
 }
 .userDefault{
     width: 40px;
@@ -157,6 +157,8 @@
 }
 .burger{
     display: none;
+    position: fixed;
+    left: 20px;
 }
 
 @media screen and (max-width: 1440px){
@@ -182,6 +184,12 @@
     .burger{
         display: block;
         margin-left: 10px;
+    }
+    .rightSideNav{
+        margin-left: 60px;
+    }
+    .leftSideNav{
+        margin-left: 60px;
     }
 }
 @media screen and (max-width: 414px){

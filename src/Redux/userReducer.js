@@ -3,10 +3,12 @@ import { setIsFetching } from "./commonReducer";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_IS_AUTH = 'SET_IS_AUTH';
+const SET_IS_START_DATA = 'SET_IS_START_DATA';
 
 let initialState = {
     user: [],
-    isAuth: false
+    isAuth: false,
+    isStartData: false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -16,6 +18,9 @@ const userReducer = (state = initialState, action) => {
         }
         case SET_IS_AUTH: {
             return { ...state, isAuth: action.isAuth }
+        }
+        case SET_IS_START_DATA: {
+            return { ...state, isStartData: action.isStartData }
         }
         default:
             return state;
@@ -28,6 +33,9 @@ export const setUserData = (user) => ({
 
 export const setIsAuth = (isAuth) => ({
     type: SET_IS_AUTH, isAuth
+});
+export const setIsStartData = (isStartData) => ({
+    type: SET_IS_START_DATA, isStartData
 });
 
 export const login = (email, password) => async (dispatch) => {
@@ -45,7 +53,7 @@ export const getProfile = (token) => async (dispatch) => {
     dispatch(setIsFetching(true));
     try{
         let response = await userApi.getProfile(token);
-        dispatch([setUserData(response.user), setIsFetching(false)]);
+        dispatch([setUserData(response.user), setIsStartData(true),setIsFetching(false)]);
     }catch(err){
         dispatch(setIsFetching(false));
     }

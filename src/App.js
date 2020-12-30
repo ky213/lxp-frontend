@@ -39,10 +39,6 @@ const App = (props) => {
     i18n.changeLanguage(language);
   };
 
-  useEffect(()=>{
-    
-  },[]);
-
   return (
     <BrowserRouter>
       <StyledContentContainer direction={props.direction}>
@@ -55,7 +51,7 @@ const App = (props) => {
           <Route path="/courses" render={()=><LoadDataRouter Component={CoursesContainer}/>}/>
           <Route path="/activities/:activityId" render={()=><LoadDataRouter Component={Activity}/>}/>
           <Route exact path="/activities" render={()=><LoadDataRouter Component={ActivitiesContainer}/>}/>
-          <Route exact path="/login" render={()=><Login/>}/>
+          <Route path="/login" render={()=><LoadDataRouter Component={Login}/>}/>
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>

@@ -11,14 +11,13 @@ const LoadDataRouter = ({Component, isAuth, setCurrentRoute, currentRoute, getPr
 
     useEffect(()=>{
         setCurrentRoute(window.location.pathname);
-        getProfile(localStorage.usertoken);
-
+        if(localStorage.usertoken){
+            getProfile(localStorage.usertoken);
+        }
+        
     },[]);
     return(
-        <>
-            {isAuth ? <Component/> : <Redirect to="/login"/>}
-        </>
-        
+       <Component/> 
     )
 }
 

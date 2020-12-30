@@ -7,6 +7,17 @@
         "activities": "Activities",
         "myreport": "My Report"
     },
+    "login":{
+        "title": "LOGIN",
+        "header": "LEARNING EXPERIENCE PLATFORM",
+        "username": "Username",
+        "usernamePlaceholder": "Your Username",
+        "password": "Password",
+        "passwordPlaceholder": "Your Password",
+        "rememberMe": "Remember Me?",
+        "forgotPassword": "Forgot your password?",
+        "login": "Login"
+    },
     "home":{
         "statistic": {
             "infoUser":{
@@ -60,5 +71,16 @@
         "edit": "edit",
         "delete": "delete",
         "butComplete": "Mark as complete"
+    },
+    "activities": {
+        "title": "My Activities",
+        "addActivityBut": "Add Activity",
+        "filters": {
+            "notStarted": "Not Started",
+            "inProgress": "In Progress",
+            "completed": "Completed",
+            "all": "All",
+            "private": "Private"
+        }
     }
 }

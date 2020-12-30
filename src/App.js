@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { setDirection } from './Redux/commonReducer';
+import ActivitiesContainer from './Components/Activites/ActivitiesContainer';
+import Login from './Components/Auth/Login/Login';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -37,17 +39,23 @@ const App = (props) => {
     i18n.changeLanguage(language);
   };
 
+  useEffect(()=>{
+    
+  },[]);
+
   return (
     <BrowserRouter>
       <StyledContentContainer direction={props.direction}>
         <NavbarContainer changeLanguage={changeLanguage}/>
         <Switch>
-            <Route exact path="/">
-              <Redirect to="/home"/>
-            </Route>
-            <Route path="/home" render={()=><LoadDataRouter Component={HomeContainer}/>}/>
-            <Route path="/courses" render={()=><LoadDataRouter Component={CoursesContainer}/>}/>
-            <Route path="/activities/:activityId" render={()=><LoadDataRouter Component={Activity}/>}/>
+          <Route exact path="/" component>
+            <Redirect to="/home"/>
+          </Route>
+          <Route path="/home" render={()=><LoadDataRouter Component={HomeContainer}/>}/>
+          <Route path="/courses" render={()=><LoadDataRouter Component={CoursesContainer}/>}/>
+          <Route path="/activities/:activityId" render={()=><LoadDataRouter Component={Activity}/>}/>
+          <Route exact path="/activities" render={()=><LoadDataRouter Component={ActivitiesContainer}/>}/>
+          <Route exact path="/login" render={()=><Login/>}/>
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>
@@ -55,7 +63,7 @@ const App = (props) => {
 }
 
 let mapStateToProps = (state) => ({
-  direction: state.common.direction
+  direction: state.common.direction,
 });
 
 export default connect(mapStateToProps, {

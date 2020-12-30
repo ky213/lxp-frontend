@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import HomeActivities from './Activities/Activities';
+import HomeActivities from './Activities/HomeActivities';
 import HomeCourses from './Courses/Courses';
 import classes from './Home.module.css';
 import Statistic from './Statistic/Statistic';

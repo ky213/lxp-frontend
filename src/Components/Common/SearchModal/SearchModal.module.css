@@ -1,10 +1,8 @@
 .main{
     position: absolute;
     width: 820px;
-    transform: translateY(100px) translateX(-743px); 
     display: flex;
     flex-direction: column;
-
 }
 .body{
     border: 1px solid #bcbcbc;
@@ -22,13 +20,11 @@
     transition-duration: 0.1s;
     align-self: flex-end;
     position: relative;
-    left: -50px;
     top: 1px;
 }
 .innerArrow {
     position: relative;
     top: -15px;
-    left: -4.5px;
     transform: rotate(-90deg);
     width: 0;
     height: 0;
@@ -71,4 +67,16 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+@media screen and (max-width: 1000px){
+    .searchField{
+        padding: 5px;
+    }
+}
+@media screen and (max-width: 693px){
+    .filters{
+        flex-direction: column;
+        margin-top: 5px;
+    }
 }

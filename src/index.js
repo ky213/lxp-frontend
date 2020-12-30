@@ -6,10 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import store from './Redux/reduxStore';
 import {Provider} from "react-redux";
 import './Utils/i18n';
+import Preloader from './Components/Common/Preloader/Preloader';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Preloader/>}>
       <App/>
     </Suspense>
   </Provider>, document.getElementById('root'));

@@ -1,11 +1,16 @@
 import React from 'react';
 import classes from './ActivityItem.module.css';
-import { clockicon } from '../../../../Assets/Images/clock';
+import { clockicon } from '../../../Assets/Images/clock';
 import { NavLink } from 'react-router-dom';
-import ProgressBar from '../../../Common/ProgressBar/ProgressBar';
+import ProgressBar from '../../Common/ProgressBar/ProgressBar';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+
+
+const StyledMain = styled.div`
+    width: ${({ width }) => 'calc(' + width + '% - 32px)'};
+`;
 
 const StyledTimeBlock = styled.div`
     margin-left: ${({ direction }) => direction === "ltr" ? "16px" : "0"};
@@ -33,7 +38,7 @@ const ActivityItem = (props) => {
     var daysLag = Math.ceil(Math.abs(endTime.getTime() - now.getTime()) / (1000 * 3600 * 24));
     
     return(
-        <div className={classes.main}>
+        <StyledMain className={classes.main} width={props.width}>
             <NavLink to={`/activities/${props.item.activityId}`}>
                 <div className={classes.activityHeader}>
                     <span className={classes.program}>{(!props.item.description || props.item.description === "") ? t("activityMini.empty") : props.item.description}</span>
@@ -57,7 +62,7 @@ const ActivityItem = (props) => {
                 </div>
                 
             </NavLink>
-        </div>
+        </StyledMain>
     );
 }
 

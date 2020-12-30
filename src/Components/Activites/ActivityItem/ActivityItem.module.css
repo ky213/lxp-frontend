@@ -1,5 +1,4 @@
 .main{
-    width: calc(100% - 32px);
     display: flex;
     flex-direction: column;
     padding: 16px;

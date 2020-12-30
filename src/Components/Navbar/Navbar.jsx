@@ -38,7 +38,6 @@ const Navbar = (props) => {
     const {t, i18n} = useTranslation();
 
     const [notificationsCount, setNotificationsCount] = useState(1);
-    
     return(
         <nav className={classes.main}>
             <div className={classes.container}>

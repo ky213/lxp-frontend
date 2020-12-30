@@ -2,7 +2,32 @@ import React, { useState } from 'react';
 import CustomSelect from '../Cutsom/Select/CustomSelect';
 import classes from './SearchModal.module.css';
 import { searchicon } from '../../../Assets/Images/searchicon.js';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
+const StyledModal = styled.div`
+    transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-743px)' : 'translateY(100px) translateX(743px)' }; 
+    @media screen and (max-width: 1000px){
+        width: 620px;
+        transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-543px)' : 'translateY(100px) translateX(543px)' }; 
+    }
+    @media screen and (max-width: 822px){
+        width: 520px;
+        transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-443px)' : 'translateY(100px) translateX(443px)' }; 
+    }
+    @media screen and (max-width: 693px){
+        width: 420px;
+        transform: ${({ direction }) => direction === "ltr" ? 'translateY(160px) translateX(-343px)' : 'translateY(160px) translateX(343px)' }; 
+    }
+`;
+
+const StyledArrow = styled.div`
+    left: ${({ direction }) => direction === "ltr" ? "-50px" : "50px"};
+    
+    & div{
+        left: ${({ direction }) => direction === "ltr" ? "-4.5px" : "3.5px"};
+    }
+`;
 
 const SearchModal = (props) => {
     const [searchValue, setSearchValue] = useState('');
@@ -16,10 +41,10 @@ const SearchModal = (props) => {
     const [filterThreeValue, setFilterThreeValue] = useState(filerThree[0]);
 
     return(
-        <div className={classes.main}>
-            <div className={classes.arrow}>
+        <StyledModal className={classes.main} direction={props.direction}>
+            <StyledArrow className={classes.arrow} direction={props.direction}>
                 <div class={classes.innerArrow}></div>
-            </div>
+            </StyledArrow>
             <div className={classes.body}>
                 <div className={classes.searchField}>
                     <button>
@@ -33,9 +58,12 @@ const SearchModal = (props) => {
                     <CustomSelect options={filerThree} setFunction={setFilterThreeValue}/>
                 </div>
             </div>
-            
-        </div>
+        </StyledModal>
     );
 }
 
-export default SearchModal;
+let mapStateToProps = (state) => ({
+    direction: state.common.direction
+});
+
+export default connect(mapStateToProps, {})(SearchModal);

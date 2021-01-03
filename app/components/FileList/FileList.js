@@ -16,6 +16,7 @@ export const FileList = ({
   onRemoveLink,
   showAlertMessage,
   updateAnnouncementInList,
+  disabled,
   ...otherProps
 }) => {
   const [
@@ -151,12 +152,14 @@ export const FileList = ({
             onKeyDown={handleKeyDown}
             onChange={(e) => setMessage(e.target.value)}
             value={message}
+            disabled={disabled}
           />
           <InputGroupAddon addonType="append">
             <ThemedButton
               color="primary"
               title="Add your feedback/comment"
               onClick={() => handleAddLink(message)}
+              disabled={disabled}
             >
               <i className="fa fa fa-send"></i>
             </ThemedButton>
@@ -180,6 +183,7 @@ export const FileList = ({
             onChange={showFile}
             style={{ display: 'none' }}
             accept={otherProps.accept || '.pdf'}
+            disabled={disabled}
           />
         </React.Fragment>
       )}

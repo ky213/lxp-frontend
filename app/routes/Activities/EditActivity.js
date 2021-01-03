@@ -1089,6 +1089,7 @@ export const EditActivity = ({
                               onRemoveFile={handleRemoveFile}
                               onAddLink={handleAddLink}
                               onRemoveLink={handleRemoveLink}
+                              disabled={selectedActivity?.status === 'Closed'}
                             />
                           </TabPane>
                         </UncontrolledTabs.TabContent>

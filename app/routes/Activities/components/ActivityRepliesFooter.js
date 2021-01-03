@@ -53,6 +53,7 @@ const ActivityRepliesFooter = props => {
             color="primary"
             title="Add your feedback/comment"
             onClick={() => handleReply(message)}
+            disabled={props.selectedActivity?.status === 'Closed'}
           >
             <i className="fa fa fa-send"></i>
           </ThemedButton>

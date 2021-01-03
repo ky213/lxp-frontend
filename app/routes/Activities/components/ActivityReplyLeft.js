@@ -305,6 +305,7 @@ const ActivityReplyLeft = props => {
               onRemoveFile={handleRemoveFile}
               onAddLink={handleAddLink}
               onRemoveLink={handleRemoveLink}
+              disabled={selectedActivity?.status === 'Closed'}
             />
           </Card>
         )}

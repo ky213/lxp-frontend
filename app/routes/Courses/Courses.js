@@ -13,7 +13,6 @@ import {
   FormGroup,
   Row,
   UncontrolledTooltip,
-  CardColumns,
 } from '@/components'
 import { Button } from 'reactstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -25,7 +24,6 @@ import { useAppState } from '@/components/AppState'
 import styles from './Courses.css'
 import Loading from '@/components/Loading'
 import { HeaderDemo } from '@/routes/components/HeaderDemo'
-import { isMobileDevice } from 'responsive-react'
 import { CourseCard } from './components/CourseCard'
 import { TinCanLaunch } from '@/helpers'
 import { Role } from '@/helpers'
@@ -265,13 +263,11 @@ const Courses = props => {
                 </Col>
               </Row>
             </CardBody>
-
-            {coursesData &&
-              coursesData.courses &&
-              coursesData.courses.length > 0 && (
-                <React.Fragment>
-                  <CardColumns>
-                    {coursesData.courses.map(course => (
+            {coursesData?.courses?.length > 0 && (
+              <>
+                <Row>
+                  {coursesData.courses.map(course => (
+                    <Col xs="4">
                       <CourseCard
                         course={course}
                         onLaunch={handleLaunch}
@@ -279,18 +275,19 @@ const Courses = props => {
                         isLearner={isLearner}
                         isSuperAdmin={isSuperAdmin}
                       />
-                    ))}
-                  </CardColumns>
-                  <CardFooter className="d-flex justify-content-center pb-0">
-                    <Paginations
-                      pageId={pageId}
-                      setPageId={setPageId}
-                      totalNumber={coursesData.totalNumberOfRecords}
-                      recordsPerPage={recordsPerPage}
-                    />
-                  </CardFooter>
-                </React.Fragment>
-              )}
+                    </Col>
+                  ))}
+                </Row>
+                <CardFooter className="d-flex justify-content-center pb-0">
+                  <Paginations
+                    pageId={pageId}
+                    setPageId={setPageId}
+                    totalNumber={coursesData.totalNumberOfRecords}
+                    recordsPerPage={recordsPerPage}
+                  />
+                </CardFooter>
+              </>
+            )}
           </>
         )}
       </Container>

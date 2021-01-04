@@ -182,33 +182,37 @@ const LearnerHome = () => {
                     />
                   </Col>
                 </Row>
-                <CardColumns className="mt-3">
+                <Row className="mt-3">
                   {joinedCourses
                     .sort((a, b) => a.name < b.name)
                     .map(course => (
-                      <CourseCard
-                        key={course.courseId}
-                        course={course}
-                        onLaunch={handleLaunch}
-                        joinedCourses={joinedCourses.map(
-                          ({ courseId }) => courseId
-                        )}
-                        isLearner={isLearner}
-                      />
+                      <Col xs="4">
+                        <CourseCard
+                          key={course.courseId}
+                          course={course}
+                          onLaunch={handleLaunch}
+                          joinedCourses={joinedCourses.map(
+                            ({ courseId }) => courseId
+                          )}
+                          isLearner={isLearner}
+                        />
+                      </Col>
                     ))}
-                </CardColumns>
+                </Row>
               </TabPane>
               <TabPane tabId="activities">
                 <>
-                  <CardColumns className="mt-3">
+                  <Row className="mt-3">
                     {activities.map(activity => (
-                      <ActivityCard
-                        activity={activity}
-                        setSelectedActivity={setSelectedActivity}
-                        organizationId={currentUser.user.organizationId}
-                      />
+                      <Col xs="4" className="mb-4">
+                        <ActivityCard
+                          activity={activity}
+                          setSelectedActivity={setSelectedActivity}
+                          organizationId={currentUser.user.organizationId}
+                        />
+                      </Col>
                     ))}
-                  </CardColumns>
+                  </Row>
                   <EditActivity
                     currentProgramId={selectedActivity?.programId}
                     selectedActivity={selectedActivity}

@@ -112,6 +112,9 @@ let CourseCard = ({
                 Launch
               </Button>
             )}
+            <p>
+              <small>{course.courseCode}</small>
+            </p>
           </div>
           <div
             className="courseDescription"

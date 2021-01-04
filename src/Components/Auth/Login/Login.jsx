@@ -40,7 +40,7 @@ const LoginForm = (props) => {
 const LoginReduxForm = reduxForm({form:'login'})(LoginForm);
 
 const Login = (props) => {
-    const [isRememberMe, setIsRememberMe] = useState(true);
+    const [isRememberMe, setIsRememberMe] = useState(false);
     const {t, i18n} = useTranslation();
 
     useEffect(()=>{
@@ -48,11 +48,11 @@ const Login = (props) => {
     },[]);
 
     const onSubmit = (formData) => {
-        props.login(formData.email, formData.password);
+        props.login(formData.email, formData.password, isRememberMe);
     }
     return(
         <div className={classes.main}>
-            {props.isAuth && <Redirect to="/"/>}
+            {(localStorage.usertoken || sessionStorage.usertoken) && <Redirect to="/"/>}
             <div className={classes.login}>
                 <h1>{t("login.header")}</h1>
                 {props.isFetching && <Preloader/>}

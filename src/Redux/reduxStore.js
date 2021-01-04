@@ -6,6 +6,8 @@ import userReducer from './userReducer';
 import commonReducer from './commonReducer';
 import coursesReducer from './coursesReducer';
 import activitiesReducer from './activitiesReducer';
+import notificationsReducer from './notificationsReducer';
+import programsReducer from './programsReducer';
 
 
 
@@ -14,6 +16,8 @@ let reducers = combineReducers({
     common: commonReducer,
     courses: coursesReducer,
     activities: activitiesReducer,
+    notifications: notificationsReducer,
+    programs: programsReducer,
     form: formReducer,
 });
 

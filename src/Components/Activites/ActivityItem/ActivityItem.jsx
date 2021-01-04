@@ -39,7 +39,7 @@ const ActivityItem = (props) => {
     
     return(
         <StyledMain className={classes.main} width={props.width}>
-            <NavLink to={`/activities/${props.item.activityId}`}>
+            <NavLink to={`/activities/view/${props.item.activityId}`}>
                 <div className={classes.activityHeader}>
                     <span className={classes.program}>{(!props.item.description || props.item.description === "") ? t("activityMini.empty") : props.item.description}</span>
                     <div className={classes.headerSide}>

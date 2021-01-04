@@ -6,7 +6,7 @@ import { setCurrentActivity } from '../../Redux/activitiesReducer';
 import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../Common/Preloader/Preloader';
 import { setIsFetching } from '../../Redux/commonReducer';
-import { getActivities } from '../../Redux/activitiesReducer';
+import { getActivity } from '../../Redux/activitiesReducer';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
@@ -31,14 +31,9 @@ const Activity = (props) => {
     let heightProgressBar = 16;
     
     useEffect(()=>{
-        props.getActivities(props.user.employeeId, props.user.userId, props.user.orgranizationId);
-        let activityId = props.match.params.activityId;
-        props.activities.forEach(item => {
-            if(item.activityId == activityId){
-                props.setCurrentActivity(item);
-            }
-        });
-    },[props.activities]);
+            let activityId = props.match.params.activityId;
+            props.getActivity(activityId, props.user.selectedOrganizationId);
+    },[]);
 
     const [daysLag, setDaysLag] = useState(0);
     useEffect(()=>{
@@ -158,5 +153,5 @@ let mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     setCurrentActivity,
     setIsFetching,
-    getActivities
+    getActivity
 })(WithUrlDataContainerComponent);

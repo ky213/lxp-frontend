@@ -9,8 +9,7 @@ const ActivitiesContainer = (props) => {
     useEffect(()=>{
         if(props.user.employeeId){
             props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
-        }
-        
+        }  
     },[]);
 
     const [size, setSize] = useState([window.outerWidth, window.innerHeight]);

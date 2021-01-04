@@ -16,11 +16,16 @@ const StyledCoursesContainer = styled.div`
     }
 `;
 
+const StyledLeftSide = styled.div`
+    padding-right: ${({ direction }) => direction === "ltr" ? "0" : "24px"};
+`;
+
+
 const Home = (props) => {
     return(
         <div className={classes.main}>
             <div className={classes.container}>
-                <div className={classes.leftSide}>
+                <StyledLeftSide className={classes.leftSide} direction={props.direction}>
                     <div className={classes.containerLeft}>
                         <div className={classes.statistic}>
                             <Statistic user={props.user}/>
@@ -29,7 +34,7 @@ const Home = (props) => {
                             <HomeCourses courses={props.courses}/>
                         </StyledCoursesContainer>
                     </div>
-                </div>
+                </StyledLeftSide>
                 <div className={classes.rightSide}>
                     <div className={classes.containerRight}>
                         <div className={classes.activities}>

@@ -12,6 +12,7 @@ import { searchicon } from '../../Assets/Images/searchicon.js';
 import Burger from './Burger/Burger';
 import { useTranslation } from 'react-i18next';
 import SearchModal from '../Common/SearchModal/SearchModal';
+import ProfileMenu from './ProfileMenu/ProfileMenu';
 
 const StyledLogoBlock = styled.div`
     a span{
@@ -25,19 +26,18 @@ const StyledLinks = styled.div`
 `;
 
 const StyledNotifications = styled.div`
-    margin-left: ${({ direction }) => direction === "rtl" ? "24px" : "0"};
-    margin-right: ${({ direction }) => direction === "ltr" ? "24px" : "0"};
+    margin-left: ${({ direction }) => direction === "rtl" ? "15px" : "0"};
+    margin-right: ${({ direction }) => direction === "ltr" ? "15px" : "0"};
 `;
 
 const StyledBut = styled.button`
-    margin-left: ${({ direction }) => direction === "rtl" ? "24px" : "0"};
-    margin-right: ${({ direction }) => direction === "ltr" ? "24px" : "0"};
+    margin-left: ${({ direction }) => direction === "rtl" ? "15px" : "0"};
+    margin-right: ${({ direction }) => direction === "ltr" ? "15px" : "0"};
 `;
 
 const Navbar = (props) => {
     const {t, i18n} = useTranslation();
 
-    const [notificationsCount, setNotificationsCount] = useState(1);
     return(
         <nav className={classes.main}>
             <div className={classes.container}>
@@ -89,19 +89,23 @@ const Navbar = (props) => {
                     </StyledBut>
                     {props.isOpenSearchModal && <SearchModal/>}
                     <StyledNotifications className={classes.notifications} direction={props.direction}>
-                        <NavLink to="/notifications">
+                        <button onClick={()=>{props.setIsOpenNotificationsModal(!props.isOpenNotificationsModal)}} className={classes.notBut + " " + (props.isOpenNotificationsModal && classes.activeModalNotifications)}>
                             {notificationicon}
                             <div className={classes.notificationsCount}>
-                                {notificationsCount}
+                                {props.totalUnreadNotificationsCount}
                             </div>
-                        </NavLink>
+                        </button>
                     </StyledNotifications>
-                    <div className={classes.userMenu}>
+                    <input type="checkbox" hidden id="profileMenu" className={classes.check}/>
+                    <label className={classes.userMenu} htmlFor="profileMenu">
                         {props.user.profilePhoto ? 
                         <img src={props.user.profilePhoto}/> : 
                         <div className={classes.userDefault}></div>}
                         <span>{props.user.firstName}</span>
-                    </div>
+                        <div className={classes.profileMenuContainer}>
+                            <ProfileMenu/>
+                        </div>
+                    </label>
                     <div className={classes.burger}>
                         <Burger/>
                     </div>

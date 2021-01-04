@@ -1,11 +1,13 @@
 const SET_IS_FETCHING = 'SET_IS_FETCHING';
 const SET_DIRECTION = 'SET_DIRECTION';
 const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE'; 
+const SET_SERVER_MESSAGE = 'SET_SERVER_MESSAGE';
 
 let initialState = {
     isFetching: false,
     direction: "ltr",
-    currentRoute: "/"
+    currentRoute: "/",
+    serverMessage: null
 }
 
 const commonReducer = (state = initialState, action) => {
@@ -18,6 +20,9 @@ const commonReducer = (state = initialState, action) => {
         }
         case SET_CURRENT_ROUTE: {
             return { ...state, currentRoute: action.currentRoute }
+        }
+        case SET_SERVER_MESSAGE: {
+            return { ...state, serverMessage: action.serverMessage }
         }
         default:
             return state
@@ -32,6 +37,9 @@ export const setDirection = (direction) => ({
 });
 export const setCurrentRoute = (currentRoute) => ({
     type: SET_CURRENT_ROUTE, currentRoute
+});
+export const setServerMessage = (serverMessage) => ({
+    type: SET_SERVER_MESSAGE, serverMessage
 });
 
 export default commonReducer;

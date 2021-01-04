@@ -37,7 +37,7 @@ const Courses = (props) => {
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
-                            <snap className={classes.filterText}>{t("courses.filters.inProgress")}</snap>
+                            <span className={classes.filterText}>{t("courses.filters.inProgress")}</span>
                             <input type="checkbox" onChange={()=>{setInProgress(!inProgress)}} checked={inProgress}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>

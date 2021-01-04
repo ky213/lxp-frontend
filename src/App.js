@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import './App.css';
 import Activity from './Components/Activity/Activity';
@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { setDirection } from './Redux/commonReducer';
 import ActivitiesContainer from './Components/Activites/ActivitiesContainer';
 import Login from './Components/Auth/Login/Login';
+import AddActivity from './Components/Activity/AddActivity/AddActivity';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -44,14 +45,15 @@ const App = (props) => {
       <StyledContentContainer direction={props.direction}>
         <NavbarContainer changeLanguage={changeLanguage}/>
         <Switch>
-          <Route exact path="/" component>
+          <Route exact path="/">
             <Redirect to="/home"/>
           </Route>
           <Route path="/home" render={()=><LoadDataRouter Component={HomeContainer}/>}/>
           <Route path="/courses" render={()=><LoadDataRouter Component={CoursesContainer}/>}/>
-          <Route path="/activities/:activityId" render={()=><LoadDataRouter Component={Activity}/>}/>
+          <Route path="/activities/view/:activityId" render={()=><LoadDataRouter Component={Activity}/>}/>
           <Route exact path="/activities" render={()=><LoadDataRouter Component={ActivitiesContainer}/>}/>
-          <Route path="/login" render={()=><LoadDataRouter Component={Login}/>}/>
+          <Route path="/activities/add" render={()=><LoadDataRouter Component={AddActivity}/>}/>
+          <Route path="/login" render={()=><Login/>}/>
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>

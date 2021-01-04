@@ -27,11 +27,12 @@
     margin-block-end: 36px;
     font-size: 28px;
 }
-.headerHeader button{
+.headerHeader a{
+    text-decoration: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 140px;
+    width: 120px;
     padding: 12px;
     border-radius: 23.5px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
@@ -44,7 +45,7 @@
     color: #3d3d3d;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
-.headerHeader button i{
+.headerHeader a i{
     border-radius: 50%;
     background-color: #6671ab;
     color: white;

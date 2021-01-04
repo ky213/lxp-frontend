@@ -29,7 +29,6 @@ export const getCourses = (organizationId, page, take) => async (dispatch) => {
     dispatch(setIsFetching(true));
     try{
         let respnose = await coursesApi.getCourses(organizationId, page, take);
-        console.log(respnose);
         dispatch([setCoursesData(respnose.courses), setIsFetching(false)]);
     }catch(err){
         dispatch(setIsFetching(false));

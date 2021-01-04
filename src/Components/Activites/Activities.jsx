@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import classes from './Activities.module.css';
 import { useTranslation } from 'react-i18next';
 import ActivityItem from './ActivityItem/ActivityItem';
+import { NavLink } from 'react-router-dom';
 
 const StyledLabel = styled.label`
     margin-left: ${({ direction }) => direction === "rtl" ? "56px" : "0"};
@@ -17,10 +18,13 @@ const Activities = (props) => {
     const [notStarted, setNotStarted] = useState(false);
     const [privateParam, setPrivateParam] = useState(false);
 
+    props.activities.sort(function(a,b){
+        return new Date(b.end) - new Date(a.end);
+    });
 
     let activities = props.activities.map(item => {
         return <ActivityItem item={item} key={item.activityId} width={props.blockWidth}/>
-    })
+    });
 
     return(
         <div className={classes.main}>
@@ -28,10 +32,10 @@ const Activities = (props) => {
                 <div className={classes.headerContainer}>
                     <div className={classes.headerHeader}>
                         <h1>{t("activities.title")}</h1>
-                        <button>
+                        <NavLink to="/activities/add">
                             <i className="fas fa-plus"></i>
                             {t("activities.addActivityBut")}
-                        </button>
+                        </NavLink>
                     </div>
                     <div className={classes.filters}>
                         <StyledLabel className={classes.filter} direction={props.direction}>
@@ -45,7 +49,7 @@ const Activities = (props) => {
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
-                            <snap className={classes.filterText}>{t("activities.filters.inProgress")}</snap>
+                            <span className={classes.filterText}>{t("activities.filters.inProgress")}</span>
                             <input type="checkbox" onChange={()=>{setInProgress(!inProgress)}} checked={inProgress}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>

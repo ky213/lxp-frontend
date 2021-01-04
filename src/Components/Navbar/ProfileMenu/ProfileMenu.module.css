@@ -1,0 +1,71 @@
+.main{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+}
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #bcbcbc;
+    transform: rotate(180deg);
+    transition-duration: 0.1s;
+    align-self: flex-end;
+    position: relative;
+    top: 1px;
+    left: -15px;
+}
+.innerArrow {
+    position: relative;
+    top: -15px;
+    transform: rotate(-90deg);
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 9px solid white;
+}
+.menu{
+    width: 236px;
+    height: 100px;
+    border: 1px solid #bcbcbc;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 12.5px 0 rgba(0, 0, 0, 0.13);
+}
+.menuItem{
+    height: 50%;
+    display: flex;
+    align-items: center;
+}
+.menu a{
+    font-size: 14px;
+    color: #585858;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 8px 16px;
+    width: 100%;
+}
+.menu i{
+    font-size: 24px;
+}
+.menu button{
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #585858;
+    padding: 8px 20px;
+    width: 100%;
+}
+.withBorder{
+    border-bottom: 1px solid #bcbcbc;
+}
+.menuItem:hover span{
+    text-decoration: underline;
+}

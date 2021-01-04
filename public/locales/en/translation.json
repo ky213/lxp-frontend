@@ -82,5 +82,9 @@
             "all": "All",
             "private": "Private"
         }
+    },
+    "addActivity": {
+        "title": "Add a new activity"
     }
+
 }

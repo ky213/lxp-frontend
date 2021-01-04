@@ -165,3 +165,7 @@
 .form button:hover{
     background-color: #379469;
 }
+.error{
+    margin-top: 24px;
+    color: tomato;
+}

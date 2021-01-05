@@ -5,11 +5,13 @@ import { setIsFetching } from "./commonReducer";
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_IS_AUTH = 'SET_IS_AUTH';
 const SET_IS_START_DATA = 'SET_IS_START_DATA';
+const SET_EMPLOYEE_ID = 'SET_EMPLOYEE_ID';
 
 let initialState = {
     user: [],
     isAuth: false,
-    isStartData: false
+    isStartData: false,
+    employeeId: null
 }
 
 const userReducer = (state = initialState, action) => {
@@ -22,6 +24,9 @@ const userReducer = (state = initialState, action) => {
         }
         case SET_IS_START_DATA: {
             return { ...state, isStartData: action.isStartData }
+        }
+        case SET_EMPLOYEE_ID: {
+            return { ...state, employeeId: action.employeeId }
         }
         default:
             return state;
@@ -38,10 +43,12 @@ export const setIsAuth = (isAuth) => ({
 export const setIsStartData = (isStartData) => ({
     type: SET_IS_START_DATA, isStartData
 });
+export const setEmployeeId = (employeeId) => ({
+    type: SET_EMPLOYEE_ID, employeeId
+});
 
 export const login = (email, password, isRememberMe) => async (dispatch) => {
     dispatch(setIsFetching(true));
-    console.log(isRememberMe)
     try{
         let response = await userApi.login(email, password);
         if(isRememberMe){
@@ -49,10 +56,9 @@ export const login = (email, password, isRememberMe) => async (dispatch) => {
         }else{
             sessionStorage.setItem('usertoken', response.token);
         }
-        dispatch([setIsAuth(true), setIsFetching(false)]);
+        dispatch([setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
     }catch(err){
         let error = err.response.data.message ? err.response.data.message : err.message
-        console.log(error);
         dispatch(stopSubmit('login', {_error: error}));
         dispatch(setIsFetching(false));
     }
@@ -62,7 +68,17 @@ export const getProfile = (token) => async (dispatch) => {
     dispatch(setIsFetching(true));
     try{
         let response = await userApi.getProfile(token);
-        dispatch([setUserData(response.user), setIsAuth(true), setIsStartData(true),setIsFetching(false)]);
+        dispatch([setUserData(response.user), setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
+    }catch(err){
+        dispatch(setIsFetching(false));
+    }
+}
+
+export const getUserProfile = (employeeId) => async (dispatch) => {
+    dispatch(setIsFetching(true));
+    try{
+        let respnose = await userApi.getUserProfile(employeeId);
+        dispatch([setUserData(respnose), setIsFetching(false)]);
     }catch(err){
         dispatch(setIsFetching(false));
     }

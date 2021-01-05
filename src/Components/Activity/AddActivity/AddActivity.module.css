@@ -169,25 +169,25 @@
 
 @media screen and (max-width: 968px){
     .headerContainer{
-        width: calc(768px - 64px);
+        width: calc(100% - 64px);
         padding-left: 32px;
         padding-right: 32px;
     }
     .formContainer{
-        width: calc(768px - 64px);
+        width: calc(100% - 64px);
         padding-left: 32px;
         padding-right: 32px;
     }
     .form{
-        width: 100%;
-    }
-    .field input{
-        width: 95%;
-    }
-    .field textarea{
         width: 95%;
     }
     .fieldBut{
-        width: 80%;
+        width: 100%;
+    }
+    .fieldBut button{
+        width: 45%;
+    }
+    .fieldBut a{
+        width: 45%;
     }
 }

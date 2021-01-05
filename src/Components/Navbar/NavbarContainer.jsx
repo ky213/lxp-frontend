@@ -7,7 +7,7 @@ const NavbarContainer = (props) => {
     const [isOpenNotificationsModal, setIsOpenNotificationsModal] = useState(false);
     return(
         <>
-        {props.currentRoute != "/login" &&
+        {(props.currentRoute != "/login" && props.currentRoute != "/forgot_password") &&
         <Navbar user={props.user} 
                 changeLanguage={props.changeLanguage}
                 direction={props.direction}

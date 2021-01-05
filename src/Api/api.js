@@ -19,6 +19,10 @@ export const userApi = {
     getProfile(token){
         return instance.post(`/users/authToken/?token=${token}`)
         .then(response => response.data);
+    },
+    getUserProfile(employeeId){
+        return instance.get(`/users/getByEmployeeId/${employeeId}`)
+        .then(response => response.data);
     }
 }
 

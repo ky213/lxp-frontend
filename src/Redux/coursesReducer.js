@@ -4,17 +4,22 @@ import img2 from '../Assets/Images/Mocks/img2.jpg';
 import { setIsFetching } from './commonReducer';
 
 const SET_COURSES_DATA = 'SET_COURSES_DATA';
+const SET_JOINED_COURSES = 'SET_JOINED_COURSES';
 
 let initialState = {
     courses: [],
     page: 1,
-    take: 20
+    take: 20,
+    joinedCourses: []
 }
 
 const coursesReducer = (state = initialState, action) => {
     switch(action.type){
         case SET_COURSES_DATA: {
             return { ...state, courses: action.courses }
+        }
+        case SET_JOINED_COURSES: {
+            return { ...state, joinedCourses: action.joinedCourses }
         }
         default:
             return state;
@@ -23,6 +28,9 @@ const coursesReducer = (state = initialState, action) => {
 
 export const setCoursesData = (courses) => ({
     type: SET_COURSES_DATA, courses
+});
+export const setJoinedCourses = (joinedCourses) => ({
+    type: SET_JOINED_COURSES, joinedCourses
 });
 
 export const getCourses = (organizationId, page, take) => async (dispatch) => {

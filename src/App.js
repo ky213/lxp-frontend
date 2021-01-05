@@ -13,6 +13,7 @@ import { setDirection } from './Redux/commonReducer';
 import ActivitiesContainer from './Components/Activites/ActivitiesContainer';
 import Login from './Components/Auth/Login/Login';
 import AddActivity from './Components/Activity/AddActivity/AddActivity';
+import ForgotPassword from './Components/Auth/Forgot/ForgotPassword';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -54,6 +55,7 @@ const App = (props) => {
           <Route exact path="/activities" render={()=><LoadDataRouter Component={ActivitiesContainer}/>}/>
           <Route path="/activities/add" render={()=><LoadDataRouter Component={AddActivity}/>}/>
           <Route path="/login" render={()=><Login/>}/>
+          <Route path="/forgot_password" render={()=><ForgotPassword/>}/>
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>

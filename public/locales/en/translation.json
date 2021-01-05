@@ -18,6 +18,14 @@
         "forgotPassword": "Forgot your password?",
         "login": "Login"
     },
+    "forgotPassword": {
+        "title": "Create New Password",
+        "header": "LEARNING EXPERIENCE PLATFORM",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "repeatPassword": "Retype New Password",
+        "submit": "Submit"
+    },
     "home":{
         "statistic": {
             "infoUser":{

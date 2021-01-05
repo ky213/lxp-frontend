@@ -53,9 +53,9 @@ const SearchModal = (props) => {
                     <input placeholder="Search..." name={"value"} onChange={(e)=>{setSearchValue(e.target.value)}}/>
                 </div>
                 <div className={classes.filters}>
-                    <CustomSelect options={filerOne} setFunction={setFilterOneValue}/>
-                    <CustomSelect options={filerTwo} setFunction={setFilterTwoValue}/>
-                    <CustomSelect options={filerThree} setFunction={setFilterThreeValue}/>
+                    <CustomSelect options={filerOne} setFunction={setFilterOneValue} width={32}/>
+                    <CustomSelect options={filerTwo} setFunction={setFilterTwoValue} width={32}/>
+                    <CustomSelect options={filerThree} setFunction={setFilterThreeValue} width={32}/>
                 </div>
             </div>
         </StyledModal>

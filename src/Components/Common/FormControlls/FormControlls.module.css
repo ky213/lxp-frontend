@@ -1,3 +1,8 @@
+.formControll{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 .formControll input{
     width: calc(100% - 16px);
     height: calc(47px - 24px);
@@ -21,4 +26,37 @@
 .formControll.error span{
     position: relative;
     top: 10px;
+}
+
+.textarea{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+}
+.textarea textarea{
+    resize: none;
+    width: 100%;
+    outline: none;
+    padding: 12px 16px;
+    border-radius: 5px;
+    border: 1px solid #c6c6c6;
+    font-size: 16px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    color: #3d3d3d;
+    margin-top: 4px;
+}
+
+.textarea.error{
+    color: tomato;
+}
+.textarea.error span{
+    position: relative;
+    top: 10px;
+}
+.textarea label{
+    margin-top: 15px;
+    color: #747474;
+    font-size: 12px;
+    font-weight: 400;
 }

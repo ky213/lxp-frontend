@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import classes from './CustomSelect.module.css';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+
+const StyledSelect = styled.div`
+    width: ${({ width }) => width + "%"};
+`;
 
 const CustomSelect = (props) => {
     const [currentOption, setCurrentOption] = useState(props.options[0]);
@@ -17,7 +22,7 @@ const CustomSelect = (props) => {
     });
 
     return(
-        <div className={classes.main}>
+        <StyledSelect className={classes.main} width={props.width}>
             <input hidden type="checkout" value={isOpenDropdown}/>
             <div className={classes.view} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
                 <span>{currentOption}</span>
@@ -27,7 +32,7 @@ const CustomSelect = (props) => {
             <div className={classes.dropdown + " " + (isOpenDropdown && classes.openDropdown)}>
                 {options}
             </div>}
-        </div> 
+        </StyledSelect> 
     );
 }
 

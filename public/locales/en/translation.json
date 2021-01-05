@@ -84,7 +84,19 @@
         }
     },
     "addActivity": {
-        "title": "Add a new activity"
+        "title": "Add a new activity",
+        "name": "Activity name",
+        "namePlaceholder": "e.g: brainstorm new ideas",
+        "link": "Link",
+        "type": "Type",
+        "typeDef": "Select activity type",
+        "description": "Short description",
+        "charactersLeft": "characters left",
+        "visibility": "Visibility",
+        "public": "Public",
+        "private": "Private",
+        "addActivity": "Add activity",
+        "cancel": "Cancel"
     }
 
 }

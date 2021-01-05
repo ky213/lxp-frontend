@@ -97,6 +97,9 @@
         "private": "Private",
         "addActivity": "Add activity",
         "cancel": "Cancel"
+    },
+    "reports":{
+        
     }
 
 }

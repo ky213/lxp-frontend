@@ -9,13 +9,15 @@ import { empty_state_icon } from '../../../Assets/Images/empty_state_icon';
 const HomeCourses = (props) => {
     const {t, i18n} = useTranslation();
     let maxCoursesToView = 6;
-    console.log(props)
     let courses = [];
-    // courses = props.courses.map((item, index) => {
-    //     if(index < maxCoursesToView){
-    //         return <CourseItem item={item} key={item.courseId}/>
-    //     }
-    // });
+    if(props.courses){
+        courses = props.courses.map((item, index) => {
+            if(index < maxCoursesToView){
+                return <CourseItem item={item} key={item.courseId}/>
+            }
+        });
+    }
+    
     return(
         <div className={classes.main}>
             <div className={classes.coursesHeader}>

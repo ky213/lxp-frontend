@@ -101,7 +101,7 @@ const Navbar = (props) => {
                         {props.user.profilePhoto ? 
                         <img src={props.user.profilePhoto}/> : 
                         <div className={classes.userDefault}></div>}
-                        <span>{props.user.firstName}</span>
+                        <span>{props.user.name}</span>
                         <div className={classes.profileMenuContainer}>
                             <ProfileMenu/>
                         </div>

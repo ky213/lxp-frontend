@@ -13,6 +13,7 @@ import { setDirection } from "./Redux/commonReducer";
 import ActivitiesContainer from "./Components/Activites/ActivitiesContainer";
 import Login from "./Components/Auth/Login/Login";
 import AddActivity from "./Components/Activity/AddActivity/AddActivity";
+import ForgotPassword from "./Components/Auth/Forgot/ForgotPassword";
 import ReportsContainer from "./Components/Reports/ReportsContainer";
 
 const StyledContentContainer = styled.div`
@@ -70,11 +71,12 @@ const App = (props) => {
             path="/activities/add"
             render={() => <LoadDataRouter Component={AddActivity} />}
           />
+          <Route path="/login" render={() => <Login />} />
+          <Route path="/forgot_password" render={() => <ForgotPassword />} />
           <Route
             path="/report"
             render={() => <LoadDataRouter Component={ReportsContainer} />}
           />
-          <Route path="/login" render={() => <Login />} />
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>

@@ -11,3 +11,7 @@ export const isEmail = (value) => {
     }
     return 'Incorrect email!';   
 }
+export const passValidationMatch = (value, allValues) => {
+    if(value !== allValues.newPassword) return `Passwords didn't match!`;
+    return undefined;
+}

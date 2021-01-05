@@ -13,6 +13,7 @@ const ReportsContainer = (props) => {
             props.getPrograms(props.user.organizationId);
         }
     },[props.isAuth]);
+
     return(
         <>
             {props.isFetching && <Preloader/>}
@@ -30,8 +31,8 @@ let mapStateToProps = (state) => ({
     isFetching: state.common.isFetching,
     user: state.user.user,
     isAuth: state.user.isAuth,
-    courses: state.user.joinedCourses,
-    activities: state.activities.activities,
+    courses: state.courses.joinedCourses,
+    activities: state.activities.currentActivity,
     page: state.courses.page,
     take: state.courses.take,
     direction: state.common.direction,

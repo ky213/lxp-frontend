@@ -15,6 +15,7 @@ import Login from "./Components/Auth/Login/Login";
 import AddActivity from "./Components/Activity/AddActivity/AddActivity";
 import ForgotPassword from "./Components/Auth/Forgot/ForgotPassword";
 import ReportsContainer from "./Components/Reports/ReportsContainer";
+import Profile from "./Components/Profile/Profile";
 
 const StyledContentContainer = styled.div`
   width: 100%;

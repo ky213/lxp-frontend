@@ -114,7 +114,8 @@
             "pending": "Pending",
             "courses": "courses",
             "activities": "activities"
-        },
+        }
+    },
     "profile": {
         "title": "Profile Settings",
         "tabs":{

@@ -105,6 +105,36 @@
         "private": "Private",
         "addActivity": "Add activity",
         "cancel": "Cancel"
+    },
+    "profile": {
+        "title": "Profile Settings",
+        "tabs":{
+            "info": "Profile info",
+            "email": "Email",
+            "password": "Password",
+            "notifications": "Notifications"
+        },
+        "saveChanges": "Save changes",
+        "cancel": "Cancel",
+        "profileInfo": {
+            "fullname": "Full name",
+            "photo": "Profile photo",
+            "remove": "Remove"
+        },
+        "profileEmail": {
+            "current": "Current email address",
+            "new": "New email address",
+            "reenter": "Re-enter email address"
+        },
+        "profilePass": {
+            "current": "Current password",
+            "new": "New password",
+            "reenter": "Re-enter new password"
+        },
+        "notifications": {
+            "email": "Enable email notifications",
+            "text": "Enable text notifications"
+        }
     }
 
 }

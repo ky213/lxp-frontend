@@ -14,6 +14,7 @@ import ActivitiesContainer from './Components/Activites/ActivitiesContainer';
 import Login from './Components/Auth/Login/Login';
 import AddActivity from './Components/Activity/AddActivity/AddActivity';
 import ForgotPassword from './Components/Auth/Forgot/ForgotPassword';
+import Profile from './Components/Profile/Profile';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -54,6 +55,7 @@ const App = (props) => {
           <Route path="/activities/view/:activityId" render={()=><LoadDataRouter Component={Activity}/>}/>
           <Route exact path="/activities" render={()=><LoadDataRouter Component={ActivitiesContainer}/>}/>
           <Route path="/activities/add" render={()=><LoadDataRouter Component={AddActivity}/>}/>
+          <Route path="/profile" render={()=><LoadDataRouter Component={Profile}/>}/>
           <Route path="/login" render={()=><Login/>}/>
           <Route path="/forgot_password" render={()=><ForgotPassword/>}/>
         </Switch>

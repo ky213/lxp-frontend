@@ -71,6 +71,10 @@ const App = (props) => {
             path="/activities/add"
             render={() => <LoadDataRouter Component={AddActivity} />}
           />
+          <Route
+            path="/profile"
+            render={() => <LoadDataRouter Component={Profile} />}
+          />
           <Route path="/login" render={() => <Login />} />
           <Route path="/forgot_password" render={() => <ForgotPassword />} />
           <Route

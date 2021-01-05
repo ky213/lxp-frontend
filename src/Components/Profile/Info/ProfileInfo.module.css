@@ -1,0 +1,89 @@
+.form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.field{
+    width: 70%;
+    padding: 16px 24px;
+}
+.field + div{
+    padding-top: 0;
+}
+.field input{
+    width: 100%;
+}
+.fieldImage button{
+    border-radius: 46px;
+    border: solid 1px #f5f5f5;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    outline: none;
+    width: 94px;
+    height: 32px;
+    margin-left: 4px;
+    margin-top: 6px;
+    background-color: #f5f5f5;
+    transition-duration: .3s;
+}
+.fieldImage button:hover{
+    background-color: #ececec;
+}
+.image img{
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+}
+.image{
+    margin-top: 16px;
+    cursor: pointer;
+}
+.fieldImage{
+    width: 70%;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+}
+.fieldBut{
+    margin-top: 23px;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    width: 65%;
+    justify-content: space-between;
+    align-items: center;
+}
+.fieldBut button{
+    background-color: #42a678;
+    color: white;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    padding: 12px 30px;
+    width: 180px;
+    font-size: 16px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 43px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition-duration: .3s;
+}
+.fieldBut button:hover{
+    background-color: #379469;
+}
+.fieldBut a{
+    text-decoration: none;
+    background-color: #f5f5f5;
+    transition-duration: .3s;
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    width: 180px;
+    color: black;
+    border-radius: 46px;
+    text-align: center;
+}
+.fieldBut a:hover{
+    background-color: #e7e7e7;
+}

@@ -4,13 +4,11 @@ import Preloader from '../Common/Preloader/Preloader';
 import Home from './Home';
 import { getCourses, setJoinedCourses } from '../../Redux/coursesReducer';
 import { getActivities } from '../../Redux/activitiesReducer';
-import { getPrograms } from '../../Redux/programsReducer';
 
 const HomeContainer = (props) => {
     useEffect(()=>{
         if(props.isAuth && props.user.employeeId){
             props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
-            props.getPrograms(props.user.organizationId);
         }
     },[props.isAuth]);
 
@@ -46,6 +44,5 @@ let mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     getCourses,
     getActivities,
-    getPrograms,
     setJoinedCourses
 })(HomeContainer);

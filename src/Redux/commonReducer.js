@@ -2,12 +2,14 @@ const SET_IS_FETCHING = 'SET_IS_FETCHING';
 const SET_DIRECTION = 'SET_DIRECTION';
 const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE'; 
 const SET_SERVER_MESSAGE = 'SET_SERVER_MESSAGE';
+const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE';
 
 let initialState = {
     isFetching: false,
     direction: "ltr",
     currentRoute: "/",
-    serverMessage: null
+    serverMessage: null,
+    searchValue: ""
 }
 
 const commonReducer = (state = initialState, action) => {
@@ -23,6 +25,9 @@ const commonReducer = (state = initialState, action) => {
         }
         case SET_SERVER_MESSAGE: {
             return { ...state, serverMessage: action.serverMessage }
+        }
+        case SET_SEARCH_VALUE: {
+            return { ...state, searchValue: action.searchValue }
         }
         default:
             return state
@@ -40,6 +45,9 @@ export const setCurrentRoute = (currentRoute) => ({
 });
 export const setServerMessage = (serverMessage) => ({
     type: SET_SERVER_MESSAGE, serverMessage
+});
+export const setSearchValue = (searchValue) => ({
+    type: SET_SEARCH_VALUE, searchValue
 });
 
 export default commonReducer;

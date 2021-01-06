@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import classes from './AddActivity.module.css';
+import classes from '../AddActivity/AddActivity.module.css';
 import { useTranslation } from 'react-i18next';
 import { AuthInput, TextAreaCustom } from '../../Common/FormControlls/FormControlls';
 import { required } from '../../../Utils/validators';
 import CustomSelect from '../../Common/Cutsom/Select/CustomSelect';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../../Common/Preloader/Preloader';
+import { getActivity } from '../../../Redux/activitiesReducer';
 
-const AddActivityForm = (props) => {
+
+const EditActivityForm = (props) => {
     const {t, i18n} = useTranslation();
     let maxLength = 300;
 
@@ -59,20 +61,30 @@ const AddActivityForm = (props) => {
                 </div>
             </div>
             <div className={classes.fieldBut}>
-                <button>{t("addActivity.addActivity")}</button>
-                <NavLink to="/activities">{t("addActivity.cancel")}</NavLink>
+                <button>{t("editActivity.title")}</button>
+                <NavLink to={`/activities/view/${props.activityId}`}>{t("addActivity.cancel")}</NavLink>
             </div>
         </form>
     );
 }
 
-const AddActivityReduxForm = reduxForm({form: 'addActivity'})(AddActivityForm);
+let EditActivityReduxForm = reduxForm({form: 'editActivity'})(EditActivityForm);
 
+EditActivityReduxForm = connect(
+    state => ({
+        initialValues: state.activities.currentActivity
+    }),{}
+)(EditActivityReduxForm);
 
-const AddActivity = (props) => {
+const EditActivity = (props) => {
     const {t, i18n} = useTranslation();
     const [type, setType] = useState("");
     const [visibility, setVisibility] = useState("private");
+
+    useEffect(()=>{
+        let activityId = props.match.params.activityId;
+        props.getActivity(activityId, props.user.selectedOrganizationId);
+    },[]);
 
     let onSubmit = (formData) => {
         console.log(formData);
@@ -83,21 +95,24 @@ const AddActivity = (props) => {
             {props.isFetching && <Preloader/>}
             <div className={classes.header}>
                 <div className={classes.headerContainer}>
-                    <h1>{t("addActivity.title")}</h1>
+                    <h1>{t("editActivity.title")}</h1>
                 </div>
             </div>
             <div className={classes.formContainer}>
-                <AddActivityReduxForm onSubmit={onSubmit} setType={setType} visibility={visibility} setVisibility={setVisibility}/>
+                <EditActivityReduxForm onSubmit={onSubmit} setType={setType} visibility={visibility} setVisibility={setVisibility} activityId={props.match.params.activityId}/>
             </div>
         </div>
     );
 }
 
+let WithUrlDataContainerComponent = withRouter(EditActivity);
+
 let mapStateToProps = (state) => ({
     isFetching: state.common.isFetching,
+    user: state.user.user,
 })
 
 export default connect(mapStateToProps, {
-
-})(AddActivity);
+    getActivity
+})(WithUrlDataContainerComponent);
 

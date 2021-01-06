@@ -184,6 +184,24 @@
 .headerRightSide button:hover{
     text-decoration: underline;
 }
+.headerRightSide a{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    text-decoration: none;
+}
+.headerRightSide a i{
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.headerRightSide a:hover{
+    text-decoration: underline;
+}
 .editBut{
     color: #747474;
 }

@@ -56,3 +56,25 @@
     flex-direction: column;
 }
 
+@media screen and (max-width: 868px){
+    .container{
+        width: calc(100% - 64px);
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+    .body{
+        flex-direction: column;
+        height: max-content;
+    }
+    .menu{
+        width: 100%;
+    }
+    .menuItem a{
+        width: 100%;
+    }
+    .content{
+        margin-top: 20px;
+        width: 100%;
+        padding-bottom: 26px;
+    }
+}

@@ -47,15 +47,17 @@
         },
         "courses": {
             "title": "Courses",
-            "viewAll": "View all"
+            "viewAll": "View all",
+            "empty": "You have not been assigned to any courses yet"
         },
         "activities": {
             "title": "Activities",
-            "viewAll": "View all"
+            "viewAll": "View all",
+            "empty": "You have no activities"
         }
     },
     "courseMini": {
-        "inPprogress": "In Progress",
+        "inProgress": "In Progress",
         "progressComplete": "Completed",
         "overdue": "Overdue"
     },
@@ -106,6 +108,15 @@
         "addActivity": "Add activity",
         "cancel": "Cancel"
     },
+    "editActivity": {
+        "title": "Edit activity"
+    },
+    "deleteActivity": {
+        "title": "Are you sure to delete this activity?",
+        "sub": "The activity will be deleted permanently.",
+        "delete": "Yes, delete",
+        "cancel": "Cancel"
+    },
     "reports": {
         "insights": {
             "title": "General Insights",
@@ -154,5 +165,19 @@
         "filteredBy": "Filtered by",
         "courses": "Courses",
         "activities": "Activities"
+    },
+    "programs": {
+        "title": "Programs",
+        "empty": "No Aviable Programs"
+    },
+    "searchResult": {
+        "title": "Search results for",
+        "courses": "Courses",
+        "activities": "Activities",
+        "programs": "Programs",
+        "all": "All",
+        "coursesEmpty": "You have no courses that match the search term",
+        "activitiesEmpty": "You have no activities that match the search term",
+        "programsEmpty": "You have no programs that match the search term"
     }
 }

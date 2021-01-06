@@ -4,6 +4,8 @@ import classes from './SearchModal.module.css';
 import { searchicon } from '../../../Assets/Images/searchicon.js';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { setSearchValue } from '../../../Redux/commonReducer';
 
 const StyledModal = styled.div`
     transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-743px)' : 'translateY(100px) translateX(743px)' }; 
@@ -36,6 +38,11 @@ const SearchModal = (props) => {
     let filerTwo = ['By anyone', 'option1', 'option2'];
     let filerThree = ['In all segments', 'option1', 'option2'];
 
+    const handleSearch = () => {
+        props.setSearchValue(searchValue);
+        props.setIsOpenSearchModal(false)
+    }
+
     const [filterOneValue, setFilterOneValue] = useState(filerOne[0]);
     const [filterTwoValue, setFilterTwoValue] = useState(filerTwo[0]);
     const [filterThreeValue, setFilterThreeValue] = useState(filerThree[0]);
@@ -47,9 +54,9 @@ const SearchModal = (props) => {
             </StyledArrow>
             <div className={classes.body}>
                 <div className={classes.searchField}>
-                    <button>
+                    <NavLink to={`/search?value=${searchValue}`} onClick={()=>{handleSearch()}}>
                         {searchicon}
-                    </button>
+                    </NavLink>
                     <input placeholder="Search..." name={"value"} onChange={(e)=>{setSearchValue(e.target.value)}}/>
                 </div>
                 <div className={classes.filters}>
@@ -63,7 +70,10 @@ const SearchModal = (props) => {
 }
 
 let mapStateToProps = (state) => ({
-    direction: state.common.direction
+    direction: state.common.direction,
+    searchValue: state.common.searchValue
 });
 
-export default connect(mapStateToProps, {})(SearchModal);
+export default connect(mapStateToProps, {
+    setSearchValue
+})(SearchModal);

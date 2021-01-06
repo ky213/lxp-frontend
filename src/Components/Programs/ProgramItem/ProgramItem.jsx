@@ -1,15 +1,14 @@
 import React from 'react';
+import classes from './ProgramItem.module.css';
 import { NavLink } from 'react-router-dom';
-import classes from './CourseItem.module.css';
 import { useTranslation } from 'react-i18next';
 
-
-const CourseItem = (props) => {
+const ProgramItem = (props) => {
     const {t, i18n} = useTranslation();
-
+    
     return(
         <div className={classes.main}>
-            <NavLink to={`/courses/${props.item.courseId}`}>
+            <NavLink to={`/programs/${props.item.programId}`}>
                 {(props.item.image != "null") ? <img src={props.item.image}/> : <div className={classes.defaultImg}></div>}
                 
                 <div className={classes.itemInfo}>
@@ -30,4 +29,4 @@ const CourseItem = (props) => {
     );
 }
 
-export default CourseItem;
+export default ProgramItem;

@@ -68,6 +68,9 @@
     .container{
         width: 768px;
     }
+    .rightSide{
+        width: calc(100% - 64px);
+    }
 }
 
 @media screen and (max-width: 610px){

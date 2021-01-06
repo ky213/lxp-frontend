@@ -32,7 +32,7 @@ const HomeActivities = (props) => {
                         <div className={classes.emptyIcon}>
                             {empty_state_icon}
                         </div>
-                        <span>You have no activities</span>
+                        <span>{t("home.activities.empty")}</span>
                     </div>
                 }
             </div>

@@ -33,7 +33,7 @@ const HomeCourses = (props) => {
                         <div className={classes.emptyIcon}>
                             {empty_state_icon}
                         </div>
-                        <span>You have not been assigned to any courses yet</span>
+                        <span>{t("home.courses.empty")}</span>
                     </div>
                 }
             </div>

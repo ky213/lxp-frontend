@@ -9,6 +9,7 @@ import { setIsFetching } from '../../Redux/commonReducer';
 import { getActivity } from '../../Redux/activitiesReducer';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import DeleteActivity from './DeleteActivity/DeleteActivity';
 
 const StyledMarkButton = styled.button`
     margin-left: ${({ direction }) => direction === "ltr" ? "8px" : "0"};
@@ -29,6 +30,8 @@ const Activity = (props) => {
     const {t, i18n} = useTranslation();
     let widthProgressBar = 83;
     let heightProgressBar = 16;
+
+    const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
     
     useEffect(()=>{
             let activityId = props.match.params.activityId;
@@ -58,11 +61,12 @@ const Activity = (props) => {
         <div className={classes.main}>
             {!props.activity ? <Preloader/> :
             <div className={classes.container}>
+                {isShowDeleteModal && <DeleteActivity setIsShowDeleteModal={setIsShowDeleteModal}/>}
                 <StyledLeftSide className={classes.leftSide} direction={props.direction}>
                     <div className={classes.block + " " + classes.withoutPadding}>
                         <div className={classes.infoBlock}>
                             <p>{t("home.statistic.infoUser.welcome")}</p>
-                            <h3>{props.user.fullName}</h3>
+                            <h3>{props.user.name}</h3>
                         </div>
                         <div className={classes.infoBlock}>
                             <label>{t("home.statistic.infoUser.learningHours")}</label>
@@ -104,11 +108,11 @@ const Activity = (props) => {
                         <div className={classes.activityHeader}>
                             <span className={classes.fullPath}><span className={classes.path}>Cybersecurity awareness &gt;</span> Cybersecurity</span>
                             <div className={classes.headerRightSide}>
-                                <button className={classes.editBut}>
+                                <NavLink to={`/activities/edit/${props.match.params.activityId}`} className={classes.editBut}>
                                     <i className="far fa-edit"></i>
                                     {t("activityDetails.edit")}
-                                </button>
-                                <button className={classes.removeBut}>
+                                </NavLink>
+                                <button className={classes.removeBut} onClick={()=>setIsShowDeleteModal(true)}>
                                     <i className="far fa-trash-alt"></i>
                                     {t("activityDetails.delete")}
                                 </button>

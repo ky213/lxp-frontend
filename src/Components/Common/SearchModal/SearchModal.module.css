@@ -3,6 +3,7 @@
     width: 820px;
     display: flex;
     flex-direction: column;
+    z-index: 300;
 }
 .body{
     border: 1px solid #bcbcbc;
@@ -50,17 +51,21 @@
     font-size: 16px;
     color: #565656;
 }
-.searchField button{
+.searchField a{
     background-color: transparent;
     outline: none;
     cursor: pointer;
     color: #a7a7a7;
     border: none;
     font-size: 18px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
 }
-.searchField button svg{
+.searchField a svg{
     position: relative;
-    top: 3px;
+    top: 2px;
+    left: 2px;
 }
 .filters{
     margin-top: 16px;

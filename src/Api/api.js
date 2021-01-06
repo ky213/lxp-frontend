@@ -1,8 +1,7 @@
 import * as axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://api.staging.lxpia.com/api'
-    
+    baseURL: process.env.REACT_APP_BASE_URL
 });
 instance.interceptors.request.use(
     config => {
@@ -33,7 +32,6 @@ export const coursesApi = {
     }
 }
 
-
 export const activitiesApi = {
     getActivities(employeeId, userId, organizationId){
         return instance.get(`/activities/byLearner?employeeId=${employeeId}&userId=${userId}&organizationId=${organizationId}`)
@@ -49,12 +47,13 @@ export const notificationsApi = {
     getUnreadNotifications(limit, selectedOrganizationId){
         return instance.get(`/notifications/unread?limit=${limit}&selectedOrganizationId=${selectedOrganizationId}`)
         .then(respnose => respnose.data);
-    }
+    },
+
 }
 
 export const programsApi = {
-    getPrograms(organizationId){
-        return instance.get(`programs/currentuser?organizationId=${organizationId}`)
+    getPrograms(organizationId, pageId, perPage){
+        return instance.get(`programs?organizationId=${organizationId}&pageId=${pageId}&recordsPerPage=${perPage}`)
         .then(response => response.data);
     }
 }

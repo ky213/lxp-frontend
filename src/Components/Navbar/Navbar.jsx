@@ -87,7 +87,7 @@ const Navbar = (props) => {
                     <StyledBut className={classes.searchBut + " " + (props.isOpenSearchModal && classes.activeSearch)} direction={props.direction} onClick={()=>{props.setIsOpenSearchModal(!props.isOpenSearchModal)}}>
                         {searchicon}
                     </StyledBut>
-                    {props.isOpenSearchModal && <SearchModal/>}
+                    {props.isOpenSearchModal && <SearchModal setIsOpenSearchModal={props.setIsOpenSearchModal}/>}
                     <StyledNotifications className={classes.notifications} direction={props.direction}>
                         <button onClick={()=>{props.setIsOpenNotificationsModal(!props.isOpenNotificationsModal)}} className={classes.notBut + " " + (props.isOpenNotificationsModal && classes.activeModalNotifications)}>
                             {notificationicon}

@@ -20,46 +20,15 @@ steps:
       - '-c'
       - |
         gsutil -m -q rm -rf "gs://${_STORAGE}/**" || exit 0
-
     waitFor:
       - 'build release'
 
 
   - id: 'push to DEMO storage'
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './dist/*', 'gs://${_STORAGE}/lxp/']
+    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './build/*', 'gs://${_STORAGE}/lxp/']
     waitFor:
       - 'clear DEMO storage before new release'
-
-  - id: 'create envconfig'
-    name: 'alpine'
-    entrypoint: sh
-    args:
-      - '-c'
-      - |
-        echo "window._env_ = {" >> env-config.js
-        echo "APP_TITLE=Learn" >> env-config.js
-        echo "APP_CANONICAL_URL=$_FRONTEND_BASE_URL" >> env-config.js
-        echo "APP_DESCRIPTION=Resident Management System" >> env-config.js
-        echo "APP_KEYWORDS=residents engagement timetable management" >> env-config.js
-        echo "API_URL=$_BACKEND_BASE_URL" >> env-config.js
-        echo "XAPI_URL=$_XBACKEND_BASE_URL" >> env-config.js
-        echo "}" >> env-config.js
-
-    waitFor:
-      - 'clear DEMO storage before new release'
-
-  - id: 'push envconfig to DEMO storage'
-    name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/lxp/pages/']
-    waitFor:
-      - 'create envconfig'
-
-  - id: 'push envconfig to DEMO storage - 2'
-    name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', 'env-config.js', 'gs://${_STORAGE}/']
-    waitFor:
-      - 'create envconfig'
 
   - id: 'add public access'
     name: 'gcr.io/cloud-builders/gsutil'

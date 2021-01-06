@@ -64,7 +64,13 @@
 }
 .openDropdown {
   max-height: 200px;
+  position: absolute;
+  z-index: 1;
 }
+
+.margin0 {
+  margin: 10px 0;
+} 
 
 @media screen and (max-width: 693px) {
   .main {

@@ -7,7 +7,7 @@
         "activities": "Activities",
         "myreport": "My Report"
     },
-    "login":{
+    "login": {
         "title": "LOGIN",
         "header": "LEARNING EXPERIENCE PLATFORM",
         "username": "Username",
@@ -26,9 +26,9 @@
         "repeatPassword": "Retype New Password",
         "submit": "Submit"
     },
-    "home":{
+    "home": {
         "statistic": {
-            "infoUser":{
+            "infoUser": {
                 "welcome": "Welcome back, ",
                 "learningHours": "Learning Hours",
                 "hours": "hrs",
@@ -56,12 +56,12 @@
             "empty": "You have no activities"
         }
     },
-    "courseMini":{
+    "courseMini": {
         "inProgress": "In Progress",
         "progressComplete": "Completed",
         "overdue": "Overdue"
     },
-    "courses":{
+    "courses": {
         "title": "CyberSecurity Awareness Courses",
         "filters": {
             "notStarted": "Not Started",
@@ -70,7 +70,7 @@
             "all": "All"
         }
     },
-    "activityMini":{
+    "activityMini": {
         "daysLeft": " days left",
         "daysAgo": " days ago",
         "empty": "Empty"
@@ -117,7 +117,7 @@
         "delete": "Yes, delete",
         "cancel": "Cancel"
     },
-    "reports":{
+    "reports": {
         "insights": {
             "title": "General Insights",
             "enrolled": "Enrolled",
@@ -125,11 +125,14 @@
             "pending": "Pending",
             "courses": "courses",
             "activities": "activities"
+        },
+        "overview": {
+            "title": "Overview"
         }
     },
     "profile": {
         "title": "Profile Settings",
-        "tabs":{
+        "tabs": {
             "info": "Profile info",
             "email": "Email",
             "password": "Password",
@@ -157,10 +160,15 @@
             "text": "Enable text notifications"
         }
     },
-    "programs":{
+    "filterReports": {
+        "filter": "Filter",
+        "filteredBy": "Filtered by",
+        "courses": "Courses",
+        "activities": "Activities"
+    },
+    "programs": {
         "title": "Programs",
         "empty": "No Aviable Programs"
-        
     },
     "searchResult": {
         "title": "Search results for",
@@ -172,5 +180,4 @@
         "activitiesEmpty": "You have no activities that match the search term",
         "programsEmpty": "You have no programs that match the search term"
     }
-
 }

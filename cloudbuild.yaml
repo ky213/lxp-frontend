@@ -1,0 +1,37 @@
+steps:
+
+  - id: 'npm install'
+    name: 'node'
+    args: [ "npm","install" ]
+    waitFor:
+      - '-'
+
+  - id: 'build release'
+    name: 'node'
+    args: [ "npm", "run", "build" ]
+    waitFor:
+      - 'npm install'
+
+
+  - id: 'clear DEMO storage before new release'
+    name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil -m -q rm -rf "gs://${_STORAGE}/**" || exit 0
+    waitFor:
+      - 'build release'
+
+
+  - id: 'push to DEMO storage'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-h', 'Cache-Control:no-cache,max-age=0','-m', 'cp', '-r', './build/*', 'gs://${_STORAGE}/']
+    waitFor:
+      - 'clear DEMO storage before new release'
+
+  - id: 'add public access'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['acl', 'ch', '-u', 'AllUsers:R', '-r', 'gs://${_STORAGE}/*']
+    waitFor:
+      - 'push to DEMO storage'

@@ -7,6 +7,7 @@ import ThemedButton from '@/components/ThemedButton'
 import axios from 'axios'
 import classNames from 'classnames'
 import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
 
 import config from '@/config'
 import { authHeader } from '@/helpers'
@@ -187,7 +188,18 @@ const EditCourse = ({ course, onCancel, finishInsert }) => {
                   setSubmitting(false)
                   finishInsert()
                 })
-                .catch(err => console.error(err))
+                .catch(err => {
+                  const errorMessage = JSON.parse(
+                    JSON.parse(err.request?.response).message
+                  ).message
+
+                  toast.error(
+                    <div>
+                      <h4 className="text-danger">Error</h4>
+                      <p>{errorMessage}</p>
+                    </div>
+                  )
+                })
             }}
           >
             {formikProps => {

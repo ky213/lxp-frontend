@@ -18,6 +18,7 @@ import {
   ButtonToolbar,
   UncontrolledTooltip,
   Table,
+  CustomInput,
 } from '@/components'
 
 const Library = () => {
@@ -101,7 +102,15 @@ const Library = () => {
               <tbody>
                 {files.map((file, index) => (
                   <tr>
-                    <td colSpan={3}>File {index}</td>
+                    <td className="align-middle text-center">
+                      <CustomInput
+                        type="checkbox"
+                        className="p-1"
+                        label=""
+                        inline
+                      />
+                    </td>
+                    <td colSpan={4}>File {index}</td>
                   </tr>
                 )) || (
                   <tr>

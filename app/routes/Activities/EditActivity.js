@@ -48,6 +48,7 @@ export const EditActivity = ({
   toggle,
   isOpen,
   selectedActivity,
+  updateSelectedActivity,
   userPrograms,
   currentProgramId,
   onSuccess,
@@ -1075,6 +1076,7 @@ export const EditActivity = ({
                           <TabPane tabId="replies">
                             <ActivityReplies
                               selectedActivity={selectedActivity}
+                              updateSelectedActivity={updateSelectedActivity}
                               currentUser={currentUser && currentUser.user}
                             />
                           </TabPane>

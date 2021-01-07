@@ -283,6 +283,7 @@ export const ActivityCalendar = props => {
       <EditActivity
         toggle={toggleEditEventModal}
         selectedActivity={selectedActivity}
+        updateSelectedActivity={newActivity => setSelectedActivity(newActivity)}
         userPrograms={userPrograms}
         isOpen={showEditEventModal}
         onSuccess={onEditedEvent}

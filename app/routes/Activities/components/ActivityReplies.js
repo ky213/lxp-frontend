@@ -104,7 +104,7 @@ const ActivityReplies = props => {
       setLoading(true)
       await activityService.evaluate(selectedActivity.activityId, finalReplies)
 
-      selectedActivity.status = 'Closed'
+      props.updateSelectedActivity({ ...selectedActivity, status: 'Closed' })
       setLoading(false)
       alert('Activity evaluated successfuly')
     } catch (error) {

@@ -52,6 +52,7 @@ import GroupTypes from './GroupTypes'
 import Groups from './Groups'
 import Dashboard from './Dashboard'
 import DashboardNew from './DashboardNew'
+import { Library } from './Library'
 
 import { useAppState, AppStateContext } from '@/components/AppState'
 
@@ -238,6 +239,8 @@ export const RoutedContent = props => {
         exact
         component={Groups}
       />
+
+      <PrivateRoute path="/library" component={Library} />
 
       {/*    Pages Routes    */}
       <Route component={Confirmation} path="/pages/confirmation" />

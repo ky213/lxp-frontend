@@ -14,6 +14,8 @@ export default function ReportMain({ props }) {
     const firstCourseDaysNumber = 1
     const secondCourseDaysNumber = 4
 
+    console.log(props.activities )
+
     return (
         <>
             <div className={classes.tabsBlock}>

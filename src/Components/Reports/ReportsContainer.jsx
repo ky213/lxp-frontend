@@ -2,26 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Preloader from '../Common/Preloader/Preloader';
 import Reports from './Reports';
-import { getCourses } from '../../Redux/coursesReducer';
 import { getActivities } from '../../Redux/activitiesReducer';
-import { getPrograms } from '../../Redux/programsReducer';
+import { setJoinedCourses } from '../../Redux/coursesReducer';
 
 const ReportsContainer = (props) => {
     useEffect(()=>{
-        if(props.isAuth){
+        if(props.user.employeeId){
             props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
-            props.getPrograms(props.user.organizationId);
+            
         }
-    },[props.isAuth]);
+    },[props.user.employeeId]);
+
+    useEffect(()=>{
+        props.setJoinedCourses(props.user.joinedCourses);
+    },[props.user.joinedCourses]);
+
 
     return(
         <>
-            {props.isFetching && <Preloader/>}
-            {props.isAuth && <Reports user={props.user}
-                                    courses={props.courses}
-                                    activities={props.activities}
-                                    direction={props.direction}
-                                    programs={props.programs}/>}
+            {props.isFetching ? <Preloader/> : <>
+            {   <Reports user={props.user}
+                            courses={props.courses}
+                            activities={props.activities}
+                            direction={props.direction}
+                            programs={props.programs}/>} </>}
         </>
         
     );
@@ -40,7 +44,6 @@ let mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getCourses,
     getActivities,
-    getPrograms
+    setJoinedCourses
 })(ReportsContainer);

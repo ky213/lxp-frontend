@@ -99,7 +99,7 @@ const Navbar = (props) => {
                     <input type="checkbox" hidden id="profileMenu" className={classes.check}/>
                     <label className={classes.userMenu} htmlFor="profileMenu">
                         {props.user.profilePhoto ? 
-                        <img src={props.user.profilePhoto}/> : 
+                        <img src={props.user.profilePhoto} className={classes.userPhoto}/> : 
                         <div className={classes.userDefault}></div>}
                         <span>{props.user.name}</span>
                         <div className={classes.profileMenuContainer}>

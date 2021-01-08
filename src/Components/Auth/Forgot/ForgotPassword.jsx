@@ -25,8 +25,8 @@ const ForgotPasswordForm = (props) => {
                     validate={[required]}/>
             </div>
             <div className={classes.field}>
-                <label>{t("forgotPassword.newPassword")}</label>
-                <Field component={AuthInput} placeholder={t("forgotPassword.newPassword")} name="repeatPassword" type="password"
+                <label>{t("forgotPassword.repeatPassword")}</label>
+                <Field component={AuthInput} placeholder={t("forgotPassword.repeatPassword")} name="repeatPassword" type="password"
                     validate={[required, passValidationMatch]}/>
             </div>
             {props.error && <div className={classes.error}>{props.error}</div>}

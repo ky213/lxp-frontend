@@ -7,24 +7,35 @@ import { setSearchValue } from '../../Redux/commonReducer'
 const SearchResultContainer = (props) => {
     const [searchValue, setSearchValue] = useState("");
 
-    const [viewAll, setViewAll] = useState(false);
+    const [viewAll, setViewAll] = useState(true);
     const [viewPrograms, setViewPrograms] = useState(true);
     const [viewCourses, setViewCourses] = useState(true);
     const [viewActivities, setViewActivities] = useState(true);
 
     const handleViewAll = () => {
+        let newViewAll = !viewAll;
         setViewAll(!viewAll);
-        if(viewAll){
+        if(newViewAll){
             setViewPrograms(true);
             setViewCourses(true);
             setViewActivities(true);
             return;
+        }else{
+            setViewPrograms(false);
+            setViewCourses(false);
+            setViewActivities(false);
         }
-        setViewPrograms(false);
-        setViewCourses(false);
-        setViewActivities(false);
-        
     }
+
+    useEffect(()=>{
+        if(viewActivities && viewCourses && viewPrograms){
+            setViewAll(true);
+        }else{
+            setViewAll(false)
+        }
+    },[viewPrograms, viewCourses, viewActivities]);
+
+
 
     useEffect(()=>{
         const urlParams = new URLSearchParams(window.location.search);

@@ -173,6 +173,11 @@
     border-radius: 50%;
     background-color: #59bcab;
 }
+.userPhoto{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
 .userMenu span{
     margin-left: 5px;
     color: #3d3d3d;

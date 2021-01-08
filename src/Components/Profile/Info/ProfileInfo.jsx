@@ -29,7 +29,7 @@ const ProfileInfoForm = (props) => {
             name: props.user.name,
             profilePhoto: props.user.profilePhoto
         });
-    },[]);
+    },[props.user]);
 
     return(
         <form className={classes.form} onSubmit={props.handleSubmit}>

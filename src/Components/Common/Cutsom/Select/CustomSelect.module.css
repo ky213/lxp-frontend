@@ -1,6 +1,13 @@
 .main{
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
+.main.error{
+    color: tomato;
+}
+.main.error span{
+    position: relative;
+    top: 10px
+}
 .view{
     border: 1px solid #c6c6c6;
     border-radius: 5px;
@@ -63,6 +70,14 @@
 }
 .openDropdown{
     max-height: 200px;
+}
+.disabled{
+    color: rgba(86, 86, 86, .7);
+}
+.disabled:hover{
+    cursor: auto;
+    color: rgba(86, 86, 86, .7);
+    background-color: white;
 }
 
 @media screen and (max-width: 693px){

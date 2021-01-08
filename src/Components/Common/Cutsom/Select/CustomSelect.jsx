@@ -7,8 +7,8 @@ const StyledSelect = styled.div`
     width: ${({ width }) => width + "%"};
 `;
 
-const CustomSelect = (props) => {
-    const [currentOption, setCurrentOption] = useState(props.options[0]);
+const CustomSelect = ({input, meta, ...props}) => {
+    const [currentOption, setCurrentOption] = useState(props.disableDefValueOptionText ? props.disableDefValueOptionText : props.options[0]);
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
     let handleSelect = (option) => {
@@ -18,21 +18,34 @@ const CustomSelect = (props) => {
     }
 
     let options = props.options.map(option => {
-        return <span onClick={()=>{handleSelect(option)}} className={classes.option}>{option}</span>
+        return <span onClick={()=>{handleSelect(option)}} className={classes.option} {...input}>{option}</span>
     });
 
+    let hasError = null;
+
+    if(props.disableDefValueOption){
+        hasError = meta.touched && meta.error;
+    }
+    
+
     return(
-        <StyledSelect className={classes.main} width={props.width}>
-            <input hidden type="checkout" value={isOpenDropdown}/>
-            <div className={classes.view} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
-                <span>{currentOption}</span>
-                <div className={classes.arrow + " " + (isOpenDropdown && classes.open)}></div>
-            </div>
-            {isOpenDropdown && 
-            <div className={classes.dropdown + " " + (isOpenDropdown && classes.openDropdown)}>
-                {options}
-            </div>}
-        </StyledSelect> 
+            <StyledSelect className={classes.main + " " + (hasError && classes.error)} width={props.width}>
+                <input hidden type="checkout" value={isOpenDropdown}/>
+                <div className={classes.view} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
+                    <span>{currentOption}</span>
+                    <div className={classes.arrow + " " + (isOpenDropdown && classes.open)}></div>
+                </div>
+                {isOpenDropdown && 
+                <div className={classes.dropdown + " " + (isOpenDropdown && classes.openDropdown)}>
+                    {props.disableDefValueOption && <span className={classes.option + " " + classes.disabled}>{props.disableDefValueOptionText}</span>}
+                    {options}
+                </div>}
+                {props.disableDefValueOption && 
+                    <>
+                        {hasError && <span>{meta.error}</span>}
+                    </>
+                }
+            </StyledSelect>  
     );
 }
 

@@ -19,6 +19,8 @@ const SearchResult = (props) => {
     let programs = [];
     let activities = [];
 
+    console.log(props.viewAll)
+
     return(
         <div className={classes.main}>
             <div className={classes.header}>
@@ -27,7 +29,7 @@ const SearchResult = (props) => {
                     <div className={classes.filters}>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("searchResult.all")}</span>
-                            <input type="checkbox" onChange={()=>{props.setViewAll(!props.viewAll)}}/>
+                            <input type="checkbox" onChange={()=>{props.setViewAll(!props.viewAll)}} checked={props.viewAll} value={props.viewAll}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>

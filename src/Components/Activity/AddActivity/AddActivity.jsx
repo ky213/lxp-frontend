@@ -15,11 +15,14 @@ const AddActivityForm = (props) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxLength);
 
+    let disableDefValueOption = true;
+    let disableDefValueOptionText = t("addActivity.typeDef");
+
     let handleTextArea = (e) => {
         setCharactersLeft(maxLength - e.target.value.length);
     }
 
-    let types = [t("addActivity.typeDef"), "type1", "type2", "type3"];
+    let types = ["type1", "type2", "type3"];
 
     return(
         <form onSubmit={props.handleSubmit} className={classes.form}>
@@ -30,18 +33,18 @@ const AddActivityForm = (props) => {
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addActivity.link")}</label>
-                <Field component={AuthInput} name="link"
-                    validate={[required]}/>
+                <Field component={AuthInput} name="link"/>
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addActivity.type")}</label>
                 <p></p>
-                <CustomSelect options={types} setFunction={props.setType} width={66}/>
+                <Field component={CustomSelect} options={types} setFunction={props.setType} width={66} 
+                        validate={[required]} disableDefValueOption={disableDefValueOption} disableDefValueOptionText={disableDefValueOptionText}/>
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addActivity.description")}</label>
                 <Field component={TextAreaCustom} name="description"
-                    validate={[required]} maxLength={maxLength} left={charactersLeft} rows={5} onChange={handleTextArea}/>
+                       maxLength={maxLength} left={charactersLeft} rows={5} onChange={handleTextArea}/>
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addActivity.visibility")}</label>

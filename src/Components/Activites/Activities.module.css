@@ -45,12 +45,18 @@
     color: #3d3d3d;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
-.headerHeader a i{
+.headerHeader a div{
     border-radius: 50%;
     background-color: #6671ab;
     color: white;
-    padding: 4px 6px;
-    font-size: 15px;
+    font-size: 29px;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 16px;
 }
 .filters{
     display: flex;

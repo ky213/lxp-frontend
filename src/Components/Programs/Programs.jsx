@@ -12,10 +12,7 @@ const StyledLabel = styled.label`
 const Programs = (props) => {
     const {t, i18n} = useTranslation();
 
-    const [all, setAll] = useState(false);
-    const [completed, setCompleted] = useState(true);
-    const [inProgress, setInProgress] = useState(true);
-    const [notStarted, setNotStarted] = useState(false);
+    
 
     let programs = [];
 
@@ -31,22 +28,22 @@ const Programs = (props) => {
                     <div className={classes.filters}>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("courses.filters.all")}</span>
-                            <input type="checkbox" onChange={()=>{setAll(!all)}}/>
+                            <input type="checkbox" onChange={()=>{props.setAll()}} checked={props.all} value={props.all}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("courses.filters.completed")}</span>
-                            <input type="checkbox" onChange={()=>{setCompleted(!completed)}} checked={completed}/>
+                            <input type="checkbox" onChange={()=>{props.setCompleted(!props.completed)}} checked={props.completed}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("courses.filters.inProgress")}</span>
-                            <input type="checkbox" onChange={()=>{setInProgress(!inProgress)}} checked={inProgress}/>
+                            <input type="checkbox" onChange={()=>{props.setInProgress(!props.inProgress)}} checked={props.inProgress}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("courses.filters.notStarted")}</span>
-                            <input type="checkbox" onChange={()=>{setNotStarted(!notStarted)}}/>
+                            <input type="checkbox" onChange={()=>{props.setNotStarted(!props.notStarted)}} checked={props.notStarted}/>
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                     </div>

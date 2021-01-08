@@ -7,10 +7,10 @@ import { getActivities } from '../../Redux/activitiesReducer';
 
 const HomeContainer = (props) => {
     useEffect(()=>{
-        if(props.isAuth && props.user.employeeId){
+        if(props.user.employeeId){
             props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
         }
-    },[props.isAuth]);
+    },[props.user.employeeId]);
 
     useEffect(()=>{
         props.setJoinedCourses(props.user.joinedCourses);

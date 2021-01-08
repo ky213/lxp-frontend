@@ -13,6 +13,7 @@ import Burger from './Burger/Burger';
 import { useTranslation } from 'react-i18next';
 import SearchModal from '../Common/SearchModal/SearchModal';
 import ProfileMenu from './ProfileMenu/ProfileMenu';
+import NotificationsModal from '../Notifications/NotificationsModal/NotificationsModal';
 
 const StyledLogoBlock = styled.div`
     a span{
@@ -81,8 +82,11 @@ const Navbar = (props) => {
                         </div>
                     </StyledLinks>
                 </div>
-                <button onClick={()=>{props.changeLanguage('en')}}>EN</button>
-                <button onClick={()=>{props.changeLanguage('ar')}}>AR</button>
+                <div className={classes.langBut}>
+                    <button onClick={()=>{props.changeLanguage('en')}}>EN</button>
+                    <button onClick={()=>{props.changeLanguage('ar')}}>AR</button>
+                </div>
+                
                 <div className={classes.rightSideNav}>
                     <StyledBut className={classes.searchBut + " " + (props.isOpenSearchModal && classes.activeSearch)} direction={props.direction} onClick={()=>{props.setIsOpenSearchModal(!props.isOpenSearchModal)}}>
                         {searchicon}
@@ -96,6 +100,7 @@ const Navbar = (props) => {
                             </div>
                         </button>
                     </StyledNotifications>
+                    {props.isOpenNotificationsModal && <NotificationsModal/>}
                     <input type="checkbox" hidden id="profileMenu" className={classes.check}/>
                     <label className={classes.userMenu} htmlFor="profileMenu">
                         {props.user.profilePhoto ? 

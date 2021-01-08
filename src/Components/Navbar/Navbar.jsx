@@ -39,6 +39,10 @@ const StyledBut = styled.button`
 const Navbar = (props) => {
     const {t, i18n} = useTranslation();
 
+    const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
+
+    console.log(isOpenProfileMenu);
+
     return(
         <nav className={classes.main}>
             <div className={classes.container}>
@@ -101,14 +105,14 @@ const Navbar = (props) => {
                         </button>
                     </StyledNotifications>
                     {props.isOpenNotificationsModal && <NotificationsModal/>}
-                    <input type="checkbox" hidden id="profileMenu" className={classes.check}/>
-                    <label className={classes.userMenu} htmlFor="profileMenu">
+                    <input type="checkbox" hidden id="profileMenu" className={classes.check} checked={isOpenProfileMenu}/>
+                    <label className={classes.userMenu} htmlFor="profileMenu" onClick={()=>{setIsOpenProfileMenu(!isOpenProfileMenu)}}>
                         {props.user.profilePhoto ? 
                         <img src={props.user.profilePhoto} className={classes.userPhoto}/> : 
                         <div className={classes.userDefault}></div>}
                         <span>{props.user.name}</span>
                         <div className={classes.profileMenuContainer}>
-                            <ProfileMenu/>
+                            {isOpenProfileMenu && <ProfileMenu setIsOpenProfileMenu={setIsOpenProfileMenu}/>}
                         </div>
                     </label>
                     <div className={classes.burger}>

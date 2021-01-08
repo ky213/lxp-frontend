@@ -28,7 +28,13 @@ const StyledMenu = styled.div`
 
 
 
+
 const ProfileMenu = (props) => {
+    const handleLogout = () => {
+        props.logout();
+        props.setIsOpenProfileMenu(false);
+    }
+
     return(
         <StyledModal className={classes.main} direction={props.direction}>
             <StyledArrow className={classes.arrow} direction={props.direction}>
@@ -36,13 +42,13 @@ const ProfileMenu = (props) => {
             </StyledArrow>
             <StyledMenu className={classes.menu} direction={props.direction}>
                 <div className={classes.menuItem + " " + classes.withBorder}>
-                    <NavLink to="/profile">
+                    <NavLink to="/profile" onClick={()=>{props.setIsOpenProfileMenu(false)}}>
                         {profile_settings_icon}
                         <span>Profile Settings</span>
                     </NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <button onClick={()=>{props.logout()}}>
+                    <button onClick={()=>{handleLogout()}}>
                         {logout_icon}
                         <span>Logout</span>
                     </button>

@@ -91,12 +91,10 @@ const ActivityReplies = props => {
       })
       .filter(reply => reply.employeeId !== selectedActivity.assignedBy)
 
-    const totalPoints = finalReplies.reduce((total, reply) => {
-      return total + reply.points
-    }, 0)
-
-    if (totalPoints > selectedActivity.totalPoints) {
-      alert("Total points can't be greater than activity points")
+    if (
+      finalReplies.some(reply => reply.points > selectedActivity.totalPoints)
+    ) {
+      alert("Reply points can't be greater than total points")
       return
     }
 

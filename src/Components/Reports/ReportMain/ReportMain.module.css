@@ -1,71 +1,71 @@
 .tabsBlock h3 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .tabs {
-    display: flex;
-    justify-content: space-between;
-    list-style: none;
-    padding: 0;
-  }
-  
-  .tabs li {
-    padding: 16px 16px;
-    border-radius: 5px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05),
-      inset 0 1.5px 0 0 rgba(66, 166, 120, 0.5);
-    background-color: #ffffff;
-    width: 30%;
-    cursor: pointer;
-  }
-  
-  .tabs li p {
-    font-size: 16px;
-  }
+  margin: 0;
+  font-size: 18px;
+}
 
-  .textDecorationNone {
-    text-decoration: none;
-    color: #000000;
-  }
-  
-  .tabTitle {
-    margin: 0;
-  }
-  
-  .tabValue {
-    color: #42a678;
-    margin: 10px 0 0;
-  }
-  
-  .tabValue span {
-    font-size: 24px;
-    font-weight: 700;
-  }
-  
-  .graphicsTitle {
-    margin-top: 58px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .graphicsTitle h3 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .overviewCharts {
-    width: 100%;
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .chart{
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
-    width: 45%;
-    height: 240px;
-  }
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+}
+
+.tabs li {
+  padding: 16px 16px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05),
+    inset 0 1.5px 0 0 rgba(66, 166, 120, 0.5);
+  background-color: #ffffff;
+  width: 30%;
+  cursor: pointer;
+}
+
+.tabs li p {
+  font-size: 16px;
+}
+
+.textDecorationNone {
+  text-decoration: none;
+  color: #000000;
+}
+
+.tabTitle {
+  margin: 0;
+}
+
+.tabValue {
+  color: #42a678;
+  margin: 10px 0 0;
+}
+
+.tabValue span {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.graphicsTitle {
+  margin-top: 58px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.graphicsTitle h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.overviewCharts {
+  width: 100%;
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart {
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  width: 45%;
+  height: 240px;
+}

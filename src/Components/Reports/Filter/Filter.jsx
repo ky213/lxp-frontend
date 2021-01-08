@@ -28,11 +28,11 @@ const Filter = (props) => {
                         {t("filterReports.filteredBy")}
                     </span>
                     <div className={classes.margin0}>
-                        <input type="checkbox" onChange={() => setIsCourses(true)} />
+                        <input type="checkbox" value={isCourses} onChange={() => setIsCourses(true)} />
                         <span className={`${classes.option} ${classes.margin0}`}> {t("filterReports.courses")} </span>
                     </div>
                     <div className={classes.margin0}>
-                        <input type="checkbox" onChange={() => setIsActivities(true)} />
+                        <input type="checkbox" value={isActivities} onChange={() => setIsActivities(true)} />
                         <span className={`${classes.option} ${classes.margin0}`}> {t("filterReports.activities")} </span>
                     </div>
                 </div>}

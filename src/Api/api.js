@@ -48,6 +48,10 @@ export const notificationsApi = {
         return instance.get(`/notifications/unread?limit=${limit}&selectedOrganizationId=${selectedOrganizationId}`)
         .then(respnose => respnose.data);
     },
+    getNotifications(page, take){
+        return instance.get(`/notifications?page=${page}&take=${take}`)
+        .then(response => response.data);
+    }
 
 }
 

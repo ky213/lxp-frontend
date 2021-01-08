@@ -186,5 +186,10 @@
         "coursesEmpty": "You have no courses that match the search term",
         "activitiesEmpty": "You have no activities that match the search term",
         "programsEmpty": "You have no programs that match the search term"
+    },
+    "notificationsModal": {
+        "title": "Notifications",
+        "viewAll": "View All",
+        "empty": "Notifications list is empty."
     }
 }

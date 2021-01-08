@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link, useLocation, withRouter } from 'react-router-dom';
 import classes from './ReportsDetails.module.css';
+import { empty_state_icon } from '../../../Assets/Images/empty_state_icon';
+import { searchicon } from '../../../Assets/Images/searchicon'
+import { useTranslation } from 'react-i18next';
 
 const ReportsDetails = (props) => {
-
+    const { t, i18n } = useTranslation();
     const location = props.match.params.insight;
     const targetTitle = location.split('_').join(' ')
     const number = () => {
@@ -22,14 +25,41 @@ const ReportsDetails = (props) => {
             <div className={classes.reportDetailsTitle}>
                 <h3>
                     <Link to='/report'>
-                        General Insights >
+                        {t("reports.reportsDetails.generalInsights")}
                     </Link>
-                    <span>{` ${targetTitle}`}</span>
-                    <span>{`(${number()})`}</span>
+                    <span className={classes.detailsItemTitle}>{` ${targetTitle}`}</span>
+                    <span className={classes.numberItems}>{` (${number()})`}</span>
                 </h3>
-                <input type="text" />
+                <div className={classes.reportDetailsTitleInput}>
+                    <input type="text" placeholder={t("reports.reportsDetails.search")} />
+                    {searchicon}
+                </div>
             </div>
-        </div>
+            {location === 'pending' && number() === 0 &&
+                <div className={classes.empty}>
+                    <div className={classes.emptyIcon}>
+                        {empty_state_icon}
+                    </div>
+                    <span>{t("reports.reportsDetails.pendingActivities")}</span>
+                </div>
+            }
+            {location === 'in_progress' && number() === 0 &&
+                <div className={classes.empty}>
+                    <div className={classes.emptyIcon}>
+                        {empty_state_icon}
+                    </div>
+                    <span>{t("reports.reportsDetails.enrolledCourses")}</span>
+                </div>
+            }
+            {location === 'enrolled' && number() === 0 &&
+                <div className={classes.empty}>
+                    <div className={classes.emptyIcon}>
+                        {empty_state_icon}
+                    </div>
+                    <span>{t("reports.reportsDetails.inProgressCourses")}</span>
+                </div>
+            }
+        </div >
     );
 }
 

@@ -128,6 +128,13 @@
         },
         "overview": {
             "title": "Overview"
+        },
+        "reportsDetails": {
+            "generalInsights": "General Insights >",
+            "search": "Search for an activity",
+            "pendingActivities": "No Avable Pending Activities",
+            "enrolledCourses": "No Avable Enrolled Courses",
+            "inProgressCourses": "No Avable Courses In Progress"
         }
     },
     "profile": {

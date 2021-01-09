@@ -3,6 +3,7 @@ import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
 import moment from 'moment'
 
+import { Role } from '@/helpers'
 import { useAppState } from '@/components/AppState'
 import { libraryService } from '@/services'
 import { HeaderMain } from '@/routes/components/HeaderMain'
@@ -20,13 +21,12 @@ import {
   ButtonToolbar,
   UncontrolledTooltip,
   Table,
-  CustomInput,
   Loading,
 } from '@/components'
 
 const Library = () => {
-  const [{ selectedOrganization }] = useAppState()
-  const [files, setFiles] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9])
+  const [{ selectedOrganization, currentUser }] = useAppState()
+  const [files, setFiles] = useState([])
   const [file, setFile] = useState(null)
   const [selectedFiles, setSelectedFiles] = useState([])
   const [pageId, setPageId] = useState(0)
@@ -34,6 +34,7 @@ const Library = () => {
   const [recordsPerPage, setRecordsPerPage] = useState(10)
   const [loading, setLoading] = useState(false)
   const [loadingFiles, setLoadingFiles] = useState(false)
+  const isLearner = currentUser.user.role === Role.Learner
 
   useEffect(() => {
     getFiles()
@@ -109,66 +110,70 @@ const Library = () => {
           <Card className="mb-3">
             <CardBody>
               <Row>
-                <Col>
-                  <InputGroup>
-                    <input
-                      id="courseFile"
-                      className="custom-file-input"
-                      type="file"
-                      disabled={loading}
-                      onChange={event => {
-                        console.log(event.target.files[0])
-                        setFile(event.target.files[0])
-                      }}
-                    />
-                    <label class="custom-file-label" for="courseFile">
-                      {file?.name || 'Choose a fille'}
-                    </label>
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <ButtonToolbar>
-                    {selectedFiles?.length > 0 && (
-                      <ButtonGroup className="mr-2">
-                        <Button
-                          color="secondary"
-                          onClick={handleDelete}
-                          className="text-decoration-none align-self-center"
-                          id="tooltipDelete"
-                        >
-                          <i className="fa fa-fw fa-trash"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                          placement="bottom"
-                          target="tooltipDelete"
-                        >
-                          Delete
-                        </UncontrolledTooltip>
-                      </ButtonGroup>
-                    )}
-                    <ButtonGroup className="ml-auto ml-lg-0">
-                      <Button
-                        color="primary"
-                        className="align-self-center"
-                        id="tooltipAddNew"
-                        onClick={handleUpload}
-                        disabled={!file || loading}
-                      >
-                        {loading ? (
-                          <Loading small />
-                        ) : (
-                          <i className="fa fa-fw fa-upload"></i>
+                {!isLearner && (
+                  <>
+                    <Col>
+                      <InputGroup>
+                        <input
+                          id="courseFile"
+                          className="custom-file-input"
+                          type="file"
+                          disabled={loading}
+                          onChange={event => {
+                            console.log(event.target.files[0])
+                            setFile(event.target.files[0])
+                          }}
+                        />
+                        <label class="custom-file-label" for="courseFile">
+                          {file?.name || 'Choose a fille'}
+                        </label>
+                      </InputGroup>
+                    </Col>
+                    <Col>
+                      <ButtonToolbar>
+                        {selectedFiles?.length > 0 && (
+                          <ButtonGroup className="mr-2">
+                            <Button
+                              color="secondary"
+                              onClick={handleDelete}
+                              className="text-decoration-none align-self-center"
+                              id="tooltipDelete"
+                            >
+                              <i className="fa fa-fw fa-trash"></i>
+                            </Button>
+                            <UncontrolledTooltip
+                              placement="bottom"
+                              target="tooltipDelete"
+                            >
+                              Delete
+                            </UncontrolledTooltip>
+                          </ButtonGroup>
                         )}
-                      </Button>
-                      <UncontrolledTooltip
-                        placement="bottom"
-                        target="tooltipAddNew"
-                      >
-                        Add New File
-                      </UncontrolledTooltip>
-                    </ButtonGroup>
-                  </ButtonToolbar>
-                </Col>
+                        <ButtonGroup className="ml-auto ml-lg-0">
+                          <Button
+                            color="primary"
+                            className="align-self-center"
+                            id="tooltipAddNew"
+                            onClick={handleUpload}
+                            disabled={!file || loading}
+                          >
+                            {loading ? (
+                              <Loading small />
+                            ) : (
+                              <i className="fa fa-fw fa-upload"></i>
+                            )}
+                          </Button>
+                          <UncontrolledTooltip
+                            placement="bottom"
+                            target="tooltipAddNew"
+                          >
+                            Add New File
+                          </UncontrolledTooltip>
+                        </ButtonGroup>
+                      </ButtonToolbar>
+                    </Col>
+                  </>
+                )}
               </Row>
             </CardBody>
             <Table className="mb-0" hover responsive>

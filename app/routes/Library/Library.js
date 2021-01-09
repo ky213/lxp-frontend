@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
+import { toast } from 'react-toastify'
+import moment from 'moment'
 
+import { useAppState } from '@/components/AppState'
+import { libraryService } from '@/services'
 import { HeaderMain } from '@/routes/components/HeaderMain'
 import { Paginations } from '@/routes/components/Paginations'
 import {
@@ -10,112 +14,195 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Input,
   InputGroup,
-  InputGroupAddon,
   Button,
   ButtonGroup,
   ButtonToolbar,
   UncontrolledTooltip,
   Table,
   CustomInput,
+  Loading,
 } from '@/components'
 
 const Library = () => {
+  const [{ selectedOrganization }] = useAppState()
   const [files, setFiles] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9])
+  const [file, setFile] = useState(null)
   const [selectedFiles, setSelectedFiles] = useState([])
   const [pageId, setPageId] = useState(0)
   const [totalNumberOfRecords, setTotalNumberOfRecords] = useState(0)
   const [recordsPerPage, setRecordsPerPage] = useState(10)
+  const [loading, setLoading] = useState(false)
+  const [loadingFiles, setLoadingFiles] = useState(false)
 
-  const handleSearch = event => {}
+  useEffect(() => {
+    getFiles()
+  }, [])
 
-  const handleDelete = event => {}
+  const getFiles = async () => {
+    try {
+      setLoadingFiles(true)
+      const response = await libraryService.getAllFiles(
+        selectedOrganization.organizationId
+      )
+      setLoadingFiles(false)
+      setFiles(response)
+    } catch (error) {
+      setLoadingFiles(false)
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{error.message}</p>
+        </div>
+      )
+    }
+  }
+
+  const handleUpload = async () => {
+    try {
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
+      fileReader.onloadend = async function () {
+        const fileData = {
+          file: fileReader.result,
+          extension: file.name.split('.').pop(),
+          lastModifiedDate: moment(file?.lastModified).toISOString(),
+          name: file?.name,
+          size: file.size,
+          type: file.type,
+        }
+
+        setLoading(true)
+        await libraryService.addFile(
+          selectedOrganization.organizationId,
+          fileData
+        )
+
+        toast.success(
+          <div>
+            <h4 className="text-success">Success</h4>
+            <p>File has been uploaded</p>
+          </div>,
+          {
+            autoClose: 5000,
+          }
+        )
+        setLoading(false)
+        getFiles()
+      }
+    } catch (error) {
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{error.message}</p>
+        </div>
+      )
+      setLoading(false)
+    }
+  }
 
   return (
     <Container>
       <HeaderMain title="The Library" />
-      <Row></Row>
       <Row>
-        <Col lg={12}>
+        <Col>
           <Card className="mb-3">
             <CardBody>
-              <div className="d-lg-flex justify-content-end">
-                <div className="mr-auto d-flex align-items-center mb-3 mb-lg-0">
+              <Row>
+                <Col>
                   <InputGroup>
-                    <Input onKeyUp={handleSearch} placeholder="Search for..." />
-                    <InputGroupAddon addonType="append">
-                      <Button color="secondary" outline>
-                        <i className="fa fa-search"></i>
-                      </Button>
-                    </InputGroupAddon>
+                    <input
+                      id="courseFile"
+                      className="custom-file-input"
+                      type="file"
+                      disabled={loading}
+                      onChange={event => {
+                        console.log(event.target.files[0])
+                        setFile(event.target.files[0])
+                      }}
+                    />
+                    <label class="custom-file-label" for="courseFile">
+                      {file?.name || 'Choose a fille'}
+                    </label>
                   </InputGroup>
-                </div>
-                <ButtonToolbar>
-                  {selectedFiles?.length > 0 && (
-                    <ButtonGroup className="mr-2">
+                </Col>
+                <Col>
+                  <ButtonToolbar>
+                    {selectedFiles?.length > 0 && (
+                      <ButtonGroup className="mr-2">
+                        <Button
+                          color="secondary"
+                          onClick={handleDelete}
+                          className="text-decoration-none align-self-center"
+                          id="tooltipDelete"
+                        >
+                          <i className="fa fa-fw fa-trash"></i>
+                        </Button>
+                        <UncontrolledTooltip
+                          placement="bottom"
+                          target="tooltipDelete"
+                        >
+                          Delete
+                        </UncontrolledTooltip>
+                      </ButtonGroup>
+                    )}
+                    <ButtonGroup className="ml-auto ml-lg-0">
                       <Button
-                        color="secondary"
-                        onClick={handleDelete}
-                        className="text-decoration-none align-self-center"
-                        id="tooltipDelete"
+                        color="primary"
+                        className="align-self-center"
+                        id="tooltipAddNew"
+                        onClick={handleUpload}
+                        disabled={!file || loading}
                       >
-                        <i className="fa fa-fw fa-trash"></i>
+                        {loading ? (
+                          <Loading small />
+                        ) : (
+                          <i className="fa fa-fw fa-upload"></i>
+                        )}
                       </Button>
                       <UncontrolledTooltip
                         placement="bottom"
-                        target="tooltipDelete"
+                        target="tooltipAddNew"
                       >
-                        Delete
+                        Add New File
                       </UncontrolledTooltip>
                     </ButtonGroup>
-                  )}
-                  <ButtonGroup className="ml-auto ml-lg-0">
-                    <Button
-                      color="primary"
-                      className="align-self-center"
-                      id="tooltipAddNew"
-                    >
-                      <i className="fa fa-fw fa-plus"></i>
-                    </Button>
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target="tooltipAddNew"
-                    >
-                      Add New File
-                    </UncontrolledTooltip>
-                  </ButtonGroup>
-                </ButtonToolbar>
-              </div>
+                  </ButtonToolbar>
+                </Col>
+              </Row>
             </CardBody>
-
             <Table className="mb-0" hover responsive>
               <thead>
                 <tr>
-                  <th className="align-middle bt-0 text-center">Actions</th>
+                  {/* <th className="align-middle bt-0 text-center">Actions</th> */}
                   <th className="align-middle bt-0 text-left">Name</th>
-                  <th className="align-middle bt-0 text-left">type</th>
-                  <th className="align-middle bt-0 text-left">Description</th>
-                  <th className="align-middle bt-0 text-left">Date</th>
                 </tr>
               </thead>
               <tbody>
-                {files.map((file, index) => (
-                  <tr>
-                    <td className="align-middle text-center">
+                {loadingFiles ? (
+                  <Loading />
+                ) : (
+                  files.map((file, index) => (
+                    <tr>
+                      {/* <td className="align-middle text-center">
                       <CustomInput
                         type="checkbox"
                         className="p-1"
                         label=""
                         inline
                       />
-                    </td>
-                    <td colSpan={4}>File {index}</td>
-                  </tr>
-                )) || (
-                  <tr>
-                    <td colSpan={3}>No File yet.</td>
-                  </tr>
+                    </td> */}
+                      <td colSpan={4}>
+                        <a href={file.url} target="_blank">
+                          {file.name}
+                        </a>
+                      </td>
+                    </tr>
+                  )) || (
+                    <tr>
+                      <td colSpan={3}>No File yet.</td>
+                    </tr>
+                  )
                 )}
               </tbody>
             </Table>

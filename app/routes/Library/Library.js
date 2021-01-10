@@ -63,14 +63,7 @@ const Library = () => {
     try {
       setLoading(true)
 
-      const formData = new FormData()
-
-      formData.append('file', file)
-
-      await libraryService.addFile(
-        selectedOrganization.organizationId,
-        formData
-      )
+      await libraryService.addFile(selectedOrganization.organizationId, file)
 
       toast.success(
         <div>

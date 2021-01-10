@@ -22,10 +22,13 @@ function getAllFiles(organizationId) {
 }
 
 function addFile(organizationId, fileData) {
+  const formData = new FormData()
+  formData.append('file', fileData)
+  console.log(formData)
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify({ file: fileData }),
+    body: JSON.stringify({ file: formData }),
   }
 
   return fetch(`${routePrefix}/upload/${organizationId}`, requestOptions)

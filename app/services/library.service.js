@@ -24,7 +24,7 @@ function getAllFiles(organizationId) {
 function addFile(organizationId, fileData) {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': fileData.type, ...authHeader() },
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(fileData),
   }
 

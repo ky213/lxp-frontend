@@ -60,54 +60,37 @@ const Library = () => {
   }
 
   const handleUpload = async () => {
-    const fileReader = new FileReader()
-    fileReader.readAsDataURL(file)
-    fileReader.onerror = function (event) {
+    try {
+      setLoading(true)
+
+      const formData = new FormData()
+
+      formData.append('file', file)
+
+      await libraryService.addFile(
+        selectedOrganization.organizationId,
+        formData
+      )
+
+      toast.success(
+        <div>
+          <h4 className="text-success">Success</h4>
+          <p>File has been uploaded</p>
+        </div>,
+        {
+          autoClose: 5000,
+        }
+      )
+      setLoading(false)
+      getFiles()
+    } catch (error) {
       toast.error(
         <div>
           <h4 className="text-danger">Error</h4>
-          <p>{fileReader.error}</p>
+          <p>{error.message}</p>
         </div>
       )
-      fileReader.abort()
-    }
-    fileReader.onloadend = async function () {
-      const fileData = {
-        file: fileReader.result,
-        extension: file.name.split('.').pop(),
-        lastModifiedDate: moment(file?.lastModified).toISOString(),
-        name: file?.name,
-        size: file.size,
-        type: file.type,
-      }
-
-      try {
-        setLoading(true)
-        await libraryService.addFile(
-          selectedOrganization.organizationId,
-          fileData
-        )
-
-        toast.success(
-          <div>
-            <h4 className="text-success">Success</h4>
-            <p>File has been uploaded</p>
-          </div>,
-          {
-            autoClose: 5000,
-          }
-        )
-        setLoading(false)
-        getFiles()
-      } catch (error) {
-        toast.error(
-          <div>
-            <h4 className="text-danger">Error</h4>
-            <p>{error.message}</p>
-          </div>
-        )
-        setLoading(false)
-      }
+      setLoading(false)
     }
   }
 

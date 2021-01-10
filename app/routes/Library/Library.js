@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { toast } from 'react-toastify'
-import moment from 'moment'
 
 import { Role } from '@/helpers'
 import { useAppState } from '@/components/AppState'
-import { libraryService } from '@/services'
+import { libraryService, activityService } from '@/services'
 import { HeaderMain } from '@/routes/components/HeaderMain'
 import { Paginations } from '@/routes/components/Paginations'
 import {
@@ -93,6 +92,10 @@ const Library = () => {
       )
       setLoading(false)
     }
+  }
+
+  const handleDownload = file => {
+    console.log(file)
   }
 
   return (
@@ -190,7 +193,13 @@ const Library = () => {
                       />
                     </td> */}
                       <td colSpan={4}>
-                        <a href={file.url} target="_blank">
+                        <a
+                          href={
+                            'https://static.dev.lxpia.com/' +
+                            file.url.replace('undefined/', '')
+                          }
+                          target="_blank"
+                        >
                           {file.name}
                         </a>
                       </td>

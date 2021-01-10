@@ -62,8 +62,16 @@ const Library = () => {
   const handleUpload = async () => {
     try {
       setLoading(true)
+      const formData = new FormData()
 
-      await libraryService.addFile(selectedOrganization.organizationId, file)
+      formData.append('file', file.name)
+
+      const { url } = await libraryService.addFile(
+        selectedOrganization.organizationId,
+        formData
+      )
+
+      await libraryService.saveFileToGoogleStorage(url, file)
 
       toast.success(
         <div>

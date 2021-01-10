@@ -6,6 +6,7 @@ const routePrefix = `${config.apiUrl}/activities`
 export const libraryService = {
   getAllFiles,
   addFile,
+  saveFileToGoogleStorage,
 }
 
 function getAllFiles(organizationId) {
@@ -21,10 +22,7 @@ function getAllFiles(organizationId) {
     })
 }
 
-function addFile(organizationId, fileData) {
-  const formData = new FormData()
-  formData.append('file', fileData.name)
-
+function addFile(organizationId, formData) {
   const requestOptions = {
     method: 'POST',
     headers: { ...authHeader() },
@@ -32,6 +30,20 @@ function addFile(organizationId, fileData) {
   }
 
   return fetch(`${routePrefix}/upload/${organizationId}`, requestOptions)
+    .then(handleResponse)
+    .then(data => {
+      return data
+    })
+}
+
+function saveFileToGoogleStorage(uploadUrl, fileData) {
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': fileData.type },
+    body: fileData,
+  }
+
+  return fetch(uploadUrl, requestOptions)
     .then(handleResponse)
     .then(data => {
       return data

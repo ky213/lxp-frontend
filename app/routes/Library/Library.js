@@ -60,19 +60,19 @@ const Library = () => {
   }
 
   const handleUpload = async () => {
-    try {
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(file)
-      fileReader.onloadend = async function () {
-        const fileData = {
-          file: fileReader.result,
-          extension: file.name.split('.').pop(),
-          lastModifiedDate: moment(file?.lastModified).toISOString(),
-          name: file?.name,
-          size: file.size,
-          type: file.type,
-        }
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(file)
+    fileReader.onloadend = async function () {
+      const fileData = {
+        file: fileReader.result,
+        extension: file.name.split('.').pop(),
+        lastModifiedDate: moment(file?.lastModified).toISOString(),
+        name: file?.name,
+        size: file.size,
+        type: file.type,
+      }
 
+      try {
         setLoading(true)
         await libraryService.addFile(
           selectedOrganization.organizationId,
@@ -90,15 +90,15 @@ const Library = () => {
         )
         setLoading(false)
         getFiles()
+      } catch (error) {
+        toast.error(
+          <div>
+            <h4 className="text-danger">Error</h4>
+            <p>{error.message}</p>
+          </div>
+        )
+        setLoading(false)
       }
-    } catch (error) {
-      toast.error(
-        <div>
-          <h4 className="text-danger">Error</h4>
-          <p>{error.message}</p>
-        </div>
-      )
-      setLoading(false)
     }
   }
 
@@ -120,7 +120,6 @@ const Library = () => {
                           type="file"
                           disabled={loading}
                           onChange={event => {
-                            console.log(event.target.files[0])
                             setFile(event.target.files[0])
                           }}
                         />

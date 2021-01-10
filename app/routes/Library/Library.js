@@ -62,6 +62,15 @@ const Library = () => {
   const handleUpload = async () => {
     const fileReader = new FileReader()
     fileReader.readAsDataURL(file)
+    fileReader.onerror = function (event) {
+      toast.error(
+        <div>
+          <h4 className="text-danger">Error</h4>
+          <p>{fileReader.error}</p>
+        </div>
+      )
+      fileReader.abort()
+    }
     fileReader.onloadend = async function () {
       const fileData = {
         file: fileReader.result,

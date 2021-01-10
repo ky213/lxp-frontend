@@ -25,7 +25,7 @@ function addFile(organizationId, fileData) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify(fileData),
+    body: JSON.stringify({ file: fileData }),
   }
 
   return fetch(`${routePrefix}/upload/${organizationId}`, requestOptions)

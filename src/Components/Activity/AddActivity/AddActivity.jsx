@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import classes from './AddActivity.module.css';
 import { useTranslation } from 'react-i18next';
 import { AuthInput, TextAreaCustom } from '../../Common/FormControlls/FormControlls';
-import { required } from '../../../Utils/validators';
+import { required, foo } from '../../../Utils/validators';
 import CustomSelect from '../../Common/Cutsom/Select/CustomSelect';
 import { NavLink } from 'react-router-dom';
 import Preloader from '../../Common/Preloader/Preloader';
@@ -39,7 +39,7 @@ const AddActivityForm = (props) => {
                 <label className={classes.fieldLabel}>{t("addActivity.type")}</label>
                 <p></p>
                 <Field component={CustomSelect} options={types} setFunction={props.setType} width={66} 
-                        validate={[required]} disableDefValueOption={disableDefValueOption} disableDefValueOptionText={disableDefValueOptionText}/>
+                        validate={[required]} name="type" disableDefValueOption={disableDefValueOption} disableDefValueOptionText={disableDefValueOptionText}/>
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addActivity.description")}</label>

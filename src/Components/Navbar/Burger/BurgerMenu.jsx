@@ -35,19 +35,19 @@ const BurgerMenu = ({open, setOpen, changeLanguage, language, currentLanguage}) 
         <Menu open={open}>
             <nav className={"nav"}>
                 <div className={classes.menuItem}>
-                    <NavLink to="/home" activeClassName={"active"}>{t("navbar.home")}</NavLink>
+                    <NavLink to="/home" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.home")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/programs" activeClassName={"active"}>{t("navbar.programs")}</NavLink>
+                    <NavLink to="/programs" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.programs")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/courses" activeClassName={"active"}>{t("navbar.courses")}</NavLink>
+                    <NavLink to="/courses" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.courses")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/activities" activeClassName={"active"}>{t("navbar.activities")}</NavLink>
+                    <NavLink to="/activities" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.activities")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/report" activeClassName={"active"}>{t("navbar.myreport")}</NavLink>
+                    <NavLink to="/report" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.myreport")}</NavLink>
                 </div>
                 <div className={classes.langBurgerMenu}>
                     <button onClick={()=>{changeLanguage(language())}}>

@@ -67,8 +67,8 @@
     flex-direction: column-reverse;
     align-items: flex-end;
   }
-  .headerSide span {
-    margin-bottom: 5px;
+  .timeBlock {
+    margin-bottom: 10px;
   }
 }
 

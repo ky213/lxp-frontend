@@ -278,6 +278,7 @@
 
 .langBurgerMenu span {
   padding: 11px 20px;
+  transition: all 0.4s ease-in;
 }
 
 .langBurgerMenu span:last-child {
@@ -287,6 +288,7 @@
 .langBurgerMenuActive {
   color: #ffffff;
   background: #373f41;
+  transition: all 0.4s ease-in;
 }
 
 @media screen and (max-width: 1440px) {
@@ -338,7 +340,7 @@
   }
 }
 
-@media screen and (max-width: 468px){
+@media screen and (max-width: 468px) {
   .logo {
     display: none;
   }
@@ -354,7 +356,6 @@
   .userMenu span {
     display: none;
   }
-  
 }
 @media screen and (max-width: 374px) {
   .searchBut {

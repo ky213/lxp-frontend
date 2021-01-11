@@ -1,68 +1,81 @@
 .reportDetailsTitle {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
 }
 
 .reportDetailsTitle a {
-    text-decoration: none;
-    color: #000000;
-    font-weight: normal;
+  text-decoration: none;
+  color: #000000;
+  font-weight: normal;
 }
 
 .detailsItemTitle {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .numberItems {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .reportDetailsTitleInput {
-    position: relative;
+  position: relative;
 }
 
 .reportDetailsTitleInput input {
-    background: #f3f3f3;
-    outline: none;
-    border-radius: 5px;
-    border: none;
-    padding: 10px 40px;
+  background: #f3f3f3;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 40px;
 }
 
 .reportDetailsTitleInput svg {
-    position: absolute;
-    left: 10px;
-    top: 7px;
+  position: absolute;
+  left: 10px;
+  top: 7px;
 }
 
-.emptyIcon{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: #ceeadd;
-    border-radius: 50%;
+.emptyIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: #ceeadd;
+  border-radius: 50%;
 }
-.emptyIcon svg{
-    position: relative;
-    top: -3px;
+.emptyIcon svg {
+  position: relative;
+  top: -3px;
 }
-.empty span{
-    margin-top: 8px;
+.empty span {
+  margin-top: 8px;
 }
-.empty{
-    background-color: white;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
-    display: flex;
+.empty {
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 46px;
+  padding-bottom: 46px;
+}
+
+@media screen and (max-width: 680px) {
+  .reportDetailsTitle {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding-top: 46px;
-    padding-bottom: 46px;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .reportDetailsTitle {
+    font-size: 14px;
+  }
 }

@@ -27,13 +27,15 @@ const Filter = (props) => {
                     <span className={`${classes.option} ${classes.margin0}`}>
                         {t("filterReports.filteredBy")}
                     </span>
-                    <div className={classes.margin0}>
-                        <input type="checkbox" value={isCourses} onChange={() => setIsCourses(true)} />
-                        <span className={`${classes.option} ${classes.margin0}`}> {t("filterReports.courses")} </span>
+                    <div onClick={() => setIsCourses(!isCourses)} className={`${classes.margin0} ${classes.filter}`}>
+                        <span className={classes.filterText}>{t("filterReports.courses")}</span>
+                        <input type="checkbox" checked={isCourses} value={isCourses}  />
+                        <span className={classes.checkmark}></span>
                     </div>
-                    <div className={classes.margin0}>
-                        <input type="checkbox" value={isActivities} onChange={() => setIsActivities(true)} />
-                        <span className={`${classes.option} ${classes.margin0}`}> {t("filterReports.activities")} </span>
+                    <div onClick={() => setIsActivities(!isActivities)} className={`${classes.margin0} ${classes.filter}`}>
+                        <span className={classes.filterText}>{t("filterReports.activities")}</span>
+                        <input type="checkbox" checked={isActivities} value={isActivities}  />
+                        <span className={classes.checkmark}></span>
                     </div>
                 </div>}
         </StyledSelect>

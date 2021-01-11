@@ -14,8 +14,6 @@ export default function ReportMain({ props }) {
     const firstCourseDaysNumber = 1
     const secondCourseDaysNumber = 4
 
-    console.log(props.activities )
-
     return (
         <>
             <div className={classes.tabsBlock}>
@@ -45,7 +43,7 @@ export default function ReportMain({ props }) {
                         <Link className={classes.textDecorationNone} to={`/report/pending`}>
                             <p className={classes.tabTitle}>{t("reports.insights.pending")}</p>
                             <p className={classes.tabValue}>
-                                <span>{props.activities ? props.activities.length : 0}</span>
+                                <span>{(props.activities && props.activities.length > 0) ? props.activities.length : 0}</span>
                                 {` ${t("reports.insights.activities")}`}
                             </p>
                         </Link>

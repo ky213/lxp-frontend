@@ -10,6 +10,9 @@ import styled from 'styled-components';
 
 const StyledMain = styled.div`
     width: ${({ width }) => 'calc(' + width + '% - 32px)'};
+    @media (max-width: 500px) {
+        width: 100%;
+    }
 `;
 
 const StyledTimeBlock = styled.div`

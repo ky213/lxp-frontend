@@ -6,6 +6,9 @@ const StyledProgressBar = styled.div`
     height: ${({height}) => height + 'px;'}
     background-color: rgba(102, 113, 171, 0.2);
     border-radius: 20px;
+    @media (max-width: 800px) {
+        width: 90%
+    }
 `;
 const StyledProgress = styled.div`
     width: ${({progress}) => progress + '%;'}

@@ -1,73 +1,79 @@
-.main{
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-    margin-bottom: 16px;
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
 }
-.main a{
-    text-decoration: none;
+.main a {
+  text-decoration: none;
 }
-.activityHeader{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
+.activityHeader {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
-.program{
-    color: #757575;
-    font-size: 12px;
-    font-weight: 500;
+.program {
+  color: #757575;
+  font-size: 12px;
+  font-weight: 500;
 }
-.headerSide{
-    display: flex;
-    align-items: center;
+.headerSide {
+  display: flex;
+  align-items: center;
 }
-.status{
-    color: #3d3d3d;
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 17.5px;
-    font-weight: 600;
-    background-color: rgba(253, 200, 11, 0.25);
+.status {
+  color: #3d3d3d;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 17.5px;
+  font-weight: 600;
+  background-color: rgba(253, 200, 11, 0.25);
 }
-.timeBlock{
-    display: flex;
-    align-items: center;
+.timeBlock {
+  display: flex;
+  align-items: center;
 }
-.timeBlock svg path{
-    fill: black;
+.timeBlock svg path {
+  fill: black;
 }
-.time{
-    color: #757575;
-    font-size: 13px;
-    font-weight: 700;  
+.time {
+  color: #757575;
+  font-size: 13px;
+  font-weight: 700;
 }
-.main h3{
-    margin-block-end: 18px;
-    margin-block-start: 14px;
-    color: #3d3d3d;
-    font-size: 18px;
+.main h3 {
+  margin-block-end: 18px;
+  margin-block-start: 14px;
+  color: #3d3d3d;
+  font-size: 18px;
 }
-.progressBlock{
-    display: flex;
-    align-items: center;
+.progressBlock {
+  display: flex;
+  align-items: center;
 }
-.progressBlock span{
-    font-size: 12px;
-    color: #6e798c;
-    font-weight: 700;
-    margin-left: 14px;
+.progressBlock span {
+  font-size: 12px;
+  color: #6e798c;
+  font-weight: 700;
+  margin-left: 14px;
 }
 
-@media screen and (max-width: 360px){
-    .headerSide{
-        align-items: flex-end;
-        flex-direction: column-reverse;
-    }
-    .status{
-        margin-top: 8px;
-    }
+@media screen and (max-width: 630px) {
+  .headerSide {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+  .headerSide span {
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .status {
+    margin-top: 8px;
+  }
 }

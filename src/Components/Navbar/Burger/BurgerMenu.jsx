@@ -51,10 +51,10 @@ const BurgerMenu = ({open, setOpen, changeLanguage, language, currentLanguage}) 
                 </div>
                 <div className={classes.langBurgerMenu}>
                     <button onClick={()=>{changeLanguage(language())}}>
-                            <span className={currentLanguage === "en" && classes.langBurgerMenuActive}>
+                            <span className={currentLanguage === "en" ? classes.langBurgerMenuActive : ""}>
                                 EN
                             </span>
-                            <span className={currentLanguage === "ar" && classes.langBurgerMenuActive}>
+                            <span className={currentLanguage === "ar" ? classes.langBurgerMenuActive : ""}>
                                 AR
                             </span>
                     </button>

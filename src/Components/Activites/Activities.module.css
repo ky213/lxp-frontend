@@ -1,164 +1,186 @@
-.main{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.header{
-    width: 100%;
-    background-color: #f6f6f6;
-    display: flex;
-    justify-content: center;
+.header {
+  width: 100%;
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
 }
-.headerContainer{
-    width: 840px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.headerContainer {
+  width: 840px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.headerHeader{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
+.headerHeader {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
-.headerHeader h1{
-    margin-block-start: 36px;
-    margin-block-end: 36px;
-    font-size: 28px;
+.headerHeader h1 {
+  margin-block-start: 36px;
+  margin-block-end: 36px;
+  font-size: 28px;
 }
-.headerHeader a{
-    text-decoration: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 120px;
-    padding: 12px;
-    border-radius: 23.5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-    background-color: #ffffff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 400;
-    color: #3d3d3d;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
+.headerHeader a {
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 120px;
+  padding: 12px;
+  border-radius: 23.5px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 400;
+  color: #3d3d3d;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
 }
-.headerHeader a div{
-    border-radius: 50%;
-    background-color: #6671ab;
-    color: white;
-    font-size: 29px;
-    font-weight: 700;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 16px;
+.headerHeader a div {
+  border-radius: 50%;
+  background-color: #6671ab;
+  color: white;
+  font-size: 29px;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 16px;
 }
-.filters{
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
+.filters {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
 }
-.filter{
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 16px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-right: 56px;
-    color: #5b5b5b;
-    font-weight: 500;
+.filter {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-right: 56px;
+  color: #5b5b5b;
+  font-weight: 500;
 }
-.filterText{
-    position: relative;
-    top: 3px;
+.filterText {
+  position: relative;
+  top: 3px;
 }
 .filter input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-    border-radius: 5px;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  border-radius: 5px;
 }
 .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color:white;
-    border-radius: 5px;
-    transition-duration: 0.3s;
-    border: 1px solid #d9d9d9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border-radius: 5px;
+  transition-duration: 0.3s;
+  border: 1px solid #d9d9d9;
 }
-  
+
 .filter:hover input ~ .checkmark {
-    background-color: rgb(248, 248, 248);
-    
+  background-color: rgb(248, 248, 248);
 }
-  
+
 .filter input:checked ~ .checkmark {
-    background-color: #6671ab;
+  background-color: #6671ab;
 }
 
 .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-  
-.filter input:checked ~ .checkmark:after {
-    display: block;
-}
-  
-.filter .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-.itemsList{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 36px;
-}
-.containerItems{
-    width: 840px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  content: "";
+  position: absolute;
+  display: none;
 }
 
-@media screen and (max-width: 968px){
-    .headerContainer{
-        width: calc(768px - 64px);
-        padding-left: 32px;
-        padding-right: 32px;
-    }
-    .filters{
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .containerItems{
-        width: calc(768px - 64px);
-        padding-left: 32px;
-        padding-right: 32px;
-    }
+.filter input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.filter .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.itemsList {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+.containerItems {
+  width: 840px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 968px) {
+  .headerContainer {
+    width: calc(768px - 64px);
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .containerItems {
+    width: calc(768px - 64px);
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .headerHeader h1 {
+    font-size: 20px;
+  }
+  .containerItems {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .headerHeader {
+    flex-direction: column;
+  }
+  .headerHeader h1 {
+    font-size: 24px;
+    margin: 10px 0;
+  }
+
+  .headerHeader a {
+    margin-bottom: 15px;
+  }
 }

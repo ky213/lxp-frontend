@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar';
 import { getNotifications } from '../../Redux/notificationsReducer';
+import { setCurrentLanguage } from '../../Redux/commonReducer';
 
 const NavbarContainer = (props) => {
     const [isOpenSearchModal, setIsOpenSearchModal] = useState(false);
@@ -23,6 +24,7 @@ const NavbarContainer = (props) => {
                 unreadNotifications={props.unreadNotifications}
                 setIsOpenNotificationsModal={setIsOpenNotificationsModal}
                 isOpenNotificationsModal={isOpenNotificationsModal}
+                setCurrentLanguage={props.setCurrentLanguage}
                 />}
         </>
     );
@@ -40,5 +42,6 @@ let mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getNotifications
+    getNotifications,
+    setCurrentLanguage
 })(NavbarContainer);

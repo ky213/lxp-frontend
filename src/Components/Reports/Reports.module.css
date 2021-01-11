@@ -26,10 +26,6 @@
     width: 1024px;
     flex-direction: column;
   }
-  .containerLeft {
-    width: 100%;
-    justify-content: space-between;
-  }
   .main {
     height: max-content;
   }
@@ -40,6 +36,6 @@
 
 @media screen and (max-width: 1000px) {
   .container {
-    width: 768px;
+    width: 90%;
   }
 }

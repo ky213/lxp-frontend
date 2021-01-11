@@ -11,7 +11,6 @@ const Reports = (props) => {
         <div className={classes.main}>
             <div className={classes.container}>
                 <UserInfo user={props.user} />
-
                 <div className={classes.rightSide}>
                     <Route exact path='/report'>
                         <ReportMain props={props} />

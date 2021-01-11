@@ -9,7 +9,7 @@ import NavbarContainer from "./Components/Navbar/NavbarContainer";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { setDirection } from "./Redux/commonReducer";
+import { setDirection, setCurrentLanguage } from "./Redux/commonReducer";
 import ActivitiesContainer from "./Components/Activites/ActivitiesContainer";
 import Login from "./Components/Auth/Login/Login";
 import AddActivity from "./Components/Activity/AddActivity/AddActivity";
@@ -56,20 +56,59 @@ const App = (props) => {
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
-          <Route exact path="/home" render={() => <LoadDataRouter Component={HomeContainer} />}/>
-          <Route exact path="/courses" render={() => <LoadDataRouter Component={CoursesContainer} />}/>
-          <Route path="/courses/:courseId" render={() => <LoadDataRouter Component={LessonsContainer} />}/>
-          <Route path="/activities/view/:activityId" render={() => <LoadDataRouter Component={Activity} />}/>
-          <Route exact path="/activities" render={() => <LoadDataRouter Component={ActivitiesContainer} />}/>
-          <Route path="/activities/add" render={() => <LoadDataRouter Component={AddActivity} />}/>
-          <Route path="/activities/edit/:activityId" render={() => <LoadDataRouter Component={EditActivity} />}/>
-          <Route path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />}/>
-          <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />}/>
+          <Route
+            exact
+            path="/home"
+            render={() => <LoadDataRouter Component={HomeContainer} />}
+          />
+          <Route
+            exact
+            path="/courses"
+            render={() => <LoadDataRouter Component={CoursesContainer} />}
+          />
+          <Route
+            path="/courses/:courseId"
+            render={() => <LoadDataRouter Component={LessonsContainer} />}
+          />
+          <Route
+            path="/activities/view/:activityId"
+            render={() => <LoadDataRouter Component={Activity} />}
+          />
+          <Route
+            exact
+            path="/activities"
+            render={() => <LoadDataRouter Component={ActivitiesContainer} />}
+          />
+          <Route
+            path="/activities/add"
+            render={() => <LoadDataRouter Component={AddActivity} />}
+          />
+          <Route
+            path="/activities/edit/:activityId"
+            render={() => <LoadDataRouter Component={EditActivity} />}
+          />
+          <Route
+            path="/programs"
+            render={() => <LoadDataRouter Component={ProgramsContainer} />}
+          />
+          <Route
+            path="/profile"
+            render={() => <LoadDataRouter Component={Profile} />}
+          />
           <Route path="/login" render={() => <Login />} />
           <Route path="/forgot_password" render={() => <ForgotPassword />} />
-          <Route path="/report" render={() => <LoadDataRouter Component={ReportsContainer} />}/>
-          <Route path="/search" render={() => <LoadDataRouter Component={SearchResultContainer} />}/>
-          <Route path="/home/notifications" render={() => <LoadDataRouter Component={NotificationsContainer} />}/>
+          <Route
+            path="/report"
+            render={() => <LoadDataRouter Component={ReportsContainer} />}
+          />
+          <Route
+            path="/search"
+            render={() => <LoadDataRouter Component={SearchResultContainer} />}
+          />
+          <Route
+            path="/home/notifications"
+            render={() => <LoadDataRouter Component={NotificationsContainer} />}
+          />
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>
@@ -78,8 +117,10 @@ const App = (props) => {
 
 let mapStateToProps = (state) => ({
   direction: state.common.direction,
+  currentLanguage: state.common.currentLanguage,
 });
 
 export default connect(mapStateToProps, {
   setDirection,
+  setCurrentLanguage,
 })(App);

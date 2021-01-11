@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 import SearchModal from '../Common/SearchModal/SearchModal';
 import ProfileMenu from './ProfileMenu/ProfileMenu';
 import NotificationsModal from '../Notifications/NotificationsModal/NotificationsModal';
+import {planeticon} from '../../Assets/Images/planet_icon'
+import { useSelector } from 'react-redux';
 
 const StyledLogoBlock = styled.div`
     a span{
@@ -38,10 +40,22 @@ const StyledBut = styled.button`
 
 const Navbar = (props) => {
     const {t, i18n} = useTranslation();
+    
+    const currentLanguage = useSelector((state)=> state.common.currentLanguage)
+
+    const language = () => {
+        if(currentLanguage === "en") {
+            props.setCurrentLanguage("ar");
+            return "ar"
+        } else {
+            props.setCurrentLanguage("en");
+            return "en"
+        }
+    }
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
 
-    console.log(isOpenProfileMenu);
+    console.log(currentLanguage)
 
     return(
         <nav className={classes.main}>
@@ -86,12 +100,14 @@ const Navbar = (props) => {
                         </div>
                     </StyledLinks>
                 </div>
-                <div className={classes.langBut}>
-                    <button onClick={()=>{props.changeLanguage('en')}}>EN</button>
-                    <button onClick={()=>{props.changeLanguage('ar')}}>AR</button>
-                </div>
+                
                 
                 <div className={classes.rightSideNav}>
+                    <div className={classes.langBut}>
+                        <button onClick={()=>{props.changeLanguage(language())}}>
+                            {planeticon}
+                        </button>
+                    </div>
                     <StyledBut className={classes.searchBut + " " + (props.isOpenSearchModal && classes.activeSearch)} direction={props.direction} onClick={()=>{props.setIsOpenSearchModal(!props.isOpenSearchModal)}}>
                         {searchicon}
                     </StyledBut>
@@ -116,7 +132,7 @@ const Navbar = (props) => {
                         </div>
                     </label>
                     <div className={classes.burger}>
-                        <Burger/>
+                        <Burger changeLanguage={props.changeLanguage} language={language}/>
                     </div>
                 </div>
             </div>

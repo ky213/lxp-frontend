@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import classes from '../Navbar.module.css';
 import { useTranslation } from 'react-i18next';
+import {planeticon} from '../../../Assets/Images/planet_icon'
 
 const Menu = styled.div`
     width: 100%;
@@ -28,7 +29,7 @@ const Menu = styled.div`
 `;
 
 
-const BurgerMenu = ({open, setOpen}) => {
+const BurgerMenu = ({open, setOpen, changeLanguage, language}) => {
     const {t, i18n} = useTranslation();
     return(
         <Menu open={open}>
@@ -47,6 +48,11 @@ const BurgerMenu = ({open, setOpen}) => {
                 </div>
                 <div className={classes.menuItem}>
                     <NavLink to="/report" activeClassName={"active"}>{t("navbar.myreport")}</NavLink>
+                </div>
+                <div className={`${classes.langBut} ${classes.langBurgerMenu}`}>
+                    <button onClick={()=>{changeLanguage(language())}}>
+                            {planeticon}
+                    </button>
                 </div>
             </nav>
         </Menu>

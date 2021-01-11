@@ -69,3 +69,24 @@
   width: 45%;
   height: 240px;
 }
+
+@media screen and (max-width: 600px) {
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tabs li {
+    width: 60%;
+    margin-top: 20px;
+  }
+
+  .overviewCharts {
+    flex-direction: column;
+    padding-bottom: 20px;
+  }
+
+  .chart {
+    width: 100%;
+    margin-top: 30px;
+  }
+}

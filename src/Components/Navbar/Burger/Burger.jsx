@@ -43,7 +43,7 @@ const StyledBurger = styled.div`
 `;
 
 
-const Burger = (props) => {
+const Burger = ({changeLanguage, language}) => {
     const [open, setOpen] = useState(false);
     return(
         <>  
@@ -52,7 +52,7 @@ const Burger = (props) => {
                 <div />
                 <div />
             </StyledBurger>
-            <BurgerMenu open={open} setOpen={setOpen}/>
+            <BurgerMenu open={open} setOpen={setOpen} changeLanguage={changeLanguage} language={language}/>
         </>
     )
 }

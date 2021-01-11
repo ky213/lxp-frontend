@@ -193,6 +193,28 @@
   display: block;
 }
 
+.langBut {
+  margin: 0 30px;
+}
+
+.langBut button {
+  border: 1px solid #e1e1e1;
+  outline: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.langBurgerMenu button {
+  background: #373f41;
+  border: none;
+}
+
 @media screen and (max-width: 1440px) {
   .container {
     width: 1280px;
@@ -228,7 +250,20 @@
   .leftSideNav {
     margin-left: 60px;
   }
+  .langBut {
+    display: none;
+  }
+  .langBurgerMenu {
+    display: block;
+  }
 }
+
+@media screen and (max-width: 500px) {
+  .rightSideNav {
+    margin-left: 20px;
+  }
+}
+
 @media screen and (max-width: 414px) {
   .userMenu {
     padding-right: 0;
@@ -236,11 +271,14 @@
   .userMenu span {
     display: none;
   }
-}
-@media screen and (max-width: 374px) {
   .logo {
     display: none;
   }
+  .logoBlock span {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 374px) {
   .searchBut {
     margin-right: 18px;
   }

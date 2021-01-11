@@ -193,13 +193,7 @@ const Library = () => {
                       />
                     </td> */}
                       <td colSpan={4}>
-                        <a
-                          href={
-                            'https://static.dev.lxpia.com/' +
-                            file.url.replace('undefined/', '')
-                          }
-                          target="_blank"
-                        >
+                        <a href={file.url} target="_blank">
                           {file.name}
                         </a>
                       </td>

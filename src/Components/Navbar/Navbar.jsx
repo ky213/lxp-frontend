@@ -55,8 +55,6 @@ const Navbar = (props) => {
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
 
-    console.log(currentLanguage)
-
     return(
         <nav className={classes.main}>
             <div className={classes.container}>

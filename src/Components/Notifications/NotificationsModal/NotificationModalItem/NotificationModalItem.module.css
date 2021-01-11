@@ -2,6 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 16px;
+    position: relative;
 }
 .image{
     width: 55px;
@@ -22,6 +24,7 @@
 .info p{
     margin-block-end: 0;
     margin-block-start: 0;
+    font-size: 16px;
 }
 .info span{
     font-size: 12px;
@@ -30,4 +33,6 @@
 .menu{
     margin-left: 6px;
     align-self: flex-start;
+    margin-right: 6px;
+    cursor: pointer;
 }

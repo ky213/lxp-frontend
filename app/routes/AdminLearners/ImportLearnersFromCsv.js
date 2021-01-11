@@ -89,7 +89,7 @@ const ImportLearnersFromCsv = () => {
             surname: row.data.Surname,
             email: row.data.Email,
             gender: row.data.Gender,
-            startDate: moment(row.data.StartDate, 'YYYYMMDD'),
+            startDate: moment(row.data.StartDate, 'YYYYMMDD').add(1, 'day'),
             groupNames: row.data.Groups.split(','),
             courseCodes: row.data.Courses.split(','),
             organizationId: selectedOrganization.organizationId,

@@ -190,6 +190,10 @@
     "notificationsModal": {
         "title": "Notifications",
         "viewAll": "View All",
-        "empty": "Notifications list is empty."
+        "empty": "Notifications list is empty.",
+        "menu": {
+            "asRead": "Mark as read",
+            "delete": "Delete"
+        }
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import classes from './NotificationsModal.module.css';
@@ -8,7 +8,7 @@ import NotificationModalItem from './NotificationModalItem/NotificationModalItem
 
 
 const StyledModal = styled.div`
-    transform: ${({ direction }) => direction === "ltr" ? 'translateY(200px) translateX(232px)' : 'translateY(200px) translateX(-232px);' }; 
+    transform: ${({ direction, notifications }) => direction === "ltr" ? 'translateY('+ (notifications.length > 0 ? 205 : 65) + 'px) translateX(232px)' : 'translateY(' + (notifications.length > 0 ? 205 : 65) + 'px) translateX(-232px);' }; 
     @media screen and (max-width: 1000px){
         width: 620px;
         
@@ -35,17 +35,29 @@ const StyledArrow = styled.div`
 const NotificationsModal = (props) => {
     const {t, i18n} = useTranslation();
 
+    const [isScroll, setIsScroll] = useState(false);
+    const modalRef = useRef(null)
+
+    function logit() {
+        setIsScroll(!isScroll);
+    }
+
+    useEffect(() => {
+        modalRef.current.addEventListener("scroll", logit);
+    }, [modalRef.current]);
+
     let notifications = [];
 
     if(props.notifications){
         notifications = props.notifications.map(notification => {
-            return <NotificationModalItem item={notification}/>
+            
+            return <NotificationModalItem item={notification} key={notification.notificationId} isScroll={isScroll}/>
         });
     }
     
 
     return(
-        <StyledModal className={classes.main} direction={props.direction}>
+        <StyledModal className={classes.main} direction={props.direction} notifications={props.notifications} >
             <StyledArrow className={classes.arrow} direction={props.direction}>
                 <div className={classes.innerArrow}></div>
             </StyledArrow>
@@ -55,7 +67,7 @@ const NotificationsModal = (props) => {
                     <NavLink to="/home/notifications">{t("notificationsModal.viewAll")}</NavLink>
                 </div>
                 {(notifications.length > 0 && notifications) ? 
-                    <div className={classes.notifications}>
+                    <div className={classes.notifications} ref={modalRef}>
                         {notifications}
                     </div> :
                     <div className={classes.empty}>
@@ -69,7 +81,7 @@ const NotificationsModal = (props) => {
 
 let mapStateToProps = (state) => ({
     direction: state.common.directions,
-    notifications: state.notifications.notifications
+    notifications: state.notifications.unreadNotifications
 });
 
 export default connect(mapStateToProps, {

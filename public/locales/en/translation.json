@@ -195,5 +195,18 @@
             "asRead": "Mark as read",
             "delete": "Delete"
         }
+    },
+    "notificationItem": {
+        "days": "d",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s",
+        "ago": "ago",
+        "link": "Click to view all your missed activities for this course"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "markAllRead": "Mark all as read",
+        "earlier": "Earlier"
     }
 }

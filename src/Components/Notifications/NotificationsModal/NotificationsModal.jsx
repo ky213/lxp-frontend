@@ -8,7 +8,7 @@ import NotificationModalItem from './NotificationModalItem/NotificationModalItem
 
 
 const StyledModal = styled.div`
-    transform: ${({ direction, notifications }) => direction === "ltr" ? 'translateY('+ (notifications.length > 0 ? 205 : 65) + 'px) translateX(232px)' : 'translateY(' + (notifications.length > 0 ? 205 : 65) + 'px) translateX(-232px);' }; 
+    transform: ${({ direction, notifications }) => direction === "ltr" ? 'translateY('+ (notifications.length > 0 ? 205 : 65) + 'px) translateX(-138px)' : 'translateY(' + (notifications.length > 0 ? 205 : 65) + 'px) translateX(138px);' }; 
     @media screen and (max-width: 1000px){
         width: 620px;
         
@@ -24,10 +24,10 @@ const StyledModal = styled.div`
 `;
 
 const StyledArrow = styled.div`
-    left: ${({ direction }) => direction === "ltr" ? "42px" : "-42px"};
+    left: ${({ direction }) => direction === "ltr" ? "-42px" : "42px"};
     
     & div{
-        left: ${({ direction }) => direction === "ltr" ? "3.5px" : "-4.2px"};
+        left: ${({ direction }) => direction === "ltr" ? "-4.2px" : "3.5px"};
     }
 `;
 
@@ -80,7 +80,7 @@ const NotificationsModal = (props) => {
 }
 
 let mapStateToProps = (state) => ({
-    direction: state.common.directions,
+    direction: state.common.direction,
     notifications: state.notifications.unreadNotifications
 });
 

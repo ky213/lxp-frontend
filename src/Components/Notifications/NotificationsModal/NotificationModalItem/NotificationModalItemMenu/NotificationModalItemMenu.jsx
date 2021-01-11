@@ -8,18 +8,6 @@ import { useTranslation } from 'react-i18next';
 
 const StyledModal = styled.div`
     transform: ${({ direction }) => direction === "ltr" ? 'translateY(0px) translateX(-166px)' : 'translateY(0px) translateX(166px);' }; 
-    @media screen and (max-width: 1000px){
-        width: 620px;
-        
-    }
-    @media screen and (max-width: 822px){
-        width: 520px;
-        
-    }
-    @media screen and (max-width: 693px){
-        width: 420px;
-        
-    }
 `;
 
 const StyledArrow = styled.div`

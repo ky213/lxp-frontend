@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { setSearchValue } from '../../../Redux/commonReducer';
 
 const StyledModal = styled.div`
-    transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-743px)' : 'translateY(100px) translateX(743px)' }; 
+    transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-647px)' : 'translateY(100px) translateX(647px)' }; 
     @media screen and (max-width: 1000px){
         width: 620px;
         transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-543px)' : 'translateY(100px) translateX(543px)' }; 

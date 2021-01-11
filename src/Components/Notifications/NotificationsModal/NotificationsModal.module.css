@@ -61,3 +61,25 @@
     overflow-y: scroll;
     max-height: 300px;
 }
+
+
+.notifications::-webkit-scrollbar {
+  width: 10px;
+  opacity: 0;
+}
+
+
+.notifications::-webkit-scrollbar-track {
+  background: transparent; 
+  opacity: 0;
+}
+ 
+
+.notifications::-webkit-scrollbar-thumb {
+  background-color: #f6f6f6;
+}
+
+
+.notifications::-webkit-scrollbar-thumb:hover {
+  opacity: 0;
+}

@@ -1,19 +1,24 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import classes from './NotificationModalItem.module.css';
-import { notificationicon } from '../../../../Assets/Images/notification.js';
-import showmoreicon from "../../../../Assets/Images/showmoreicon.svg";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import classes from './NotificationItem.module.css';
+import { notificationicon } from '../../../Assets/Images/notification';
 import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
-import NotificationModalItemMenu from './NotificationModalItemMenu/NotificationModalItemMenu';
+import showmoreicon from "../../../Assets/Images/showmoreicon.svg";
+import NotificationModalItemMenu from '../NotificationsModal/NotificationModalItem/NotificationModalItemMenu/NotificationModalItemMenu';
+import { NavLink } from 'react-router-dom';
 
-const NotificationModalItem = (props) => {
+const StyledItem = styled.div`
+    background-color: ${({ isRead }) => isRead ? "white" : "rgba(172, 221, 213, 0.15)"};
+`;
+
+const NotificationItem = (props) => {
     let sendTime = new Date(props.item.generated);
     let now = new Date();
 
     const [isOpenMenu, setIsOpenMenu] = useState(false);
 
     const {t, i18n} = useTranslation();
-    
 
     useEffect(()=>{
         if(props.isScroll){
@@ -45,22 +50,23 @@ const NotificationModalItem = (props) => {
     }
 
     let agoTime = secondsToDhms((now.getTime() - sendTime.getTime()) / 1000);
-
+    
     return(
-        <div className={classes.main}>
+        <StyledItem className={classes.main} isRead={props.isRead}>
             <div className={classes.image}>
                 {notificationicon}
             </div>
             <div className={classes.info}>
                 <p>{parse(props.item.text)}</p>
+                <NavLink to={`/home/notifications/${props.item.notificationId}`}>{t("notificationItem.link")}</NavLink>
                 <span>{agoTime} {t("notificationItem.ago")}</span>
             </div>
             <div className={classes.menu} onClick={()=>{setIsOpenMenu(!isOpenMenu)}}>
                 <img src={showmoreicon}/>
                 {isOpenMenu && <NotificationModalItemMenu/>}
             </div>
-        </div>    
+        </StyledItem>
     );
 }
 
-export default NotificationModalItem;
+export default NotificationItem;

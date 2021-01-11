@@ -52,8 +52,6 @@ const ImportLearnersFromCsv = () => {
       existUsers: users?.filter(u => u?.error === 'Email already exists') || [],
     }
 
-    console.log(users)
-
     learnerService
       .addBulk(usersList, selectedOrganization.organizationId)
       .then(() => {

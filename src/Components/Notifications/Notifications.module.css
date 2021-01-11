@@ -56,3 +56,26 @@
     margin-left: 20px;
     margin-right: 20px;
 }
+
+
+@media screen and (max-width: 968px){
+    .container{
+        width: calc(100% - 64px);
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+    .headerSide button span{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .headerSide button img{
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 414px){
+    .headerSide button{
+        font-size: 14px;
+    }
+}

@@ -7,9 +7,15 @@ import { useTranslation } from 'react-i18next';
 import showmoreicon from "../../../Assets/Images/showmoreicon.svg";
 import NotificationModalItemMenu from '../NotificationsModal/NotificationModalItem/NotificationModalItemMenu/NotificationModalItemMenu';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const StyledItem = styled.div`
     background-color: ${({ isRead }) => isRead ? "white" : "rgba(172, 221, 213, 0.15)"};
+`;
+
+const StyledDiv = styled.div`
+    margin-left: ${({ direction }) => direction === "ltr" ? '0' : '16px'};
+    margin-right: ${({ direction }) => direction === "rtl" ? "0" : "16px"};
 `;
 
 const NotificationItem = (props) => {
@@ -53,9 +59,9 @@ const NotificationItem = (props) => {
     
     return(
         <StyledItem className={classes.main} isRead={props.isRead}>
-            <div className={classes.image}>
+            <StyledDiv className={classes.image} direction={props.direction}>
                 {notificationicon}
-            </div>
+            </StyledDiv>
             <div className={classes.info}>
                 <p>{parse(props.item.text)}</p>
                 <NavLink to={`/home/notifications/${props.item.notificationId}`}>{t("notificationItem.link")}</NavLink>
@@ -69,4 +75,8 @@ const NotificationItem = (props) => {
     );
 }
 
-export default NotificationItem;
+let mapStateToProps = (state) => ({
+    direction: state.common.direction
+})
+
+export default connect(mapStateToProps, {})(NotificationItem);

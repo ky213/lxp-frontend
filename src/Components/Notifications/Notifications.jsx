@@ -13,13 +13,13 @@ const Notifications = (props) => {
 
     newNotifications = props.notifications.map(notify => {
         if(!notify.isRead){
-            return <NotificationItem isRead={false} item={notify}/>
+            return <NotificationItem isRead={false} item={notify} key={notify.notificationId}/>
         }
     });
 
     notifications = props.notifications.map(notify => {
         if(notify.isRead){
-            return <NotificationItem isRead={true} item={notify}/>
+            return <NotificationItem isRead={true} item={notify} key={notify.notificationId}/>
         }
     })
 
@@ -47,7 +47,6 @@ const Notifications = (props) => {
                         {notifications}
                     </div>
                 </div>
-                
             </div>
         </div>
     );

@@ -121,7 +121,7 @@ const Navbar = (props) => {
                             </div>
                         </button>
                     </StyledNotifications>
-                    {props.isOpenNotificationsModal && <NotificationsModal/>}
+                    {props.isOpenNotificationsModal && <NotificationsModal setIsOpenNotificationsModal={props.setIsOpenNotificationsModal}/>}
                     <input type="checkbox" hidden id="profileMenu" className={classes.check} checked={isOpenProfileMenu}/>
                     <label className={classes.userMenu} htmlFor="profileMenu" onClick={()=>{setIsOpenProfileMenu(!isOpenProfileMenu)}}>
                         {props.user.profilePhoto ? 

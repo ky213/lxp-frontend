@@ -36,3 +36,9 @@
     margin-right: 6px;
     cursor: pointer;
 }
+
+@media screen and (max-width: 428px){
+    .info p{
+        font-size: 14px;
+    }
+}

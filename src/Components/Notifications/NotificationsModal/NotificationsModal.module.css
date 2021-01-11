@@ -83,3 +83,9 @@
 .notifications::-webkit-scrollbar-thumb:hover {
   opacity: 0;
 }
+
+@media screen and (max-width: 428px){
+    .main{
+        width: 300px;
+    }
+}

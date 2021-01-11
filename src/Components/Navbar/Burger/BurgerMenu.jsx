@@ -29,7 +29,7 @@ const Menu = styled.div`
 `;
 
 
-const BurgerMenu = ({open, setOpen, changeLanguage, language}) => {
+const BurgerMenu = ({open, setOpen, changeLanguage, language, currentLanguage}) => {
     const {t, i18n} = useTranslation();
     return(
         <Menu open={open}>
@@ -49,9 +49,14 @@ const BurgerMenu = ({open, setOpen, changeLanguage, language}) => {
                 <div className={classes.menuItem}>
                     <NavLink to="/report" activeClassName={"active"}>{t("navbar.myreport")}</NavLink>
                 </div>
-                <div className={`${classes.langBut} ${classes.langBurgerMenu}`}>
+                <div className={classes.langBurgerMenu}>
                     <button onClick={()=>{changeLanguage(language())}}>
-                            {planeticon}
+                            <span className={currentLanguage === "en" && classes.langBurgerMenuActive}>
+                                EN
+                            </span>
+                            <span className={currentLanguage === "ar" && classes.langBurgerMenuActive}>
+                                AR
+                            </span>
                     </button>
                 </div>
             </nav>

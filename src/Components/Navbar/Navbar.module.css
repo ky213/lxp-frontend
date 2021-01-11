@@ -195,6 +195,49 @@
 
 .langBut {
   margin: 0 30px;
+  position: relative;
+}
+
+.showLng {
+  opacity: 0;
+  position: absolute;
+  font-size: 14px;
+  color: #868585;
+  font-weight: 500;
+  border: 1px solid #bcbcbc;
+  border-radius: 5px;
+  top: -27px;
+  left: 3px;
+  width: 25px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease;
+}
+
+.showLng::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid white;
+  position: absolute;
+  top: 20px;
+  right: 6px;
+}
+
+.showLng::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #bcbcbc;
+  position: absolute;
+  top: 20px;
+  right: 5px;
 }
 
 .langBut button {
@@ -210,9 +253,40 @@
   cursor: pointer;
 }
 
+.langBut:hover .showLng {
+  opacity: 1;
+  transition: all 0.5s ease;
+}
+
+.langBurgerMenu {
+  margin-top: 15px;
+  text-align: center;
+}
+
 .langBurgerMenu button {
+  border: 3px solid#373f41;
+  background: transparent;
+  border-radius: 5px;
+  padding: 10px 0;
+  box-sizing: border-box;
+  color: #373f41;
+  font-weight: 700;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+.langBurgerMenu span {
+  padding: 11px 20px;
+}
+
+.langBurgerMenu span:last-child {
+  border-left: 3px solid #373f41;
+}
+
+.langBurgerMenuActive {
+  color: #ffffff;
   background: #373f41;
-  border: none;
 }
 
 @media screen and (max-width: 1440px) {

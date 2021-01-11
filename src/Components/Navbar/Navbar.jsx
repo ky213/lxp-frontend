@@ -102,6 +102,9 @@ const Navbar = (props) => {
                 
                 <div className={classes.rightSideNav}>
                     <div className={classes.langBut}>
+                        <div className={classes.showLng}>
+                            {currentLanguage === "en" ? "AR" : "EN"}
+                        </div>
                         <button onClick={()=>{props.changeLanguage(language())}}>
                             {planeticon}
                         </button>
@@ -130,7 +133,7 @@ const Navbar = (props) => {
                         </div>
                     </label>
                     <div className={classes.burger}>
-                        <Burger changeLanguage={props.changeLanguage} language={language}/>
+                        <Burger changeLanguage={props.changeLanguage} language={language} currentLanguage={currentLanguage}/>
                     </div>
                 </div>
             </div>

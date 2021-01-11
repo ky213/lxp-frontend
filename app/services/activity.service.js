@@ -255,14 +255,14 @@ function deleteActivityFile(activityFileId) {
     })
 }
 
-function downloadActivityFile(activityFileId) {
+function downloadActivityFile(activityFileId , organizationId) {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
   }
-
+  let query = buildQuery({ organizationId })
   return fetch(
-    `${config.apiUrl}/activities/downloadActivityFile/${activityFileId}`,
+    `${config.apiUrl}/activities/downloadActivityFile/${activityFileId}?${query}`,
     requestOptions
   )
     .then(handleResponse)
@@ -301,14 +301,14 @@ function deleteLogActivityFile(logActivityFileId) {
     })
 }
 
-function downloadLogActivityFile(logActivityFileId) {
+function downloadLogActivityFile(logActivityFileId , organizationId) {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
   }
-
+  let query = buildQuery({ organizationId })
   return fetch(
-    `${config.apiUrl}/activities/downloadLogActivityFile/${logActivityFileId}`,
+    `${config.apiUrl}/activities/downloadLogActivityFile/${logActivityFileId}?${query}`,
     requestOptions
   )
     .then(handleResponse)

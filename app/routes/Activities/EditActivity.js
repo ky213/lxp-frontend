@@ -217,7 +217,7 @@ export const EditActivity = ({
   }
 
   const handleDownloadFile = async file => {
-    return await activityService.downloadActivityFile(file.activityFileId)
+    return await activityService.downloadActivityFile(file.activityFileId , selectedOrganization.organizationId)
   }
 
   const handleRemoveFile = async file => {

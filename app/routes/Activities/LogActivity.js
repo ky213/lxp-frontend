@@ -158,7 +158,7 @@ const LogActivity = ({
   }
 
   const handleDownloadFile = async file => {
-    return await activityService.downloadLogActivityFile(file.logActivityFileId)
+    return await activityService.downloadLogActivityFile(file.logActivityFileId , selectedOrganization.organizationId)
   }
 
   const handleRemoveFile = async file => {

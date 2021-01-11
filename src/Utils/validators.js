@@ -4,6 +4,8 @@ export const required = (value) =>{
     return 'The field is required!';
 }
 
+export const foo = console.log;
+
 export const isEmail = (value) => {
     let rep = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if(rep.test(value)){

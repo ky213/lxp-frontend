@@ -317,6 +317,9 @@
     .headerRightSide button{
         margin-top: 10px;
     }
+    .headerRightSide a{
+        margin-top: 10px;
+    }
     .activityFoot{
         flex-direction: column;
     }

@@ -11,14 +11,19 @@ const CustomSelect = ({input, meta, ...props}) => {
     const [currentOption, setCurrentOption] = useState(props.disableDefValueOptionText ? props.disableDefValueOptionText : props.options[0]);
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
+    useEffect(()=>{
+        input.value = ""
+    },[]);
+
     let handleSelect = (option) => {
         setCurrentOption(option);
+        input.onChange(option);
         props.setFunction(option);
         setIsOpenDropdown(false);
     }
 
-    let options = props.options.map(option => {
-        return <span onClick={()=>{handleSelect(option)}} className={classes.option} {...input}>{option}</span>
+    let options = props.options.map((option, index) => {
+        return <span key={index + "opt"} onClick={()=>{handleSelect(option)}} className={classes.option} {...input}>{option}</span>
     });
 
     let hasError = null;
@@ -26,11 +31,11 @@ const CustomSelect = ({input, meta, ...props}) => {
     if(props.disableDefValueOption){
         hasError = meta.touched && meta.error;
     }
-    
 
     return(
             <StyledSelect className={classes.main + " " + (hasError && classes.error)} width={props.width}>
                 <input hidden type="checkout" value={isOpenDropdown}/>
+                {/* <input {...input} {...props} value={321}/> */}
                 <div className={classes.view} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
                     <span>{currentOption}</span>
                     <div className={classes.arrow + " " + (isOpenDropdown && classes.open)}></div>

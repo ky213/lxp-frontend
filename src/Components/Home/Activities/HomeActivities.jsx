@@ -12,6 +12,11 @@ const HomeActivities = (props) => {
     let blockWidth = 100;
 
     let activities = [];
+
+    props.activities.sort(function(a,b){
+        return new Date(b.end) - new Date(a.end);
+    });
+
     activities = props.activities.map((item, index) => {
         if(index < maxActivitiesToView){
             return <ActivityItem item={item} key={item.activityId} width={blockWidth}/>

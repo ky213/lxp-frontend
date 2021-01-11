@@ -4,7 +4,7 @@
 .main.error{
     color: tomato;
 }
-.main.error span{
+.error span{
     position: relative;
     top: 10px
 }
@@ -22,6 +22,7 @@
 .view span{
     font-size: 16px;
     color: #565656;
+    top: 0;
 }
 .arrow {
     width: 0;
@@ -47,6 +48,7 @@
     transition-duration: .1s;
     font-size: 16px;
     color: #565656;
+    top: 0 !important;
 }
 .option:hover{
     background-color: #5bb98e;
@@ -70,6 +72,7 @@
 }
 .openDropdown{
     max-height: 200px;
+    z-index: 100;
 }
 .disabled{
     color: rgba(86, 86, 86, .7);

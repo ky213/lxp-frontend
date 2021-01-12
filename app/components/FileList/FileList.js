@@ -37,6 +37,7 @@ export const FileList = ({
   const showFile = async e => {
     let x = e.target.files[0]
     handleUploadFile(x)
+    await onUploadFile(file)
     e.target.value = ''
   }
 
@@ -69,7 +70,7 @@ export const FileList = ({
         status: 'uploaded',
       }
 
-      const response = await onUploadFile(file)
+      await onUploadFile(file)
       setFiles(z => [...z, file])
     }
 

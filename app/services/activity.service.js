@@ -229,8 +229,8 @@ function deleteReply(replyId) {
 function addActivityFile(file) {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify(file),
+    headers: { ...authHeader() },
+    body: file,
   }
 
   return fetch(`${config.apiUrl}/activities/addActivityFile`, requestOptions)
@@ -256,7 +256,7 @@ function deleteActivityFile(activityFileId) {
     })
 }
 
-function downloadActivityFile(activityFileId , organizationId) {
+function downloadActivityFile(activityFileId, organizationId) {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
@@ -302,7 +302,7 @@ function deleteLogActivityFile(logActivityFileId) {
     })
 }
 
-function downloadLogActivityFile(logActivityFileId , organizationId) {
+function downloadLogActivityFile(logActivityFileId, organizationId) {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', ...authHeader() },

@@ -182,18 +182,34 @@ export const EditActivity = ({
   }
 
   const handleUploadFile = async file => {
-    file = {
-      ...file,
-      activityId: selectedActivity.activityId,
-      status: 'uploaded',
-    }
+    // file = {
+    //   ...file,
+    //   activityId: selectedActivity.activityId,
+    //   status: 'uploaded',
+    // }
+
+    const formData = new FormData()
+
+    formData.append('file', file)
+    formData.append('name', file.name)
+    formData.append('extension', file.extension)
+    formData.append('lastModifiedDate', file.lastModifiedDate)
+    formData.append('size', file.size)
+    formData.append('type', file.type)
+    formData.append('status', 'uploaded')
+    formData.append('activityId', selectedActivity.activityId)
 
     activityService
-      .addActivityFile(file)
+      .addActivityFile(formData)
       .then(response => {
         //updateAnnouncementInList(files.length + 1);
 
-        file = { ...file, ...response, status: 'uploaded' }
+        file = {
+          ...file,
+          ...response,
+          activityId: selectedActivity.activityId,
+          status: 'uploaded',
+        }
         setFiles(z =>
           z.map(f => {
             if (f.name != file.name) return f

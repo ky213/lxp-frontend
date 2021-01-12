@@ -236,37 +236,42 @@ const ActivityReplyLeft = props => {
         />
       </Media>
       <Media body style={{ 'overflow-x': 'auto' }}>
-        <CardHeader className="bg-white border-0">
-          <ul className="nav nav-tabs card-header-tabs">
-            <li className="nav-item" onClick={() => setSelectedTab('content')}>
-              <a
-                className={classNames('nav-link', {
-                  active: selectedTab === 'content',
-                })}
-                href="#"
+        {selectedActivity.source === 'assigned' && (
+          <CardHeader className="bg-white border-0">
+            <ul className="nav nav-tabs card-header-tabs">
+              <li
+                className="nav-item"
+                onClick={() => setSelectedTab('content')}
               >
-                <small>
-                  <i className="fa fa-pencil mr-2"></i> Content
-                </small>
-              </a>
-            </li>
-            <li
-              className="nav-item"
-              onClick={() => setSelectedTab('attachements')}
-            >
-              <a
-                className={classNames('nav-link', {
-                  active: selectedTab === 'attachements',
-                })}
-                href="#"
+                <a
+                  className={classNames('nav-link', {
+                    active: selectedTab === 'content',
+                  })}
+                  href="#"
+                >
+                  <small>
+                    <i className="fa fa-pencil mr-2"></i> Content{' '}
+                  </small>
+                </a>
+              </li>
+              <li
+                className="nav-item"
+                onClick={() => setSelectedTab('attachements')}
               >
-                <small>
-                  <i className="fa fa-plus mr-2"></i> Attachements
-                </small>
-              </a>
-            </li>
-          </ul>
-        </CardHeader>
+                <a
+                  className={classNames('nav-link', {
+                    active: selectedTab === 'attachements',
+                  })}
+                  href="#"
+                >
+                  <small>
+                    <i className="fa fa-plus mr-2"></i> Attachements
+                  </small>
+                </a>
+              </li>
+            </ul>
+          </CardHeader>
+        )}
         {selectedTab === 'content' && (
           <Card
             body
@@ -280,7 +285,7 @@ const ActivityReplyLeft = props => {
                 activityStatus={selectedActivity.status}
               />
             )}
-            <p className="mb-0 mt-2">
+            <p className="mb-0 ">
               {props.reply?.text}
 
               {props.currentUser &&

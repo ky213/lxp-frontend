@@ -177,6 +177,7 @@ export const ActivityCalendar = props => {
   }
 
   const showEvent = async event => {
+    console.log('Event:', event)
     if (event.source == 'assigned') {
       const eventDetails = await activityService.getById(
         event.id,
@@ -190,14 +191,14 @@ export const ActivityCalendar = props => {
             */
       //eventDetails.start = moment(moment(event.start).format('DDMMYYYY') + ' ' + moment(eventDetails.start).format('HH:mm'), 'DDMMYYYY HH:mm').toDate();
       //eventDetails.end = moment(moment(event.end).format('DDMMYYYY') + ' ' + moment(eventDetails.end).format('HH:mm'), 'DDMMYYYY HH:mm').toDate();
-      setSelectedActivity(eventDetails)
+      setSelectedActivity({ ...eventDetails, source: 'assigned' })
       toggleEditEventModal()
     } else {
       const eventDetails = await activityService.getLogActivityById(
         event.id,
         selectedOrganization.organizationId
       )
-      setSelectedLogActivity(eventDetails)
+      setSelectedLogActivity({ ...eventDetails, source: 'logged' })
       toggleLogActivityModal()
     }
   }

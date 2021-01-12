@@ -123,6 +123,7 @@ const ActivityReplyLeft = props => {
     formData.append('type', file.type)
     formData.append('status', 'uploaded')
     formData.append('activityId', selectedActivity.activityId)
+    formData.append('activityReplyId', props.reply.activityReplyId)
 
     try {
       const response = await activityService.addActivityFile(

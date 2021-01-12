@@ -25,14 +25,18 @@ import * as Yup from 'yup'
 import DatePicker, { setDefaultLocale } from 'react-datepicker'
 import moment from 'moment'
 import { AddonInput } from '@/routes/Forms/DatePicker/components'
-import { activityService, courseManagerService } from '@/services'
+import {
+  activityService,
+  courseManagerService,
+  libraryService,
+} from '@/services'
 import { useAppState, AppStateContext } from '@/components/AppState'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { Role } from '@/helpers'
 import ThemedButton from '@/components/ThemedButton'
 import { Loading, FileList } from '@/components'
 import ActivityReplies from './components/ActivityReplies'
-import { isEmpty } from 'lodash'
+import { isEmpty, uniqBy } from 'lodash'
 
 const LogActivity = ({
   toggle,
@@ -118,47 +122,55 @@ const LogActivity = ({
   }
 
   const handleUploadFile = async file => {
-    file = {
-      ...file,
-      logActivityId: selectedActivity.activityId,
-      status: 'uploaded',
+    const formData = new FormData()
+
+    formData.append('file', file.name)
+    formData.append('name', file.name)
+    formData.append('extension', file.extension)
+    formData.append('lastModifiedDate', file.lastModified)
+    formData.append('size', file.size)
+    formData.append('type', file.type)
+    formData.append('status', 'uploaded')
+    formData.append('activityId', selectedActivity.activityId)
+
+    try {
+      const response = await activityService.addLogActivityFile(
+        formData,
+        selectedOrganization.organizationId
+      )
+
+      await libraryService.saveFileToGoogleStorage(response.url, file)
+
+      file = {
+        ...file,
+        ...response,
+        name: file.name,
+        url: response.assetsDomainURL,
+        activityId: selectedActivity.activityId,
+        status: 'uploaded',
+      }
+
+      setFiles(uniqBy([...files, file], 'name'))
+
+      alert('The file has been uploaded')
+    } catch (error) {
+      file = { ...file, status: 'error' }
+      setFiles(z =>
+        z.map(f => {
+          if (f.name != file.name) return f
+
+          return file
+        })
+      )
+      alert(`Error while uploading the file`, error)
     }
-
-    activityService
-      .addLogActivityFile(file , selectedOrganization.organizationId)
-      .then(logActivityFileId => {
-        //updateAnnouncementInList(files.length + 1);
-        file = {
-          ...file,
-          logActivityFileId: logActivityFileId,
-          status: 'uploaded',
-        }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
-
-            return file
-          })
-        )
-
-        alert('The file has been uploaded')
-      })
-      .catch(error => {
-        console.log('Error while uploading the file:', error)
-        file = { ...file, status: 'error' }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
-
-            return file
-          })
-        )
-        alert(`Error while uploading the file`)
-      })
   }
 
   const handleDownloadFile = async file => {
-    return await activityService.downloadLogActivityFile(file.logActivityFileId , selectedOrganization.organizationId)
+    return await activityService.downloadLogActivityFile(
+      file.logActivityFileId,
+      selectedOrganization.organizationId
+    )
   }
 
   const handleRemoveFile = async file => {

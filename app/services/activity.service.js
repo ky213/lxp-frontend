@@ -174,10 +174,11 @@ function updateLogActivityStatus(activityId, statusId) {
     })
 }
 
-function getReplies(activityId) {
+function getReplies(activityId , organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() }
+  let query = buildQuery({ organizationId })
   return fetch(
-    `${config.apiUrl}/activities/${activityId}/replies`,
+    `${config.apiUrl}/activities/${activityId}/replies?${query}`,
     requestOptions
   ).then(handleResponse)
 }

@@ -38,7 +38,7 @@ const ActivityReplies = props => {
           props.selectedActivity && props.selectedActivity.activityId
         ))) ||
       (await activityService.getReplies(
-        props.selectedActivity && props.selectedActivity.activityId
+        props.selectedActivity && props.selectedActivity.activityId , selectedOrganization.organizationId
       ))
 
     setReplies(replies)

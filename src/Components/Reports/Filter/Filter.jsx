@@ -17,7 +17,7 @@ const Filter = (props) => {
 
     return (
         <StyledSelect className={classes.main} width={props.width}>
-            <input hidden type="checkout" value={isOpenDropdown} />
+            <input hidden type="checkout" defaultValue={isOpenDropdown} checked={isOpenDropdown} />
             <div className={classes.view} onClick={() => setIsOpenDropdown(!isOpenDropdown)}>
                 <span> {t("filterReports.filter")} </span>
                 <div className={classes.arrow + " " + (isOpenDropdown && classes.open)}></div>

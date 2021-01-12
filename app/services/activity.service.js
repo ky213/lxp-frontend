@@ -150,9 +150,10 @@ function getParticipationLevels() {
   ).then(handleResponse)
 }
 
-function getLogActivityById(id) {
+function getLogActivityById(id , organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() }
-  return fetch(`${config.apiUrl}/activities/log/${id}`, requestOptions).then(
+  let query = buildQuery({ organizationId })
+  return fetch(`${config.apiUrl}/activities/log/${id}?${query}`, requestOptions).then(
     handleResponse
   )
 }

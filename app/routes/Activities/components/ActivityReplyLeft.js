@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import classNames from 'classnames'
-import { isNil } from 'lodash'
+import { uniqBy } from 'lodash'
 import { hot } from 'react-hot-loader'
 
 import {
@@ -17,12 +17,12 @@ import {
   Button,
   FileList,
 } from '@/components'
-import { activityService } from '@/services'
+import { activityService, libraryService } from '@/services'
 import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
 
 const PointsForm = ({ reply, setReplyPoints, activityStatus, totalPoints }) => {
-  const [{ currentUser , selectedOrganization}] = useAppState()
+  const [{ currentUser }] = useAppState()
   const [openPointsForm, setOpenPointsForm] = useState(true)
   const [points, setPoints] = useState(0)
   const [error, setError] = useState(false)
@@ -96,6 +96,7 @@ const PointsForm = ({ reply, setReplyPoints, activityStatus, totalPoints }) => {
 }
 
 const ActivityReplyLeft = props => {
+  const [{ selectedOrganization }] = useAppState()
   const [selectedTab, setSelectedTab] = useState('content')
   const [files, setFiles] = useState(props.reply?.activitiesReplyFiles || [])
   const [urls, setUrls] = useState(
@@ -112,39 +113,48 @@ const ActivityReplyLeft = props => {
   }
 
   const handleUploadFile = async file => {
-    file = {
-      ...file,
-      activityId: selectedActivity.activityId,
-      status: 'uploaded',
-      activityReplyId: props.reply.activityReplyId,
+    const formData = new FormData()
+
+    formData.append('file', file.name)
+    formData.append('name', file.name)
+    formData.append('extension', file.extension)
+    formData.append('lastModifiedDate', file.lastModified)
+    formData.append('size', file.size)
+    formData.append('type', file.type)
+    formData.append('status', 'uploaded')
+    formData.append('activityId', selectedActivity.activityId)
+
+    try {
+      const response = await activityService.addActivityFile(
+        formData,
+        selectedOrganization.organizationId
+      )
+
+      await libraryService.saveFileToGoogleStorage(response.url, file)
+
+      file = {
+        ...file,
+        ...response,
+        name: file.name,
+        url: response.assetsDomainURL,
+        activityId: selectedActivity.activityId,
+        status: 'uploaded',
+      }
+
+      setFiles(uniqBy([...files, file], 'name'))
+
+      alert('The file has been uploaded')
+    } catch (error) {
+      file = { ...file, status: 'error' }
+      setFiles(z =>
+        z.map(f => {
+          if (f.name != file.name) return f
+
+          return file
+        })
+      )
+      alert(`Error while uploading the file`, error)
     }
-
-    activityService
-      .addActivityFile(file , selectedOrganization.organizationId)
-      .then(response => {
-        //updateAnnouncementInList(files.length + 1);
-        file = { ...file, ...response, status: 'uploaded' }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
-
-            return file
-          })
-        )
-
-        alert('The file has been uploaded')
-      })
-      .catch(error => {
-        file = { ...file, status: 'error' }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
-
-            return file
-          })
-        )
-        alert(`Error while uploading the file`, error)
-      })
   }
 
   const handleDownloadFile = async file => {

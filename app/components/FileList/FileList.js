@@ -35,6 +35,7 @@ export const FileList = ({
   }
 
   const showFile = async e => {
+    e.persist()
     let x = e.target.files[0]
     await onUploadFile(x)
     e.target.value = ''
@@ -92,7 +93,7 @@ export const FileList = ({
         // If dropped items aren't files, reject them
         if (ev.dataTransfer.items[i].kind === 'file') {
           var x = ev.dataTransfer.items[i].getAsFile()
-          handleUploadFile(x)
+          onUploadFile(x)
         }
       }
     }

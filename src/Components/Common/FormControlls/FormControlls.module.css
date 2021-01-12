@@ -65,10 +65,13 @@
 .calendar{
     width: 155px;
 }
+.calendar div{
+    z-index: 200;
+}
 
 .calendar input{
-    width: calc(155px - 32px);
-    height: calc(47px - 24px);
+    width: 155px;
+    height: 47px;
     padding: 12px 16px;
     border-radius: 5px;
     border: 1px solid #c6c6c6;
@@ -77,6 +80,7 @@
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: #3d3d3d;
     margin-top: 4px;
+    box-sizing: border-box;
 }
 
 @media screen and (max-width: 968px){
@@ -99,8 +103,5 @@
     }
     .calendar input{
         width: 100%;
-    }
-    .calendar div{
-        width: calc(100% - 16px) !important;
     }
 }

@@ -19,7 +19,11 @@ const LoadDataRouter = ({Component, isAuth, setCurrentRoute,
             getUnreadNotifications(limit, user.organizationId);
         }   
     },[employeeId]);
-    setCurrentRoute(window.location.pathname);
+
+    useEffect(()=>{
+        setCurrentRoute(window.location.pathname);
+    },[window.location.pathname]);
+    
     return(
         <>
             {(localStorage.usertoken || sessionStorage.usertoken) ? <Component/> : <Redirect to="/login"/>}

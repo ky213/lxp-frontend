@@ -45,6 +45,7 @@
 .menuItem{
     display: flex;
     align-items: center;
+    margin-top: 5px;
 }
 .menuItem a{
     display: flex;
@@ -60,11 +61,11 @@
 }
 .menuItem a svg path {
     transition-duration: 0.4s;
-    fill: #373f41;
+    fill: #373f41 !important;
     margin-bottom: 5px;
 }
 .menuItem a.active svg path {
-    fill: #42a678;
+    fill: #42a678 !important;
 }
 .icon{
     width: 25px;

@@ -150,12 +150,13 @@ function getParticipationLevels() {
   ).then(handleResponse)
 }
 
-function getLogActivityById(id , organizationId) {
+function getLogActivityById(id, organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() }
   let query = buildQuery({ organizationId })
-  return fetch(`${config.apiUrl}/activities/log/${id}?${query}`, requestOptions).then(
-    handleResponse
-  )
+  return fetch(
+    `${config.apiUrl}/activities/log/${id}?${query}`,
+    requestOptions
+  ).then(handleResponse)
 }
 
 function updateLogActivityStatus(activityId, statusId) {
@@ -175,7 +176,7 @@ function updateLogActivityStatus(activityId, statusId) {
     })
 }
 
-function getReplies(activityId , organizationId) {
+function getReplies(activityId, organizationId) {
   const requestOptions = { method: 'GET', headers: authHeader() }
   let query = buildQuery({ organizationId })
   return fetch(
@@ -227,14 +228,17 @@ function deleteReply(replyId) {
     })
 }
 
-function addActivityFile(file , organizationId) {
+function addActivityFile(file, organizationId) {
   const requestOptions = {
     method: 'POST',
     headers: { ...authHeader() },
     body: file,
   }
   let query = buildQuery({ organizationId })
-  return fetch(`${config.apiUrl}/activities/addActivityFile?${query}`, requestOptions)
+  return fetch(
+    `${config.apiUrl}/activities/addActivityFile?${query}`,
+    requestOptions
+  )
     .then(handleResponse)
     .then(data => {
       return data
@@ -273,14 +277,17 @@ function downloadActivityFile(activityFileId, organizationId) {
     })
 }
 
-function addLogActivityFile(file , organizationId) {
+function addLogActivityFile(file, organizationId) {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeader() },
-    body: JSON.stringify(file),
+    headers: { ...authHeader() },
+    body: file,
   }
   let query = buildQuery({ organizationId })
-  return fetch(`${config.apiUrl}/activities/addLogActivityFile?${query}`, requestOptions)
+  return fetch(
+    `${config.apiUrl}/activities/addLogActivityFile?${query}`,
+    requestOptions
+  )
     .then(handleResponse)
     .then(data => {
       return data

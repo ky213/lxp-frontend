@@ -131,7 +131,7 @@ const LogActivity = ({
     formData.append('size', file.size)
     formData.append('type', file.type)
     formData.append('status', 'uploaded')
-    formData.append('activityId', selectedActivity.activityId)
+    formData.append('logActivityId', selectedActivity.activityId)
 
     try {
       const response = await activityService.addLogActivityFile(
@@ -746,7 +746,7 @@ const LogActivity = ({
                     currentUser.user.employeeId && (
                     <>
                       <ThemedButton type="submit">Update activity</ThemedButton>{' '}
-                      {isEmpty(selectedActivity.replies) && (
+                      {isEmpty(selectedActivity?.replies) && (
                         <Button
                           type="button"
                           color="danger"

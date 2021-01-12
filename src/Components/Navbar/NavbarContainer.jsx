@@ -12,6 +12,10 @@ const NavbarContainer = (props) => {
         props.getNotifications(props.currentPage, props.pageSize)
     },[props.currentPage, props.pageSize]);
 
+    useEffect(()=>{
+        
+    },[props.currentRoute]);
+
     return(
         <>
         {(props.currentRoute != "/login" && props.currentRoute != "/forgot_password") &&
@@ -24,7 +28,8 @@ const NavbarContainer = (props) => {
                 unreadNotifications={props.unreadNotifications}
                 setIsOpenNotificationsModal={setIsOpenNotificationsModal}
                 isOpenNotificationsModal={isOpenNotificationsModal}
-                setCurrentLanguage={props.setCurrentLanguage}
+                setCurrentLanguage={props.setCurrentLanguage} 
+                currentRoute={props.currentRoute}
                 />}
         </>
     );

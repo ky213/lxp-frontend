@@ -10,7 +10,6 @@ const LoadDataRouter = ({Component, isAuth, setCurrentRoute,
                         currentRoute, getUserProfile, getProfile, isStartData,
                         getUnreadNotifications, user, limit, employeeId}) => {
     useEffect(()=>{
-        setCurrentRoute(window.location.pathname);
         if((localStorage.usertoken || sessionStorage.usertoken) && !isStartData){
             if(employeeId){
                 getUserProfile(employeeId);
@@ -20,12 +19,14 @@ const LoadDataRouter = ({Component, isAuth, setCurrentRoute,
             getUnreadNotifications(limit, user.organizationId);
         }   
     },[employeeId]);
+    setCurrentRoute(window.location.pathname);
     return(
         <>
             {(localStorage.usertoken || sessionStorage.usertoken) ? <Component/> : <Redirect to="/login"/>}
         </>
         
     )
+    
 }
 
 let mapStateToProps = (state) => ({

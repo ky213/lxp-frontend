@@ -200,7 +200,7 @@ export const EditActivity = ({
     formData.append('activityId', selectedActivity.activityId)
 
     activityService
-      .addActivityFile(formData)
+      .addActivityFile(formData , selectedOrganization.organizationId)
       .then(response => {
         //updateAnnouncementInList(files.length + 1);
 

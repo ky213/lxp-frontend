@@ -136,7 +136,7 @@ const AssignActivity = ({
     }
 
     activityService
-      .addActivityFile(file)
+      .addActivityFile(file , selectedOrganization.organizationId)
       .then(activityFileId => {
         //updateAnnouncementInList(files.length + 1);
         file = { ...file, activityFileId: activityFileId, status: 'uploaded' }

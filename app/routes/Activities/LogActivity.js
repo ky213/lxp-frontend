@@ -125,7 +125,7 @@ const LogActivity = ({
     }
 
     activityService
-      .addLogActivityFile(file)
+      .addLogActivityFile(file , selectedOrganization.organizationId)
       .then(logActivityFileId => {
         //updateAnnouncementInList(files.length + 1);
         file = {

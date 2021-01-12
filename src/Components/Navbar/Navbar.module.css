@@ -362,4 +362,10 @@
   .searchBut {
     margin-right: 18px;
   }
+  .logoBlock span {
+    display: none;
+  }
+  .container {
+    padding-right: 10px;
+  }
 }

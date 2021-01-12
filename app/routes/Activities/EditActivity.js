@@ -188,8 +188,10 @@ export const EditActivity = ({
     formData.append('status', 'uploaded')
     formData.append('activityId', selectedActivity.activityId)
 
-    try {
-      const response = await activityService.addActivityFile(formData)
+    activityService
+      .addActivityFile(formData , selectedOrganization.organizationId)
+      .then(response => {
+        //updateAnnouncementInList(files.length + 1);
 
       await libraryService.saveFileToGoogleStorage(response.url, file)
 

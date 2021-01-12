@@ -22,7 +22,7 @@ import { useAppState } from '@/components/AppState'
 import { Role } from '@/helpers'
 
 const PointsForm = ({ reply, setReplyPoints, activityStatus, totalPoints }) => {
-  const [{ currentUser }] = useAppState()
+  const [{ currentUser , selectedOrganization}] = useAppState()
   const [openPointsForm, setOpenPointsForm] = useState(true)
   const [points, setPoints] = useState(0)
   const [error, setError] = useState(false)
@@ -120,7 +120,7 @@ const ActivityReplyLeft = props => {
     }
 
     activityService
-      .addActivityFile(file)
+      .addActivityFile(file , selectedOrganization.organizationId)
       .then(response => {
         //updateAnnouncementInList(files.length + 1);
         file = { ...file, ...response, status: 'uploaded' }

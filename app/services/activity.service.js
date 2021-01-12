@@ -226,14 +226,14 @@ function deleteReply(replyId) {
     })
 }
 
-function addActivityFile(file) {
+function addActivityFile(file , organizationId) {
   const requestOptions = {
     method: 'POST',
     headers: { ...authHeader() },
     body: file,
   }
-
-  return fetch(`${config.apiUrl}/activities/addActivityFile`, requestOptions)
+  let query = buildQuery({ organizationId })
+  return fetch(`${config.apiUrl}/activities/addActivityFile?${query}`, requestOptions)
     .then(handleResponse)
     .then(data => {
       return data
@@ -272,14 +272,14 @@ function downloadActivityFile(activityFileId, organizationId) {
     })
 }
 
-function addLogActivityFile(file) {
+function addLogActivityFile(file , organizationId) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(file),
   }
-
-  return fetch(`${config.apiUrl}/activities/addLogActivityFile`, requestOptions)
+  let query = buildQuery({ organizationId })
+  return fetch(`${config.apiUrl}/activities/addLogActivityFile?${query}`, requestOptions)
     .then(handleResponse)
     .then(data => {
       return data

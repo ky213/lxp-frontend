@@ -4,6 +4,7 @@
     flex-direction: column;
     z-index: 300;
     width: 366px;
+    top: 67px;
 }
 .body{
     border: 1px solid #bcbcbc;
@@ -82,6 +83,10 @@
 
 .notifications::-webkit-scrollbar-thumb:hover {
   opacity: 0;
+}
+
+.detectClick{
+    
 }
 
 @media screen and (max-width: 428px){

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import classes from './NotificationModalItem.module.css';
 import { notificationicon } from '../../../../Assets/Images/notification.js';
 import showmoreicon from "../../../../Assets/Images/showmoreicon.svg";
@@ -14,6 +14,13 @@ const NotificationModalItem = (props) => {
 
     const {t, i18n} = useTranslation();
     
+    const divRef = useRef(null);
+    const pRef = useRef(null);
+
+    useEffect(()=>{
+        divRef.current.querySelector('svg').classList.add('detectClick')
+        pRef.current.querySelector('strong').classList.add('detectClick')
+    },[]);
 
     useEffect(()=>{
         if(props.isScroll){
@@ -47,16 +54,16 @@ const NotificationModalItem = (props) => {
     let agoTime = secondsToDhms((now.getTime() - sendTime.getTime()) / 1000);
 
     return(
-        <div className={classes.main}>
-            <div className={classes.image}>
+        <div className={classes.main  + " " + classes.detectClick}>
+            <div ref={divRef} className={classes.image  + " " + classes.detectClick}>
                 {notificationicon}
             </div>
-            <div className={classes.info}>
-                <p>{parse(props.item.text)}</p>
-                <span>{agoTime} {t("notificationItem.ago")}</span>
+            <div className={classes.info  + " " + classes.detectClick}>
+                <p ref={pRef} className={classes.detectClick}>{parse(props.item.text)}</p>
+                <span className={classes.detectClick}>{agoTime} {t("notificationItem.ago")}</span>
             </div>
-            <div className={classes.menu} onClick={()=>{setIsOpenMenu(!isOpenMenu)}}>
-                <img src={showmoreicon}/>
+            <div className={classes.menu   + " " + classes.detectClick} onClick={()=>{setIsOpenMenu(!isOpenMenu)}}>
+                <img src={showmoreicon} className={classes.detectClick}/>
                 {isOpenMenu && <NotificationModalItemMenu/>}
             </div>
         </div>    

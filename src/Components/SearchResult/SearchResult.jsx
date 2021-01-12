@@ -51,60 +51,60 @@ const SearchResult = (props) => {
                 </div>
             </div>
             <div className={classes.content}>
-                    <div className={classes.container}>
-                        {props.viewCourses &&
-                        <div className={classes.category}>
-                            <div className={classes.categoryHeader}>
-                                {coursesicon}
-                                <span>{t('searchResult.courses')}</span>
-                            </div>
-                            <div className={classes.itemsList}>
-                                {(courses.length > 0 && courses) ? courses : 
-                                    <div className={classes.empty}>
-                                        <div className={classes.emptyIcon}>
-                                            {empty_state_icon}
-                                        </div>
-                                        <span>{t("searchResult.coursesEmpty")}</span>
+                <div className={classes.container}>
+                    {props.viewCourses &&
+                    <div className={classes.category}>
+                        <div className={classes.categoryHeader}>
+                            {coursesicon}
+                            <span>{t('searchResult.courses')}</span>
+                        </div>
+                        <div className={classes.itemsList}>
+                            {(courses.length > 0 && courses) ? courses : 
+                                <div className={classes.empty}>
+                                    <div className={classes.emptyIcon}>
+                                        {empty_state_icon}
                                     </div>
-                                }
-                            </div>
-                        </div>}
-                        {props.viewActivities &&
-                        <div className={classes.category}>
-                            <div className={classes.categoryHeader}>
-                                {activitiesicon}
-                                <span>{t('searchResult.activities')}</span>
-                            </div>
-                            <div className={classes.itemsList}>
-                                {(activities.length > 0 && activities) ? activities : 
-                                    <div className={classes.empty}>
-                                        <div className={classes.emptyIcon}>
-                                            {empty_state_icon}
-                                        </div>
-                                        <span>{t("searchResult.activitiesEmpty")}</span>
+                                    <span>{t("searchResult.coursesEmpty")}</span>
+                                </div>
+                            }
+                        </div>
+                    </div>}
+                    {props.viewActivities &&
+                    <div className={classes.category}>
+                        <div className={classes.categoryHeader}>
+                            {activitiesicon}
+                            <span>{t('searchResult.activities')}</span>
+                        </div>
+                        <div className={classes.itemsList}>
+                            {(activities.length > 0 && activities) ? activities : 
+                                <div className={classes.empty}>
+                                    <div className={classes.emptyIcon}>
+                                        {empty_state_icon}
                                     </div>
-                                }
-                            </div>
-                        </div>}
-                        {props.viewPrograms &&
-                        <div className={classes.category}>
-                            <div className={classes.categoryHeader}>
-                                {programicon}
-                                <span>{t('searchResult.programs')}</span>
-                            </div>
-                            <div className={classes.itemsList}>
-                                {(programs.length > 0 && programs) ? programs : 
-                                    <div className={classes.empty}>
-                                        <div className={classes.emptyIcon}>
-                                            {empty_state_icon}
-                                        </div>
-                                        <span>{t("searchResult.programsEmpty")}</span>
+                                    <span>{t("searchResult.activitiesEmpty")}</span>
+                                </div>
+                            }
+                        </div>
+                    </div>}
+                    {props.viewPrograms &&
+                    <div className={classes.category}>
+                        <div className={classes.categoryHeader}>
+                            {programicon}
+                            <span>{t('searchResult.programs')}</span>
+                        </div>
+                        <div className={classes.itemsList}>
+                            {(programs.length > 0 && programs) ? programs : 
+                                <div className={classes.empty}>
+                                    <div className={classes.emptyIcon}>
+                                        {empty_state_icon}
                                     </div>
-                                }
-                            </div>
-                        </div>}
-                    </div>
+                                    <span>{t("searchResult.programsEmpty")}</span>
+                                </div>
+                            }
+                        </div>
+                    </div>}
                 </div>
+            </div>
         </div>
     );
 }

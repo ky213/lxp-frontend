@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomSelect from '../Cutsom/Select/CustomSelect';
 import classes from './SearchModal.module.css';
 import { searchicon } from '../../../Assets/Images/searchicon.js';
@@ -38,29 +38,41 @@ const SearchModal = (props) => {
     let filerTwo = ['By anyone', 'option1', 'option2'];
     let filerThree = ['In all segments', 'option1', 'option2'];
 
+    const linkRef = useRef(null);
+
     const handleSearch = () => {
         props.setSearchValue(searchValue);
         props.setIsOpenSearchModal(false)
     }
+
+    useEffect(()=>{
+        linkRef.current.querySelector('svg').classList.add('detectClick')
+        window.addEventListener("mousedown",(event) => {
+            if(event.target.classList.value.includes("detectClick")){
+                return
+            }
+            props.setIsOpenSearchModal(false)
+        })
+    },[]);
 
     const [filterOneValue, setFilterOneValue] = useState(filerOne[0]);
     const [filterTwoValue, setFilterTwoValue] = useState(filerTwo[0]);
     const [filterThreeValue, setFilterThreeValue] = useState(filerThree[0]);
 
     return(
-        <StyledModal className={classes.main} direction={props.direction}>
-            <StyledArrow className={classes.arrow} direction={props.direction}>
-                <div class={classes.innerArrow}></div>
+        <StyledModal className={classes.main + " " + classes.detectClick} direction={props.direction} direction={props.direction}>
+            <StyledArrow className={classes.arrow + " " + classes.detectClick} direction={props.direction} direction={props.direction}>
+                <div class={classes.innerArrow + " " + classes.detectClick} direction={props.direction}></div>
             </StyledArrow>
-            <div className={classes.body}>
-                <div className={classes.searchField}>
-                    <NavLink to={`/search?value=${searchValue}`} onClick={()=>{handleSearch()}}>
+            <div className={classes.body + " " + classes.detectClick} direction={props.direction}>
+                <div className={classes.searchField + " " + classes.detectClick} direction={props.direction}>
+                    <NavLink ref={linkRef} to={`/search?value=${searchValue}`} className={classes.detectClick} onClick={()=>{handleSearch()}}>
                         {searchicon}
                     </NavLink>
-                    <input placeholder="Search..." name={"value"} onChange={(e)=>{setSearchValue(e.target.value)}}/>
+                    <input placeholder="Search..." name={"value"} className={classes.detectClick} onChange={(e)=>{setSearchValue(e.target.value)}}/>
                 </div>
-                <div className={classes.filters}>
-                    <CustomSelect options={filerOne} setFunction={setFilterOneValue} width={32}/>
+                <div className={classes.filters  + " " + classes.detectClick} direction={props.direction}>
+                    <CustomSelect options={filerOne} setFunction={setFilterOneValue} width={32} />
                     <CustomSelect options={filerTwo} setFunction={setFilterTwoValue} width={32}/>
                     <CustomSelect options={filerThree} setFunction={setFilterThreeValue} width={32}/>
                 </div>

@@ -73,6 +73,9 @@
     display: flex;
     justify-content: space-between;
 }
+.detectClick{
+    
+}
 
 @media screen and (max-width: 1000px){
     .searchField{

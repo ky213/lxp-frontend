@@ -28,22 +28,22 @@ const NotificationModalItemMenu = (props) => {
     const {t, i18n} = useTranslation();
 
     return(
-        <StyledModal className={classes.main} direction={props.direction}>
-            <StyledArrow className={classes.arrow} direction={props.direction}>
-                <div className={classes.innerArrow}></div>
+        <StyledModal className={classes.main   + " " + classes.detectClick} direction={props.direction}>
+            <StyledArrow className={classes.arrow   + " " + classes.detectClick} direction={props.direction}>
+                <div className={classes.innerArrow   + " " + classes.detectClick}></div>
             </StyledArrow>
-            <div className={classes.body}>
-                <button>
-                    <div className={classes.image}>
-                        <img src={markasreadicon}/>
+            <div className={classes.body   + " " + classes.detectClick}>
+                <button className={classes.detectClick}>
+                    <div className={classes.image   + " " + classes.detectClick}>
+                        <img src={markasreadicon} className={classes.detectClick}/>
                     </div>
-                    <StyledSpan direction={props.direction}>{t("notificationsModal.menu.asRead")}</StyledSpan>
+                    <StyledSpan direction={props.direction} className={classes.detectClick}>{t("notificationsModal.menu.asRead")}</StyledSpan>
                 </button>
-                <button>
-                    <div className={classes.image}>
-                        <img src={deleteicon}/>
+                <button className={classes.detectClick}>
+                    <div className={classes.image  + " " + classes.detectClick}>
+                        <img src={deleteicon} className={classes.detectClick}/>
                     </div>
-                    <StyledSpan direction={props.direction}>{t("notificationsModal.menu.delete")}</StyledSpan>
+                    <StyledSpan direction={props.direction} className={classes.detectClick}>{t("notificationsModal.menu.delete")}</StyledSpan>
                 </button>
             </div>
         </StyledModal>

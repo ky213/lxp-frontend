@@ -1,5 +1,6 @@
 .main{
     font-family: 'Inter', Arial, Helvetica, sans-serif;
+    position: relative;
 }
 .main.error{
     color: tomato;
@@ -64,7 +65,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    width: 30.7%;
+    width: 100%;
     border-radius: 0 0 5px 5px;
     border: 1px solid #c6c6c6;
     padding-top: 5px;
@@ -82,6 +83,7 @@
     color: rgba(86, 86, 86, .7);
     background-color: white;
 }
+.detectClick{}
 
 @media screen and (max-width: 693px){
     .main{
@@ -89,7 +91,6 @@
         margin-top: 10px;
     }
     .dropdown{
-        width: 92%;
-        z-index: 2;
+        z-index: 243;
     }
 }

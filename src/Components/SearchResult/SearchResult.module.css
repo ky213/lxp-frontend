@@ -146,16 +146,27 @@
 .category + div{
     margin-top: 50px;
 }
-
+.content{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.empty{
+    background-color: white;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 46px;
+    padding-bottom: 46px;
+}
 
 @media screen and (max-width: 968px){
-    .coursesHeaderContainer{
-        width: calc(768px - 64px);
-        padding-left: 32px;
-        padding-right: 32px;
-    }
-    .containerItems{
-        width: calc(768px - 64px);
+    .container{
+        width: calc(100% - 64px);
         padding-left: 32px;
         padding-right: 32px;
     }
@@ -177,17 +188,12 @@
         flex-direction: column;
         align-items: flex-start;
     }
+    .empty{
+        width: calc(100% - 32px);
+        padding-left: 16px;
+        padding-right: 16px;
+        text-align: center;
+    }
 }
-.empty{
-    background-color: white;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding-top: 46px;
-    padding-bottom: 46px;
-}
+
 

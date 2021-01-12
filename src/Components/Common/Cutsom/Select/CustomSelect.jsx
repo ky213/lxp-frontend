@@ -12,18 +12,23 @@ const CustomSelect = ({input, meta, ...props}) => {
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
     useEffect(()=>{
-        input.value = ""
+        if(input){
+            input.value = ""
+        }
+       
     },[]);
 
     let handleSelect = (option) => {
         setCurrentOption(option);
-        input.onChange(option);
+        if(input){
+            input.onChange(option);
+        }
         props.setFunction(option);
         setIsOpenDropdown(false);
     }
 
     let options = props.options.map((option, index) => {
-        return <span key={index + "opt"} onClick={()=>{handleSelect(option)}} className={classes.option} {...input}>{option}</span>
+        return <span key={index + "opt"} onClick={()=>{handleSelect(option)}} className={classes.option + " " + classes.detectClick} {...input}>{option}</span>
     });
 
     let hasError = null;
@@ -33,16 +38,16 @@ const CustomSelect = ({input, meta, ...props}) => {
     }
 
     return(
-            <StyledSelect className={classes.main + " " + (hasError && classes.error)} width={props.width}>
-                <input hidden type="checkout" value={isOpenDropdown}/>
+            <StyledSelect className={classes.main + " " + (hasError && classes.error) + " " + classes.detectClick} width={props.width}>
+                <input hidden type="checkout" value={isOpenDropdown} className={classes.detectClick}/>
                 {/* <input {...input} {...props} value={321}/> */}
-                <div className={classes.view} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
-                    <span>{currentOption}</span>
-                    <div className={classes.arrow + " " + (isOpenDropdown && classes.open)}></div>
+                <div className={classes.view + " " + classes.detectClick} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
+                    <span className={classes.detectClick}>{currentOption}</span>
+                    <div className={classes.arrow + " " + (isOpenDropdown && classes.open) + " " + classes.detectClick}></div>
                 </div>
                 {isOpenDropdown && 
-                <div className={classes.dropdown + " " + (isOpenDropdown && classes.openDropdown)}>
-                    {props.disableDefValueOption && <span className={classes.option + " " + classes.disabled}>{props.disableDefValueOptionText}</span>}
+                <div className={classes.dropdown + " " + (isOpenDropdown && classes.openDropdown) + " " + classes.detectClick}>
+                    {props.disableDefValueOption && <span className={classes.option + " " + classes.disabled + " " + classes.detectClick}>{props.disableDefValueOptionText}</span>}
                     {options}
                 </div>}
                 {props.disableDefValueOption && 

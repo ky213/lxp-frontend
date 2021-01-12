@@ -21,6 +21,7 @@ import LessonsContainer from "./Components/Lessons/LessonsContainer";
 import ProgramsContainer from "./Components/Programs/ProgramsContainer";
 import SearchResultContainer from "./Components/SearchResult/SearchResultContainer";
 import NotificationsContainer from "./Components/Notifications/NotificationsContainer";
+import LibraryContainer from "./Components/Activites/Library/LibraryContainer";
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -108,6 +109,10 @@ const App = (props) => {
           <Route
             path="/home/notifications"
             render={() => <LoadDataRouter Component={NotificationsContainer} />}
+          />
+          <Route
+            path="/activities/library"
+            render={() => <LoadDataRouter Component={LibraryContainer} />}
           />
         </Switch>
       </StyledContentContainer>

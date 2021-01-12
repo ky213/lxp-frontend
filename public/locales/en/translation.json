@@ -91,6 +91,13 @@
             "completed": "Completed",
             "all": "All",
             "private": "Private"
+        },
+        "library": {
+            "title": "Library",
+            "images": "Images",
+            "hyperlinks": "Hyperlinks",
+            "files": "Files",
+            "noResources": "There are no resources here yet"
         }
     },
     "addActivity": {

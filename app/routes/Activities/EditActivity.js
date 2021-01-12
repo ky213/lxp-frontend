@@ -190,9 +190,10 @@ export const EditActivity = ({
 
     activityService
       .addActivityFile(file)
-      .then(activityFileId => {
+      .then(response => {
         //updateAnnouncementInList(files.length + 1);
-        file = { ...file, activityFileId: activityFileId, status: 'uploaded' }
+
+        file = { ...file, ...response, status: 'uploaded' }
         setFiles(z =>
           z.map(f => {
             if (f.name != file.name) return f
@@ -217,7 +218,10 @@ export const EditActivity = ({
   }
 
   const handleDownloadFile = async file => {
-    return await activityService.downloadActivityFile(file.activityFileId , selectedOrganization.organizationId)
+    return await activityService.downloadActivityFile(
+      file.activityFileId,
+      selectedOrganization.organizationId
+    )
   }
 
   const handleRemoveFile = async file => {

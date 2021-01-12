@@ -69,7 +69,7 @@ export const FileList = ({
         status: 'uploaded',
       }
 
-      await onUploadFile(file)
+      const response = await onUploadFile(file)
       setFiles(z => [...z, file])
     }
 

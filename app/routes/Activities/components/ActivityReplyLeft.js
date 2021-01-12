@@ -121,9 +121,9 @@ const ActivityReplyLeft = props => {
 
     activityService
       .addActivityFile(file)
-      .then(activityFileId => {
+      .then(response => {
         //updateAnnouncementInList(files.length + 1);
-        file = { ...file, activityFileId: activityFileId, status: 'uploaded' }
+        file = { ...file, ...response, status: 'uploaded' }
         setFiles(z =>
           z.map(f => {
             if (f.name != file.name) return f

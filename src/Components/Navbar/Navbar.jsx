@@ -16,6 +16,7 @@ import ProfileMenu from './ProfileMenu/ProfileMenu';
 import NotificationsModal from '../Notifications/NotificationsModal/NotificationsModal';
 import {planeticon} from '../../Assets/Images/planet_icon'
 import { useSelector } from 'react-redux';
+import Submenu from './Submenu/Submenu';
 
 const StyledLogoBlock = styled.div`
     a span{
@@ -84,11 +85,15 @@ const Navbar = (props) => {
                                 {t("navbar.courses")}
                             </NavLink>
                         </div>
-                        <div className={classes.menuItem}>
-                            <NavLink to="/activities" activeClassName={classes.active}>
+                        <div className={classes.menuItem + " " + classes.menuHover}>
+                            {console.log(props.currentRoute)}
+                            <span className={(props.currentRoute === "/activities" || props.currentRoute === "/activities/library") ? classes.active : classes.nothing}>
                                 {activitiesicon}
                                 {t("navbar.activities")}
-                            </NavLink>
+                                <div className={classes.submenu}>
+                                    <Submenu/>
+                                </div>
+                            </span>
                         </div>
                         <div className={classes.menuItem}>
                             <NavLink to="/report" activeClassName={classes.active}>

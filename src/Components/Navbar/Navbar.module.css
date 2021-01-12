@@ -66,6 +66,38 @@
 .menuItem a i {
   font-size: 24px;
 }
+.menuItem span{
+  height: calc(100% - 5px);
+  border-bottom: 5px solid transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #373f41;
+  font-size: 18px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  position: relative;
+}
+.menuItem span.active{
+  border-bottom: 5px solid rgba(89, 188, 171, 0.3);
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  color: #42a678;
+}
+.menuItem span svg{
+  margin-bottom: 7px;
+}
+.menuItem span svg path{
+  transition-duration: 0.4s;
+  fill: #373f41;
+  margin-bottom: 5px;
+}
+.menuItem span.active svg path{
+  fill: #42a678;
+}
+
 .menuItem a.active {
   border-bottom: 5px solid rgba(89, 188, 171, 0.3);
   border-top-right-radius: 20px;
@@ -83,6 +115,16 @@
 .menuItem a.active svg path {
   fill: #42a678;
 }
+.submenu{
+  display: none;
+  position: absolute;
+  top: 70px;
+}
+.menuHover:hover .submenu{
+  display: flex;
+  flex-direction: column;
+}
+
 .rightSideNav {
   display: flex;
   align-items: center;

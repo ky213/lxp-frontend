@@ -1,0 +1,79 @@
+.main{
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+}
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #bcbcbc;
+    transform: rotate(180deg);
+    transition-duration: 0.1s;
+    align-self: flex-end;
+    position: relative;
+    top: 1px;
+    left: -15px;
+}
+.innerArrow {
+    position: relative;
+    top: -15px;
+    transform: rotate(-90deg);
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 9px solid white;
+}
+.body{
+    width: calc(100% - 16px);
+    padding-left: 8px;
+    padding-right: 8px;
+    height: max-content;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid #bcbcbc;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 12.5px 0 rgba(0, 0, 0, 0.13);
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+}
+.menuItem{
+    display: flex;
+    align-items: center;
+}
+.menuItem a{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start
+}
+.menuItem a.active span{
+    color: #42a678;
+}
+.menuItem a svg {
+    margin-bottom: 0px;
+}
+.menuItem a svg path {
+    transition-duration: 0.4s;
+    fill: #373f41;
+    margin-bottom: 5px;
+}
+.menuItem a.active svg path {
+    fill: #42a678;
+}
+.icon{
+    width: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.menuItem span{
+    border: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+}

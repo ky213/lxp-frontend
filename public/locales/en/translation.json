@@ -5,6 +5,8 @@
         "programs": "Programs",
         "courses": "Courses",
         "activities": "Activities",
+        "myActivities": "My Activities",
+        "library": "Library",
         "myreport": "My Report"
     },
     "login": {

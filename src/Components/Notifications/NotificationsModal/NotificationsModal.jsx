@@ -47,16 +47,14 @@ const NotificationsModal = (props) => {
 
     const windowRef = useRef(null);
 
-    
-
     function logit() {
         setIsScroll(!isScroll);
     }
 
-
-
     useEffect(() => {
-        modalRef.current.addEventListener("scroll", logit);
+        if(modalRef.current){
+            modalRef.current.addEventListener("scroll", logit);
+        }
         window.addEventListener("mousedown",(event) => {
             if(event.target.classList.value.includes("detectClick")){
                 return

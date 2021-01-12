@@ -16,7 +16,7 @@ const StyledBurger = styled.div`
         width: 100%;
         height: 5px;
         background-color: ${({ open }) => !open ? '#59bcab' : 'white'};
-        transform-origin: 4.5px;
+        transform-origin: 5.5px;
         border-radius: 10px;
         transition-duration: 0.3s;
         z-index: 100;
@@ -38,6 +38,9 @@ const StyledBurger = styled.div`
         &{
             width: 30px;
             height: 30px
+        }
+        div{
+            transform-origin: 4.5px;
         }
     }
 `;

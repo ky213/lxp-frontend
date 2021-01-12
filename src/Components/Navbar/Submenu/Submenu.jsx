@@ -37,7 +37,7 @@ const Submenu = (props) => {
                     </NavLink>
                 </div>
                 <div className={classes.menuItem}>
-                    <NavLink to="/activities/library" activeClassName={classes.active}>
+                    <NavLink to="/library" activeClassName={classes.active}>
                         <div className={classes.icon}>
                             {libraryicon}
                         </div>

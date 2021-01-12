@@ -39,7 +39,7 @@ const CustomSelect = ({input, meta, ...props}) => {
 
     return(
             <StyledSelect className={classes.main + " " + (hasError && classes.error) + " " + classes.detectClick} width={props.width}>
-                <input hidden type="checkout" value={isOpenDropdown} className={classes.detectClick}/>
+                <input hidden type="checkout" value={isOpenDropdown} className={classes.detectClick} defaultValue={isOpenDropdown}/>
                 {/* <input {...input} {...props} value={321}/> */}
                 <div className={classes.view + " " + classes.detectClick} onClick={()=>setIsOpenDropdown(!isOpenDropdown)}>
                     <span className={classes.detectClick}>{currentOption}</span>

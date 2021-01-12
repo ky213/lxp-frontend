@@ -17,7 +17,7 @@ const Filter = (props) => {
 
     return (
         <StyledSelect className={classes.main} width={props.width}>
-            <input hidden type="checkout" value={isOpenDropdown} />
+            <input hidden type="checkout" value={isOpenDropdown} defaultValue={isOpenDropdown}/>
             <div className={classes.view} onClick={() => setIsOpenDropdown(!isOpenDropdown)}>
                 <span> {t("filterReports.filter")} </span>
                 <div className={classes.arrow + " " + (isOpenDropdown && classes.open)}></div>
@@ -29,12 +29,12 @@ const Filter = (props) => {
                     </span>
                     <div onClick={() => setIsCourses(!isCourses)} className={`${classes.margin0} ${classes.filter}`}>
                         <span className={classes.filterText}>{t("filterReports.courses")}</span>
-                        <input type="checkbox" checked={isCourses} value={isCourses}  />
+                        <input type="checkbox" checked={isCourses} value={isCourses}  defaultChecked={isCourses} defaultValue={isCourses}/>
                         <span className={classes.checkmark}></span>
                     </div>
                     <div onClick={() => setIsActivities(!isActivities)} className={`${classes.margin0} ${classes.filter}`}>
                         <span className={classes.filterText}>{t("filterReports.activities")}</span>
-                        <input type="checkbox" checked={isActivities} value={isActivities}  />
+                        <input type="checkbox" checked={isActivities} value={isActivities}  defaultChecked={isActivities} defaultValue={isActivities}/>
                         <span className={classes.checkmark}></span>
                     </div>
                 </div>}

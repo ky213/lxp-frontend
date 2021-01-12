@@ -111,7 +111,7 @@ const App = (props) => {
             render={() => <LoadDataRouter Component={NotificationsContainer} />}
           />
           <Route
-            path="/activities/library"
+            path="/library"
             render={() => <LoadDataRouter Component={LibraryContainer} />}
           />
         </Switch>

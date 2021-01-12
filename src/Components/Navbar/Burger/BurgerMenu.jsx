@@ -47,6 +47,9 @@ const BurgerMenu = ({open, setOpen, changeLanguage, language, currentLanguage}) 
                     <NavLink to="/activities" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.activities")}</NavLink>
                 </div>
                 <div className={classes.menuItem}>
+                    <NavLink to="/library" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.library")}</NavLink>
+                </div>
+                <div className={classes.menuItem}>
                     <NavLink to="/report" activeClassName={"active"} onClick={()=>{setOpen(false)}}>{t("navbar.myreport")}</NavLink>
                 </div>
                 <div className={classes.langBurgerMenu}>

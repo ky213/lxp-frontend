@@ -28,9 +28,8 @@ import { AddonInput } from '@/routes/Forms/DatePicker/components'
 import {
   activityService,
   learnerService,
-  subspecialtiesService,
+  libraryService,
   courseService,
-  programService,
 } from '@/services'
 import { useAppState } from '@/components/AppState'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -38,6 +37,7 @@ import { Role } from '@/helpers'
 import ThemedButton from '@/components/ThemedButton'
 import RRuleGenerator from 'react-rrule-generator'
 import { hot } from 'react-hot-loader'
+import { uniqBy } from 'lodash'
 
 const AssignActivity = ({
   toggle,
@@ -129,38 +129,48 @@ const AssignActivity = ({
   }
 
   const handleUploadFile = async file => {
-    file = {
-      ...file,
-      activityId: selectedActivity,
-      status: 'uploaded',
+    const formData = new FormData()
+
+    formData.append('file', file.name)
+    formData.append('name', file.name)
+    formData.append('extension', file.extension)
+    formData.append('lastModifiedDate', file.lastModified)
+    formData.append('size', file.size)
+    formData.append('type', file.type)
+    formData.append('status', 'uploaded')
+    formData.append('activityId', selectedActivity)
+
+    try {
+      const response = await activityService.addActivityFile(
+        formData,
+        selectedOrganization.organizationId
+      )
+
+      await libraryService.saveFileToGoogleStorage(response.url, file)
+
+      file = {
+        ...file,
+        ...response,
+        name: file.name,
+        url: response.assetsDomainURL,
+        activityId: selectedActivity.activityId,
+        status: 'uploaded',
+      }
+
+      setFiles(uniqBy([...files, file], 'name'))
+
+      alert('The file has been uploaded')
+    } catch (error) {
+      file = { ...file, status: 'error' }
+      setFiles(z =>
+        z.map(f => {
+          if (f.name != file.name) return f
+
+          return file
+        })
+      )
+      alert(`Error while uploading the file`, error)
     }
-
-    activityService
-      .addActivityFile(file , selectedOrganization.organizationId)
-      .then(activityFileId => {
-        //updateAnnouncementInList(files.length + 1);
-        file = { ...file, activityFileId: activityFileId, status: 'uploaded' }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
-
-            return file
-          })
-        )
-
-        alert('The file has been uploaded')
-      })
-      .catch(error => {
-        file = { ...file, status: 'error' }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
-
-            return file
-          })
-        )
-        alert(`Error while uploading the file`, error)
-      })
   }
 
   const handleDownloadFile = async file => {

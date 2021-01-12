@@ -177,7 +177,6 @@ export const ActivityCalendar = props => {
   }
 
   const showEvent = async event => {
-    console.log('Event:', event)
     if (event.source == 'assigned') {
       const eventDetails = await activityService.getById(
         event.id,

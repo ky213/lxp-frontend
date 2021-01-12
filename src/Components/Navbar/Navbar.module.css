@@ -163,6 +163,7 @@
   height: 38px;
   padding-right: 12px;
   direction: ltr;
+  z-index: 1;
 }
 .userDefault {
   width: 40px;

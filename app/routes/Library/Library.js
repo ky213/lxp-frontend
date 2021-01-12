@@ -94,10 +94,6 @@ const Library = () => {
     }
   }
 
-  const handleDownload = file => {
-    console.log(file)
-  }
-
   return (
     <Container>
       <HeaderMain title="The Library" />

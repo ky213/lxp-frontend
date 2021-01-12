@@ -36,8 +36,7 @@ export const FileList = ({
 
   const showFile = async e => {
     let x = e.target.files[0]
-    handleUploadFile(x)
-    await onUploadFile(file)
+    await onUploadFile(x)
     e.target.value = ''
   }
 

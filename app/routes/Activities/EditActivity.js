@@ -12,28 +12,24 @@ import {
   FormGroup,
   Label,
   CustomInput,
-  InputGroup,
-  InputGroupAddon,
   InvalidFeedback,
-  Table,
   TabPane,
-  Badge,
   Nav,
   NavItem,
   UncontrolledTabs,
 } from '@/components'
 
+import { uniqBy } from 'lodash'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import DatePicker, { setDefaultLocale } from 'react-datepicker'
+import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { AddonInput } from '@/routes/Forms/DatePicker/components'
 import {
   activityService,
   learnerService,
   courseService,
-  expLevelService,
-  programService,
+  libraryService,
 } from '@/services'
 import { useAppState } from '@/components/AppState'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -58,7 +54,6 @@ export const EditActivity = ({
   if (!selectedActivity) {
     return (isOpen && <Loading />) || null
   }
-
   const [files, setFiles] = React.useState([])
   const [urls, setUrls] = React.useState([])
   const [{ currentUser, selectedOrganization }, dispatch] = useAppState()
@@ -182,55 +177,44 @@ export const EditActivity = ({
   }
 
   const handleUploadFile = async file => {
-    // file = {
-    //   ...file,
-    //   activityId: selectedActivity.activityId,
-    //   status: 'uploaded',
-    // }
-
     const formData = new FormData()
 
-    formData.append('file', file)
+    formData.append('file', file.name)
     formData.append('name', file.name)
     formData.append('extension', file.extension)
-    formData.append('lastModifiedDate', file.lastModifiedDate)
+    formData.append('lastModifiedDate', file.lastModified)
     formData.append('size', file.size)
     formData.append('type', file.type)
     formData.append('status', 'uploaded')
     formData.append('activityId', selectedActivity.activityId)
 
-    activityService
-      .addActivityFile(formData)
-      .then(response => {
-        //updateAnnouncementInList(files.length + 1);
+    try {
+      const response = await activityService.addActivityFile(formData)
 
-        file = {
-          ...file,
-          ...response,
-          activityId: selectedActivity.activityId,
-          status: 'uploaded',
-        }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
+      await libraryService.saveFileToGoogleStorage(response.url, file)
 
-            return file
-          })
-        )
+      file = {
+        ...file,
+        ...response,
+        name: file.name,
+        activityId: selectedActivity.activityId,
+        status: 'uploaded',
+      }
+      console.log(selectedOrganization)
+      setFiles(uniqBy([...files, file], 'name'))
 
-        alert('The file has been uploaded')
-      })
-      .catch(error => {
-        file = { ...file, status: 'error' }
-        setFiles(z =>
-          z.map(f => {
-            if (f.name != file.name) return f
+      alert('The file has been uploaded')
+    } catch (error) {
+      file = { ...file, status: 'error' }
+      setFiles(z =>
+        z.map(f => {
+          if (f.name != file.name) return f
 
-            return file
-          })
-        )
-        alert(`Error while uploading the file`, error)
-      })
+          return file
+        })
+      )
+      alert(`Error while uploading the file`, error)
+    }
   }
 
   const handleDownloadFile = async file => {

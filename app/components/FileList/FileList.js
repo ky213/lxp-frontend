@@ -1,8 +1,8 @@
-import React from 'react';
-import styles from './FileList.css';
-import { InputGroup, InputGroupAddon, Input, ThemedButton } from '@/components';
+import React from 'react'
+import styles from './FileList.css'
+import { InputGroup, InputGroupAddon, Input, ThemedButton } from '@/components'
 
-var path = require('path');
+var path = require('path')
 
 export const FileList = ({
   files,
@@ -22,42 +22,42 @@ export const FileList = ({
   const [
     isFileDragAndDropEnabled,
     setIsFileDragAndDropEnabled,
-  ] = React.useState(false);
-  const [message, setMessage] = React.useState('');
+  ] = React.useState(false)
+  const [message, setMessage] = React.useState('')
 
   React.useEffect(() => {
-    setIsFileDragAndDropEnabled(!!window.FileReader);
-  }, []);
+    setIsFileDragAndDropEnabled(!!window.FileReader)
+  }, [])
 
-  const inputFile = React.useRef(null);
-  const handleImportFileClick = (event) => {
-    inputFile.current.click();
-  };
+  const inputFile = React.useRef(null)
+  const handleImportFileClick = event => {
+    inputFile.current.click()
+  }
 
-  const showFile = async (e) => {
-    let x = e.target.files[0];
-    handleUploadFile(x);
-    e.target.value = '';
-  };
+  const showFile = async e => {
+    let x = e.target.files[0]
+    handleUploadFile(x)
+    e.target.value = ''
+  }
 
-  const handleKeyDown = (ev) => {
+  const handleKeyDown = ev => {
     if (ev.key === 'Enter') {
-      ev.preventDefault();
-      ev.stopPropagation();
+      ev.preventDefault()
+      ev.stopPropagation()
 
-      handleAddLink(message);
+      handleAddLink(message)
     }
-  };
+  }
 
-  const handleUploadFile = (x) => {
-    const reader = new FileReader();
+  const handleUploadFile = x => {
+    const reader = new FileReader()
 
-    reader.onload = async (e) => {
-      if (!files) return;
-      let fileExists = files.filter((z) => z.name == x.name).length > 0;
-      if (fileExists) return;
+    reader.onload = async e => {
+      if (!files) return
+      let fileExists = files.filter(z => z.name == x.name).length > 0
+      if (fileExists) return
 
-      const text = e.target.result;
+      const text = e.target.result
 
       var file = {
         name: x.name,
@@ -67,79 +67,79 @@ export const FileList = ({
         file: text,
         type: x.type,
         status: 'uploaded',
-      };
+      }
 
-      await onUploadFile(file);
-      setFiles((z) => [...z, file]);
-    };
+      await onUploadFile(file)
+      setFiles(z => [...z, file])
+    }
 
-    reader.readAsDataURL(x);
-  };
+    reader.readAsDataURL(x)
+  }
 
-  const handleAddLink = (url) => {
-    let link = onAddLink(url);
-    setUrls((z) => [...z, link]);
-    setMessage('');
-  };
+  const handleAddLink = url => {
+    let link = onAddLink(url)
+    setUrls(z => [...z, link])
+    setMessage('')
+  }
 
-  const dropHandler = (ev) => {
+  const dropHandler = ev => {
     // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
+    ev.preventDefault()
 
     if (ev.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
       for (var i = 0; i < ev.dataTransfer.items.length; i++) {
         // If dropped items aren't files, reject them
         if (ev.dataTransfer.items[i].kind === 'file') {
-          var x = ev.dataTransfer.items[i].getAsFile();
-          handleUploadFile(x);
+          var x = ev.dataTransfer.items[i].getAsFile()
+          handleUploadFile(x)
         }
       }
     }
 
-    ev.target.value = '';
-  };
+    ev.target.value = ''
+  }
 
-  const downloadFile = (file) => {
-    var block = file.file.split(';');
-    var contentType = block[0].split(':')[1];
-    var realData = block[1].split(',')[1];
-    var blob = b64toBlob(realData, contentType);
-    var url = window.URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    document.body.appendChild(a);
-    a.href = url;
-    a.download = file.name;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
+  const downloadFile = file => {
+    var block = file.file.split(';')
+    var contentType = block[0].split(':')[1]
+    var realData = block[1].split(',')[1]
+    var blob = b64toBlob(realData, contentType)
+    var url = window.URL.createObjectURL(blob)
+    var a = document.createElement('a')
+    document.body.appendChild(a)
+    a.href = url
+    a.download = file.name
+    a.click()
+    window.URL.revokeObjectURL(url)
+  }
 
-  const allowDrop = (e) => {
-    e.preventDefault();
-  };
+  const allowDrop = e => {
+    e.preventDefault()
+  }
 
   function b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || '';
-    sliceSize = sliceSize || 512;
+    contentType = contentType || ''
+    sliceSize = sliceSize || 512
 
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
+    var byteCharacters = atob(b64Data)
+    var byteArrays = []
 
     for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var slice = byteCharacters.slice(offset, offset + sliceSize)
 
-      var byteNumbers = new Array(slice.length);
+      var byteNumbers = new Array(slice.length)
       for (var i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
+        byteNumbers[i] = slice.charCodeAt(i)
       }
 
-      var byteArray = new Uint8Array(byteNumbers);
+      var byteArray = new Uint8Array(byteNumbers)
 
-      byteArrays.push(byteArray);
+      byteArrays.push(byteArray)
     }
 
-    var blob = new Blob(byteArrays, { type: contentType });
-    return blob;
+    var blob = new Blob(byteArrays, { type: contentType })
+    return blob
   }
 
   return (
@@ -150,7 +150,7 @@ export const FileList = ({
             type="text"
             placeholder="Add link..."
             onKeyDown={handleKeyDown}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             value={message}
             disabled={disabled}
           />
@@ -170,8 +170,8 @@ export const FileList = ({
         <React.Fragment>
           <div
             className={styles.browseFilesContainer}
-            onDrop={(e) => dropHandler(e)}
-            onDragOver={(e) => allowDrop(e)}
+            onDrop={e => dropHandler(e)}
+            onDragOver={e => allowDrop(e)}
             onClick={handleImportFileClick}
           >
             Browse or drag&drop the file
@@ -190,10 +190,10 @@ export const FileList = ({
 
       {urls &&
         urls.length > 0 &&
-        urls.map((link) => {
+        urls.map(link => {
           if (link && link.url && link.url.trim()) {
-            let deleteFileClass = 'pull-right ' + styles.fileContainerDelete;
-            let downloadFileClass = 'pull-left ' + styles.fileContainerDownload;
+            let deleteFileClass = 'pull-right ' + styles.fileContainerDelete
+            let downloadFileClass = 'pull-left ' + styles.fileContainerDownload
 
             return (
               <div className={styles.fileContainer} key={Math.random()}>
@@ -211,24 +211,26 @@ export const FileList = ({
                   <div className="clearfix" />
                 </React.Fragment>
               </div>
-            );
+            )
           }
         })}
 
       {files &&
         files.length > 0 &&
-        files.map((file) => {
-          let deleteFileClass = 'pull-right ' + styles.fileContainerDelete;
-          let downloadFileClass = 'pull-left ' + styles.fileContainerDownload;
+        files.map(file => {
+          let deleteFileClass = 'pull-right ' + styles.fileContainerDelete
+          let downloadFileClass = 'pull-left ' + styles.fileContainerDownload
 
           return (
             <div className={styles.fileContainer} key={file.name}>
-              <div
+              <a
+                href={file.url}
+                target="_blank"
                 className={downloadFileClass}
-                onClick={async () => downloadFile(await onDownloadFile(file))}
+                // onClick={async () => downloadFile(await onDownloadFile(file))}
               >
                 {file.name} ({file.size})
-              </div>
+              </a>
 
               {(file.status == 'readyForUpload' && (
                 <React.Fragment>
@@ -241,7 +243,7 @@ export const FileList = ({
                     <div
                       className={deleteFileClass}
                       onClick={() => {
-                        onUploadFile(file);
+                        onUploadFile(file)
                       }}
                     >
                       Try again
@@ -263,8 +265,8 @@ export const FileList = ({
                   </React.Fragment>
                 )}
             </div>
-          );
+          )
         })}
     </React.Fragment>
-  );
-};
+  )
+}

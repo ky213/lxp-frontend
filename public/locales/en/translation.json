@@ -79,10 +79,14 @@
     },
     "activityDetails": {
         "title": "Activity details",
-        "label": "Private",
+        "private": "Private",
+        "public": "Public",
         "edit": "edit",
         "delete": "delete",
-        "butComplete": "Mark as complete"
+        "butComplete": "Mark as complete",
+        "points": "TOTAL POINTS:",
+        "contact": "Contact your Manager",
+        "discuss": "Discuss with your Peers"
     },
     "activities": {
         "title": "My Activities",
@@ -121,7 +125,10 @@
         "public": "Public",
         "private": "Private",
         "addActivity": "Add activity",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "upload": "Upload File",
+        "drag": "or drag and drop the file here",
+        "points": "Activity Points"
     },
     "editActivity": {
         "title": "Edit activity"
@@ -131,6 +138,9 @@
         "sub": "The activity will be deleted permanently.",
         "delete": "Yes, delete",
         "cancel": "Cancel"
+    },
+    "chat": {
+        "messagePlaceholder": "Write your reply here..."
     },
     "reports": {
         "insights": {

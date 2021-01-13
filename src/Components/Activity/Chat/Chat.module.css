@@ -1,0 +1,66 @@
+.main{
+    width: 98%;
+    background-color: white;
+    padding: 26px 45px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    box-sizing: border-box;
+    align-self: center;
+    height: 212px;
+    display: flex;
+    flex-direction: column;
+}
+.inputBlock{
+    margin-top: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.inputBlock input{
+    width: 89%;
+    padding-bottom: 8px;
+    border: none;
+    border-bottom: 2px solid #757575;
+    outline: none;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+.inputBlock input::placeholder{
+    color: #747474;
+}
+.inputBlock button{
+    outline: none;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+.hidden{
+    display: none;
+}
+.messageList{
+    max-height: 120px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.messageList::-webkit-scrollbar {
+  width: 4px;
+  opacity: 1;
+}
+
+
+.messageList::-webkit-scrollbar-track {
+  background: transparent; 
+  opacity: 1;
+}
+ 
+
+.messageList::-webkit-scrollbar-thumb {
+  background-color: #acd8c8;
+}
+
+
+.messageList::-webkit-scrollbar-thumb:hover {
+  opacity: 0;
+}

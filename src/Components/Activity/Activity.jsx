@@ -10,6 +10,7 @@ import { getActivity } from '../../Redux/activitiesReducer';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import DeleteActivity from './DeleteActivity/DeleteActivity';
+import Chat from './Chat/Chat';
 
 const StyledMarkButton = styled.button`
     margin-left: ${({ direction }) => direction === "ltr" ? "8px" : "0"};
@@ -78,7 +79,7 @@ const Activity = (props) => {
                             <span><strong>34 {t("home.statistic.infoUser.hours")}</strong></span>
                         </div>
                     </div>
-                    <div className={classes.block + " " + classes.programs}>
+                    {/* <div className={classes.block + " " + classes.programs}>
                         <div className={classes.programsHeader}>
                             <h4>{t("home.statistic.programs.related")}</h4>
                             <NavLink to="/programs">{t("home.statistic.programs.viewAll")}</NavLink>
@@ -97,12 +98,12 @@ const Activity = (props) => {
                                 <span>42%</span>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </StyledLeftSide>
                 <div className={classes.rightSide}>
                     <div className={classes.tabHeader}>
                         <h1>{t("activityDetails.title")}</h1>
-                        <span>{t("activityDetails.label")}</span>
+                        <span>{props.activity.isPublic ? t("activityDetails.public") : t("activityDetails.private")}</span>
                     </div>
                     <div className={classes.activity}>
                         <div className={classes.activityHeader}>
@@ -121,8 +122,9 @@ const Activity = (props) => {
                         <h2>{props.activity.name}</h2>
                         <div className={classes.activityFoot}>
                             <div className={classes.activityProgressBlock}>
-                                <ProgressBar width={widthProgressBar} height={heightProgressBar} progress={props.activity.totalPoints}/>
-                                <StyledProgressSpan direction={props.direction}>{props.activity.totalPoints}%</StyledProgressSpan>
+                                {/* <ProgressBar width={widthProgressBar} height={heightProgressBar} progress={props.activity.totalPoints}/>
+                                <StyledProgressSpan direction={props.direction}>{props.activity.totalPoints}%</StyledProgressSpan> */}
+                                <span>{t("activityDetails.points")} {props.activity.totalPoints}</span>
                             </div>
                             <div className={classes.activityFootRight}>
                                 <span>{daysLag}</span>
@@ -136,6 +138,10 @@ const Activity = (props) => {
                                 <i className="fas fa-play-circle"></i>
                             </button>
                         </div>
+                    </div>
+                    <div className={classes.chatBlock}>
+                        <h1>{props.activity.isPublic ? t("activityDetails.discuss") : t("activityDetails.contact")}</h1>
+                        <Chat currentUser={props.user}/>
                     </div>
                 </div>
             </div>}

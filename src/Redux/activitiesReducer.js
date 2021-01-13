@@ -43,7 +43,6 @@ export const getActivity = (activityId, selectedOrganizationId) => async (dispat
     dispatch(setIsFetching(true));
     try{
         let respnose = await activitiesApi.getActivity(activityId, selectedOrganizationId);
-        console.log(respnose);
         dispatch([setCurrentActivity(respnose), setIsFetching(false)]);
     }catch(err){
         dispatch(setIsFetching(false));

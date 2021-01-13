@@ -11,7 +11,7 @@
 }
 
 .leftSide{
-    width: max-content;
+    width: 260px;
     margin-right: 30px;
 }
 .block{
@@ -224,11 +224,14 @@
     align-items: center;
 }
 .activityProgressBlock span{
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    color: #6e798c;
+    color: #3d3d3d;
     position: relative;
     top: -2px;
+    padding: 4px 14px;
+    border-radius: 35px;
+    background-color: #d0e9dd;
 }
 .activityFootRight{
     display: flex;
@@ -279,6 +282,17 @@
     font-size: 75px;
     color: #6e7b8c;
 }
+.chatBlock{
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 80px;
+}
+.chatBlock h1{
+    margin-block-start: 0;
+    margin-block-end: 37px;
+}
+
 
 @media screen and (max-width: 1440px){
     

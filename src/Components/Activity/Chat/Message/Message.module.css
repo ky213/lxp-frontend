@@ -1,0 +1,46 @@
+.main{
+    display: flex;
+    width: max-content;
+    max-width: 45%;
+    align-items: center;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+.main img{
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+}
+.noPhoto{
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    background-color: #acd8c8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.noPhoto span{
+    font-size: 12px;
+    font-weight: 500;
+}
+.message{
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+}
+.text{
+    border-radius: 46px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    padding: 10px 20px;
+    word-break: keep-all;
+}
+.arrow{
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    
+    transition-duration: 0.1s;
+}

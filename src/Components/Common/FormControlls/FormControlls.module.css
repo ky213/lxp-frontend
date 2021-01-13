@@ -13,7 +13,7 @@
     font-size: 16px;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: #3d3d3d;
-    margin-top: 4px;
+    margin-top: 8px;
     display: block;
 }
 
@@ -45,7 +45,7 @@
     font-size: 16px;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: #3d3d3d;
-    margin-top: 4px;
+    margin-top: 8px;
 }
 
 .textarea.error{
@@ -56,7 +56,7 @@
     top: 10px;
 }
 .textarea label{
-    margin-top: 15px;
+    margin-top: 8px;
     color: #747474;
     font-size: 12px;
     font-weight: 400;
@@ -64,10 +64,9 @@
 
 .calendar{
     width: 155px;
+    z-index: 100;
 }
-.calendar div{
-    z-index: 200;
-}
+
 
 .calendar input{
     width: 155px;
@@ -79,19 +78,16 @@
     font-size: 16px;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: #3d3d3d;
-    margin-top: 4px;
+    margin-top: 8px;
     box-sizing: border-box;
 }
 
 @media screen and (max-width: 968px){
     .formControll input{
-        width: calc(100% - 32px);
+        width: 100%;
     }
     .calendar{
         width: max-content;
-    }
-    .calendar div{
-        z-index: 300;
     }
     .textarea textarea{
         width: calc(100% - 32px);
@@ -103,5 +99,11 @@
     }
     .calendar input{
         width: 100%;
+    }
+    .formControll input{
+        width: calc(100% - 32px) !important;
+    }
+    .textarea textarea{
+        width: calc(100% - 32px) !important;
     }
 }

@@ -86,7 +86,11 @@ const Navbar = (props) => {
                             </NavLink>
                         </div>
                         <div className={classes.menuItem + " " + classes.menuHover}>
-                            <span className={(props.currentRoute === "/activities" || props.currentRoute === "/library") ? classes.active : classes.nothing}>
+                            <span className={(props.currentRoute === "/activities" || 
+                                            props.currentRoute === "/library" || 
+                                            props.currentRoute === "/activities/add" || 
+                                            props.currentRoute.includes("/activities/edit/") ||
+                                            props.currentRoute.includes("/activities/view/")) ? classes.active : classes.nothing}>
                                 {activitiesicon}
                                 {t("navbar.activities")}
                                 <div className={classes.submenu}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import classes from '../AddActivity/AddActivity.module.css';
@@ -10,7 +10,9 @@ import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../../Common/Preloader/Preloader';
 import { getActivity } from '../../../Redux/activitiesReducer';
 import styled from 'styled-components';
-
+import ActivityFile from '../ActivityFile/ActivityFile';
+import { FileDrop } from 'react-file-drop';
+import uploadicon from '../../../Assets/Images/upload.svg';
 
 const StyledLabel = styled.label`
     margin-left: ${({ direction }) => "30px"};
@@ -58,26 +60,68 @@ const EditActivityForm = (props) => {
 
     let supervisorsOptions = ['sup1', 'sup2', 'sup3'];
 
+
+    const fileInputRef = useRef(null);
+
+
+
+    const onFileInputChange = (event) => {
+        const newFiles = [...props.files];
+        const newFilesToPush = [...event.target.files];
+        newFilesToPush.forEach(item => {
+            newFiles.push(item);
+        })
+        props.setFiles(newFiles);
+    }
+
+    const onTargetClick = () => {
+        fileInputRef.current.click();
+    }
+    const onDropHandler = (files, event) => {
+        const newFilesToPush = [...files];
+        const newFiles = [...props.files];
+        newFilesToPush.forEach(item => {
+            newFiles.push(item);
+        })
+        props.setFiles(newFiles);
+    }
+
+    const handleRemoveFile = (index) => {
+        const newFiles = [...props.files];
+        newFiles.forEach((item, i) => {
+            if(index === i){
+                newFiles.splice(index, 1);
+            }
+        });
+        props.setFiles(newFiles);
+    }
+    let viewFiles = []
+
+    viewFiles = props.files.map((f, index) => {
+        return <ActivityFile name={f.name} index={index} handleRemoveFile={handleRemoveFile}/>
+    })
+
+
     return(
         <form onSubmit={props.handleSubmit} className={classes.form}>
-            <div className={classes.field}>
+            <div className={classes.field + " " + classes.inputField}>
                 <label className={classes.fieldLabel}>{t("addActivity.name")}</label>
                 <Field component={AuthInput} placeholder={t("addActivity.namePlaceholder")} name="name"
                     validate={[required]}/>
             </div>
-            <div className={classes.field}>
+            <div className={classes.field + " " + classes.inputField}>
                 <label className={classes.fieldLabel}>{t("addActivity.link")}</label>
                 <Field component={AuthInput} name="link"/>
             </div>
-            <div className={classes.field}>
+            {/* <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addActivity.supervisor")}</label>
                 <p></p>
                 <Field component={CustomSelect} options={supervisorsOptions} setFunction={props.setSupervisor} width={selectWidth} 
                         validate={[required]} name="supervisor" disableDefValueOption={disableDefSupervisorOption} disableDefValueOptionText={disableDefSupervisorOptionText}/>
-            </div>
-            <div className={classes.field}>
-                <label className={classes.fieldLabel}>{t("addActivity.location")}</label>
-                <Field component={AuthInput} placeholder={t("addActivity.locationPlaceholder")} name="location"
+            </div> */}
+            <div className={classes.field + " " + classes.inputField}>
+                <label className={classes.fieldLabel}>{t("addActivity.points")}</label>
+                <Field component={AuthInput} name="points"
                     validate={[required]}/>
             </div>
             <div className={classes.field}>
@@ -114,6 +158,27 @@ const EditActivityForm = (props) => {
                     </div>
                 </div>
             </div>
+            <div className={classes.field}>
+                <label className={classes.fieldLabel}>{t("addActivity.upload")}</label>
+                <div className={classes.dragNdrop}>
+                    <input onChange={onFileInputChange}
+                    ref={fileInputRef}
+                    type="file"
+                    className={classes.hidden} multiple/>
+                    <FileDrop onDrop={(files, event) => onDropHandler(files, event)} onTargetClick={onTargetClick} className={classes.drop} draggingOverFrameClassName={classes.onDrag} targetClassName={classes.dropInner}>
+                        <div className={classes.uploadBut}>
+                            <img src={uploadicon}/>
+                            <p>{t("addActivity.upload")}</p>
+                        </div>
+                        <p className={classes.dragText}>{t("addActivity.drag")}</p>
+                    </FileDrop>
+                </div>
+                {props.files.length > 0 && 
+                    <div className={classes.files}>
+                        {viewFiles}
+                    </div>
+                }
+            </div>
             <div className={classes.fieldBut}>
                 <button>{t("editActivity.title")}</button>
                 <NavLink to={`/activities/view/${props.activityId}`}>{t("addActivity.cancel")}</NavLink>
@@ -136,6 +201,8 @@ const EditActivity = (props) => {
     const [visibility, setVisibility] = useState("private");
     const [supervisor, setSupervisor] = useState("");
 
+    const [files, setFiles] = useState([]);
+
     useEffect(()=>{
         let activityId = props.match.params.activityId;
         props.getActivity(activityId, props.user.selectedOrganizationId);
@@ -154,7 +221,7 @@ const EditActivity = (props) => {
                 </div>
             </div>
             <div className={classes.formContainer}>
-                <EditActivityReduxForm onSubmit={onSubmit} setSupervisor={setSupervisor} setType={setType} visibility={visibility} setVisibility={setVisibility} activityId={props.match.params.activityId} direction={props.direction}/>
+                <EditActivityReduxForm onSubmit={onSubmit} setFiles={setFiles} files={files} setSupervisor={setSupervisor} setType={setType} visibility={visibility} setVisibility={setVisibility} activityId={props.match.params.activityId} direction={props.direction}/>
             </div>
         </div>
     );

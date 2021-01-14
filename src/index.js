@@ -3,17 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './Redux/reduxStore';
-import {Provider} from "react-redux";
+import store from './Store/reduxStore';
+import { Provider } from 'react-redux';
 import './Utils/i18n';
-import Preloader from './Components/Common/Preloader/Preloader';
+import Preloader from './Pages/Common/Preloader/Preloader';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Suspense fallback={<Preloader/>}>
-      <App/>
+    <Suspense fallback={<Preloader />}>
+      <App />
     </Suspense>
-  </Provider>, document.getElementById('root'));
+  </Provider>,
+  document.getElementById('root')
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

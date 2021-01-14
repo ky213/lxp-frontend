@@ -4,12 +4,12 @@ import thunkMiddleWare from 'redux-thunk';
 import multi from 'redux-multi';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import userReducer from './userReducer';
-import commonReducer from './commonReducer';
-import coursesReducer from './coursesReducer';
-import activitiesReducer from './activitiesReducer';
-import notificationsReducer from './notificationsReducer';
-import programsReducer from './programsReducer';
+import userReducer from './Reducers/user';
+import commonReducer from './Reducers/common';
+import coursesReducer from './Reducers/courses';
+import activitiesReducer from './Reducers/activities';
+import notificationsReducer from './Reducers/notifications';
+import programsReducer from './Reducers/programs';
 
 let reducers = combineReducers({
   user: userReducer,

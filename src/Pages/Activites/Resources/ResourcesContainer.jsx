@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Library from './Library';
+import Resources from './Rerources';
 // import { getPrograms } from '../../Redux/programsReducer';
 import Preloader from '../../Common/Preloader/Preloader';
 
 
-const LibraryContainer = (props) => {
+const ResourcesContainer = (props) => {
     // useEffect(()=>{
     //     if(props.user.organizationId){
     //         props.getPrograms(props.user.organizationId, props.pageId, props.perPage);
@@ -43,7 +43,7 @@ const LibraryContainer = (props) => {
     return(
         <>
             {props.isFetching ? <Preloader/> :
-            <Library libraryItemsList={props.libraryItemsList} 
+            <Resources libraryItemsList={props.libraryItemsList} 
                     direction={props.direction}
                     all={all} setAll={handleAll}
                     isImage={isImage} setIsImage={setIsImage}
@@ -64,4 +64,4 @@ let mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     // getPrograms
-})(LibraryContainer);
+})(ResourcesContainer);

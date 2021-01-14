@@ -1,0 +1,70 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
+}
+.activitiesHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.activitiesHeaderBlock{
+    display: flex;
+    align-items: center;
+}
+.activitiesHeaderBlock svg path{
+    fill: #42a678;
+}
+.activitiesHeaderBlock span{
+    color: #3d3d3d;
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.activitiesHeader a{
+    text-decoration: none;
+    color: #3d3d3d;
+    font-size: 14px;
+    font-weight: 500;
+}
+.activitiesHeader a:hover{
+    text-decoration: underline;
+}
+.itemsList{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+.empty{
+    background-color: white;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 46px;
+    padding-bottom: 46px;
+}
+.emptyIcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #ceeadd;
+    border-radius: 50%;
+}
+.emptyIcon svg{
+    position: relative;
+    top: -3px;
+}
+.empty span{
+    margin-top: 8px;
+}

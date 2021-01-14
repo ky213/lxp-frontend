@@ -62,6 +62,42 @@
     font-weight: 400;
 }
 
+
+/* TEXTAREABIG */
+.textareaBig{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+}
+.textareaBig textarea{
+    resize: none;
+    width: 94%;
+    outline: none;
+    padding: 12px 16px;
+    border-radius: 5px;
+    border: 1px solid #c6c6c6;
+    font-size: 16px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    color: #3d3d3d;
+    margin-top: 8px;
+}
+
+.textareaBig.error{
+    color: tomato;
+}
+.textareaBig.error span{
+    position: relative;
+    top: 10px;
+}
+.textareaBig label{
+    margin-top: 8px;
+    color: #747474;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+
 .calendar{
     width: 155px;
     z-index: 100;

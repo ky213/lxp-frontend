@@ -61,6 +61,18 @@
   font-weight: 700;
   margin-left: 14px;
 }
+.learners{
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #757575;
+  padding: 2px 8px;
+  border-radius: 46px;
+  border: 1px solid rgba(117, 117, 117, .1);
+}
+.learners svg{
+  transform: scale(.9);
+}
 
 @media screen and (max-width: 630px) {
   .headerSide {

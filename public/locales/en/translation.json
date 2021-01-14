@@ -46,7 +46,13 @@
             },
             "stats": {
                 "stats": "stats"
+            },
+            "quickAccess": {
+                "title":  "Quick Access",
+                "resources": "Resources",
+                "learners": "Learners"
             }
+
         },
         "courses": {
             "title": "Courses",
@@ -56,7 +62,11 @@
         "activities": {
             "title": "Activities",
             "viewAll": "View all",
-            "empty": "You have no activities"
+            "empty": "You have no activities",
+            "tabs": {
+                "assigned": "Assigned",
+                "logged": "Logged"
+            }
         },
         "programs": {
             "title": "Programs",
@@ -84,7 +94,8 @@
     "activityMini": {
         "daysLeft": " days left",
         "daysAgo": " days ago",
-        "empty": "Empty"
+        "empty": "Empty",
+        "learners": "Learners"
     },
     "activityDetails": {
         "title": "Activity details",
@@ -107,8 +118,8 @@
             "all": "All",
             "private": "Private"
         },
-        "library": {
-            "title": "Library",
+        "resources": {
+            "title": "Resources",
             "images": "Images",
             "hyperlinks": "Hyperlinks",
             "files": "Files",
@@ -217,7 +228,13 @@
         "title": "Add a new program",
         "name": "Program name",
         "namePlaceholder": "e.g: Data Science",
-        "defSelectDepartament": "Select department"
+        "defSelectDepartament": "Select department",
+        "uploadTitle": "Program thumbnail",
+        "upload": "Upload Image",
+        "drag": "or drag and drop the image here",
+        "addBut": "Add Program",
+        "cancel": "Cancel",
+        "labelTextArea": "You can create more than one course, separate their names with a comma"
     },
     "searchResult": {
         "title": "Search results for",

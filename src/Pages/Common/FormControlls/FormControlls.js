@@ -18,10 +18,10 @@ export const TextAreaCustom = ({input, meta, ...props}) => {
     const {t, i18n} = useTranslation();
     const hasError = meta.touched && meta.error;
     return(
-        <div className={classes.textarea + " " + (hasError && classes.error)}>
+        <div className={(props.isBig ? classes.textareaBig : classes.textarea) + " " + (hasError && classes.error)}>
             <textarea maxLength={props.maxLength} {...input} {...props} row={props.rows}/>
             {hasError && <span>{meta.error}</span>}
-            <label>{props.left} {t("addActivity.charactersLeft")}</label>
+            <label>{props.maxLength ? (props.left + " " + t("addActivity.charactersLeft")) : t("addProgram.labelTextArea")}</label>
         </div>
     )
 }

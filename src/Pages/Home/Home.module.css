@@ -16,8 +16,8 @@
 }
 .rightSide{
     background-color: #f6f6f6;
-    padding-left: 32px;
-    padding-right: 32px;
+    /* padding-left: 32px;
+    padding-right: 32px; */
     padding-top: 50px;
     height: 100vh;
     width: 100%;

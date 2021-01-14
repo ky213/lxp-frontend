@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ROLE_LEARNER, ROLE_MANAGER } from '../../Utils/constants';
-import HomeActivities from './Activities/HomeActivities';
+import HomeActivities from './Activities/LearnerHomeActivities/HomeActivities';
+import ManagerHomeActivities from './Activities/ManagerHomeActivities/ManagerHomeActivities';
 import HomeCourses from './Courses/Courses';
 import classes from './Home.module.css';
 import HomePrograms from './Programs/HomePrograms';
@@ -44,7 +45,10 @@ const Home = (props) => {
                 <div className={classes.rightSide}>
                     <div className={classes.containerRight}>
                         <div className={classes.activities}>
-                            <HomeActivities activities={props.activities}/>
+                            {props.user.roleId === ROLE_LEARNER &&
+                            <HomeActivities activities={props.activities}/>}
+                            {props.user.roleId === ROLE_MANAGER && 
+                            <ManagerHomeActivities activities={props.activities}/>}
                         </div>
                     </div>
                 </div>

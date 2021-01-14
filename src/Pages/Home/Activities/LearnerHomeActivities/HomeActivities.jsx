@@ -1,10 +1,10 @@
 import React from 'react';
 import classes from './HomeActivities.module.css';
-import { activitiesicon } from '../../../Assets/Images/activities';
+import { activitiesicon } from '../../../../Assets/Images/activities';
 import { NavLink } from 'react-router-dom';
-import ActivityItem from '../../Activites/ActivityItem/ActivityItem';
+import ActivityItem from '../../../Activites/ActivityItem/ActivityItem';
 import { useTranslation } from 'react-i18next';
-import { empty_state_icon } from '../../../Assets/Images/empty_state_icon';
+import { empty_state_icon } from '../../../../Assets/Images/empty_state_icon';
 
 const HomeActivities = (props) => {
     const {t, i18n} = useTranslation();

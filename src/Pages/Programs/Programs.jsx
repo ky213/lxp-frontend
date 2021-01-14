@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { empty_state_icon } from '../../Assets/Images/empty_state_icon';
 import { ROLE_LEARNER, ROLE_MANAGER } from '../../Utils/constants';
 import { NavLink } from 'react-router-dom';
+import ProgramItem from './ProgramItem/ProgramItem';
 
 const StyledLabel = styled.label`
     margin-left: ${({ direction }) => direction === "rtl" ? "56px" : "0"};
@@ -17,8 +18,10 @@ const Programs = (props) => {
 
 
     let programs = [];
-
     
+    programs = props.programs.map(prog => {
+        return <ProgramItem item={prog}/>
+    })
 
     return (
         <div className={classes.main}>
@@ -29,9 +32,7 @@ const Programs = (props) => {
                     <div className={classes.headerHeader}>
                         <h1>{t("programs.title")}</h1>
                         <NavLink to="/programs/add">
-                            <div>
-                                <span>+</span>
-                            </div>
+                            <span>+</span>
                             {t("programs.addProgram")}
                         </NavLink>
                     </div>}

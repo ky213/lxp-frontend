@@ -21,7 +21,8 @@ import LessonsContainer from "./Pages/Lessons/LessonsContainer";
 import ProgramsContainer from "./Pages/Programs/ProgramsContainer";
 import SearchResultContainer from "./Pages/SearchResult/SearchResultContainer";
 import NotificationsContainer from "./Pages/Notifications/NotificationsContainer";
-import LibraryContainer from "./Pages/Activites/Library/LibraryContainer";
+import AddProgram from "./Pages/Programs/AddProgram/AddProgram";
+import ResourcesContainer from "./Pages/Activites/Resources/ResourcesContainer";
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -65,13 +66,14 @@ const App = (props) => {
           <Route path="/activities/add" render={() => <LoadDataRouter Component={AddActivity} />}/>
           <Route path="/activities/edit/:activityId" render={() => <LoadDataRouter Component={EditActivity} />}/>
           <Route exact path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />}/>
+          <Route path="/programs/add" render={() => <LoadDataRouter Component={AddProgram} />}/>
           <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />}/>
           <Route path="/login" render={() => <Login />} />
           <Route path="/forgot_password" render={() => <ForgotPassword />} />
           <Route path="/report" render={() => <LoadDataRouter Component={ReportsContainer} />}/>
           <Route path="/search" render={() => <LoadDataRouter Component={SearchResultContainer} />}/>
           <Route path="/home/notifications" render={() => <LoadDataRouter Component={NotificationsContainer} />}/>
-          <Route path="/library" render={() => <LoadDataRouter Component={LibraryContainer} />}/>
+          <Route path="/resources" render={() => <LoadDataRouter Component={ResourcesContainer} />}/>
         </Switch>
       </StyledContentContainer>
     </BrowserRouter>

@@ -3,6 +3,9 @@ import { NavLink } from 'react-router-dom';
 import ProgressBar from '../../Common/ProgressBar/ProgressBar';
 import classes from './Statistic.module.css';
 import { useTranslation } from 'react-i18next';
+import { ROLE_LEARNER, ROLE_MANAGER } from '../../../Utils/constants';
+import { learnersicon } from '../../../Assets/Images/learners.js';
+import { libraryicon } from '../../../Assets/Images/library';
 
 const Statistic = (props) => {
     const {t, i18n} = useTranslation();
@@ -27,6 +30,7 @@ const Statistic = (props) => {
                     <span><strong>34 {t("home.statistic.infoUser.hours")}</strong></span>
                 </div>
             </div>
+            {props.user.roleId === ROLE_LEARNER &&
             <div className={classes.block + " " + classes.programs}>
                 <div className={classes.programsHeader}>
                     <h4>{t("home.statistic.programs.programs")}</h4>
@@ -53,9 +57,25 @@ const Statistic = (props) => {
                         <span>60%</span>
                     </div>
                 </div>
-            </div>
+            </div>}
+            {props.user.roleId === ROLE_LEARNER &&
             <div className={classes.block + " " + classes.stats}>
                 <h4>{t("home.statistic.stats.stats")}</h4>
+            </div>}
+            
+            <div className={classes.block + " " + classes.quickAccess}>
+                <h4>{t("home.statistic.quickAccess.title")}</h4>
+                <div className={classes.links}>
+                    {props.user.roleId === ROLE_MANAGER &&
+                    <NavLink to="/resources">
+                        {libraryicon}
+                        <span>{t("home.statistic.quickAccess.resources")}</span>
+                    </NavLink>}
+                    <NavLink to="/learners">
+                        {learnersicon}
+                        <span>{t("home.statistic.quickAccess.learners")}</span>
+                    </NavLink>
+                </div>
             </div>
         </div>
     );

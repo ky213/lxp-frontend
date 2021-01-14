@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import classes from './Library.module.css';
+import classes from './Resources.module.css';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { empty_state_icon } from '../../../Assets/Images/empty_state_icon';
@@ -9,7 +9,7 @@ const StyledLabel = styled.label`
     margin-right: ${({ direction }) => direction === "ltr" ? "56px" : "0"};
 `;
 
-const Library = (props) => {
+const Resource = (props) => {
     const { t, i18n } = useTranslation();
 
 
@@ -24,7 +24,7 @@ const Library = (props) => {
         <div className={classes.main}>
             <div className={classes.header}>
                 <div className={classes.container}>
-                    <h1>{t("activities.library.title")}</h1>
+                    <h1>{t("activities.resources.title")}</h1>
                     <div className={classes.filters}>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("courses.filters.all")}</span>
@@ -32,17 +32,17 @@ const Library = (props) => {
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
-                            <span className={classes.filterText}>{t("activities.library.images")}</span>
+                            <span className={classes.filterText}>{t("activities.resources.images")}</span>
                             <input type="checkbox" onChange={() => { props.setIsImage(!props.isImage) }} checked={props.isImage} />
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
-                            <span className={classes.filterText}>{t("activities.library.hyperlinks")}</span>
+                            <span className={classes.filterText}>{t("activities.resources.hyperlinks")}</span>
                             <input type="checkbox" onChange={() => { props.setIsHyperlink(!props.isHyperlink) }} checked={props.isHyperlink} />
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
                         <StyledLabel className={classes.filter} direction={props.direction}>
-                            <span className={classes.filterText}>{t("activities.library.files")}</span>
+                            <span className={classes.filterText}>{t("activities.resources.files")}</span>
                             <input type="checkbox" onChange={() => { props.setIsFiles(!props.isFiles) }} checked={props.isFiles} />
                             <span className={classes.checkmark}></span>
                         </StyledLabel>
@@ -56,7 +56,7 @@ const Library = (props) => {
                             <div className={classes.emptyIcon}>
                                 {empty_state_icon}
                             </div>
-                            <span>{t("activities.library.noResources")}</span>
+                            <span>{t("activities.resources.noResources")}</span>
                         </div>
                     }
                 </div>
@@ -65,4 +65,4 @@ const Library = (props) => {
     );
 }
 
-export default Library;
+export default Resource;

@@ -1,9 +1,9 @@
 import React from 'react';
-import classes from './LibraryItem.module.css';
+import classes from './ResourceItem.module.css';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-const LibraryItem = (props) => {
+const ResourceItem = (props) => {
     const {t, i18n} = useTranslation();
     
     return(
@@ -29,4 +29,4 @@ const LibraryItem = (props) => {
     );
 }
 
-export default LibraryItem;
+export default ResourceItem;

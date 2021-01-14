@@ -1,31 +1,30 @@
 {
-    "navbar": {
-        "home": "Домой",
-        "programs": "Программы",
-        "courses": "Курсы",
-        "activities": "Активности",
-        "myreport": "Мои отчеты"
-    },
-    "home":{
-        "statistic": {
-            "infoUser":{
-                "welcome": "Добро пожаловать, ",
-                "learningHours": "Часы обучения",
-                "hours": "ч.",
-                "and": "и",
-                "mins": "мин.",
-                "learningGoal": "Годовая Учебная Цель"
-            },
-            "programs": {
-                "programs": "Программы",
-                "cybersecurity": "Кибербезопасность",
-                "writing": "Письмо",
-                "tech": "Информационные Технологии"
-            },
-            "stats": {
-                "stats": "Статистика"
-            }
-
-        }
-    } 
+  "navbar": {
+    "home": "الصفحة الرئيسية",
+    "programs": "البرامج",
+    "courses": "الدورات",
+    "activities": "أنشطة",
+    "myreport": "تقريري"
+  },
+  "home": {
+    "statistic": {
+      "infoUser": {
+        "welcome": "أهلا بك",
+        "learningHours": "ساعات التدريب",
+        "hours": "س.",
+        "and": "و",
+        "mins": "دقيقة.",
+        "learningGoal": "هدف الدراسة السنوية"
+      },
+      "programs": {
+        "programs": "البرامج",
+        "cybersecurity": "الأمن الإلكتروني",
+        "writing": "رسالة",
+        "tech": "تكنولوجيا المعلومات"
+      },
+      "stats": {
+        "stats": "الإحصاء"
+      }
+    }
+  }
 }

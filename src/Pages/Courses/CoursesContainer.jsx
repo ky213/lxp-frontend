@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Courses from './Courses';
-import { getCourses } from '../../Redux/coursesReducer';
+import { getCourses } from '../../Store/Reducers/courses';
 import Preloader from '../Common/Preloader/Preloader';
 
 const CoursesContainer = (props) => {

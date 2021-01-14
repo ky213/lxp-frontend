@@ -8,7 +8,7 @@ import { required } from '../../../Utils/validators';
 import CustomSelect from '../../Common/Cutsom/Select/CustomSelect';
 import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../../Common/Preloader/Preloader';
-import { getActivity } from '../../../Redux/activitiesReducer';
+import { getActivity } from '../../../Store/Reducers/activities';
 import styled from 'styled-components';
 import ActivityFile from '../ActivityFile/ActivityFile';
 import { FileDrop } from 'react-file-drop';

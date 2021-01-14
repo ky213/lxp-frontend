@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import classes from './ProfileMenu.module.css';
-import { logout } from '../../../Redux/userReducer';
+import { logout } from '../../../Store/Reducers/user';
 import { logout_icon } from '../../../Assets/Images/logout_icon';
 import { profile_settings_icon } from '../../../Assets/Images/profile_settings_icon';
 

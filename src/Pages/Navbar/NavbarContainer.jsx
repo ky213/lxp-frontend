@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar';
-import { getNotifications } from '../../Redux/notificationsReducer';
-import { setCurrentLanguage } from '../../Redux/commonReducer';
+import { getNotifications } from '../../Store/Reducers/notifications';
+import { setCurrentLanguage } from '../../Store/Reducers/common';
 
 const NavbarContainer = (props) => {
     const [isOpenSearchModal, setIsOpenSearchModal] = useState(false);

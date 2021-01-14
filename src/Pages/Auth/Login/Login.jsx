@@ -6,8 +6,8 @@ import { NavLink, Redirect } from 'react-router-dom';
 import Preloader from '../../Common/Preloader/Preloader';
 import { AuthInput } from '../../Common/FormControlls/FormControlls';
 import { useTranslation } from 'react-i18next';
-import { login } from '../../../Redux/userReducer';
-import { setCurrentRoute } from '../../../Redux/commonReducer';
+import { login } from '../../../Store/Reducers/user';
+import { setCurrentRoute } from '../../../Store/Reducers/common';
 import { isEmail, required } from '../../../Utils/validators';
 
 const LoginForm = (props) => {

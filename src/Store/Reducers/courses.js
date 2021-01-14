@@ -1,7 +1,5 @@
-import { coursesApi } from '../Api/api';
-import img1 from '../Assets/Images/Mocks/img1.jpg';
-import img2 from '../Assets/Images/Mocks/img2.jpg';
-import { setIsFetching } from './commonReducer';
+import { coursesApi } from '../../Services/api';
+import { setIsFetching } from "./common";
 
 const SET_COURSES_DATA = 'SET_COURSES_DATA';
 const SET_JOINED_COURSES = 'SET_JOINED_COURSES';

@@ -1,5 +1,5 @@
-import { programsApi } from "../Api/api";
-import { setIsFetching } from "./commonReducer";
+import { programsApi } from "../../Services/api";
+import { setIsFetching } from "./common";
 
 const SET_PROGRAMS_DATA = 'SET_PROGRAMS_DATA';
 const SET_PAGE_ID = 'SET_PAGE_ID';

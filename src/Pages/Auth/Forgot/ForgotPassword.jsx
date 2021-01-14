@@ -6,7 +6,7 @@ import { AuthInput } from '../../Common/FormControlls/FormControlls';
 import { required, passValidationMatch } from '../../../Utils/validators';
 import Preloader from '../../Common/Preloader/Preloader';
 import { connect } from 'react-redux';
-import { setCurrentRoute } from '../../../Redux/commonReducer';
+import { setCurrentRoute } from '../../../Store/Reducers/common';
 import { Redirect } from 'react-router-dom';
 
 const ForgotPasswordForm = (props) => {

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Preloader from '../Common/Preloader/Preloader';
 import Notifications from './Notifications';
-import { getNotifications } from '../../Redux/notificationsReducer';
+import { getNotifications } from '../../Store/Reducers/notifications';
 
 const NotificationsContainer = (props) => {
     useEffect(()=>{

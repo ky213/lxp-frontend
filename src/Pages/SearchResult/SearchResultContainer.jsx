@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Preloader from '../Common/Preloader/Preloader';
 import SearchResult from './SearchResult';
-import { setSearchValue } from '../../Redux/commonReducer'
+import { setSearchValue } from '../../Store/Reducers/common'
 
 const SearchResultContainer = (props) => {
     const [searchValue, setSearchValue] = useState("");

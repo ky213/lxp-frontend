@@ -1,5 +1,5 @@
-import { activitiesApi } from "../Api/api";
-import { setIsFetching } from "./commonReducer";
+import { activitiesApi } from "../../Services/api";
+import { setIsFetching } from "./common";
 
 const SET_CURRENT_ACTIVITY = 'SET_CURRENT_ACTIVITY';
 const SET_ACTIVITIES_DATA = 'SET_ACTIVITIES_DATA';

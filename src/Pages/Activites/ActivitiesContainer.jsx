@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Activities from './Activities';
-import { getActivities } from '../../Redux/activitiesReducer';
+import { getActivities } from '../../Store/Reducers/activities';
 import Preloader from '../Common/Preloader/Preloader';
 import { useLayoutEffect } from 'react';
 

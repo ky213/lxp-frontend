@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Preloader from '../Common/Preloader/Preloader';
 import Reports from './Reports';
-import { getActivities } from '../../Redux/activitiesReducer';
-import { setJoinedCourses } from '../../Redux/coursesReducer';
+import { getActivities } from '../../Store/Reducers/activities';
+import { setJoinedCourses } from '../../Store/Reducers/courses';
 
 const ReportsContainer = (props) => {
     useEffect(()=>{

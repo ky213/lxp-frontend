@@ -5,7 +5,7 @@ import { searchicon } from '../../../Assets/Images/searchicon.js';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { setSearchValue } from '../../../Redux/commonReducer';
+import { setSearchValue } from '../../../Store/Reducers/common';
 
 const StyledModal = styled.div`
     transform: ${({ direction }) => direction === "ltr" ? 'translateY(100px) translateX(-647px)' : 'translateY(100px) translateX(647px)' }; 

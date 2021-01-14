@@ -1,5 +1,5 @@
-import { notificationsApi } from "../Api/api";
-import { setIsFetching } from "./commonReducer";
+import { notificationsApi } from "../../Services/api";
+import { setIsFetching } from "./common";
 
 const SET_UNREAD_NOTIFICATIONS_DATA = 'SET_UNREAD_NOTIFICATIONS_DATA';
 const SET_TOTAL_UNREAD_NOTIFICATIONS_COUNT = 'SET_TOTAL_UNREAD_NOTIFICATIONS_COUNT';

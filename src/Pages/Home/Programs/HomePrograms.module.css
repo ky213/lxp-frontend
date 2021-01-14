@@ -3,32 +3,32 @@
     flex-direction: column;
     width: 542px;
 }
-.coursesHeader{
+.header{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.coursesHeaderBlock{
+.headerBlock{
     display: flex;
     align-items: center;
 }
-.coursesHeaderBlock svg path{
+.headerBlock svg path{
     fill: #42a678;
 }
-.coursesHeaderBlock span{
+.headerBlock span{
     color: #3d3d3d;
     font-size: 20px;
     font-weight: 500;
     margin-left: 10px;
     margin-right: 10px;
 }
-.coursesHeader a{
+.header a{
     text-decoration: none;
     color: #3d3d3d;
     font-size: 14px;
     font-weight: 500;
 }
-.coursesHeader a:hover{
+.header a:hover{
     text-decoration: underline;
 }
 .itemsList{

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Programs from './Programs';
-import { getPrograms } from '../../Redux/programsReducer';
+import { getPrograms } from '../../Store/Reducers/programs';
 import Preloader from '../Common/Preloader/Preloader';
 
 
@@ -40,6 +40,15 @@ const ProgramsContainer = (props) => {
         }
     },[completed, inProgress, notStarted]);
 
+    useEffect(()=>{
+        if(props.programs.length < 1){
+            setAll(false);
+            setCompleted(false);
+            setInProgress(false);
+            setNotStarted(false);
+        }
+    },[props.programs]);
+
     return(
         <>
             {props.isFetching ? <Preloader/> :
@@ -48,7 +57,8 @@ const ProgramsContainer = (props) => {
                     all={all} setAll={handleAll}
                     completed={completed} setCompleted={setCompleted}
                     inProgress={inProgress} setInProgress={setInProgress}
-                    notStarted={notStarted} setNotStarted={setNotStarted}/>}
+                    notStarted={notStarted} setNotStarted={setNotStarted}
+                    user={props.user}/>}
         </>
     );
 }

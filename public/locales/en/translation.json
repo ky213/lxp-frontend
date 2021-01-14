@@ -4,6 +4,7 @@
         "home": "Home",
         "programs": "Programs",
         "courses": "Courses",
+        "learners": "Learners",
         "activities": "Activities",
         "myActivities": "My Activities",
         "library": "Library",
@@ -56,6 +57,14 @@
             "title": "Activities",
             "viewAll": "View all",
             "empty": "You have no activities"
+        },
+        "programs": {
+            "title": "Programs",
+            "viewAll": "View all",
+            "empty": "You do not have any programs yet"
+        },
+        "learners": {
+            "title": "Learners"
         }
     },
     "courseMini": {
@@ -200,7 +209,15 @@
     },
     "programs": {
         "title": "Programs",
-        "empty": "No Aviable Programs"
+        "empty": "No Aviable Programs",
+        "addProgram": "Add Program",
+        "emptyManager": "There are no programs here yet"
+    },
+    "addProgram": {
+        "title": "Add a new program",
+        "name": "Program name",
+        "namePlaceholder": "e.g: Data Science",
+        "defSelectDepartament": "Select department"
     },
     "searchResult": {
         "title": "Search results for",

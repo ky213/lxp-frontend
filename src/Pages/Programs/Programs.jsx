@@ -3,6 +3,8 @@ import classes from './Programs.module.css';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { empty_state_icon } from '../../Assets/Images/empty_state_icon';
+import { ROLE_LEARNER, ROLE_MANAGER } from '../../Utils/constants';
+import { NavLink } from 'react-router-dom';
 
 const StyledLabel = styled.label`
     margin-left: ${({ direction }) => direction === "rtl" ? "56px" : "0"};
@@ -16,15 +18,23 @@ const Programs = (props) => {
 
     let programs = [];
 
-    programs = props.programs.map(program => {
-
-    });
+    
 
     return (
         <div className={classes.main}>
             <div className={classes.header}>
                 <div className={classes.container}>
-                    <h1>{t("programs.title")}</h1>
+                    {props.user.roleId === ROLE_LEARNER && <h1>{t("programs.title")}</h1>}
+                    {props.user.roleId === ROLE_MANAGER &&
+                    <div className={classes.headerHeader}>
+                        <h1>{t("programs.title")}</h1>
+                        <NavLink to="/programs/add">
+                            <div>
+                                <span>+</span>
+                            </div>
+                            {t("programs.addProgram")}
+                        </NavLink>
+                    </div>}
                     <div className={classes.filters}>
                         <StyledLabel className={classes.filter} direction={props.direction}>
                             <span className={classes.filterText}>{t("courses.filters.all")}</span>
@@ -56,7 +66,8 @@ const Programs = (props) => {
                             <div className={classes.emptyIcon}>
                                 {empty_state_icon}
                             </div>
-                            <span>{t("programs.empty")}</span>
+                            <span>{t("programs.emptyManager")}</span>
+                            <NavLink to="/programs/add">{t("programs.addProgram")}</NavLink>
                         </div>
                     }
                 </div>

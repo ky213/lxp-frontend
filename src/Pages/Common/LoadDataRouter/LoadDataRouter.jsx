@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { setCurrentRoute } from '../../../Redux/commonReducer';
-import { getUserProfile, getProfile } from '../../../Redux/userReducer';
+import { setCurrentRoute } from '../../../Store/Reducers/common';
+import { getUserProfile, getProfile } from '../../../Store/Reducers/user';
 import Login from '../../Auth/Login/Login';
-import { getUnreadNotifications } from '../../../Redux/notificationsReducer';
+import { getUnreadNotifications } from '../../../Store/Reducers/notifications';
 
 const LoadDataRouter = ({Component, isAuth, setCurrentRoute,
                         currentRoute, getUserProfile, getProfile, isStartData,

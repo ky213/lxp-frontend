@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Preloader from '../Common/Preloader/Preloader';
 import Home from './Home';
-import { getCourses, setJoinedCourses } from '../../Redux/coursesReducer';
-import { getActivities } from '../../Redux/activitiesReducer';
+import { getCourses, setJoinedCourses } from '../../Store/Reducers/courses';
+import { getActivities } from '../../Store/Reducers/activities';
 
 const HomeContainer = (props) => {
     useEffect(()=>{

@@ -1,6 +1,6 @@
 import { stopSubmit } from "redux-form";
-import { userApi } from "../Api/api";
-import { setIsFetching } from "./commonReducer";
+import { userApi } from "../../Services/api";
+import { setIsFetching } from "./common";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_IS_AUTH = 'SET_IS_AUTH';

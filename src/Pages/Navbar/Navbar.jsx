@@ -8,6 +8,7 @@ import { activitiesicon } from '../../Assets/Images/activities.js';
 import { coursesicon } from '../../Assets/Images/courses.js';
 import { notificationicon } from '../../Assets/Images/notification.js';
 import { homeicon } from '../../Assets/Images/homeicon.js';
+import { learnersicon } from '../../Assets/Images/learners.js';
 import { searchicon } from '../../Assets/Images/searchicon.js';
 import Burger from './Burger/Burger';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,7 @@ import NotificationsModal from '../Notifications/NotificationsModal/Notification
 import {planeticon} from '../../Assets/Images/planet_icon'
 import { useSelector } from 'react-redux';
 import Submenu from './Submenu/Submenu';
+import { ROLE_LEARNER, ROLE_MANAGER } from '../../Utils/constants';
 
 const StyledLogoBlock = styled.div`
     a span{
@@ -80,10 +82,17 @@ const Navbar = (props) => {
                             </NavLink>
                         </div>
                         <div className={classes.menuItem}>
+                            {props.user.roleId === ROLE_LEARNER &&
                             <NavLink to="/courses" activeClassName={classes.active}>
                                 {coursesicon}
                                 {t("navbar.courses")}
-                            </NavLink>
+                            </NavLink>}
+                            {props.user.roleId === ROLE_MANAGER && 
+                            <NavLink to="/learners" activeClassName={classes.active} className={classes.learnersLink}>
+                                {learnersicon}
+                                {t("navbar.learners")}
+                            </NavLink>}
+                            
                         </div>
                         <div className={classes.menuItem + " " + classes.menuHover}>
                             <span className={(props.currentRoute === "/activities" || 
@@ -124,9 +133,10 @@ const Navbar = (props) => {
                     <StyledNotifications className={classes.notifications} direction={props.direction}>
                         <button onClick={()=>{props.setIsOpenNotificationsModal(!props.isOpenNotificationsModal)}} className={classes.notBut + " " + (props.isOpenNotificationsModal && classes.activeModalNotifications)}>
                             {notificationicon}
+                            {props.totalUnreadNotificationsCount > 0 &&
                             <div className={classes.notificationsCount}>
                                 {props.totalUnreadNotificationsCount}
-                            </div>
+                            </div>}
                         </button>
                     </StyledNotifications>
                     {props.isOpenNotificationsModal && <NotificationsModal setIsOpenNotificationsModal={props.setIsOpenNotificationsModal}/>}

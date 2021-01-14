@@ -29,7 +29,7 @@ const Activities = (props) => {
                         <h1>{t("activities.title")}</h1>
                         <NavLink to="/activities/add">
                             <div>
-                                +
+                                <span>+</span>
                             </div>
                             {t("activities.addActivityBut")}
                         </NavLink>

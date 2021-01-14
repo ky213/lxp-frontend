@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ROLE_LEARNER, ROLE_MANAGER } from '../../Utils/constants';
 import HomeActivities from './Activities/HomeActivities';
 import HomeCourses from './Courses/Courses';
 import classes from './Home.module.css';
+import HomePrograms from './Programs/HomePrograms';
 import Statistic from './Statistic/Statistic';
 
-const StyledCoursesContainer = styled.div`
+const StyledContentContainer = styled.div`
     @media screen and (max-width: 1279px){
         margin-left: ${({ direction }) => direction === "ltr" ? "50px" : "0"};
         margin-right: ${({ direction }) => direction === "rtl" ? "50px" : "0"};
@@ -30,9 +32,13 @@ const Home = (props) => {
                         <div className={classes.statistic}>
                             <Statistic user={props.user}/>
                         </div>
-                        <StyledCoursesContainer direction={props.direction} className={classes.courses}>
-                            <HomeCourses courses={props.courses}/>
-                        </StyledCoursesContainer>
+                        <StyledContentContainer direction={props.direction} className={classes.courses}>
+                            {props.user.roleId === ROLE_LEARNER &&
+                            <HomeCourses courses={props.courses}/>}
+                            {props.user.roleId === ROLE_MANAGER && 
+                            <HomePrograms programs={props.programs}/>}
+                        </StyledContentContainer>
+                        
                     </div>
                 </StyledLeftSide>
                 <div className={classes.rightSide}>

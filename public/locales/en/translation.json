@@ -91,6 +91,20 @@
             "all": "All"
         }
     },
+    "addCourse": {
+        "title": "Add a new course",
+        "name": "Course name",
+        "namePlaceholder": "e.g: Simple Linear Regression",
+        "courseThumbnail": "Course thumbnail",
+        "uploadImage": "Upload Image",
+        "dragImage": "or drag and drop the image here",
+        "courseLessons": "Course lessons",
+        "uploadLesson": "Upload course file",
+        "dragFile": "or drag and drop the file here",
+        "ability": "You can upload more than one lesson",
+        "addCourse":"Add course",
+        "cancel": "Cancel"
+    },
     "activityMini": {
         "daysLeft": " days left",
         "daysAgo": " days ago",
@@ -223,6 +237,22 @@
         "empty": "No Aviable Programs",
         "addProgram": "Add Program",
         "emptyManager": "There are no programs here yet"
+    },
+    "programMini":{
+        "label": "program",
+        "attendees": "attendees",
+        "courses": "Courses"
+    },
+    "programLearners": {
+        "title": "- Learners",
+        "searchPlaceholder": "Search for a learner",
+        "empty": "Learners list is empty."
+    },
+    "programView": {
+        "courses": "Courses",
+        "edit": "Edit",
+        "empty": "This program has no courses yet",
+        "addCourse": "Add course"
     },
     "addProgram": {
         "title": "Add a new program",

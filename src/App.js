@@ -23,6 +23,9 @@ import SearchResultContainer from "./Pages/SearchResult/SearchResultContainer";
 import NotificationsContainer from "./Pages/Notifications/NotificationsContainer";
 import AddProgram from "./Pages/Programs/AddProgram/AddProgram";
 import ResourcesContainer from "./Pages/Activites/Resources/ResourcesContainer";
+import ProgramAttendeesContainer from "./Pages/Programs/ProgramDetails/ProgramAttendees/ProgramAttendeesContainer";
+import ProgramViewContainer from "./Pages/Programs/ProgramDetails/ProgramView/ProgramViewContainer";
+import AddCourse from "./Pages/Courses/AddCourse/AddCourse";
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -60,13 +63,16 @@ const App = (props) => {
           </Route>
           <Route exact path="/home" render={() => <LoadDataRouter Component={HomeContainer} />}/>
           <Route exact path="/courses" render={() => <LoadDataRouter Component={CoursesContainer} />}/>
-          <Route path="/courses/:courseId" render={() => <LoadDataRouter Component={LessonsContainer} />}/>
+          <Route path="/courses/view/:courseId" render={() => <LoadDataRouter Component={LessonsContainer} />}/>
+          <Route path="/courses/add" render={() => <LoadDataRouter Component={AddCourse} />}/>
           <Route path="/activities/view/:activityId" render={() => <LoadDataRouter Component={Activity} />}/>
           <Route exact path="/activities" render={() => <LoadDataRouter Component={ActivitiesContainer} />}/>
           <Route path="/activities/add" render={() => <LoadDataRouter Component={AddActivity} />}/>
           <Route path="/activities/edit/:activityId" render={() => <LoadDataRouter Component={EditActivity} />}/>
           <Route exact path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />}/>
           <Route path="/programs/add" render={() => <LoadDataRouter Component={AddProgram} />}/>
+          <Route path="/programs/:programId/attendees" render={() => <LoadDataRouter Component={ProgramAttendeesContainer} />}/>
+          <Route path="/programs/:programId" render={() => <LoadDataRouter Component={ProgramViewContainer} />}/>
           <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />}/>
           <Route path="/login" render={() => <Login />} />
           <Route path="/forgot_password" render={() => <ForgotPassword />} />

@@ -82,6 +82,12 @@
   .timeBlock {
     margin-bottom: 10px;
   }
+  .program{
+    align-self: flex-start;
+  }
+  .status{
+    margin-top: 6px;
+  }
 }
 
 @media screen and (max-width: 360px) {

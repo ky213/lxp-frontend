@@ -196,8 +196,8 @@ const AddActivity = (props) => {
 
     let onSubmit = (formData) => {
         console.log(formData);
-
     }
+    
     return(
         <div className={classes.main}>
             {props.isFetching && <Preloader/>}

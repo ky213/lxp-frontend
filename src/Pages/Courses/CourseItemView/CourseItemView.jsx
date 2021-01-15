@@ -7,7 +7,7 @@ const CourseItem = (props) => {
     const {t, i18n} = useTranslation();
     return(
         <div className={classes.main}>
-            <NavLink to={`/courses/${props.item.courseId}`}>
+            <NavLink to={`/courses/view/${props.item.courseId}`}>
                 {(props.item.image != "null") ? <img src={props.item.image}/> : <div className={classes.defaultImg}></div>}
                 <div className={classes.itemInfo}>
                     <label>{props.item.description}</label>

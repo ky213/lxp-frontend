@@ -5,10 +5,12 @@ const SET_PROGRAMS_DATA = 'SET_PROGRAMS_DATA';
 const SET_PAGE_ID = 'SET_PAGE_ID';
 const SET_PER_PAGE = 'SET_PER_PAGE';
 const SET_TOTAL_PROGRAMS_COUNT = 'SET_TOTAL_PROGRAMS_COUNT';
+const SET_CURRENT_PROGRAM = 'SET_CURRENT_PROGRAM';
 
 let initialState = {
     programs: [],
     totalProgramsCount: 0,
+    currentProgram: [],
     pageId: 1,
     perPage: 15
 }
@@ -27,6 +29,9 @@ const programsReducer = (state = initialState, action) => {
         case SET_TOTAL_PROGRAMS_COUNT: {
             return { ...state, totalProgramsCount: action.totalProgramsCount }
         }
+        case SET_CURRENT_PROGRAM: {
+            return { ...state, currentProgram: action.currentProgram }
+        }
         default:
             return state;
     }
@@ -43,6 +48,9 @@ export const setPerPage = (perPage) => ({
 });
 export const setTotalProgramsCount = (totalProgramsCount) => ({
     type: SET_TOTAL_PROGRAMS_COUNT, totalProgramsCount
+});
+export const setCurrentProgram = (currentProgram) => ({
+    type: SET_CURRENT_PROGRAM, currentProgram
 });
 
 export const getPrograms = (organizationId, pageId, perPage) => async (dispatch) => {

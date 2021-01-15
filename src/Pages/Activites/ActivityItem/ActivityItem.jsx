@@ -37,6 +37,11 @@ const StyledLearners = styled.div`
     margin-right: ${({ direction }) => direction === "rtl" ? "16px" : "0"};
 `;
 
+const StyledCountLearners = styled.div`
+    margin-left: ${({ direction }) => direction === "ltr" ? "4px" : "0"};
+    margin-right: ${({ direction }) => direction === "rtl" ? "4px" : "0"};
+`
+
 const ActivityItem = (props) => {
     const {t, i18n} = useTranslation();
     let widthProgressBar = 45;
@@ -66,7 +71,7 @@ const ActivityItem = (props) => {
                         {props.user.roleId === ROLE_MANAGER && 
                             <StyledLearners direction={props.direction} className={classes.learners}>
                                 {learnersicon}
-                                <span>{props.item.learners ? props.item.learners : 0} {t("activityMini.learners")}</span>
+                                <StyledCountLearners direction={props.direction}>{props.item.learners ? props.item.learners : 0} {t("activityMini.learners")}</StyledCountLearners>
                             </StyledLearners>
                         }
                     </div>

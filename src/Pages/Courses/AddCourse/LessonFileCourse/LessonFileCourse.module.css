@@ -1,0 +1,42 @@
+.main{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress{
+    width: 75%;
+    height: 8px;
+    background-color: rgba(66, 166, 120, 0.2);
+    border-radius: 20px;
+}
+.name{
+    width: 50px;
+    font-size: 14px;
+    color: #5b5b5b;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+}
+.main button{
+    cursor: pointer;
+    outline: none;
+    color: #e02929;
+    border: 1px solid #e02929;
+    border-radius: 50%;
+    background-color: transparent;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    padding: 1px 5px;
+}
+.main button span{
+    position: relative;
+    top: -1px;
+}
+.progressCount{
+    font-size: 12px;
+    color: #6e798c;
+    font-weight: 500;
+}

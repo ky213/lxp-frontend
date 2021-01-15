@@ -1,4 +1,4 @@
-import { notificationsApi } from '../../Services/api';
+import { notificationService } from '../../Services';
 import { setIsFetching } from './common';
 
 const SET_UNREAD_NOTIFICATIONS_DATA = 'SET_UNREAD_NOTIFICATIONS_DATA';
@@ -71,7 +71,7 @@ export const setTotatlNotificationsCount = totalNotificationsCount => ({
 export const getUnreadNotifications = (limit, selectedOrganizationId) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let respnose = await notificationsApi.getUnreadNotifications(limit, selectedOrganizationId);
+    let respnose = await notificationService.getUnreadNotifications(limit, selectedOrganizationId);
     dispatch([
       setTotalUnreadNotificationsCount(respnose.totalUnreadCount),
       setUnreadNotificationsData(respnose.unreadNotifications),
@@ -85,7 +85,7 @@ export const getUnreadNotifications = (limit, selectedOrganizationId) => async d
 export const getNotifications = (currentPage, pageSize) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let response = await notificationsApi.getNotifications(currentPage, pageSize);
+    let response = await notificationService.getNotifications(currentPage, pageSize);
     console.log(response);
     dispatch([
       setNotificationsData(response.notifications),

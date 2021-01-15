@@ -1,5 +1,5 @@
 import { stopSubmit } from 'redux-form';
-import { userApi } from '../../Services/api';
+import { userService } from '../../Services';
 import { setIsFetching } from './common';
 
 const SET_USER_DATA = 'SET_USER_DATA';
@@ -54,7 +54,7 @@ export const setEmployeeId = employeeId => ({
 export const login = (email, password, isRememberMe) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let response = await userApi.login(email, password);
+    let response = await userService.login(email, password);
     if (isRememberMe) {
       localStorage.setItem('usertoken', response.token);
     } else {
@@ -71,7 +71,7 @@ export const login = (email, password, isRememberMe) => async dispatch => {
 export const getProfile = token => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let response = await userApi.getProfile(token);
+    let response = await userService.getProfile(token);
     dispatch([setUserData(response.user), setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));
@@ -81,7 +81,7 @@ export const getProfile = token => async dispatch => {
 export const getUserProfile = employeeId => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let respnose = await userApi.getUserProfile(employeeId);
+    let respnose = await userService.getUserProfile(employeeId);
     dispatch([setUserData(respnose), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));

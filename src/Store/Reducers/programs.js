@@ -1,4 +1,4 @@
-import { programsApi } from '../../Services/api';
+import { programService } from '../../Services';
 import { setIsFetching } from './common';
 
 const SET_PROGRAMS_DATA = 'SET_PROGRAMS_DATA';
@@ -43,7 +43,7 @@ export const setPerPage = perPage => ({
 export const getPrograms = (organizationId, pageId, perPage) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let respnose = await programsApi.getPrograms(organizationId, pageId, perPage);
+    let respnose = await programService.getPrograms(organizationId, pageId, perPage);
     dispatch([setProgramsData(respnose), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));

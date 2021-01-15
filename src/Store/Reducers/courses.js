@@ -1,4 +1,4 @@
-import { coursesApi } from '../../Services/api';
+import { courseService } from '../../Services';
 import { setIsFetching } from './common';
 
 const SET_COURSES_DATA = 'SET_COURSES_DATA';
@@ -36,7 +36,7 @@ export const setJoinedCourses = joinedCourses => ({
 export const getCourses = (organizationId, page, take) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let respnose = await coursesApi.getCourses(organizationId, page, take);
+    let respnose = await courseService.getCourses(organizationId, page, take);
     dispatch([setCoursesData(respnose.courses), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));

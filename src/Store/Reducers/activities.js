@@ -1,4 +1,4 @@
-import { activitiesApi } from '../../Services/api';
+import { activityService } from '../../Services';
 import { setIsFetching } from './common';
 
 const SET_CURRENT_ACTIVITY = 'SET_CURRENT_ACTIVITY';
@@ -34,7 +34,7 @@ export const setActivitiesData = activities => ({
 export const getActivities = (employeeId, userId, organizationId) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let response = await activitiesApi.getActivities(employeeId, userId, organizationId);
+    let response = await activityService.getActivities(employeeId, userId, organizationId);
     dispatch([setActivitiesData(response), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));
@@ -44,7 +44,7 @@ export const getActivities = (employeeId, userId, organizationId) => async dispa
 export const getActivity = (activityId, selectedOrganizationId) => async dispatch => {
   dispatch(setIsFetching(true));
   try {
-    let respnose = await activitiesApi.getActivity(activityId, selectedOrganizationId);
+    let respnose = await activityService.getActivity(activityId, selectedOrganizationId);
     dispatch([setCurrentActivity(respnose), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));

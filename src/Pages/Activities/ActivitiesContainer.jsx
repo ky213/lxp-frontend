@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Activities from './Activities';
 import { getActivities } from '../../Store/Reducers/activities';
-import Preloader from '../Common/Preloader/Preloader';
+import { Preloader } from '../../Components';
 import { useLayoutEffect } from 'react';
 
 const ActivitiesContainer = props => {

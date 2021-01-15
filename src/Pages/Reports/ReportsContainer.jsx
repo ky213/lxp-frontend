@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Preloader from '../Common/Preloader/Preloader';
+import { Preloader } from '../../Components';
 import Reports from './Reports';
 import { getActivities } from '../../Store/Reducers/activities';
 import { setJoinedCourses } from '../../Store/Reducers/courses';

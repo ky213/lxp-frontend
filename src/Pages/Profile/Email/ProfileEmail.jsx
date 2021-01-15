@@ -3,7 +3,7 @@ import classes from './ProfileEmail.module.css';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { AuthInput } from '../../Common/FormControlls/FormControlls';
+import { AuthInput } from '../../../Components';
 import { emailValidationMatch, isEmail, required } from '../../../Utils/validators';
 import { NavLink } from 'react-router-dom';
 

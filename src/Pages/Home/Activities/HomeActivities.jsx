@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import classes from './HomeActivities.module.css';
 import { activitiesicon } from '../../../Assets/Images/activities';
-import { ActivityItem } from '../Activities';
+import { ActivityItem } from '../../Activities';
 import { empty_state_icon } from '../../../Assets/Images/empty_state_icon';
 
 const HomeActivities = props => {

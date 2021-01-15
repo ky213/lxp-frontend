@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './ActivityItem.module.css';
 import { clockicon } from '../../../Assets/Images/clock';
 import { NavLink } from 'react-router-dom';
-import ProgressBar from '../../Common/ProgressBar/ProgressBar';
+import { ProgressBar } from '../../../Components';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import styled from 'styled-components';

@@ -1,12 +1,13 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './Store/reduxStore';
 import { Provider } from 'react-redux';
 import './Utils/i18n';
-import Preloader from './Pages/Common/Preloader/Preloader';
+import { Preloader } from './Components';
 
 ReactDOM.render(
   <Provider store={store}>

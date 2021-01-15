@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Programs from './Programs';
 import { getPrograms } from '../../Store/Reducers/programs';
-import Preloader from '../Common/Preloader/Preloader';
+import { Preloader } from '../../Components';
 
 const ProgramsContainer = props => {
   useEffect(() => {

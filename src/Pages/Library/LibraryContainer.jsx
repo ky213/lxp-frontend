@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Library from './Library';
 // import { getPrograms } from '../../Store/Reducers/programsReducer';
-import Preloader from '../../Common/Preloader/Preloader';
+import { Preloader } from '../../Components';
 
 const LibraryContainer = props => {
   // useEffect(()=>{

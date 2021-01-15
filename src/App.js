@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+
 import './App.css';
 import Activity from './Pages/Activity/Activity';
 import LoadDataRouter from './Pages/Common/LoadDataRouter/LoadDataRouter';
@@ -22,6 +23,7 @@ import ProgramsContainer from './Pages/Programs/ProgramsContainer';
 import SearchResultContainer from './Pages/SearchResult/SearchResultContainer';
 import NotificationsContainer from './Pages/Notifications/NotificationsContainer';
 import LibraryContainer from './Pages/Activites/Library/LibraryContainer';
+import { ErrorBoundary } from './Components';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -50,31 +52,33 @@ const App = props => {
   };
 
   return (
-    <BrowserRouter>
+    <Router>
       <StyledContentContainer direction={props.direction}>
         <NavbarContainer changeLanguage={changeLanguage} />
-        <Switch>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-          <Route exact path="/home" render={() => <LoadDataRouter Component={HomeContainer} />} />
-          <Route exact path="/courses" render={() => <LoadDataRouter Component={CoursesContainer} />} />
-          <Route path="/courses/:courseId" render={() => <LoadDataRouter Component={LessonsContainer} />} />
-          <Route path="/activities/view/:activityId" render={() => <LoadDataRouter Component={Activity} />} />
-          <Route exact path="/activities" render={() => <LoadDataRouter Component={ActivitiesContainer} />} />
-          <Route path="/activities/add" render={() => <LoadDataRouter Component={AddActivity} />} />
-          <Route path="/activities/edit/:activityId" render={() => <LoadDataRouter Component={EditActivity} />} />
-          <Route path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />} />
-          <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
-          <Route path="/login" render={() => <Login />} />
-          <Route path="/forgot_password" render={() => <ForgotPassword />} />
-          <Route path="/report" render={() => <LoadDataRouter Component={ReportsContainer} />} />
-          <Route path="/search" render={() => <LoadDataRouter Component={SearchResultContainer} />} />
-          <Route path="/home/notifications" render={() => <LoadDataRouter Component={NotificationsContainer} />} />
-          <Route path="/library" render={() => <LoadDataRouter Component={LibraryContainer} />} />
-        </Switch>
+        <ErrorBoundary>
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route exact path="/home" render={() => <LoadDataRouter Component={HomeContainer} />} />
+            <Route exact path="/courses" render={() => <LoadDataRouter Component={CoursesContainer} />} />
+            <Route path="/courses/:courseId" render={() => <LoadDataRouter Component={LessonsContainer} />} />
+            <Route path="/activities/view/:activityId" render={() => <LoadDataRouter Component={Activity} />} />
+            <Route exact path="/activities" render={() => <LoadDataRouter Component={ActivitiesContainer} />} />
+            <Route path="/activities/add" render={() => <LoadDataRouter Component={AddActivity} />} />
+            <Route path="/activities/edit/:activityId" render={() => <LoadDataRouter Component={EditActivity} />} />
+            <Route path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />} />
+            <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
+            <Route path="/login" render={() => <Login />} />
+            <Route path="/forgot_password" render={() => <ForgotPassword />} />
+            <Route path="/report" render={() => <LoadDataRouter Component={ReportsContainer} />} />
+            <Route path="/search" render={() => <LoadDataRouter Component={SearchResultContainer} />} />
+            <Route path="/home/notifications" render={() => <LoadDataRouter Component={NotificationsContainer} />} />
+            <Route path="/library" render={() => <LoadDataRouter Component={LibraryContainer} />} />
+          </Switch>
+        </ErrorBoundary>
       </StyledContentContainer>
-    </BrowserRouter>
+    </Router>
   );
 };
 

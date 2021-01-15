@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import { ErrorBoundary, PageNotFound, LoadDataRouter } from './Components';
+import { ErrorBoundary, PageNotFound, LoadDataRouter, PrivateRoute } from './Components';
 import { setDirection, setCurrentLanguage } from '../src/Store/Reducers/common';
 import {
   Home,
@@ -57,7 +57,7 @@ const App = props => {
             <Route exact path="/" render={() => <Redirect to="/home" />} />
             <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
             <Route path="/courses" render={() => <LoadDataRouter Component={Courses} />} />
-            <Route path="/activities" component={Activities} />
+            <PrivateRoute path="/activities" component={Activities} hasRole={['SuperAdmin']} />
             <Route path="/programs" render={() => <LoadDataRouter Component={Programs} />} />
             <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
             <Route path="/login" render={() => <Login />} />

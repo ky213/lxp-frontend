@@ -6,3 +6,4 @@ export { default as SearchModal } from './Common/SearchModal/SearchModal';
 export { default as CustomSelect } from './Common/Cutsom/Select/CustomSelect';
 export { default as ErrorBoundary } from './ErrorBoundry';
 export { default as PageNotFound } from './PageNotFound';
+export { PrivateRoute } from './PrivateRoute';

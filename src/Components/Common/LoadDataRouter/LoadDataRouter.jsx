@@ -18,6 +18,7 @@ const LoadDataRouter = ({
   user,
   limit,
   employeeId,
+  ...rest
 }) => {
   useEffect(() => {
     if ((localStorage.usertoken || sessionStorage.usertoken) && !isStartData) {
@@ -34,7 +35,7 @@ const LoadDataRouter = ({
     setCurrentRoute(window.location.pathname);
   }, [window.location.pathname]);
 
-  return <>{localStorage.usertoken || sessionStorage.usertoken ? <Component /> : <Redirect to="/login" />}</>;
+  return <>{localStorage.usertoken || sessionStorage.usertoken ? <Component {...rest} /> : <Redirect to="/login" />}</>;
 };
 
 let mapStateToProps = state => ({

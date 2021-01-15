@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import { ErrorBoundary, LoadDataRouter } from './Components';
+import { ErrorBoundary, PageNotFound, LoadDataRouter } from './Components';
 import { setDirection, setCurrentLanguage } from '../src/Store/Reducers/common';
 import {
   Home,
@@ -54,12 +54,10 @@ const App = props => {
         <NavBar changeLanguage={changeLanguage} />
         <ErrorBoundary>
           <Switch>
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-            <Route exact path="/home" render={() => <LoadDataRouter Component={Home} />} />
-            <Route exact path="/courses" render={() => <LoadDataRouter Component={Courses} />} />
-            <Route exact path="/activities" render={() => <LoadDataRouter Component={Activities} />} />
+            <Route exact path="/" render={() => <Redirect to="/home" />} />
+            <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
+            <Route path="/courses" render={() => <LoadDataRouter Component={Courses} />} />
+            <Route path="/activities" component={Activities} />
             <Route path="/programs" render={() => <LoadDataRouter Component={Programs} />} />
             <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
             <Route path="/login" render={() => <Login />} />
@@ -68,6 +66,7 @@ const App = props => {
             <Route path="/search" render={() => <LoadDataRouter Component={SearchResult} />} />
             <Route path="/home/notifications" render={() => <LoadDataRouter Component={Notifications} />} />
             <Route path="/library" render={() => <LoadDataRouter Component={Library} />} />
+            <Route component={PageNotFound} />
           </Switch>
         </ErrorBoundary>
       </StyledContentContainer>

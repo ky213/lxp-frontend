@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import ProgressBar from '../Common/ProgressBar/ProgressBar';
+import { ProgressBar } from '../../Components';
 import classes from './Activity.module.css';
 import { NavLink, withRouter } from 'react-router-dom';
 import Preloader from '../Common/Preloader/Preloader';

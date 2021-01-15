@@ -1,7 +1,7 @@
 export { default as Home } from './Home/HomeContainer';
 export { default as Programs } from './Programs/ProgramsContainer';
 export { default as Courses } from './Courses/CoursesContainer';
-export { default as Activities } from './Activities/ActivitiesContainer';
+export { default as Activities } from './Activities/Routes';
 export { default as Lessons } from './Lessons/LessonsContainer';
 export { default as NavBar } from './Navbar/NavbarContainer';
 export { default as Notifications } from './Notifications/NotificationsContainer';

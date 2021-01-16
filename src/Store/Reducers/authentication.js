@@ -1,3 +1,5 @@
+import * as authenticationSerivce from '../../Services/authentication';
+
 import { AUTH_TOKEN_KEY } from '../../Config/constants';
 import { REQUEST, SUCCESS, FAILURE } from '../../Utils/actionTypes';
 
@@ -38,6 +40,13 @@ const reducer = (state = initialState, { type, payload }) => {
     default:
       return state;
   }
+};
+
+export const login = (email, password) => dispatch => {
+  dispatch({
+    type: ACTION_TYPES.LOGIN,
+    payload: authenticationSerivce.login(email, password),
+  });
 };
 
 export const clearAuthToken = () => {

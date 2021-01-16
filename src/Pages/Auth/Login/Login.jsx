@@ -16,11 +16,22 @@ const LoginForm = props => {
       <h3>{t('login.title')}</h3>
       <div className={classes.field}>
         <label>{t('login.username')}</label>
-        <Field component={AuthInput} placeholder={t('login.usernamePlaceholder')} name="email" validate={[required, isEmail]} />
+        <Field
+          component={AuthInput}
+          placeholder={t('login.usernamePlaceholder')}
+          name="email"
+          validate={[required, isEmail]}
+        />
       </div>
       <div className={classes.field}>
         <label>{t('login.password')}</label>
-        <Field component={AuthInput} placeholder={t('login.passwordPlaceholder')} name="password" type="password" validate={[required]} />
+        <Field
+          component={AuthInput}
+          placeholder={t('login.passwordPlaceholder')}
+          name="password"
+          type="password"
+          validate={[required]}
+        />
       </div>
       <label className={classes.checkbox}>
         <span className={classes.checkText}>{t('login.rememberMe')}</span>

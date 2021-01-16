@@ -1,5 +1,6 @@
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers, applyMiddleware, createStore, compose } from 'redux';
+import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleWare from 'redux-thunk';
 import multi from 'redux-multi';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -20,7 +21,7 @@ let reducers = combineReducers({
 let store = createStore(
   reducers,
   process.env.NODE_ENV === 'development'
-    ? composeWithDevTools(applyMiddleware(thunkMiddleWare, multi))
+    ? composeWithDevTools(applyMiddleware(thunkMiddleWare, promiseMiddleware, multi))
     : compose(applyMiddleware(thunkMiddleWare, multi))
 );
 

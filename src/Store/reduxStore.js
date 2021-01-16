@@ -22,7 +22,7 @@ let store = createStore(
   reducers,
   process.env.NODE_ENV === 'development'
     ? composeWithDevTools(applyMiddleware(thunkMiddleWare, promiseMiddleware, multi))
-    : compose(applyMiddleware(thunkMiddleWare, multi))
+    : compose(applyMiddleware(thunkMiddleWare, promiseMiddleware, multi))
 );
 
 export default store;

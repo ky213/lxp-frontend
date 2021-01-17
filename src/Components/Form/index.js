@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Form = styled.form;
+const Form = styled.form``;
 
-export default Form;
+export default Form.withComponent('form');

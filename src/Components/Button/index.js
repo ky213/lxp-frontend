@@ -20,4 +20,4 @@ const Button = styled.button`
   background-color: ${({ color }) => color && ` ${colors[color || 'default']}`};
 `;
 
-export default Button;
+export default Button.withComponent('button');

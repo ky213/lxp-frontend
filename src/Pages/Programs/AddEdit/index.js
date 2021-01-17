@@ -1,6 +1,6 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import { Form } from '../../../Components';
+import { Formik, Form, ErrorMessage, Field } from 'formik';
+import { Input, InputGroup, Label, Button } from '../../../Components';
 
 const index = () => {
   return (
@@ -27,17 +27,23 @@ const index = () => {
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field type="email" name="email" />
+          <InputGroup>
+            <Label>Email</Label>
+            <Field as={Input} name="email" type="email" />
+            <ErrorMessage name="email" component="div" />
+          </InputGroup>
+          <InputGroup>
+            <Label>Password</Label>
+            <Field as={Input} name="password" type="password" />
+            <ErrorMessage name="password" component="div" />
+          </InputGroup>
 
-          <ErrorMessage name="email" component="div" />
-
-          <Field type="password" name="password" />
-
-          <ErrorMessage name="password" component="div" />
-
-          <button type="submit" disabled={isSubmitting}>
+          <Button type="submit" color="primary" disabled={isSubmitting}>
             Submit
-          </button>
+          </Button>
+          <Button type="cancel" style={{ background: '#fff', color: 'black' }} disabled={isSubmitting}>
+            Cancel
+          </Button>
         </Form>
       )}
     </Formik>

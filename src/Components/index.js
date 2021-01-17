@@ -5,6 +5,9 @@ export { default as InputGroup } from './InputGroup';
 export { default as Label } from './Label';
 export { default as Form } from './Form';
 
+//Layout
+export { default as MainLayout } from './Layout/Main';
+
 //Common
 export { AuthInput, Calendar, TextAreaCustom } from './Common/FormControlls/FormControlls';
 export { default as LoadDataRouter } from './Common/LoadDataRouter/LoadDataRouter';

@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { MainLayout, ErrorBoundary, PageNotFound, LoadDataRouter, PrivateRoute } from './Components';
+import { MainLayout, PageNotFound, LoadDataRouter, PrivateRoute } from './Components';
 import { setDirection, setCurrentLanguage } from '../src/Store/Reducers/common';
 import {
   Home,
@@ -15,17 +15,11 @@ import {
   Reports,
   Activities,
   SearchResult,
-  NavBar,
   Login,
   ForgotPassword,
   Profile,
 } from './Pages';
 import './App.css';
-
-const StyledContentContainer = styled.div`
-  width: 100%;
-  direction: ${({ direction }) => direction};
-`;
 
 const App = props => {
   const { t, i18n } = useTranslation();

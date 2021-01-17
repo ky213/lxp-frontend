@@ -13,7 +13,7 @@ import Burger from './Burger/Burger';
 import { useTranslation } from 'react-i18next';
 import { SearchModal } from '../../Components';
 import ProfileMenu from './ProfileMenu/ProfileMenu';
-import NotificationsModal from '../Notifications/NotificationsModal/NotificationsModal';
+import NotificationsModal from '../../Pages/Notifications/NotificationsModal/NotificationsModal';
 import { planeticon } from '../../Assets/Images/planet_icon';
 import { useSelector } from 'react-redux';
 import Submenu from './Submenu/Submenu';
@@ -145,7 +145,9 @@ const Navbar = props => {
               <div className={classes.notificationsCount}>{props.totalUnreadNotificationsCount}</div>
             </button>
           </StyledNotifications>
-          {props.isOpenNotificationsModal && <NotificationsModal setIsOpenNotificationsModal={props.setIsOpenNotificationsModal} />}
+          {props.isOpenNotificationsModal && (
+            <NotificationsModal setIsOpenNotificationsModal={props.setIsOpenNotificationsModal} />
+          )}
           <input type="checkbox" hidden id="profileMenu" className={classes.check} checked={isOpenProfileMenu} />
           <label
             className={classes.userMenu}

@@ -57,8 +57,8 @@ const App = props => {
             <Route exact path="/" render={() => <Redirect to="/home" />} />
             <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
             <Route path="/courses" render={() => <LoadDataRouter Component={Courses} />} />
-            <PrivateRoute path="/activities" component={Activities} hasRole={['SuperAdmin']} />
-            <Route path="/programs" render={() => <LoadDataRouter Component={Programs} />} />
+            <Route path="/activities" component={Activities} />
+            <Route path="/programs" component={Programs} />
             <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
             <Route path="/login" render={() => <Login />} />
             <Route path="/forgot_password" render={() => <ForgotPassword />} />

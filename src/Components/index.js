@@ -1,8 +1,9 @@
 //Global
-export { default as Button } from './Button/Button';
-export { default as Input } from './Input/Input';
-export { default as InputGroup } from './InputGroup/InputGroup';
-export { default as Label } from './Label/Label';
+export { default as Button } from './Button';
+export { default as Input } from './Input';
+export { default as InputGroup } from './InputGroup';
+export { default as Label } from './Label';
+export { default as Form } from './Form';
 
 //Common
 export { AuthInput, Calendar, TextAreaCustom } from './Common/FormControlls/FormControlls';

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-import { Input } from '../../Components';
 import { empty_state_icon } from '../../Assets/Images/empty_state_icon';
 import classes from './Programs.module.css';
 
@@ -73,7 +72,6 @@ const Programs = props => {
         </div>
       </div>
       <div className={classes.itemsList}>
-        <Input placeholder="Label" />
         <div className={classes.containerItems}>
           {programs.length > 0 && programs != null && programs != undefined ? (
             programs

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import { ErrorBoundary, PageNotFound, LoadDataRouter, PrivateRoute } from './Components';
+import { MainLayout, ErrorBoundary, PageNotFound, LoadDataRouter, PrivateRoute } from './Components';
 import { setDirection, setCurrentLanguage } from '../src/Store/Reducers/common';
 import {
   Home,
@@ -49,28 +49,23 @@ const App = props => {
   };
 
   return (
-    <Router>
-      <StyledContentContainer direction={props.direction}>
-        <NavBar changeLanguage={changeLanguage} />
-        <ErrorBoundary>
-          <Switch>
-            <Route exact path="/" render={() => <Redirect to="/home" />} />
-            <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
-            <Route path="/courses" render={() => <LoadDataRouter Component={Courses} />} />
-            <Route path="/activities" component={Activities} />
-            <Route path="/programs" component={Programs} />
-            <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
-            <Route path="/login" render={() => <Login />} />
-            <Route path="/forgot_password" render={() => <ForgotPassword />} />
-            <Route path="/report" render={() => <LoadDataRouter Component={Reports} />} />
-            <Route path="/search" render={() => <LoadDataRouter Component={SearchResult} />} />
-            <Route path="/home/notifications" render={() => <LoadDataRouter Component={Notifications} />} />
-            <Route path="/library" render={() => <LoadDataRouter Component={Library} />} />
-            <Route component={PageNotFound} />
-          </Switch>
-        </ErrorBoundary>
-      </StyledContentContainer>
-    </Router>
+    <MainLayout direction={props.direction} changeLanguage={changeLanguage}>
+      <Switch>
+        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
+        <Route path="/courses" render={() => <LoadDataRouter Component={Courses} />} />
+        <Route path="/activities" component={Activities} />
+        <Route path="/programs" component={Programs} />
+        <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
+        <Route path="/login" render={() => <Login />} />
+        <Route path="/forgot_password" render={() => <ForgotPassword />} />
+        <Route path="/report" render={() => <LoadDataRouter Component={Reports} />} />
+        <Route path="/search" render={() => <LoadDataRouter Component={SearchResult} />} />
+        <Route path="/home/notifications" render={() => <LoadDataRouter Component={Notifications} />} />
+        <Route path="/library" render={() => <LoadDataRouter Component={Library} />} />
+        <Route component={PageNotFound} />
+      </Switch>
+    </MainLayout>
   );
 };
 

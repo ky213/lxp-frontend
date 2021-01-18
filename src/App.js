@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-
+ 
 import { MainLayout, PageNotFound, LoadDataRouter, PrivateRoute } from 'Components';
 import { setDirection, setCurrentLanguage } from 'Store/Reducers/common';
 import {

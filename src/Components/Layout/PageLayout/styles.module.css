@@ -9,6 +9,7 @@
   background-color: #f6f6f6;
   display: flex;
   justify-content: center;
+  margin-bottom: 15px;
 }
 .headerContainer {
   width: 840px;
@@ -29,10 +30,8 @@
 }
 .headerHeader a {
   text-decoration: none;
-  display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  width: 120px;
   padding: 12px;
   border-radius: 23.5px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
@@ -43,7 +42,7 @@
   font-size: 15px;
   font-weight: 400;
   color: #3d3d3d;
-  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 .headerHeader a div {
   border-radius: 50%;
@@ -112,7 +111,7 @@
 }
 
 .checkmark:after {
-  content: "";
+  content: '';
   position: absolute;
   display: none;
 }

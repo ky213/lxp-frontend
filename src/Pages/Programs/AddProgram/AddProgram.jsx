@@ -7,11 +7,9 @@ import Preloader from '../../Common/Preloader/Preloader';
 import { AuthInput, TextAreaCustom } from '../../Common/FormControlls/FormControlls';
 import { required } from '../../../Utils/validators';
 import CustomSelect from '../../Common/Cutsom/Select/CustomSelect';
-import { FileDrop } from 'react-file-drop';
 import { NavLink, Redirect } from 'react-router-dom';
-import uploadicon from '../../../Assets/Images/upload.svg';
-import ImageFileProgram from '../ImageFileProgram/ImageFileProgram';
 import { ROLE_MANAGER } from '../../../Utils/constants';
+import FieldImageInput from '../../Common/FormControlls/FileControlls/FieldImageInput';
 
 const AddProgramForm = (props) => {
     const {t, i18n} = useTranslation();
@@ -50,37 +48,6 @@ const AddProgramForm = (props) => {
     },[size]);
 
 
-    const onFileInputChange = (event) => {
-        const newFiles = []
-        const newFilesToPush = [...event.target.files];
-        newFilesToPush.forEach(item => {
-            newFiles.push(item);
-        })
-        props.setFiles(newFiles);
-    }
-
-    const onTargetClick = () => {
-        fileInputRef.current.click();
-    }
-    const onDropHandler = (files, event) => {
-        const newFilesToPush = [...files];
-        const newFiles = [];
-        newFilesToPush.forEach(item => {
-            newFiles.push(item);
-        })
-        props.setFiles(newFiles);
-    }
-
-    const handleRemoveFile = (index) => {
-        props.setFiles([]);
-    }
-    let viewFiles = []
-
-    viewFiles = props.files.map((f, index) => {
-        return <ImageFileProgram image={f} index={index} handleRemoveFile={handleRemoveFile}/>
-    });
-
-
     return(
         <form onSubmit={props.handleSubmit} className={classes.form}>
             <div className={classes.field + " " + classes.inputField}>
@@ -106,24 +73,8 @@ const AddProgramForm = (props) => {
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addProgram.uploadTitle")}</label>
-                {props.files.length > 0 ?
-                    <div className={classes.files}>
-                        {viewFiles}
-                    </div> : 
-                    <div className={classes.dragNdrop}>
-                        <input onChange={onFileInputChange}
-                        ref={fileInputRef}
-                        type="file"
-                        className={classes.hidden}/>
-                        <FileDrop onDrop={(files, event) => onDropHandler(files, event)} onTargetClick={onTargetClick} className={classes.drop} draggingOverFrameClassName={classes.onDrag} targetClassName={classes.dropInner}>
-                            <div className={classes.uploadBut}>
-                                <img src={uploadicon}/>
-                                <p>{t("addProgram.upload")}</p>
-                            </div>
-                            <p className={classes.dragText}>{t("addProgram.drag")}</p>
-                        </FileDrop>
-                    </div>
-                }
+                <Field component={FieldImageInput} downloadText={t("addProgram.upload")} dragText={t("addProgram.drag")}
+                    name="image" validate={[required]}/>
             </div>
             <div className={classes.fieldBut}>
                 <button>{t("addProgram.addBut")}</button>
@@ -138,7 +89,6 @@ const AddProgramReduxForm = reduxForm({form: 'addProgram'})(AddProgramForm);
 const AddProgram = (props) => {
     const {t, i18n} = useTranslation();
     const [departament, setDepartament] = useState("");
-    const [files, setFiles] = useState([]);
 
     const onSubmit = (formData) => {
         console.log(formData);
@@ -155,7 +105,7 @@ const AddProgram = (props) => {
                 </div>
             </div>
             <div className={classes.formContainer}>
-                <AddProgramReduxForm onSubmit={onSubmit} setFiles={setFiles} files={files} setDepartament={setDepartament} direction={props.direction}/>
+                <AddProgramReduxForm onSubmit={onSubmit} setDepartament={setDepartament} direction={props.direction}/>
             </div>
         </div>
     )

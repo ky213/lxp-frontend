@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import classes from './ImageFileProgram.module.css';
+import classes from './ImageFile.module.css';
 
 const StyledBut = styled.button`
     left: ${({ direction }) => direction === "ltr" ? "10px" : "-10px"};

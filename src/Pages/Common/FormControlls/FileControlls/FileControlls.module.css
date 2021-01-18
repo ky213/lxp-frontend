@@ -1,0 +1,72 @@
+.file{
+    margin-bottom: 15px;
+}
+.hidden{
+    display: none;
+}
+.drop{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 106px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 2px dashed #bdbdbd;
+    cursor: pointer;
+}
+.innerDrop{
+    width: 100%;
+}
+.onDrag{
+    background-color: rgba(65, 164, 118, .1);
+    height: 100%;
+    width: 100%;
+    padding: 20px 40px 20px 40px;
+    box-sizing: border-box;
+    transition-duration: 0.3s;
+}
+.uploadBut{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #42a678;
+    border-radius: 46px;
+    padding: 9px 20px 10px 15px;
+    box-sizing: border-box;
+    width: max-content;
+    margin-bottom: 10px;
+}
+
+.uploadBut p{
+    margin-inline-end: 6px;
+    margin-inline-start: 6px;
+    color: #42a678;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+.dragNdrop svg path{
+    fill: #4B5EA3;
+}
+.dragText{
+    color: #5b5b5b;
+    font-size: 14px;
+    margin-block-end: 0 !important;
+    margin-block-start: 0;
+}
+.files{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.dragNdrop{
+    margin-top: 8px;
+}
+.file.error .drop{
+    border: 2px solid red;
+}
+.file.error span{
+    color: red;
+    position: relative;
+    top: 5px;
+}

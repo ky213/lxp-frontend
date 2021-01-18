@@ -12,6 +12,7 @@ import { FileDrop } from 'react-file-drop';
 import uploadicon from '../../../Assets/Images/upload.svg';
 import ImageFileCourse from './ImageFileCourse/ImageFileCourse';
 import LessonFileCourse from './LessonFileCourse/LessonFileCourse';
+import FieldImageInput from '../../Common/FormControlls/FileControlls/FieldImageInput';
 
 const AddCourseForm = (props) => {
     const {t, i18n} = useTranslation();
@@ -105,24 +106,8 @@ const AddCourseForm = (props) => {
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addCourse.courseThumbnail")}</label>
-                {props.images.length > 0 ?
-                    <div className={classes.files}>
-                        {viewImages}
-                    </div> : 
-                    <div className={classes.dragNdrop}>
-                        <input onChange={onImageInputChange}
-                        ref={imageInputRef}
-                        type="file"
-                        className={classes.hidden}/>
-                        <FileDrop onDrop={(files, event) => onDropImageHandler(files, event)} onTargetClick={onTargetImageClick} className={classes.drop} draggingOverFrameClassName={classes.onDrag} targetClassName={classes.dropInner}>
-                            <div className={classes.uploadBut}>
-                                <img src={uploadicon}/>
-                                <p>{t("addCourse.uploadImage")}</p>
-                            </div>
-                            <p className={classes.dragText}>{t("addCourse.dragImage")}</p>
-                        </FileDrop>
-                    </div>
-                }
+                <Field component={FieldImageInput} downloadText={t("addCourse.uploadImage")} dragText={t("addCourse.dragImage")}
+                    name="image" validate={[required]}/>
             </div>
             <div className={classes.field}>
                 <label className={classes.fieldLabel}>{t("addCourse.courseLessons")}</label>

@@ -1,11 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { MainLayout, PageNotFound, LoadDataRouter, PrivateRoute } from './Components';
-import { setDirection, setCurrentLanguage } from '../src/Store/Reducers/common';
+import { MainLayout, PageNotFound, LoadDataRouter, PrivateRoute } from 'Components';
+import { setDirection, setCurrentLanguage } from 'Store/Reducers/common';
 import {
   Home,
   Programs,
@@ -18,7 +17,7 @@ import {
   Login,
   ForgotPassword,
   Profile,
-} from './Pages';
+} from 'Pages';
 import './App.css';
 
 const App = props => {

@@ -4,6 +4,7 @@ import classes from './Activities.module.css';
 import { useTranslation } from 'react-i18next';
 import ActivityItem from './ActivityItem/ActivityItem';
 import { NavLink } from 'react-router-dom';
+import { empty_state_icon } from '../../Assets/Images/empty_state_icon';
 
 const StyledLabel = styled.label`
     margin-left: ${({ direction }) => direction === "rtl" ? "56px" : "0"};
@@ -17,7 +18,9 @@ const Activities = (props) => {
         return new Date(b.end) - new Date(a.end);
     });
 
-    let activities = props.activities.map(item => {
+    let activities = [];
+
+    activities = props.activities.map(item => {
         return <ActivityItem item={item} key={item.activityId} width={props.blockWidth}/>
     });
 
@@ -65,7 +68,14 @@ const Activities = (props) => {
             </div>
             <div className={classes.itemsList}>
                 <div className={classes.containerItems}>
-                    {activities}
+                    {(activities.length > 0 && activities != null && activities != undefined) ? activities : 
+                        <div className={classes.empty}>
+                            <div className={classes.emptyIcon}>
+                                {empty_state_icon}
+                            </div>
+                            <span>{t("activities.empty")}</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

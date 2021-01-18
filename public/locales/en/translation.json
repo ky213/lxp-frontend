@@ -105,6 +105,16 @@
         "addCourse":"Add course",
         "cancel": "Cancel"
     },
+    "editCourse": {
+        "title": "Edit course",
+        "delete": "delete"
+    },
+    "deleteCourse": {
+        "title": "Are you sure to delete this course?",
+        "sub": "The course will be deleted permanently.",
+        "delete": "Yes, delete",
+        "cancel": "Cancel"
+    },
     "activityMini": {
         "daysLeft": " days left",
         "daysAgo": " days ago",
@@ -138,7 +148,8 @@
             "hyperlinks": "Hyperlinks",
             "files": "Files",
             "noResources": "There are no resources here yet"
-        }
+        },
+        "empty": "There are no activities here yet"
     },
     "addActivity": {
         "title": "Add a new activity",
@@ -162,7 +173,12 @@
         "cancel": "Cancel",
         "upload": "Upload File",
         "drag": "or drag and drop the file here",
-        "points": "Activity Points"
+        "points": "Activity Points",
+        "repeat": "Repeat?",
+        "yes": "Yes",
+        "no": "No",
+        "assignLearners": "Assign Learners",
+        "search": "Search for a learner"
     },
     "editActivity": {
         "title": "Edit activity"
@@ -172,6 +188,14 @@
         "sub": "The activity will be deleted permanently.",
         "delete": "Yes, delete",
         "cancel": "Cancel"
+    },
+    "activityEditRepeat": {
+        "repeatEvery": "Repeat Every",
+        "repeatOptions": {
+            "yearly": "Yearly",
+            "month": "Monthly",
+            "day": "Daily"
+        }
     },
     "chat": {
         "messagePlaceholder": "Write your reply here..."

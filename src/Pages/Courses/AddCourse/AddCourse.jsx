@@ -23,43 +23,7 @@ const AddCourseForm = (props) => {
     let handleTextArea = (e) => {
         setCharactersLeft(maxLength - e.target.value.length);
     }
-
-    const imageInputRef = useRef(null);
     const fileInputRef = useRef(null);
-
-
-
-    const onImageInputChange = (event) => {
-        const newFiles = []
-        const newFilesToPush = [...event.target.files];
-        newFilesToPush.forEach(item => {
-            newFiles.push(item);
-        })
-        props.setImages(newFiles);
-    }
-
-    const onTargetImageClick = () => {
-        imageInputRef.current.click();
-    }
-    const onDropImageHandler = (files, event) => {
-        const newFilesToPush = [...files];
-        const newFiles = [];
-        newFilesToPush.forEach(item => {
-            newFiles.push(item);
-        })
-        props.setImages(newFiles);
-    }
-
-    const handleRemoveImage = (index) => {
-        props.setImages([]);
-    }
-    let viewImages = []
-
-    viewImages = props.images.map((f, index) => {
-        return <ImageFileCourse image={f} index={index} handleRemoveFile={handleRemoveImage}/>
-    })
-
-
 
 
     const onFileInputChange = (event) => {

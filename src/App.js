@@ -27,6 +27,8 @@ import ProgramAttendeesContainer from "./Pages/Programs/ProgramDetails/ProgramAt
 import ProgramViewContainer from "./Pages/Programs/ProgramDetails/ProgramView/ProgramViewContainer";
 import AddCourse from "./Pages/Courses/AddCourse/AddCourse";
 import EditProgram from "./Pages/Programs/EditProgram/EditProgram";
+import { ROLE_MANAGER } from "./Utils/constants";
+import AddActivityManager from "./Pages/Activity/AddActivity/AddActivityManager";
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -68,7 +70,7 @@ const App = (props) => {
           <Route path="/courses/add" render={() => <LoadDataRouter Component={AddCourse} />}/>
           <Route path="/activities/view/:activityId" render={() => <LoadDataRouter Component={Activity} />}/>
           <Route exact path="/activities" render={() => <LoadDataRouter Component={ActivitiesContainer} />}/>
-          <Route path="/activities/add" render={() => <LoadDataRouter Component={AddActivity} />}/>
+          <Route path="/activities/add" render={() => <LoadDataRouter Component={props.user.roleId === ROLE_MANAGER ? AddActivityManager : AddActivity}/>}/>
           <Route path="/activities/edit/:activityId" render={() => <LoadDataRouter Component={EditActivity} />}/>
           <Route exact path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />}/>
           <Route path="/programs/add" render={() => <LoadDataRouter Component={AddProgram} />}/>
@@ -91,6 +93,7 @@ const App = (props) => {
 let mapStateToProps = (state) => ({
   direction: state.common.direction,
   currentLanguage: state.common.currentLanguage,
+  user: state.user.user
 });
 
 export default connect(mapStateToProps, {

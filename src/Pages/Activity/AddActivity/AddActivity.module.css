@@ -237,6 +237,15 @@
 .select{
     margin-bottom: 8px;
 }
+.fieldRadio{
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+.fieldRadio .radios{
+    margin-left: 24px;
+    margin-right: 24px;
+}
 
 @media screen and (max-width: 968px){
     .headerContainer{

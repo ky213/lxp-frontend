@@ -148,6 +148,34 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+.empty{
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 46px;
+  padding-bottom: 46px;
+}
+.emptyIcon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: #ceeadd;
+  border-radius: 50%;
+}
+.emptyIcon svg{
+  position: relative;
+  top: -3px;
+}
+.empty span{
+  margin-top: 8px;
+}
 
 @media screen and (max-width: 968px) {
   .headerContainer {

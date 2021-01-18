@@ -26,6 +26,7 @@ import ResourcesContainer from "./Pages/Activites/Resources/ResourcesContainer";
 import ProgramAttendeesContainer from "./Pages/Programs/ProgramDetails/ProgramAttendees/ProgramAttendeesContainer";
 import ProgramViewContainer from "./Pages/Programs/ProgramDetails/ProgramView/ProgramViewContainer";
 import AddCourse from "./Pages/Courses/AddCourse/AddCourse";
+import EditProgram from "./Pages/Programs/EditProgram/EditProgram";
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -72,6 +73,7 @@ const App = (props) => {
           <Route exact path="/programs" render={() => <LoadDataRouter Component={ProgramsContainer} />}/>
           <Route path="/programs/add" render={() => <LoadDataRouter Component={AddProgram} />}/>
           <Route path="/programs/:programId/attendees" render={() => <LoadDataRouter Component={ProgramAttendeesContainer} />}/>
+          <Route path="/programs/:programId/edit" render={() => <LoadDataRouter Component={EditProgram} />}/>
           <Route path="/programs/:programId" render={() => <LoadDataRouter Component={ProgramViewContainer} />}/>
           <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />}/>
           <Route path="/login" render={() => <Login />} />

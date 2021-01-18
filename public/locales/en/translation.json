@@ -266,6 +266,9 @@
         "cancel": "Cancel",
         "labelTextArea": "You can create more than one course, separate their names with a comma"
     },
+    "editProgram": {
+        "title": "Edit program"
+    },
     "searchResult": {
         "title": "Search results for",
         "courses": "Courses",

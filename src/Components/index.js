@@ -7,6 +7,7 @@ export { default as Form } from './Form';
 
 //Layout
 export { default as MainLayout } from './Layout/Main';
+export { default as PageLayout } from './Layout/PageLayout/Main';
 export { default as NavBar } from './Navbar/NavbarContainer';
 
 //Common

@@ -9,7 +9,7 @@ import { setIsFetching } from '../../Store/Reducers/common';
 import { getActivity } from '../../Store/Reducers/activities';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import DeleteActivity from './DeleteActivity/DeleteActivity';
+import DeleteModal from '../Common/DeleteModal/DeleteModal';
 import Chat from './Chat/Chat';
 
 const StyledMarkButton = styled.button`
@@ -62,7 +62,9 @@ const Activity = (props) => {
         <div className={classes.main}>
             {!props.activity ? <Preloader/> :
             <div className={classes.container}>
-                {isShowDeleteModal && <DeleteActivity setIsShowDeleteModal={setIsShowDeleteModal}/>}
+                {isShowDeleteModal && <DeleteModal setIsShowDeleteModal={setIsShowDeleteModal} 
+                                            title={t("deleteActivity.title")} sub={t("deleteActivity.sub")} 
+                                            deleteText={t("deleteActivity.delete")} cancelText={t("deleteActivity.cancel")}/>}
                 <StyledLeftSide className={classes.leftSide} direction={props.direction}>
                     <div className={classes.block + " " + classes.withoutPadding}>
                         <div className={classes.infoBlock}>

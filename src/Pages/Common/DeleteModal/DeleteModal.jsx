@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './DeleteActivity.module.css';
+import classes from './DeleteModal.module.css';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
@@ -18,12 +18,12 @@ const DeleteActivity = (props) => {
             <div className={classes.modal} data-aos="fade-down">
                 <button className={classes.close} onClick={()=>props.setIsShowDeleteModal(false)}>×</button>
                 <img src={shield}/>
-                <h1>{t("deleteActivity.title")}</h1>
-                <span>{t("deleteActivity.sub")}</span>
+                <h1>{props.title}</h1>
+                <span>{props.sub}</span>
                 <div className={classes.buttons}>
-                    <button className={classes.del}>{t("deleteActivity.delete")}</button>
+                    <button className={classes.del}>{props.deleteText}</button>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <button className={classes.cancel} onClick={()=>props.setIsShowDeleteModal(false)}>{t("deleteActivity.cancel")}</button>
+                    <button className={classes.cancel} onClick={()=>props.setIsShowDeleteModal(false)}>{props.cancelText}</button>
                 </div>
             </div>
         </div>

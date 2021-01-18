@@ -267,7 +267,14 @@
         "labelTextArea": "You can create more than one course, separate their names with a comma"
     },
     "editProgram": {
-        "title": "Edit program"
+        "title": "Edit program",
+        "delete": "Delete"
+    },
+    "deleteProgram":{
+        "title": "Are you sure to delete this program?",
+        "sub": "The program will be deleted permanently.",
+        "delete": "Yes, delete",
+        "cancel": "Cancel"
     },
     "searchResult": {
         "title": "Search results for",

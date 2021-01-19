@@ -1,7 +1,8 @@
 import React from 'react';
 import { Formik, Form, ErrorMessage, Field } from 'formik';
 
-import { PageLayout, Input, InputGroup, Label, Button } from 'Components';
+import { Button, TextField } from 'Components/Base';
+import { PageLayout, Input, InputGroup, Label } from 'Components';
 
 const index = () => {
   return (
@@ -30,20 +31,14 @@ const index = () => {
         {({ isSubmitting }) => (
           <Form>
             <InputGroup>
-              <Label>Email</Label>
-              <Field as={Input} name="email" type="email" />
+              <Field component={() => <TextField label="Email" fullWidth />} name="email" type="email" />
               <ErrorMessage name="email" component="div" />
             </InputGroup>
-            <InputGroup>
-              <Label>Password</Label>
-              <Field as={Input} name="password" type="password" />
-              <ErrorMessage name="password" component="div" />
-            </InputGroup>
 
-            <Button type="submit" color="primary" disabled={isSubmitting}>
+            <Button variant="outlined" color="primary" size="large" disabled={isSubmitting}>
               Submit
             </Button>
-            <Button type="cancel" style={{ background: '#fff', color: 'black' }} disabled={isSubmitting}>
+            <Button variant="contained" color="secondary" size="large" disabled={isSubmitting}>
               Cancel
             </Button>
           </Form>

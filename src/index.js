@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
 
+import { theme } from 'Styles/Theme';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -11,9 +13,11 @@ import { Preloader } from './Components';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Suspense fallback={<Preloader />}>
-      <App />
-    </Suspense>
+    <ThemeProvider theme={theme}>
+      <Suspense fallback={<Preloader />}>
+        <App />
+      </Suspense>
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 );

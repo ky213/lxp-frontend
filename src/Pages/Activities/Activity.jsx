@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ProgressBar } from '../../Components';
 import classes from './Activity.module.css';
 import { NavLink, withRouter } from 'react-router-dom';
-import Preloader from '../Common/Preloader/Preloader';
 import { setIsFetching } from '../../Store/Reducers/common';
 import { getActivity, setCurrentActivity } from '../../Store/Reducers/activities';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import DeleteActivity from './DeleteActivity/DeleteActivity';
 import Chat from './Chat/Chat';
+import DeleteModal from '../../Components/DeleteModal/DeleteModal';
+import { Preloader } from 'Components';
 
 const StyledMarkButton = styled.button`
   margin-left: ${({ direction }) => (direction === 'ltr' ? '8px' : '0')};
@@ -61,7 +60,9 @@ const Activity = props => {
         <Preloader />
       ) : (
         <div className={classes.container}>
-          {isShowDeleteModal && <DeleteActivity setIsShowDeleteModal={setIsShowDeleteModal} />}
+          {isShowDeleteModal && <DeleteModal setIsShowDeleteModal={setIsShowDeleteModal} 
+                                title={t("deleteActivity.title")} sub={t("deleteActivity.sub")} 
+                                deleteText={t("deleteActivity.delete")} cancelText={t("deleteActivity.cancel")}/>}
           <StyledLeftSide className={classes.leftSide} direction={props.direction}>
             <div className={classes.block + ' ' + classes.withoutPadding}>
               <div className={classes.infoBlock}>

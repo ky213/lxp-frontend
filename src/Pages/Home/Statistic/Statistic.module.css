@@ -102,6 +102,32 @@
 .stats{
     height: 181px;
 }
+.quickAccess{
+    height: 140px;
+}
+.links{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 24px;
+    height: 60px;
+    justify-content: space-between;
+}
+.links a{
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #373f41;
+    text-decoration: none;
+    font-weight: 400;
+}
+.links a span{
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.links a:hover{
+    text-decoration: underline;
+}
 
 @media screen and (max-width: 1440px){
     .main{

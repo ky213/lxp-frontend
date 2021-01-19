@@ -9,6 +9,7 @@ import { coursesicon } from '../../Assets/Images/courses.js';
 import { notificationicon } from '../../Assets/Images/notification.js';
 import { homeicon } from '../../Assets/Images/homeicon.js';
 import { searchicon } from '../../Assets/Images/searchicon.js';
+import { learnersicon } from '../../Assets/Images/learners.js';
 import Burger from './Burger/Burger';
 import { useTranslation } from 'react-i18next';
 import { SearchModal } from '../../Components';
@@ -17,6 +18,7 @@ import NotificationsModal from '../../Pages/Notifications/NotificationsModal/Not
 import { planeticon } from '../../Assets/Images/planet_icon';
 import { useSelector } from 'react-redux';
 import Submenu from './Submenu/Submenu';
+import { USER_ROLES } from 'Config/constants';
 
 const StyledLogoBlock = styled.div`
   a span {
@@ -80,29 +82,21 @@ const Navbar = props => {
               </NavLink>
             </div>
             <div className={classes.menuItem}>
+              {props.user.roleId === USER_ROLES.LEARNER ?
               <NavLink to="/courses" activeClassName={classes.active}>
-                {coursesicon}
-                {t('navbar.courses')}
-              </NavLink>
+                  {coursesicon}
+                  {t("navbar.courses")}
+              </NavLink> :
+              <NavLink to="/learners" activeClassName={classes.active} className={classes.learnersLink}>
+                  {learnersicon}
+                  {t("navbar.learners")}
+              </NavLink>}
             </div>
-            <div className={classes.menuItem + ' ' + classes.menuHover}>
-              <span
-                className={
-                  props.currentRoute === '/activities' ||
-                  props.currentRoute === '/library' ||
-                  props.currentRoute === '/activities/add' ||
-                  props.currentRoute.includes('/activities/edit/') ||
-                  props.currentRoute.includes('/activities/view/')
-                    ? classes.active
-                    : classes.nothing
-                }
-              >
-                {activitiesicon}
-                {t('navbar.activities')}
-                <div className={classes.submenu}>
-                  <Submenu />
-                </div>
-              </span>
+            <div className={classes.menuItem}>
+              <NavLink to="/activities" activeClassName={classes.active}>
+                  {activitiesicon}
+                  {t("navbar.activities")}
+              </NavLink>
             </div>
             <div className={classes.menuItem}>
               <NavLink to="/report" activeClassName={classes.active}>

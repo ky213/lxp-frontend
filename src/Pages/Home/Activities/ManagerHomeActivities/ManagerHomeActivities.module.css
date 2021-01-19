@@ -7,6 +7,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
 }
 .activitiesHeaderBlock{
     display: flex;
@@ -31,13 +34,52 @@
 .activitiesHeader a:hover{
     text-decoration: underline;
 }
+.tabs{
+    width: 100%;
+    border-bottom: 1px solid #e8e8e8;
+    margin-top: 20px;
+}
+.tab{
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 7px;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    color: #3d3d3d;
+    font-size: 18px;
+    border-bottom: 4px solid transparent;
+    transition-duration: .1s;
+}
+.activeTab{
+    color: #42a678;
+    font-weight: bold;
+    border-bottom: 4px solid #42a678;
+}
+.tabsContainer{
+    display: flex;
+    padding-left: 32px;
+    padding-right: 32px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .itemsList{
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 18px;
 }
 .empty{
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
     background-color: white;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
     border-radius: 5px;

@@ -1,5 +1,8 @@
-import axios from 'axios';
+import instance from './axios';
 
-export function getPrograms(organizationId, pageId, perPage) {
-  return axios.get(`programs?organizationId=${organizationId}&pageId=${pageId}&recordsPerPage=${perPage}`).then(response => response.data);
+export const programsApi = {
+  getPrograms(organizationId, pageId, perPage){
+    return instance.get(`programs?organizationId=${organizationId}&pageId=${pageId}&recordsPerPage=${perPage}`)
+    .then(response => response.data);
+  }
 }

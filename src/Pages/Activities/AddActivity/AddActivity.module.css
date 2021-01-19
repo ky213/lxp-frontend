@@ -237,8 +237,46 @@
 .select{
     margin-bottom: 8px;
 }
+.fieldRadio{
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+.fieldRadio .radios{
+    margin-left: 24px;
+    margin-right: 24px;
+}
+.fieldRepeat{
+    position: absolute;
+    transform: translateX(500px) translateY(-263px);
+    width: 542px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 1280px){
+    .fieldRepeat{
+        transform: translateX(420px) translateY(-263px);
+    }
+}
+
+@media screen and (max-width: 1279px){
+    .fieldRepeat{
+        transform: translateX(400px) translateY(-263px);
+        width: 475px;
+    }
+}
 
 @media screen and (max-width: 968px){
+    .fieldRepeat{
+        position: relative;
+        transform: none;
+        width: 100%;
+        margin-top: 25px;
+    }
+    .fieldLabelRepeat{
+        margin-left: 0px;
+    }
     .headerContainer{
         width: calc(100% - 64px);
         padding-left: 32px;

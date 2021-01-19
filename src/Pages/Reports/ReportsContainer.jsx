@@ -8,6 +8,7 @@ import { setJoinedCourses } from '../../Store/Reducers/courses';
 const ReportsContainer = props => {
   useEffect(() => {
     if (props.user.employeeId) {
+      console.log("asd")
       props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
     }
   }, [props.user.employeeId]);

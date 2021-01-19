@@ -4,6 +4,7 @@
         "home": "Home",
         "programs": "Programs",
         "courses": "Courses",
+        "learners": "Learners",
         "activities": "Activities",
         "myActivities": "My Activities",
         "library": "Library",
@@ -45,7 +46,13 @@
             },
             "stats": {
                 "stats": "stats"
+            },
+            "quickAccess": {
+                "title":  "Quick Access",
+                "resources": "Resources",
+                "learners": "Learners"
             }
+
         },
         "courses": {
             "title": "Courses",
@@ -55,7 +62,19 @@
         "activities": {
             "title": "Activities",
             "viewAll": "View all",
-            "empty": "You have no activities"
+            "empty": "You have no activities",
+            "tabs": {
+                "assigned": "Assigned",
+                "logged": "Logged"
+            }
+        },
+        "programs": {
+            "title": "Programs",
+            "viewAll": "View all",
+            "empty": "You do not have any programs yet"
+        },
+        "learners": {
+            "title": "Learners"
         }
     },
     "courseMini": {
@@ -72,10 +91,35 @@
             "all": "All"
         }
     },
+    "addCourse": {
+        "title": "Add a new course",
+        "name": "Course name",
+        "namePlaceholder": "e.g: Simple Linear Regression",
+        "courseThumbnail": "Course thumbnail",
+        "uploadImage": "Upload Image",
+        "dragImage": "or drag and drop the image here",
+        "courseLessons": "Course lessons",
+        "uploadLesson": "Upload course file",
+        "dragFile": "or drag and drop the file here",
+        "ability": "You can upload more than one lesson",
+        "addCourse":"Add course",
+        "cancel": "Cancel"
+    },
+    "editCourse": {
+        "title": "Edit course",
+        "delete": "delete"
+    },
+    "deleteCourse": {
+        "title": "Are you sure to delete this course?",
+        "sub": "The course will be deleted permanently.",
+        "delete": "Yes, delete",
+        "cancel": "Cancel"
+    },
     "activityMini": {
         "daysLeft": " days left",
         "daysAgo": " days ago",
-        "empty": "Empty"
+        "empty": "Empty",
+        "learners": "Learners"
     },
     "activityDetails": {
         "title": "Activity details",
@@ -98,13 +142,14 @@
             "all": "All",
             "private": "Private"
         },
-        "library": {
-            "title": "Library",
+        "resources": {
+            "title": "Resources",
             "images": "Images",
             "hyperlinks": "Hyperlinks",
             "files": "Files",
             "noResources": "There are no resources here yet"
-        }
+        },
+        "empty": "There are no activities here yet"
     },
     "addActivity": {
         "title": "Add a new activity",
@@ -128,7 +173,12 @@
         "cancel": "Cancel",
         "upload": "Upload File",
         "drag": "or drag and drop the file here",
-        "points": "Activity Points"
+        "points": "Activity Points",
+        "repeat": "Repeat?",
+        "yes": "Yes",
+        "no": "No",
+        "assignLearners": "Assign Learners",
+        "search": "Search for a learner"
     },
     "editActivity": {
         "title": "Edit activity"
@@ -138,6 +188,53 @@
         "sub": "The activity will be deleted permanently.",
         "delete": "Yes, delete",
         "cancel": "Cancel"
+    },
+    "activityEditRepeat": {
+        "title": "Repeat Activity",
+        "repeatEvery": "Repeat Every",
+        "repeatOptions": {
+            "yearly": "Yearly",
+            "month": "Monthly",
+            "day": "Daily"
+        },
+        "month": {
+            "jan": "JAN",
+            "feb": "FEB",
+            "march": "MARCH",
+            "april": "APRIL",
+            "may": "MAY",
+            "june": "JUNE",
+            "july": "JULY",
+            "aug": "AUG",
+            "sept": "SEPT",
+            "oct": "OCT",
+            "nov": "NOV",
+            "dec": "DEC"
+        },
+        "on": "ON",
+        "onThe": "ON THE",
+        "of": "OF",
+        "end": "END",
+        "st": {
+            "one": "1st",
+            "two": "2nd",
+            "three": "3rd",
+            "four": "4th"
+        },
+        "daysOfWeek": {
+            "monday": "MONDAY",
+            "tuesday": "TUESDAY",
+            "wednesday": "WEDNESDAY",
+            "thursday": "THURSDAY",
+            "friday": "FRIDAY",
+            "saturday": "SATURDAY",
+            "sunday": "SUNDAY"
+        },
+        "everyOptions": {
+            "never": "NEVER"
+        },
+        "save": "Save"
+
     },
     "chat": {
         "messagePlaceholder": "Write your reply here..."
@@ -200,7 +297,47 @@
     },
     "programs": {
         "title": "Programs",
-        "empty": "No Aviable Programs"
+        "empty": "No Aviable Programs",
+        "addProgram": "Add Program",
+        "emptyManager": "There are no programs here yet"
+    },
+    "programMini":{
+        "label": "program",
+        "attendees": "attendees",
+        "courses": "Courses"
+    },
+    "programLearners": {
+        "title": "- Learners",
+        "searchPlaceholder": "Search for a learner",
+        "empty": "Learners list is empty."
+    },
+    "programView": {
+        "courses": "Courses",
+        "edit": "Edit",
+        "empty": "This program has no courses yet",
+        "addCourse": "Add course"
+    },
+    "addProgram": {
+        "title": "Add a new program",
+        "name": "Program name",
+        "namePlaceholder": "e.g: Data Science",
+        "defSelectDepartament": "Select department",
+        "uploadTitle": "Program thumbnail",
+        "upload": "Upload Image",
+        "drag": "or drag and drop the image here",
+        "addBut": "Add Program",
+        "cancel": "Cancel",
+        "labelTextArea": "You can create more than one course, separate their names with a comma"
+    },
+    "editProgram": {
+        "title": "Edit program",
+        "delete": "Delete"
+    },
+    "deleteProgram":{
+        "title": "Are you sure to delete this program?",
+        "sub": "The program will be deleted permanently.",
+        "delete": "Yes, delete",
+        "cancel": "Cancel"
     },
     "searchResult": {
         "title": "Search results for",

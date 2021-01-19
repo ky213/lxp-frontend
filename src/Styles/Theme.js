@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { palette } from '@material-ui/system';
 
 export const theme = createMuiTheme({
   palette: {
@@ -36,7 +35,9 @@ export const theme = createMuiTheme({
         borderRadius: '5px',
         background: '#FFF',
         boxSizing: 'border-box',
-        padding: '5px',
+        paddingLeft: '5px',
+        paddingRight: '5px',
+        fontSize: '18px',
         '&$focused': {
           border: `2px solid #42A678`,
         },
@@ -51,5 +52,19 @@ export const theme = createMuiTheme({
         lineHeight: 0,
       },
     },
+    // MuiCheckbox: {
+    //   root: {
+    //     color: '#6671AB',
+    //     '&$checked': {
+    //       backgroundColor: '#6671AB',
+    //       border: '2px solid #6671AB',
+    //       borderRadius: '5px',
+    //     },
+    //   },
+    //   icon: {
+    //     backgroundColor: '#6671AB',
+    //     color: 'red',
+    //   },
+    // },
   },
 });

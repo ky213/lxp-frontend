@@ -30,10 +30,8 @@ const index = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputGroup>
-              <Field component={() => <TextField label="Email" fullWidth />} name="email" type="email" />
-              <ErrorMessage name="email" component="div" />
-            </InputGroup>
+            <Field component={() => <TextField label="Email" fullWidth />} name="email" type="email" />
+            <ErrorMessage name="email" component="div" />
 
             <Button variant="outlined" color="primary" size="large" disabled={isSubmitting}>
               Submit

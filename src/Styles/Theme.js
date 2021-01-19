@@ -36,9 +36,19 @@ export const theme = createMuiTheme({
         borderRadius: '5px',
         background: '#FFF',
         boxSizing: 'border-box',
+        padding: '5px',
         '&$focused': {
           border: `2px solid #42A678`,
         },
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        fontSize: '1.5rem',
+        fontfamily: 'Inter',
+        fontStyle: 'normal',
+        fontWeight: 500,
+        lineHeight: 0,
       },
     },
   },

@@ -8,14 +8,21 @@ export const theme = createMuiTheme({
     secondary: {
       main: '#FFF',
     },
+    info: {
+      main: '#6671AB',
+    },
   },
   props: {
     MuiInputLabel: {
       shrink: true,
+      disableRipple: true,
     },
 
     MuiInput: {
       disableUnderline: true,
+    },
+    MuiCheckbox: {
+      disableRipple: true,
     },
   },
   overrides: {
@@ -52,19 +59,8 @@ export const theme = createMuiTheme({
         lineHeight: 0,
       },
     },
-    // MuiCheckbox: {
-    //   root: {
-    //     color: '#6671AB',
-    //     '&$checked': {
-    //       backgroundColor: '#6671AB',
-    //       border: '2px solid #6671AB',
-    //       borderRadius: '5px',
-    //     },
-    //   },
-    //   icon: {
-    //     backgroundColor: '#6671AB',
-    //     color: 'red',
-    //   },
-    // },
+  },
+  status: {
+    checkbox: '#6671AB',
   },
 });

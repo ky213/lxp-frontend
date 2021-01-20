@@ -1,10 +1,3 @@
-//Global
-export { default as Button } from './Button';
-export { default as Input } from './Input';
-export { default as InputGroup } from './InputGroup';
-export { default as Label } from './Label';
-export { default as Form } from './Form';
-
 //Layout
 export { default as MainLayout } from './Layout/Main';
 export { default as PageLayout } from './Layout/PageLayout/Main';

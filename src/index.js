@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import { theme } from 'Styles/Theme';
+import { theme } from 'Themes';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';

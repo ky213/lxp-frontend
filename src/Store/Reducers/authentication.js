@@ -1,7 +1,7 @@
-import * as authenticationSerivce from '../../Services/authentication';
+import * as authenticationSerivce from 'Services/authentication';
 
-import { AUTH_TOKEN_KEY } from '../../Config/constants';
-import { REQUEST, SUCCESS, FAILURE } from '../../Utils/actionTypes';
+import { AUTH_TOKEN_KEY } from 'Config/constants';
+import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
 const ACTION_TYPES = {
   LOGIN: 'authentication/LOGIN',

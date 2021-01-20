@@ -13,6 +13,9 @@ export const theme = createMuiTheme({
     },
   },
   props: {
+    MuiButton: {
+      disableRipple: true,
+    },
     MuiInputLabel: {
       shrink: true,
       disableRipple: true,
@@ -33,6 +36,13 @@ export const theme = createMuiTheme({
         borderRadius: '56px',
         fontWeight: '400',
         fontSize: '16px',
+        textTransform: 'none',
+        margin: '1px 5px',
+      },
+    },
+    MuiTextField: {
+      root: {
+        marginBottom: '22px',
       },
     },
     MuiInput: {
@@ -52,10 +62,10 @@ export const theme = createMuiTheme({
     },
     MuiInputLabel: {
       root: {
-        fontSize: '1.5rem',
+        fontSize: '1.4rem',
         fontfamily: 'Inter',
         fontStyle: 'normal',
-        fontWeight: 500,
+        fontWeight: 400,
         lineHeight: 0,
       },
     },

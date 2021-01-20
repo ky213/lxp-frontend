@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
- 
+
 import { MainLayout, PageNotFound, LoadDataRouter, PrivateRoute } from 'Components';
 import { setDirection, setCurrentLanguage } from 'Store/Reducers/common';
 import {
@@ -47,8 +47,8 @@ const App = props => {
         <Route exact path="/" render={() => <Redirect to="/home" />} />
         <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
         <Route path="/courses" render={() => <LoadDataRouter Component={CourseRoutes} />} />
-        <Route path="/activities" render={()=><LoadDataRouter Component={Activities}/>}/>
-        <Route path="/programs" render={()=><LoadDataRouter Component={Programs}/>}/>
+        <PrivateRoute path="/activities" component={Activities} hasRole={[]} />
+        <Route path="/programs" render={() => <LoadDataRouter Component={Programs} />} />
         <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
         <Route path="/login" render={() => <Login />} />
         <Route path="/forgot_password" render={() => <ForgotPassword />} />

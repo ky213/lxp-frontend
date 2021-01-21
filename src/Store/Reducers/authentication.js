@@ -39,17 +39,24 @@ const reducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export const login = (email, password) => dispatch => {
-  dispatch({
+export const login = (email, password, rememberMe = false) => async dispatch => {
+  const { value } = await dispatch({
     type: ACTION_TYPES.LOGIN,
     payload: authenticationSerivce.login(email, password),
   });
+
+  const token = value?.data?.token;
+
+  if (token) {
+    sessionStorage.setItem(AUTH_TOKEN_KEY, token);
+    if (rememberMe) localStorage.setItem(AUTH_TOKEN_KEY, token);
+  }
 };
 
 export const clearAuthToken = () => {
-  if (sessionStorage.get(AUTH_TOKEN_KEY)) sessionStorage.remove(AUTH_TOKEN_KEY);
+  if (sessionStorage.getItem(AUTH_TOKEN_KEY)) sessionStorage.removeItem(AUTH_TOKEN_KEY);
 
-  if (localStorage.get(AUTH_TOKEN_KEY)) localStorage.remove(AUTH_TOKEN_KEY);
+  if (localStorage.getItem(AUTH_TOKEN_KEY)) localStorage.removeItem(AUTH_TOKEN_KEY);
 };
 
 export const clearAuthentication = dispatch => {

@@ -64,9 +64,15 @@ const Login = props => {
   const onSubmit = formData => {
     props.login(formData.email, formData.password, isRememberMe);
   };
+
+  if (props.isAuthenticated) {
+    const { from } = props.location.state || { from: { pathname: '/home', search: props.location.search } };
+
+    return <Redirect to={from} />;
+  }
+
   return (
     <div className={classes.main}>
-      {(localStorage.usertoken || sessionStorage.usertoken) && <Redirect to="/" />}
       <div className={classes.login}>
         <h1>{t('login.header')}</h1>
         {props.loading && <Preloader />}

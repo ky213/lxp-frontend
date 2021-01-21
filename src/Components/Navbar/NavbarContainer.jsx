@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar';
-import { getNotifications } from '../../Store/Reducers/notifications';
-import { setCurrentLanguage } from '../../Store/Reducers/common';
+import { getNotifications } from 'Store/Reducers/notifications';
+import { setCurrentLanguage } from 'Store/Reducers/common';
 
 const NavbarContainer = props => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useState(false);
@@ -15,23 +15,19 @@ const NavbarContainer = props => {
   useEffect(() => {}, [props.currentRoute]);
 
   return (
-    <>
-      {props.currentRoute != '/login' && props.currentRoute != '/forgot_password' && (
-        <Navbar
-          profile={props.profile}
-          changeLanguage={props.changeLanguage}
-          direction={props.direction}
-          setIsOpenSearchModal={setIsOpenSearchModal}
-          isOpenSearchModal={isOpenSearchModal}
-          totalUnreadNotificationsCount={props.totalUnreadNotificationsCount}
-          unreadNotifications={props.unreadNotifications}
-          setIsOpenNotificationsModal={setIsOpenNotificationsModal}
-          isOpenNotificationsModal={isOpenNotificationsModal}
-          setCurrentLanguage={props.setCurrentLanguage}
-          currentRoute={props.currentRoute}
-        />
-      )}
-    </>
+    <Navbar
+      profile={props.profile}
+      changeLanguage={props.changeLanguage}
+      direction={props.direction}
+      setIsOpenSearchModal={setIsOpenSearchModal}
+      isOpenSearchModal={isOpenSearchModal}
+      totalUnreadNotificationsCount={props.totalUnreadNotificationsCount}
+      unreadNotifications={props.unreadNotifications}
+      setIsOpenNotificationsModal={setIsOpenNotificationsModal}
+      isOpenNotificationsModal={isOpenNotificationsModal}
+      setCurrentLanguage={props.setCurrentLanguage}
+      currentRoute={props.currentRoute}
+    />
   );
 };
 

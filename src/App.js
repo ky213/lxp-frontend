@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { MainLayout, PageNotFound, LoadDataRouter, PrivateRoute } from 'Components';
+import { MainLayout, PageNotFound, PrivateRoute } from 'Components';
 import { setDirection, setCurrentLanguage } from 'Store/Reducers/common';
+import { getUserProfile } from 'Store/Reducers/authentication';
 import {
   Home,
   Programs,
@@ -19,9 +20,15 @@ import {
 } from 'Pages';
 import './App.css';
 import CourseRoutes from 'Pages/Courses/CourseRoutes';
+import { AUTH_TOKEN_KEY } from 'Config/constants';
 
 const App = props => {
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem(AUTH_TOKEN_KEY) || localStorage.getItem(AUTH_TOKEN_KEY);
+    if (token) props.getUserProfile(token);
+  }, []);
 
   const changeLanguage = language => {
     switch (language) {
@@ -65,9 +72,11 @@ const App = props => {
 let mapStateToProps = state => ({
   direction: state.common.direction,
   currentLanguage: state.common.currentLanguage,
+  profile: state.authentication.profile,
 });
 
 export default connect(mapStateToProps, {
   setDirection,
   setCurrentLanguage,
+  getUserProfile,
 })(App);

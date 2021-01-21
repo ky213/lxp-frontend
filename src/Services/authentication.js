@@ -7,3 +7,6 @@ export function login(email, password) {
 export const logout = (userId, token) => {
   return axios.post(`/users/logout`, { userId, token });
 };
+export function getUserProfile(token) {
+  return axios.post(`/users/authToken/?token=${token}`);
+}

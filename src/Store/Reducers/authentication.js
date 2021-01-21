@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 const ACTION_TYPES = {
   LOGIN: 'authentication/LOGIN',
   LOGOUT: 'authentication/LOGOUT',
+  GET_USER_PROFILE: 'authentication/GET_USER_PROFILE',
 };
 
 const initialState = {
@@ -19,12 +20,14 @@ const initialState = {
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST(ACTION_TYPES.LOGIN):
-    case REQUEST(ACTION_TYPES.LOGOUT): {
+    case REQUEST(ACTION_TYPES.LOGOUT):
+    case REQUEST(ACTION_TYPES.GET_USER_PROFILE): {
       return { ...state, loading: true, error: null };
     }
 
     case FAILURE(ACTION_TYPES.LOGOUT):
-    case FAILURE(ACTION_TYPES.LOGIN): {
+    case FAILURE(ACTION_TYPES.LOGIN):
+    case REQUEST(ACTION_TYPES.GET_USER_PROFILE): {
       return { ...state, loading: false, isAuthenticated: false, error: payload.error };
     }
 
@@ -33,6 +36,9 @@ const reducer = (state = initialState, { type, payload }) => {
     }
     case SUCCESS(ACTION_TYPES.LOGOUT): {
       return { ...state, loading: false, isAuthenticated: false, token: null, profile: null };
+    }
+    case SUCCESS(ACTION_TYPES.GET_USER_PROFILE): {
+      return { ...state, loading: false, profile: payload.data.user };
     }
     default:
       return state;
@@ -51,6 +57,13 @@ export const login = (email, password, rememberMe = false) => async dispatch => 
     sessionStorage.setItem(AUTH_TOKEN_KEY, token);
     if (rememberMe) localStorage.setItem(AUTH_TOKEN_KEY, token);
   }
+};
+
+export const getUserProfile = token => dispatch => {
+  dispatch({
+    type: ACTION_TYPES.GET_USER_PROFILE,
+    payload: authenticationSerivce.getUserProfile(token),
+  });
 };
 
 export const clearAuthToken = () => {

@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import classes from './ProfileMenu.module.css';
-import { logout } from '../../../Store/Reducers/user';
-import { logout_icon } from '../../../Assets/Images/logout_icon';
-import { profile_settings_icon } from '../../../Assets/Images/profile_settings_icon';
+import { logout } from 'Store/Reducers/users';
+import { logout_icon } from 'Assets/Images/logout_icon';
+import { profile_settings_icon } from 'Assets/Images/profile_settings_icon';
 
 const StyledModal = styled.div`
   direction: ${({ direction }) => direction};
-  transform: ${({ direction }) => (direction === 'ltr' ? 'translateX(-233px) translateY(25px)' : 'translateX(-73px) translateY(25px)')};
+  transform: ${({ direction }) =>
+    direction === 'ltr' ? 'translateX(-233px) translateY(25px)' : 'translateX(-73px) translateY(25px)'};
 `;
 const StyledArrow = styled.div`
   left: ${({ direction }) => (direction === 'ltr' ? '-15px' : '25px')};

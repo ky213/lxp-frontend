@@ -12,7 +12,7 @@ const ProfileEmailForm = props => {
 
   useEffect(() => {
     props.initialize({
-      email: props.user.email,
+      email: props.profile?.email,
     });
   }, []);
 
@@ -55,7 +55,7 @@ const ProfileEmail = props => {
     console.log(formData);
   };
 
-  return <ProfileEmailReduxForm onSubmit={onSubmit} user={props.user} />;
+  return <ProfileEmailReduxForm onSubmit={onSubmit} user={props.profile} />;
 };
 
 let mapStateToProps = state => ({

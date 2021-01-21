@@ -1,5 +1,4 @@
-import { stopSubmit } from 'redux-form';
-import { userService } from '../../Services';
+import { userService } from 'Services';
 import { setIsFetching } from './common';
 
 const SET_USER_DATA = 'SET_USER_DATA';
@@ -14,7 +13,7 @@ const initialState = {
   employeeId: null,
 };
 
-const userReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER_DATA: {
       return { ...state, user: action.user };
@@ -100,4 +99,4 @@ export const logout = () => async dispatch => {
   dispatch(setIsFetching(false));
 };
 
-export default userReducer;
+export default usersReducer;

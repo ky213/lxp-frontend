@@ -26,10 +26,10 @@ const ProfileInfoForm = props => {
 
   useEffect(() => {
     props.initialize({
-      name: props.user.name,
-      profilePhoto: props.user.profilePhoto,
+      name: props.profile?.name,
+      profilePhoto: props.profile?.profilePhoto,
     });
-  }, [props.user]);
+  }, [props.profile]);
 
   return (
     <form className={classes.form} onSubmit={props.handleSubmit}>
@@ -41,7 +41,7 @@ const ProfileInfoForm = props => {
         <label>{t('profile.profileInfo.photo')}</label>
         <label htmlFor="image" className={classes.image}>
           <img
-            src={previewImage ? previewImage : props.user.profilePhoto ? props.user.profilePhoto : default_user}
+            src={previewImage ? previewImage : props.profile?.profilePhoto ? props.profile?.profilePhoto : default_user}
             className={classes.photo}
           />
           <img src={upload_icon} className={classes.upload} />
@@ -70,7 +70,7 @@ const ProfileInfo = props => {
     console.log(formData);
   };
 
-  return <ProfileInfoReduxForm onSubmit={onSubmit} user={props.user} />;
+  return <ProfileInfoReduxForm onSubmit={onSubmit} user={props.profile} />;
 };
 
 let mapStateToProps = state => ({

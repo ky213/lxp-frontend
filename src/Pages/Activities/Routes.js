@@ -8,20 +8,24 @@ import AddActivityManager from './AddActivity/AddActivityManager';
 import { connect } from 'react-redux';
 import Activity from './Activity';
 
-const ActivityRoutes = (props) => {
+const ActivityRoutes = props => {
   return (
     <Switch>
       <Route exact path={`/activities`} component={ActivitiesContainer} />
-      <Route exact path={`/activities/view/:activityId`} component={Activity}/>
-      <Route exact path={`/activities/add`} component={props.user.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager} />
+      <Route exact path={`/activities/view/:activityId`} component={Activity} />
+      <Route
+        exact
+        path={`/activities/add`}
+        component={props.user.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager}
+      />
       <Route exact path={`/activities/edit/:id`} component={EditActivity} />
       <Route component={PageNotFound} />
     </Switch>
   );
 };
 
-let mapStateToProps = (state) => ({
-  user: state.user.user
+let mapStateToProps = state => ({
+  profile: state.authentication.profile,
 });
 
 export default connect(mapStateToProps, {})(ActivityRoutes);

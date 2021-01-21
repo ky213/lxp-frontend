@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { AuthInput, Preloader } from '../../../Components';
 import { useTranslation } from 'react-i18next';
-import { login } from '../../../Store/Reducers/user';
+import { login } from 'Store/Reducers/authentication';
 import { setCurrentRoute } from '../../../Store/Reducers/common';
 import { isEmail, required } from '../../../Utils/validators';
 
@@ -82,7 +82,7 @@ const Login = props => {
 
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
-  isAuth: state.user.isAuth,
+  isAuthenticated: state.authentication.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {

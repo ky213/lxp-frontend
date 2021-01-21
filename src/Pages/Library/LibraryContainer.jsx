@@ -62,7 +62,7 @@ const LibraryContainer = props => {
 };
 
 let mapStateToProps = state => ({
-  user: state.user.user,
+  profile: state.authentication.profile,
   programs: state.programs.programs,
   isFetching: state.common.isFetching,
   direction: state.common.direction,

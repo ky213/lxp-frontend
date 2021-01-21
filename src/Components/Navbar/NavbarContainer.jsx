@@ -18,7 +18,7 @@ const NavbarContainer = props => {
     <>
       {props.currentRoute != '/login' && props.currentRoute != '/forgot_password' && (
         <Navbar
-          user={props.user}
+          profile={props.profile}
           changeLanguage={props.changeLanguage}
           direction={props.direction}
           setIsOpenSearchModal={setIsOpenSearchModal}
@@ -36,7 +36,7 @@ const NavbarContainer = props => {
 };
 
 let mapStateToProps = state => ({
-  user: state.user.user,
+  profile: state.authentication.profile,
   direction: state.common.direction,
   currentRoute: state.common.currentRoute,
   unreadNotifications: state.notifications.unreadNotifications,

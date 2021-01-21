@@ -94,9 +94,9 @@ const ActivitiesContainer = props => {
 
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
-  user: state.user.user,
+  profile: state.authentication.profile,
   activities: state.activities.activities,
-  isAuth: state.user.isAuth,
+  isAuthenticated: state.authentication.isAuthenticated,
   direction: state.common.direction,
 });
 

@@ -63,7 +63,7 @@ const CoursesContainer = props => {
 
 let mapStateToProps = state => ({
   courses: state.courses.courses,
-  user: state.user.user,
+  profile: state.authentication.profile,
   isFetching: state.common.isFetching,
   page: state.courses.page,
   take: state.courses.take,

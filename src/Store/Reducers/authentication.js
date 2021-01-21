@@ -1,6 +1,6 @@
 import * as authenticationSerivce from 'Services/authentication';
 
-import { AUTH_TOKEN_KEY } from 'Config/constants';
+import { AUTH_TOKEN_KEY } from 'Config/constants'; //local storage key
 import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
 const ACTION_TYPES = {
@@ -11,7 +11,7 @@ const ACTION_TYPES = {
 const initialState = {
   loading: false,
   isAuthenticated: false,
-  account: null,
+  profile: {},
   error: null,
   token: null,
 };
@@ -20,7 +20,7 @@ const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST(ACTION_TYPES.LOGIN):
     case REQUEST(ACTION_TYPES.LOGOUT): {
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     }
 
     case FAILURE(ACTION_TYPES.LOGOUT):
@@ -29,12 +29,11 @@ const reducer = (state = initialState, { type, payload }) => {
     }
 
     case SUCCESS(ACTION_TYPES.LOGIN): {
-      return { ...state, loading: false, isAuthenticated: true, token: payload.token, account: payload.user };
+      return { ...state, loading: false, isAuthenticated: true, token: payload.data.token, profile: payload.data.user };
     }
     case SUCCESS(ACTION_TYPES.LOGOUT): {
-      return { ...state, loading: false, isAuthenticated: false, token: null, account: null };
+      return { ...state, loading: false, isAuthenticated: false, token: null, profile: null };
     }
-
     default:
       return state;
   }

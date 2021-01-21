@@ -8,14 +8,14 @@ import { getUnreadNotifications } from '../../../Store/Reducers/notifications';
 
 const LoadDataRouter = ({
   Component,
-  isAuth,
+  isAuthenticated,
   setCurrentRoute,
   currentRoute,
   getUserProfile,
   getProfile,
   isStartData,
   getUnreadNotifications,
-  user,
+  profile,
   limit,
   employeeId,
   ...rest
@@ -27,7 +27,7 @@ const LoadDataRouter = ({
       } else {
         getProfile(localStorage.usertoken || sessionStorage.usertoken);
       }
-      getUnreadNotifications(limit, user.organizationId);
+      getUnreadNotifications(limit, profile.organizationId);
     }
   }, [employeeId]);
 
@@ -39,12 +39,12 @@ const LoadDataRouter = ({
 };
 
 let mapStateToProps = state => ({
-  isAuth: state.user.isAuth,
+  isAuthenticated: state.authentication.isAuthenticated,
   currentRoute: state.common.currentRoute,
-  isStartData: state.user.isStartData,
-  user: state.user.user,
+  isStartData: state.authentication.profile.isStartData,
+  profile: state.authentication.profile,
   limit: state.notifications.limit,
-  employeeId: state.user.employeeId,
+  employeeId: state.authentication.profile.employeeId,
 });
 
 export default connect(mapStateToProps, {

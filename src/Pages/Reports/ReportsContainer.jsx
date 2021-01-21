@@ -8,7 +8,7 @@ import { setJoinedCourses } from '../../Store/Reducers/courses';
 const ReportsContainer = props => {
   useEffect(() => {
     if (props.user.employeeId) {
-      console.log("asd")
+      console.log('asd');
       props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
     }
   }, [props.user.employeeId]);
@@ -40,8 +40,8 @@ const ReportsContainer = props => {
 
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
-  user: state.user.user,
-  isAuth: state.user.isAuth,
+  profile: state.authentication.profile,
+  isAuthenticated: state.authentication.isAuthenticated,
   courses: state.courses.joinedCourses,
   activities: state.activities.currentActivity,
   page: state.courses.page,

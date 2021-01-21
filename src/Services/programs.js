@@ -1,8 +1,5 @@
-import instance from './axios';
+import axios from 'Config/axios';
 
-export const programsApi = {
-  getPrograms(organizationId, pageId, perPage){
-    return instance.get(`programs?organizationId=${organizationId}&pageId=${pageId}&recordsPerPage=${perPage}`)
-    .then(response => response.data);
-  }
+export function getPrograms(organizationId, pageId, perPage) {
+  return axios.get(`/programs?organizationId=${organizationId}&pageId=${pageId}&recordsPerPage=${perPage}`);
 }

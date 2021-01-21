@@ -80,7 +80,7 @@ const ForgotPassword = props => {
 
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
-  isAuth: state.user.isAuth,
+  isAuthenticated: state.authentication.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {

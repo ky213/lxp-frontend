@@ -5,16 +5,16 @@ import thunkMiddleWare from 'redux-thunk';
 import multi from 'redux-multi';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { authentication, user, common, courses, activities, notifications, programs } from './Reducers';
+import { authentication, common, courses, activities, notifications, programs, user } from './Reducers';
 
 let reducers = combineReducers({
   authentication,
-  user,
   common,
   courses,
   activities,
   notifications,
   programs,
+  user,
   form: formReducer,
 });
 

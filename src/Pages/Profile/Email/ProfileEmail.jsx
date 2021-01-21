@@ -24,7 +24,12 @@ const ProfileEmailForm = props => {
       </div>
       <div className={classes.field}>
         <label>{t('profile.profileEmail.new')}</label>
-        <Field component={AuthInput} placeholder="mail../..example.com" name="newEmail" validate={[required, isEmail]} />
+        <Field
+          component={AuthInput}
+          placeholder="mail../..example.com"
+          name="newEmail"
+          validate={[required, isEmail]}
+        />
       </div>
       <div className={classes.field}>
         <label>{t('profile.profileEmail.reenter')}</label>
@@ -54,7 +59,7 @@ const ProfileEmail = props => {
 };
 
 let mapStateToProps = state => ({
-  user: state.user.user,
+  profile: state.authentication.profile,
 });
 
 export default connect(mapStateToProps, {})(ProfileEmail);

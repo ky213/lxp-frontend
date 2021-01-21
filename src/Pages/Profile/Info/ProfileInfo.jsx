@@ -74,7 +74,7 @@ const ProfileInfo = props => {
 };
 
 let mapStateToProps = state => ({
-  user: state.user.user,
+  profile: state.authentication.profile,
 });
 
 export default connect(mapStateToProps, {})(ProfileInfo);

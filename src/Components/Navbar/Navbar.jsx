@@ -82,20 +82,22 @@ const Navbar = props => {
               </NavLink>
             </div>
             <div className={classes.menuItem}>
-              {props.user.roleId === USER_ROLES.LEARNER ?
-              <NavLink to="/courses" activeClassName={classes.active}>
+              {props.profile.roleId === USER_ROLES.LEARNER ? (
+                <NavLink to="/courses" activeClassName={classes.active}>
                   {coursesicon}
-                  {t("navbar.courses")}
-              </NavLink> :
-              <NavLink to="/learners" activeClassName={classes.active} className={classes.learnersLink}>
+                  {t('navbar.courses')}
+                </NavLink>
+              ) : (
+                <NavLink to="/learners" activeClassName={classes.active} className={classes.learnersLink}>
                   {learnersicon}
-                  {t("navbar.learners")}
-              </NavLink>}
+                  {t('navbar.learners')}
+                </NavLink>
+              )}
             </div>
             <div className={classes.menuItem}>
               <NavLink to="/activities" activeClassName={classes.active}>
-                  {activitiesicon}
-                  {t("navbar.activities")}
+                {activitiesicon}
+                {t('navbar.activities')}
               </NavLink>
             </div>
             <div className={classes.menuItem}>
@@ -150,12 +152,12 @@ const Navbar = props => {
               setIsOpenProfileMenu(!isOpenProfileMenu);
             }}
           >
-            {props.user.profilePhoto ? (
-              <img src={props.user.profilePhoto} className={classes.userPhoto} />
+            {props.profile.profilePhoto ? (
+              <img src={props.profile.profilePhoto} className={classes.userPhoto} />
             ) : (
               <div className={classes.userDefault}></div>
             )}
-            <span>{props.user.name}</span>
+            <span>{props.profile.name}</span>
             <div className={classes.profileMenuContainer}>
               {isOpenProfileMenu && <ProfileMenu setIsOpenProfileMenu={setIsOpenProfileMenu} />}
             </div>

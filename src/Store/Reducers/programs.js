@@ -1,68 +1,60 @@
-import { programsApi } from "../../Services/programs";
-import { setIsFetching } from "./common";
+import * as programsService from 'Services/programs';
+import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const SET_PROGRAMS_DATA = 'SET_PROGRAMS_DATA';
-const SET_PAGE_ID = 'SET_PAGE_ID';
-const SET_PER_PAGE = 'SET_PER_PAGE';
-const SET_TOTAL_PROGRAMS_COUNT = 'SET_TOTAL_PROGRAMS_COUNT';
-const SET_CURRENT_PROGRAM = 'SET_CURRENT_PROGRAM';
+const PROGRAMS_ACTIONS = {
+  GET_ALL: 'programs/GET_ALL',
+  GET_ONE: 'programs/GET_ONE',
+  CREATE: 'programs/CREATE',
+  UPDATE: 'programs/UPDATE',
+  DELETE: 'programs/DELETE',
+  RESET: 'programs/RESET',
+};
 
-let initialState = {
-    programs: [],
-    totalProgramsCount: 0,
-    currentProgram: [],
-    pageId: 1,
-    perPage: 15
-}
+const initialState = {
+  programs: [],
+  currentProgram: null,
+  loading: false,
+  error: null,
+};
 
-const programsReducer = (state = initialState, action) => {
-    switch(action.type){
-        case SET_PROGRAMS_DATA: {
-            return { ...state, programs: action.programs }
-        }
-        case SET_PAGE_ID: {
-            return { ...state, pageId: action.pageId }
-        }
-        case SET_PER_PAGE: {
-            return { ...state, perPage: action.perPage }
-        }
-        case SET_TOTAL_PROGRAMS_COUNT: {
-            return { ...state, totalProgramsCount: action.totalProgramsCount }
-        }
-        case SET_CURRENT_PROGRAM: {
-            return { ...state, currentProgram: action.currentProgram }
-        }
-        default:
-            return state;
+const programsReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case REQUEST(PROGRAMS_ACTIONS.GET_ALL):
+    case REQUEST(PROGRAMS_ACTIONS.GET_ONE): {
+      return { ...state, loading: true, error: null };
     }
-}
 
-export const setProgramsData = (programs) => ({
-    type: SET_PROGRAMS_DATA, programs
-});
-export const setPageId = (pageId) => ({
-    type: SET_PAGE_ID, pageId
-});
-export const setPerPage = (perPage) => ({
-    type: SET_PER_PAGE, perPage
-});
-export const setTotalProgramsCount = (totalProgramsCount) => ({
-    type: SET_TOTAL_PROGRAMS_COUNT, totalProgramsCount
-});
-export const setCurrentProgram = (currentProgram) => ({
-    type: SET_CURRENT_PROGRAM, currentProgram
-});
-
-export const getPrograms = (organizationId, pageId, perPage) => async (dispatch) => {
-    dispatch(setIsFetching(true));
-    try{
-        let respnose = await programsApi.getPrograms(organizationId, pageId, perPage);
-        console.log(respnose);
-        dispatch([setProgramsData(respnose.programs), setTotalProgramsCount(respnose.totalProgramsCount), setIsFetching(false)]);
-    }catch(err){
-        dispatch(setIsFetching(false));
+    case FAILURE(PROGRAMS_ACTIONS.GET_ALL):
+    case FAILURE(PROGRAMS_ACTIONS.GET_ONE): {
+      return { ...state, loading: false, error: payload.error };
     }
-}
 
+    case SUCCESS(PROGRAMS_ACTIONS.GET_ALL): {
+      return { ...state, loading: false, programs: payload.data };
+    }
+    case SUCCESS(PROGRAMS_ACTIONS.GET_ONE): {
+      return { ...state, loading: false, currentProgram: payload.data };
+    }
+    case PROGRAMS_ACTIONS.RESET: {
+      return { ...initialState };
+    }
+
+    default:
+      return state;
+  }
+};
+
+export const getPrograms = (organizationId, pageId, perPage) => dispatch => {
+  dispatch({
+    type: PROGRAMS_ACTIONS.GET_ALL,
+    payload: programsService.getPrograms(organizationId, pageId, perPage),
+  });
+};
+export const setCurrentProgram = (organizationId, pageId, perPage) => dispatch => {
+  dispatch({
+    type: PROGRAMS_ACTIONS.GET_ALL,
+    payload: programsService.getPrograms(organizationId, pageId, perPage),
+  });
+};
 
 export default programsReducer;

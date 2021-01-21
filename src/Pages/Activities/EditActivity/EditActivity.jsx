@@ -262,7 +262,7 @@ let WithUrlDataContainerComponent = withRouter(EditActivity);
 
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
-  user: state.user.user,
+  profile: state.authentication.profile,
   direction: state.common.direction,
 });
 

@@ -60,9 +60,15 @@ const Activity = props => {
         <Preloader />
       ) : (
         <div className={classes.container}>
-          {isShowDeleteModal && <DeleteModal setIsShowDeleteModal={setIsShowDeleteModal} 
-                                title={t("deleteActivity.title")} sub={t("deleteActivity.sub")} 
-                                deleteText={t("deleteActivity.delete")} cancelText={t("deleteActivity.cancel")}/>}
+          {isShowDeleteModal && (
+            <DeleteModal
+              setIsShowDeleteModal={setIsShowDeleteModal}
+              title={t('deleteActivity.title')}
+              sub={t('deleteActivity.sub')}
+              deleteText={t('deleteActivity.delete')}
+              cancelText={t('deleteActivity.cancel')}
+            />
+          )}
           <StyledLeftSide className={classes.leftSide} direction={props.direction}>
             <div className={classes.block + ' ' + classes.withoutPadding}>
               <div className={classes.infoBlock}>
@@ -167,7 +173,7 @@ let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
   activity: state.activities.currentActivity,
   activities: state.activities.activities,
-  user: state.user.user,
+  profile: state.authentication.profile,
   direction: state.common.direction,
 });
 

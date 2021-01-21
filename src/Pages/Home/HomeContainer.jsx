@@ -7,21 +7,21 @@ import { getActivities } from '../../Store/Reducers/activities';
 
 const HomeContainer = props => {
   useEffect(() => {
-    if (props.user.employeeId) {
-      props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
+    if (props.profile.employeeId) {
+      props.getActivities(props.profile.employeeId, props.profile.userId, props.profile.organizationId);
     }
-  }, [props.user.employeeId]);
+  }, [props.profile.employeeId]);
 
   useEffect(() => {
-    props.setJoinedCourses(props.user.joinedCourses);
-  }, [props.user.joinedCourses]);
+    props.setJoinedCourses(props.profile.joinedCourses);
+  }, [props.profile.joinedCourses]);
 
   return (
     <>
       {props.isFetching && <Preloader />}
-      {props.isAuth && (
+      {props.isAuthenticated && (
         <Home
-          user={props.user}
+          user={props.profile}
           courses={props.courses}
           activities={props.activities}
           direction={props.direction}
@@ -34,8 +34,8 @@ const HomeContainer = props => {
 
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
-  user: state.user.user,
-  isAuth: state.user.isAuth,
+  profile: state.authentication.profile,
+  isAuthenticated: state.authentication.isAuthenticated,
   courses: state.courses.joinedCourses,
   activities: state.activities.activities,
   page: state.courses.page,

@@ -7,7 +7,7 @@ const SET_IS_AUTH = 'SET_IS_AUTH';
 const SET_IS_START_DATA = 'SET_IS_START_DATA';
 const SET_EMPLOYEE_ID = 'SET_EMPLOYEE_ID';
 
-let initialState = {
+const initialState = {
   user: [],
   isAuth: false,
   isStartData: false,
@@ -51,28 +51,33 @@ export const setEmployeeId = employeeId => ({
   employeeId,
 });
 
-export const login = (email, password, isRememberMe) => async dispatch => {
-  dispatch(setIsFetching(true));
-  try {
-    let response = await userService.login(email, password);
-    if (isRememberMe) {
-      localStorage.setItem('usertoken', response.token);
-    } else {
-      sessionStorage.setItem('usertoken', response.token);
-    }
-    dispatch([setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
-  } catch (err) {
-    let error = err.response.data.message ? err.response.data.message : err.message;
-    dispatch(stopSubmit('login', { _error: error }));
-    dispatch(setIsFetching(false));
-  }
-};
+// export const login = (email, password, isRememberMe) => async dispatch => {
+//   dispatch(setIsFetching(true));
+//   try {
+//     let response = await userService.login(email, password);
+//     if (isRememberMe) {
+//       localStorage.setItem('usertoken', response.token);
+//     } else {
+//       sessionStorage.setItem('usertoken', response.token);
+//     }
+//     dispatch([setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
+//   } catch (err) {
+//     let error = err.response.data.message ? err.response.data.message : err.message;
+//     dispatch(stopSubmit('login', { _error: error }));
+//     dispatch(setIsFetching(false));
+//   }
+// };
 
 export const getProfile = token => async dispatch => {
   dispatch(setIsFetching(true));
   try {
     let response = await userService.getProfile(token);
-    dispatch([setUserData(response.user), setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
+    dispatch([
+      setUserData(response.user),
+      setEmployeeId(response.user.employeeId),
+      setIsAuth(true),
+      setIsFetching(false),
+    ]);
   } catch (err) {
     dispatch(setIsFetching(false));
   }

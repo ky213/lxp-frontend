@@ -18,16 +18,13 @@ const HomeContainer = props => {
 
   return (
     <>
-      {props.isFetching && <Preloader />}
-      {props.isAuthenticated && (
-        <Home
-          user={props.profile}
-          courses={props.courses}
-          activities={props.activities}
-          direction={props.direction}
-          programs={props.programs}
-        />
-      )}
+      <Home
+        user={props.profile}
+        courses={props.courses}
+        activities={props.activities}
+        direction={props.direction}
+        programs={props.programs}
+      />
     </>
   );
 };

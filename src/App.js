@@ -45,17 +45,17 @@ const App = props => {
     <MainLayout direction={props.direction} changeLanguage={changeLanguage}>
       <Switch>
         <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <Route path="/home" render={() => <LoadDataRouter Component={Home} />} />
-        <Route path="/courses" render={() => <LoadDataRouter Component={CourseRoutes} />} />
+        <Route path="/home" component={Home} />
+        <Route path="/courses" component={CourseRoutes} />
         <PrivateRoute path="/activities" component={Activities} hasRole={[]} />
-        <Route path="/programs" render={() => <LoadDataRouter Component={Programs} />} />
-        <Route path="/profile" render={() => <LoadDataRouter Component={Profile} />} />
-        <Route path="/login" render={() => <Login />} />
-        <Route path="/forgot_password" render={() => <ForgotPassword />} />
-        <Route path="/report" render={() => <LoadDataRouter Component={Reports} />} />
-        <Route path="/search" render={() => <LoadDataRouter Component={SearchResult} />} />
-        <Route path="/home/notifications" render={() => <LoadDataRouter Component={Notifications} />} />
-        <Route path="/library" render={() => <LoadDataRouter Component={Library} />} />
+        <Route path="/programs" component={Programs} />
+        <Route path="/profile" component={Profile} />
+        <Route path="/login" component={Login} />
+        <Route path="/forgot_password" component={ForgotPassword} />
+        <Route path="/report" component={Reports} />
+        <Route path="/search" component={SearchResult} />
+        <Route path="/home/notifications" component={Notifications} />
+        <Route path="/library" component={Library} />
         <Route component={PageNotFound} />
       </Switch>
     </MainLayout>

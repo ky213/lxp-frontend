@@ -42,9 +42,9 @@ export const PrivateRouteComponent = ({
   return <Route {...rest} render={renderRedirect} />;
 };
 
-const mapStateToProps = ({ authentication: { isAuthenticated, account } }, { hasRole = [] }) => ({
+const mapStateToProps = ({ authentication: { isAuthenticated, profile } }, { hasRole = [] }) => ({
   isAuthenticated,
-  isAuthorized: hasRole.includes(account?.role),
+  isAuthorized: hasRole.includes(profile.role),
 });
 
 export const PrivateRoute = connect(mapStateToProps, null, null, { pure: false })(PrivateRouteComponent);

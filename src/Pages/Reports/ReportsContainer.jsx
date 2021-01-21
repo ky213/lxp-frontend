@@ -7,15 +7,15 @@ import { setJoinedCourses } from '../../Store/Reducers/courses';
 
 const ReportsContainer = props => {
   useEffect(() => {
-    if (props.user.employeeId) {
+    if (props.profile.employeeId) {
       console.log('asd');
-      props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
+      props.getActivities(props.profile.employeeId, props.profile.userId, props.profile.organizationId);
     }
-  }, [props.user.employeeId]);
+  }, [props.profile.employeeId]);
 
   useEffect(() => {
-    props.setJoinedCourses(props.user.joinedCourses);
-  }, [props.user.joinedCourses]);
+    props.setJoinedCourses(props.profile.joinedCourses);
+  }, [props.profile.joinedCourses]);
 
   return (
     <>
@@ -25,7 +25,7 @@ const ReportsContainer = props => {
         <>
           {
             <Reports
-              user={props.user}
+              user={props.profile}
               courses={props.courses}
               activities={props.activities}
               direction={props.direction}

@@ -3,11 +3,11 @@ import classes from '../Auth.module.css';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
-import { AuthInput, Preloader } from '../../../Components';
+import { AuthInput, Preloader } from 'Components';
 import { useTranslation } from 'react-i18next';
 import { login } from 'Store/Reducers/authentication';
-import { setCurrentRoute } from '../../../Store/Reducers/common';
-import { isEmail, required } from '../../../Utils/validators';
+import { setCurrentRoute } from 'Store/Reducers/common';
+import { isEmail, required } from 'Utils/validators';
 
 const LoginForm = props => {
   const { t, i18n } = useTranslation();
@@ -69,7 +69,7 @@ const Login = props => {
       {(localStorage.usertoken || sessionStorage.usertoken) && <Redirect to="/" />}
       <div className={classes.login}>
         <h1>{t('login.header')}</h1>
-        {props.isFetching && <Preloader />}
+        {props.loading && <Preloader />}
         <LoginReduxForm onSubmit={onSubmit} isRememberMe={isRememberMe} setIsRememberMe={setIsRememberMe} />
       </div>
       <div className={classes.back}>
@@ -81,7 +81,7 @@ const Login = props => {
 };
 
 let mapStateToProps = state => ({
-  isFetching: state.common.isFetching,
+  loading: state.authentication.loading,
   isAuthenticated: state.authentication.isAuthenticated,
 });
 

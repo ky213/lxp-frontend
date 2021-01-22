@@ -1,12 +1,13 @@
-import { notificationService } from '../../Services';
-import { setIsFetching } from './common';
+import * as notificationService from 'Services/notifications';
+import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const SET_UNREAD_NOTIFICATIONS_DATA = 'SET_UNREAD_NOTIFICATIONS_DATA';
-const SET_TOTAL_UNREAD_NOTIFICATIONS_COUNT = 'SET_TOTAL_UNREAD_NOTIFICATIONS_COUNT';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const SET_PAGE_SIZE = 'SET_PAGE_SIZE';
-const SET_NOTIFICATIONS_DATA = 'SET_NOTIFICATIONS_DATA';
-const SET_TOTAL_NOTIFICATIONS_COUNT = 'SET_TOTAL_NOTIFICATIONS_COUNT';
+const NOTIFICATIONS_ACTIONS = {
+  GET_ALL: 'notifications/GET_ALL',
+  GET_ONE: 'notifications/GET_ONE',
+  GET_UNREAD: 'notifications/GET_UNREAD',
+  DELETE: 'notifications/DELETE',
+  RESET: 'notifications/RESET',
+};
 
 let initialState = {
   unreadNotifications: [],
@@ -16,85 +17,60 @@ let initialState = {
   limit: 5,
   currentPage: 1,
   pageSize: 15,
+  error: null,
+  loading: false,
 };
 
-const notificationsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_UNREAD_NOTIFICATIONS_DATA: {
-      return { ...state, unreadNotifications: action.unreadNotifications };
+const notificationsReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case REQUEST(NOTIFICATIONS_ACTIONS.GET_ALL):
+    case REQUEST(NOTIFICATIONS_ACTIONS.GET_UNREAD): {
+      return { ...state, loading: true, error: null };
     }
-    case SET_TOTAL_UNREAD_NOTIFICATIONS_COUNT: {
-      return { ...state, totalUnreadNotificationsCount: action.totalUnreadNotificationsCount };
+
+    case FAILURE(NOTIFICATIONS_ACTIONS.GET_ALL):
+    case FAILURE(NOTIFICATIONS_ACTIONS.GET_UNREAD): {
+      return { ...state, loading: false, error: payload.error };
     }
-    case SET_CURRENT_PAGE: {
-      return { ...state, currentPage: action.currentPage };
+
+    case SUCCESS(NOTIFICATIONS_ACTIONS.GET_ALL): {
+      return {
+        ...state,
+        loading: false,
+        notifications: payload.data.notifications,
+        totalNotificationsCount: payload.data.totalNotificationsCount,
+      };
     }
-    case SET_PAGE_SIZE: {
-      return { ...state, pageSize: action.pageSize };
+    case SUCCESS(NOTIFICATIONS_ACTIONS.GET_UNREAD): {
+      return {
+        ...state,
+        loading: false,
+        unreadNotifications: payload.data.unreadNotifications,
+        totalUnreadNotificationsCount: payload.data.totalUnreadNotificationsCount,
+      };
     }
-    case SET_NOTIFICATIONS_DATA: {
-      return { ...state, notifications: action.notifications };
+
+    case NOTIFICATIONS_ACTIONS.RESET: {
+      return { ...initialState };
     }
-    case SET_TOTAL_NOTIFICATIONS_COUNT: {
-      return { ...state, totalNotificationsCount: action.totalNotificationsCount };
-    }
+
     default:
       return state;
   }
 };
 
-export const setUnreadNotificationsData = unreadNotifications => ({
-  type: SET_UNREAD_NOTIFICATIONS_DATA,
-  unreadNotifications,
-});
-export const setTotalUnreadNotificationsCount = totalUnreadNotificationsCount => ({
-  type: SET_TOTAL_UNREAD_NOTIFICATIONS_COUNT,
-  totalUnreadNotificationsCount,
-});
-export const setCurrentPage = currentPage => ({
-  type: SET_CURRENT_PAGE,
-  currentPage,
-});
-export const setPageSize = pageSize => ({
-  type: SET_PAGE_SIZE,
-  pageSize,
-});
-export const setNotificationsData = notifications => ({
-  type: SET_NOTIFICATIONS_DATA,
-  notifications,
-});
-export const setTotatlNotificationsCount = totalNotificationsCount => ({
-  type: SET_TOTAL_NOTIFICATIONS_COUNT,
-  totalNotificationsCount,
-});
-
 export const getUnreadNotifications = (limit, selectedOrganizationId) => async dispatch => {
-  dispatch(setIsFetching(true));
-  try {
-    let respnose = await notificationService.getUnreadNotifications(limit, selectedOrganizationId);
-    dispatch([
-      setTotalUnreadNotificationsCount(respnose.totalUnreadCount),
-      setUnreadNotificationsData(respnose.unreadNotifications),
-      setIsFetching(false),
-    ]);
-  } catch (err) {
-    dispatch(setIsFetching(false));
-  }
+  dispatch({
+    type: NOTIFICATIONS_ACTIONS.GET_UNREAD,
+    payload: notificationService.getUnreadNotifications(limit, selectedOrganizationId),
+  });
 };
 
-export const getNotifications = (currentPage, pageSize) => async dispatch => {
-  dispatch(setIsFetching(true));
-  try {
-    let response = await notificationService.getNotifications(currentPage, pageSize);
-    console.log(response);
-    dispatch([
-      setNotificationsData(response.notifications),
-      setTotatlNotificationsCount(response.totalNumberOfRecords),
-      setIsFetching(false),
-    ]);
-  } catch (err) {
-    dispatch(setIsFetching(false));
-  }
+export const getNotifications = (currentPage, pageSize) => dispatch => {
+  dispatch({
+    type: NOTIFICATIONS_ACTIONS.GET_ALL,
+    payload: notificationService.getNotifications(currentPage, pageSize),
+  });
 };
 
 export default notificationsReducer;

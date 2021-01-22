@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Preloader } from '../../Components';
+import { Preloader } from 'Components';
 import Notifications from './Notifications';
-import { getNotifications } from '../../Store/Reducers/notifications';
+import { getNotifications } from 'Store/Reducers/notifications';
 
 const NotificationsContainer = props => {
   useEffect(() => {
-    props.getNotifications(props.currentPage, props.pageSize);
-  }, [props.pageSize, props.currentPage]);
+    // props.getNotifications(props.currentPage, props.pageSize);
+  }, []);
 
-  return <>{props.isFetching ? <Preloader /> : <Notifications notifications={props.notifications} />}</>;
+  return (
+    <>
+      {props.notifications.loading ? (
+        <Preloader />
+      ) : (
+        <Notifications notifications={props.notifications.notifications} />
+      )}
+    </>
+  );
 };
 
 let mapStateToProps = state => ({
-  isFetching: state.common.isFetching,
-  notifications: state.notifications.notifications,
+  notifications: state.notifications,
   currentPage: state.notifications.currentPage,
   pageSize: state.notifications.pageSize,
 });

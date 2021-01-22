@@ -8,9 +8,9 @@ const NavbarContainer = props => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useState(false);
   const [isOpenNotificationsModal, setIsOpenNotificationsModal] = useState(false);
 
-  useEffect(() => {
-    props.getNotifications(props.currentPage, props.pageSize);
-  }, [props.currentPage, props.pageSize]);
+  // useEffect(() => {
+  //    props.getNotifications(props.currentPage, props.pageSize);
+  // }, [props.currentPage, props.pageSize]);
 
   useEffect(() => {}, [props.currentRoute]);
 

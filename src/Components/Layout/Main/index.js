@@ -14,7 +14,7 @@ const Container = styled.div`
 const MainLayout = props => {
   useEffect(() => {
     if (!props.isAuthenticated) props.history.push('/login');
-  }, [props.location.path]);
+  }, [props.location.path, props.isAuthenticated]);
 
   return (
     <Container dir={props.direction}>

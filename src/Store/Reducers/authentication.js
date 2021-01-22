@@ -20,14 +20,12 @@ const initialState = {
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST(ACTION_TYPES.LOGIN):
-    case REQUEST(ACTION_TYPES.LOGOUT):
     case REQUEST(ACTION_TYPES.GET_USER_PROFILE): {
       return { ...state, loading: true, error: null };
     }
 
     case FAILURE(ACTION_TYPES.LOGOUT):
-    case FAILURE(ACTION_TYPES.LOGIN):
-    case REQUEST(ACTION_TYPES.GET_USER_PROFILE): {
+    case FAILURE(ACTION_TYPES.GET_USER_PROFILE): {
       return { ...state, loading: false, isAuthenticated: false, error: payload.error };
     }
 
@@ -35,8 +33,8 @@ const reducer = (state = initialState, { type, payload }) => {
     case SUCCESS(ACTION_TYPES.GET_USER_PROFILE): {
       return { ...state, loading: false, isAuthenticated: true, token: payload.data.token, profile: payload.data.user };
     }
-    case SUCCESS(ACTION_TYPES.LOGOUT): {
-      return { ...state, loading: false, isAuthenticated: false, token: null, profile: null };
+    case ACTION_TYPES.LOGOUT: {
+      return { ...state, loading: false, isAuthenticated: false, token: null, profile: {} };
     }
     default:
       return state;

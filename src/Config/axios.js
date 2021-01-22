@@ -25,7 +25,7 @@ const onResponseSuccess = response => response;
 const onResponseError = err => {
   const status = err.status || (err.response ? err.response.status : 0);
   if ([401, 403].includes(status)) {
-    actions.clearAuthentication();
+    clearAuthentication(store.dispatch);
   }
   return Promise.reject(err);
 };

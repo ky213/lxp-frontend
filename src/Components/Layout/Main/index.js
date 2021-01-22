@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { NavBar, ErrorBoundary } from 'Components';
 
@@ -12,6 +12,10 @@ const Container = styled.div`
 `;
 
 const MainLayout = props => {
+  useEffect(() => {
+    if (!props.isAuthenticated) props.history.push('/login');
+  }, [props.location.path]);
+
   return (
     <Container dir={props.direction}>
       {props.isAuthenticated && <NavBar changeLanguage={props.changeLanguage} />}
@@ -23,4 +27,4 @@ const mapStateToProps = state => ({
   isAuthenticated: state.authentication.isAuthenticated,
 });
 
-export default connect(mapStateToProps)(MainLayout);
+export default connect(mapStateToProps)(withRouter(MainLayout));

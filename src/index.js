@@ -1,15 +1,16 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import { Preloader } from 'Components';
 import { theme } from 'Themes';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './Store/reduxStore';
-import { Provider } from 'react-redux';
+import store from 'Store/reduxStore';
+import App from './App';
+
+import './index.css';
 import './Utils/i18n';
-import { Preloader } from './Components';
 
 ReactDOM.render(
   <Provider store={store}>

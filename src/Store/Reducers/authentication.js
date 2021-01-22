@@ -54,6 +54,12 @@ export const login = (email, password, rememberMe = false) => async dispatch => 
     if (rememberMe) localStorage.setItem(AUTH_TOKEN_KEY, token);
   }
 };
+export const logout = () => dispatch => {
+  dispatch({
+    type: ACTION_TYPES.LOGOUT,
+  });
+  clearAuthToken();
+};
 
 export const getUserProfile = token => dispatch => {
   dispatch({

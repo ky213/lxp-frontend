@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import classes from './ProfileMenu.module.css';
-import { logout } from 'Store/Reducers/users';
+import { logout } from 'Store/Reducers/authentication';
 import { logout_icon } from 'Assets/Images/logout_icon';
 import { profile_settings_icon } from 'Assets/Images/profile_settings_icon';
 
@@ -65,13 +65,7 @@ const ProfileMenu = props => {
           </NavLink>
         </div>
         <div className={classes.menuItem + ' ' + classes.detectClick}>
-          <button
-            ref={butRef}
-            className={classes.detectClick}
-            onClick={() => {
-              handleLogout();
-            }}
-          >
+          <button ref={butRef} className={classes.detectClick} onClick={handleLogout}>
             {logout_icon}
             <span className={classes.detectClick}>Logout</span>
           </button>

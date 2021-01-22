@@ -146,7 +146,7 @@ const Navbar = props => {
           {props.isOpenNotificationsModal && (
             <NotificationsModal setIsOpenNotificationsModal={props.setIsOpenNotificationsModal} />
           )}
-          <input type="checkbox" hidden id="profileMenu" className={classes.check} checked={isOpenProfileMenu} />
+          <input type="checkbox" hidden id="profileMenu" className={classes.check} defaultChecked={isOpenProfileMenu} />
           <label
             className={classes.userMenu}
             htmlFor="profileMenu"

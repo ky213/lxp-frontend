@@ -7,18 +7,28 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { authentication, common, courses, activities, notifications, programs, users } from './Reducers';
 
-let reducers = combineReducers({
+const reducers = combineReducers({
   authentication,
   common,
   courses,
   activities,
-  notifications,
   programs,
   users,
+  notifications: () => ({
+    unreadNotifications: [],
+    totalUnreadNotificationsCount: 0,
+    notifications: [],
+    totalNotificationsCount: 0,
+    limit: 5,
+    currentPage: 1,
+    pageSize: 15,
+    error: null,
+    loading: false,
+  }),
   form: formReducer,
 });
 
-let store = createStore(
+const store = createStore(
   reducers,
   process.env.NODE_ENV === 'development'
     ? composeWithDevTools(applyMiddleware(thunkMiddleWare, promiseMiddleware, multi))

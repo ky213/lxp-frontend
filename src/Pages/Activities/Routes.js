@@ -1,7 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { PageNotFound } from '../../Components';
-import { AddActivity, EditActivity } from '.';
+
+import { PageNotFound } from 'Components';
+import AddActivity from './AddActivity/AddActivity';
+import EditActivity from './EditActivity/EditActivity';
 import ActivitiesContainer from './ActivitiesContainer';
 import { USER_ROLES } from 'Config/constants';
 import AddActivityManager from './AddActivity/AddActivityManager';

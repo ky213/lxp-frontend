@@ -31,14 +31,12 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, loading: false, isAuthenticated: false, error: payload.error };
     }
 
-    case SUCCESS(ACTION_TYPES.LOGIN): {
+    case SUCCESS(ACTION_TYPES.LOGIN):
+    case SUCCESS(ACTION_TYPES.GET_USER_PROFILE): {
       return { ...state, loading: false, isAuthenticated: true, token: payload.data.token, profile: payload.data.user };
     }
     case SUCCESS(ACTION_TYPES.LOGOUT): {
       return { ...state, loading: false, isAuthenticated: false, token: null, profile: null };
-    }
-    case SUCCESS(ACTION_TYPES.GET_USER_PROFILE): {
-      return { ...state, loading: false, profile: payload.data.user };
     }
     default:
       return state;

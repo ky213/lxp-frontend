@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { NavBar, ErrorBoundary } from 'Components';
 
@@ -13,12 +14,13 @@ const Container = styled.div`
 const MainLayout = props => {
   return (
     <Container dir={props.direction}>
-      <Router>
-        <NavBar changeLanguage={props.changeLanguage} />
-        <ErrorBoundary>{props.children}</ErrorBoundary>
-      </Router>
+      {props.isAuthenticated && <NavBar changeLanguage={props.changeLanguage} />}
+      <ErrorBoundary>{props.children}</ErrorBoundary>
     </Container>
   );
 };
+const mapStateToProps = state => ({
+  isAuthenticated: state.authentication.isAuthenticated,
+});
 
-export default MainLayout;
+export default connect(mapStateToProps)(MainLayout);

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import { MainLayout, PageNotFound, PrivateRoute } from 'Components';
 import { setDirection, setCurrentLanguage } from 'Store/Reducers/common';
@@ -49,23 +49,25 @@ const App = props => {
   };
 
   return (
-    <MainLayout direction={props.direction} changeLanguage={changeLanguage}>
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <Route path="/home" component={Home} />
-        <Route path="/courses" component={CourseRoutes} />
-        <PrivateRoute path="/activities" component={Activities} hasRole={[]} />
-        <Route path="/programs" component={Programs} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/login" component={Login} />
-        <Route path="/forgot_password" component={ForgotPassword} />
-        <Route path="/report" component={Reports} />
-        <Route path="/search" component={SearchResult} />
-        <Route path="/home/notifications" component={Notifications} />
-        <Route path="/library" component={Library} />
-        <Route component={PageNotFound} />
-      </Switch>
-    </MainLayout>
+    <Router>
+      <MainLayout direction={props.direction} changeLanguage={changeLanguage}>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
+          <Route path="/home" component={Home} />
+          <Route path="/courses" component={CourseRoutes} />
+          <PrivateRoute path="/activities" component={Activities} hasRole={[]} />
+          <Route path="/programs" component={Programs} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/login" component={Login} />
+          <Route path="/forgot_password" component={ForgotPassword} />
+          <Route path="/report" component={Reports} />
+          <Route path="/search" component={SearchResult} />
+          <Route path="/home/notifications" component={Notifications} />
+          <Route path="/library" component={Library} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </MainLayout>
+    </Router>
   );
 };
 

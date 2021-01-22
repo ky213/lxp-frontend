@@ -1,11 +1,8 @@
 import axios from 'axios';
-import { bindActionCreators } from 'redux';
 
 import store from 'Store/reduxStore';
 import { clearAuthentication } from 'Store/Reducers/authentication';
 import { AUTH_TOKEN_KEY } from './constants';
-
-const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,

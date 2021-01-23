@@ -32,7 +32,7 @@ const usersReducer = (state = initialState, { type, payload }) => {
     }
     case SUCCESS(USERS_ACTIONS.GET_ONE):
     case SUCCESS(USERS_ACTIONS.GET_PROGRAM_DIRECTORS): {
-      return { ...state, loading: false, user: payload.data };
+      return { ...state, loading: false, users: payload.data.users };
     }
     default:
       return state;

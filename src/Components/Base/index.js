@@ -7,3 +7,5 @@ export { default as FormGroup } from '@material-ui/core/FormGroup';
 export { default as FormControl } from '@material-ui/core/FormControl';
 export { default as MenuItem } from '@material-ui/core/MenuItem';
 export { default as TextArea } from '@material-ui/core/TextareaAutosize';
+export { default as Autocomplete } from '@material-ui/lab/Autocomplete';
+export { default as CircularProgress } from '@material-ui/core/CircularProgress';

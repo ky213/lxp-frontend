@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { PageLayout, FileSelect, TextEditor } from 'Components';
-import { Grid, Button, TextField, MenuItem, Label } from 'Components/Base';
+import { getPorgramDirectors } from 'Store/Reducers/users';
+import { PageLayout, TextEditor } from 'Components';
+import { Grid, Button, TextField, MenuItem, Label, Autocomplete, CircularProgress } from 'Components/Base';
 
-const AddEDitProgram = () => {
+const AddEDitProgram = props => {
   const [emailBody, setEmailBody] = useState('');
   const [certificateBody, setCertificateBody] = useState('');
-  const { currentProgram } = useSelector(state => state.programs);
+  const [open, setOpen] = useState(false);
   const { t, i18n } = useTranslation();
+
+  const { users, programs, profile } = props;
 
   const form = useFormik({
     initialValues: {
-      name: currentProgram?.name,
-      programDirectors: currentProgram?.programDirectors,
-      subject: currentProgram?.subject,
-      body: currentProgram?.body,
-      certificateSubject: currentProgram?.certificateSubject,
-      certificateBody: currentProgram?.certificateBody,
+      name: programs.currentProgram?.name,
+      programDirectors: programs.currentProgram?.programDirectors,
+      subject: programs.currentProgram?.subject,
+      body: programs.currentProgram?.body,
+      certificateSubject: programs.currentProgram?.certificateSubject,
+      certificateBody: programs.currentProgram?.certificateBody,
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Program name is required'),
@@ -56,24 +59,38 @@ const AddEDitProgram = () => {
           helperText={form.touched.name && form.errors.name}
           fullWidth
         />
-        <TextField
-          id="programDirectors"
-          name="programDirectors"
-          label="Program directors"
-          placeholder="select program director"
-          value={form.values.programDirectors}
-          onChange={form.handleChange}
-          error={form.touched.programDirectors && Boolean(form.errors.programDirectors)}
-          helperText={form.touched.programDirectors && form.errors.programDirectors}
-          fullWidth
-          select
-        >
-          {['dep 1', 'dep 2', 'dep 3'].map(option => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
+        <Autocomplete
+          multiple
+          open={open}
+          onOpen={() => {
+            setOpen(true);
+            props.getPorgramDirectors(profile.organizationId);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          getOptionSelected={(option, value) => option.name === value.name}
+          getOptionLabel={option => `${option.name} ${option.surname}`}
+          options={users.users}
+          loading={users.loading}
+          renderInput={params => (
+            <TextField
+              {...params}
+              id="programDirectors"
+              name="programDirectors"
+              label="Program directors"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {users.loading ? <CircularProgress color="primary" size={20} /> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
+            />
+          )}
+        />
         <TextField
           id="emailSubject"
           name="subject"
@@ -111,4 +128,13 @@ const AddEDitProgram = () => {
   );
 };
 
-export default withRouter(AddEDitProgram);
+const mapStateToProps = state => ({
+  users: state.users,
+  programs: state.programs,
+  profile: state.authentication.profile,
+});
+const mapDispatchToProps = {
+  getPorgramDirectors,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddEDitProgram);

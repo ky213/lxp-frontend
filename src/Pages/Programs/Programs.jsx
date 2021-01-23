@@ -82,7 +82,7 @@ const Programs = props => {
       <div className={classes.itemsList}>
         <div className={classes.containerItems}>
           {props.programs.length > 0 ? (
-            props.programs.map(program => <ProgramItem item={program} />)
+            props.programs.map(program => <ProgramItem key={program.programId} item={program} />)
           ) : (
             <div className={classes.empty}>
               <div className={classes.emptyIcon}>{empty_state_icon}</div>

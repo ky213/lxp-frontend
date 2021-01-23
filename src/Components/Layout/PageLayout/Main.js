@@ -7,7 +7,7 @@ const PageLayout = props => {
   return (
     <div className={classes.main}>
       <PageHeader title={props.title} />
-      {props.children}
+      <div className={classes.pageBody}>{props.children}</div>
     </div>
   );
 };

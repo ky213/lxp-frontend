@@ -144,6 +144,11 @@
   justify-content: space-between;
 }
 
+.pageBody {
+  margin: auto;
+  padding: 20px 2px;
+}
+
 @media screen and (max-width: 968px) {
   .headerContainer {
     width: calc(768px - 64px);
@@ -159,6 +164,9 @@
     padding-left: 32px;
     padding-right: 32px;
   }
+  .pageBody {
+    width: 75%;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -167,6 +175,10 @@
   }
   .containerItems {
     flex-direction: column;
+  }
+
+  .pageBody {
+    width: 80%;
   }
 }
 
@@ -178,8 +190,11 @@
     font-size: 24px;
     margin: 10px 0;
   }
-
   .headerHeader a {
     margin-bottom: 15px;
+  }
+
+  .pageBody {
+    width: 100%;
   }
 }

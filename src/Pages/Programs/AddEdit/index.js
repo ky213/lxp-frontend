@@ -33,7 +33,8 @@ const AddEDitProgram = props => {
         .typeError('Invalid entry'),
     }),
     onSubmit: values => {
-      alert(JSON.stringify({ ...values, certificateBody, body: emailBody }, null, 2));
+      // alert(JSON.stringify({ ...values, certificateBody, body: emailBody }, null, 2));
+      console.log(values);
     },
   });
 
@@ -58,10 +59,18 @@ const AddEDitProgram = props => {
           error={form.touched.name && Boolean(form.errors.name)}
           helperText={form.touched.name && form.errors.name}
           fullWidth
+          required
         />
         <Autocomplete
+          id="programDirectors"
+          name="programDirectors"
           multiple
           open={open}
+          defaultValue={users.users[0]}
+          getOptionSelected={(option, value) => option.name === value.name}
+          getOptionLabel={option => `${option.name} ${option.surname}`}
+          options={users.users}
+          loading={users.loading}
           onOpen={() => {
             setOpen(true);
             props.getPorgramDirectors(profile.organizationId);
@@ -69,10 +78,7 @@ const AddEDitProgram = props => {
           onClose={() => {
             setOpen(false);
           }}
-          getOptionSelected={(option, value) => option.name === value.name}
-          getOptionLabel={option => `${option.name} ${option.surname}`}
-          options={users.users}
-          loading={users.loading}
+          onChange={form.handleChange}
           renderInput={params => (
             <TextField
               {...params}
@@ -88,6 +94,7 @@ const AddEDitProgram = props => {
                   </>
                 ),
               }}
+              required
             />
           )}
         />

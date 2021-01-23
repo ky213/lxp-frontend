@@ -1,12 +1,13 @@
 import React from 'react';
-import classes from './ProgramItem.module.css';
-import { NavLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { learnersicon } from '../../../Assets/Images/learners';
-import { clockicon } from '../../../Assets/Images/clock';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { USER_ROLES } from 'Config/constants';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { useTranslation } from 'react-i18next';
+import { learnersicon } from 'Assets/Images/learners';
+import { clockicon } from 'Assets/Images/clock';
+import thumbnail from 'Assets/programs/thumbnail.svg';
+import classes from './ProgramItem.module.css';
 
 const StyledAttendees = styled.div`
   margin-left: ${({ direction }) => (direction === 'ltr' ? '4px' : '0')};
@@ -34,19 +35,16 @@ const ProgramItem = props => {
   return (
     <div className={classes.main}>
       <NavLink to={`/programs/view/${props.item.programId}`}>
-        {props.item.image != 'null' ? <img src={props.item.image} /> : <div className={classes.defaultImg}></div>}
-
+        <img src={thumbnail} style={{ width: '261px', height: '120px' }} />
         <div className={classes.itemInfo}>
           <div className={classes.header}>
             <label>{t('programMini.label')}</label>
-            {props.user.roleId != USER_ROLES.LEARNER && (
-              <NavLink to={`/programs/view/${props.item.programId}/attendees`} className={classes.attendees}>
-                {learnersicon}
-                <StyledAttendees direction={props.direction}>
-                  {props.item.attendees ? props.item.attendees.length : 0} {t('programMini.attendees')}
-                </StyledAttendees>
-              </NavLink>
-            )}
+            <NavLink to={`/programs/view/${props.item.programId}/attendees`} className={classes.attendees}>
+              {learnersicon}
+              <StyledAttendees direction={props.direction}>
+                {props.item.attendees ? props.item.attendees.length : 0} {t('programMini.attendees')}
+              </StyledAttendees>
+            </NavLink>
           </div>
 
           <h2>{props.item.name}</h2>

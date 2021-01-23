@@ -50,7 +50,6 @@ const ProgramAttendeesContainer = props => {
 
   return (
     <>
-      {props.user.roleId === USER_ROLES.LEARNER && <Redirect to="/" />}
       {props.isFetching ? (
         <Preloader />
       ) : (

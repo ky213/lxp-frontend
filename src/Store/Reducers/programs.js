@@ -13,6 +13,7 @@ const PROGRAMS_ACTIONS = {
 const initialState = {
   programs: [],
   currentProgram: null,
+  totalNumberOfRecords: 0,
   loading: false,
   error: null,
 };
@@ -30,7 +31,12 @@ const programsReducer = (state = initialState, { type, payload }) => {
     }
 
     case SUCCESS(PROGRAMS_ACTIONS.GET_ALL): {
-      return { ...state, loading: false, programs: payload.data };
+      return {
+        ...state,
+        loading: false,
+        programs: payload.data.programs,
+        totalNumberOfRecords: payload.data.totalNumberOfRecords,
+      };
     }
     case SUCCESS(PROGRAMS_ACTIONS.GET_ONE): {
       return { ...state, loading: false, currentProgram: payload.data };

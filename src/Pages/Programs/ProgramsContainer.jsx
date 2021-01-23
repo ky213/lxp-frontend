@@ -9,7 +9,7 @@ const ProgramsContainer = props => {
     if (props.profile.organizationId) {
       props.getPrograms(props.profile.organizationId, props.pageId, props.perPage);
     }
-  }, [props.profile]);
+  }, []);
 
   const [all, setAll] = useState(true);
   const [completed, setCompleted] = useState(true);

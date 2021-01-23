@@ -57,6 +57,20 @@ export const getPrograms = (organizationId, pageId, perPage) => dispatch => {
     payload: programsService.getPrograms(organizationId, pageId, perPage),
   });
 };
+export const createProgram = programData => dispatch => {
+  dispatch({
+    type: PROGRAMS_ACTIONS.CREATE,
+    payload: programsService.createProgram(programData),
+  });
+};
+
+export const updateProgram = programData => dispatch => {
+  dispatch({
+    type: PROGRAMS_ACTIONS.UPDATE,
+    payload: programsService.updateProgram(programData),
+  });
+};
+
 export const setCurrentProgram = (organizationId, pageId, perPage) => dispatch => {
   dispatch({
     type: PROGRAMS_ACTIONS.GET_ALL,

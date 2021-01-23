@@ -7,12 +7,13 @@ import * as Yup from 'yup';
 import { Autocomplete } from 'formik-material-ui-lab';
 
 import { getPorgramDirectors } from 'Store/Reducers/users';
+import { createProgram, updateProgram } from 'Store/Reducers/programs';
 import { PageLayout, TextEditor } from 'Components';
 import { Grid, Button, TextField, MenuItem, Label, CircularProgress } from 'Components/Base';
 
 const AddEDitProgram = props => {
-  const [emailBody, setEmailBody] = useState('');
-  const [certificateBody, setCertificateBody] = useState('');
+  const [emailBody, setEmailBody] = useState(props.programs.currentProgram?.body || '');
+  const [certificateBody, setCertificateBody] = useState(props.programs.currentProgram?.certificateBody || '');
   const [open, setOpen] = useState(false);
   const { t, i18n } = useTranslation();
 
@@ -41,34 +42,11 @@ const AddEDitProgram = props => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
+    const programData = { ...values, body: emailBody, certificateBody };
+    if (programs.currentProgram) props.updateProgram({ ...programData, programId: programs.currentProgram.programId });
+    else props.createProgram(programData);
     setSubmitting(false);
   };
-
-  const defaultUser = [
-    {
-      userId: '54615706-09f3-4186-93ef-7bead5aaaa4e',
-      email: 'ruba.admin@neworg.com',
-      name: 'Ruba',
-      surname: 'admin',
-      gender: 'F',
-      startDate: null,
-      profilePhoto: null,
-      isActiveUser: true,
-      employeeId: '69125d85-cfc5-49e4-b6a1-ec2631128f26',
-      isActive: true,
-      expLevelId: null,
-      organizationId: '1557abe7-acf8-4442-a417-487ac5e940b0',
-      organizationName: 'Cybershield Awareness Program New Organization',
-      role: 'Admin',
-      roleName: 'Administrator',
-      expLevelName: null,
-      programName: 'Engish Proram',
-      programId: '0a3600c3-9758-432c-a0ac-8b8e4c0b224e',
-      groupIds: [],
-      joinedCourses: [],
-    },
-  ];
 
   return (
     <PageLayout title="Add/Edit Programs">
@@ -145,10 +123,10 @@ const AddEDitProgram = props => {
             <Label>Certificate body</Label>
             <TextEditor name="certifcateBody" data={values.certificateBody} onChange={handleCertificateBodyChange} />
             <Grid>
-              <Button type="submit" variant="contained" color="primary" loading>
-                {users.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}
+              <Button type="submit" variant="contained" color="primary" disabled={programs.loading}>
+                {programs.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}
               </Button>
-              <Button variant="contained" color="secondary">
+              <Button variant="contained" color="secondary" disabled={programs.loading}>
                 Cancel
               </Button>
             </Grid>
@@ -165,6 +143,8 @@ const mapStateToProps = state => ({
   profile: state.authentication.profile,
 });
 const mapDispatchToProps = {
+  createProgram,
+  updateProgram,
   getPorgramDirectors,
 };
 

@@ -1,102 +1,48 @@
-import { userService } from 'Services';
-import { setIsFetching } from './common';
+import { usersService } from 'Services';
+import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const SET_USER_DATA = 'SET_USER_DATA';
-const SET_IS_AUTH = 'SET_IS_AUTH';
-const SET_IS_START_DATA = 'SET_IS_START_DATA';
-const SET_EMPLOYEE_ID = 'SET_EMPLOYEE_ID';
-
-const initialState = {
-  user: [],
-  isAuth: false,
-  isStartData: false,
-  employeeId: null,
+const USERS_ACTIONS = {
+  GET_ALL: 'users/GET_ALL',
+  GET_ONE: 'users/GET_ONE',
+  GET_PROGRAM_DIRECTORS: 'users/GET_PROGRAM_DIRECTORS',
+  CREATE: 'users/CREATE',
+  UPDATE: 'users/UPDATE',
+  DELETE: 'users/DELETE',
+  RESET: 'users/RESET',
 };
 
-const usersReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_USER_DATA: {
-      return { ...state, user: action.user };
+const initialState = {
+  users: [],
+  currentUser: null,
+  loading: false,
+  error: null,
+};
+
+const usersReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case REQUEST(USERS_ACTIONS.GET_ALL):
+    case REQUEST(USERS_ACTIONS.GET_ONE):
+    case REQUEST(USERS_ACTIONS.GET_PROGRAM_DIRECTORS): {
+      return { ...state, loading: true, error: null };
     }
-    case SET_IS_AUTH: {
-      return { ...state, isAuth: action.isAuth };
+    case FAILURE(USERS_ACTIONS.GET_ALL):
+    case FAILURE(USERS_ACTIONS.GET_ONE):
+    case FAILURE(USERS_ACTIONS.GET_PROGRAM_DIRECTORS): {
+      return { ...state, loading: false, error: payload };
     }
-    case SET_IS_START_DATA: {
-      return { ...state, isStartData: action.isStartData };
-    }
-    case SET_EMPLOYEE_ID: {
-      return { ...state, employeeId: action.employeeId };
+    case SUCCESS(USERS_ACTIONS.GET_ONE):
+    case SUCCESS(USERS_ACTIONS.GET_PROGRAM_DIRECTORS): {
+      return { ...state, loading: false, user: payload.data };
     }
     default:
       return state;
   }
 };
-
-export const setUserData = user => ({
-  type: SET_USER_DATA,
-  user,
-});
-
-export const setIsAuth = isAuth => ({
-  type: SET_IS_AUTH,
-  isAuth,
-});
-export const setIsStartData = isStartData => ({
-  type: SET_IS_START_DATA,
-  isStartData,
-});
-export const setEmployeeId = employeeId => ({
-  type: SET_EMPLOYEE_ID,
-  employeeId,
-});
-
-// export const login = (email, password, isRememberMe) => async dispatch => {
-//   dispatch(setIsFetching(true));
-//   try {
-//     let response = await userService.login(email, password);
-//     if (isRememberMe) {
-//       localStorage.setItem('usertoken', response.token);
-//     } else {
-//       sessionStorage.setItem('usertoken', response.token);
-//     }
-//     dispatch([setEmployeeId(response.user.employeeId), setIsAuth(true), setIsFetching(false)]);
-//   } catch (err) {
-//     let error = err.response.data.message ? err.response.data.message : err.message;
-//     dispatch(stopSubmit('login', { _error: error }));
-//     dispatch(setIsFetching(false));
-//   }
-// };
-
-export const getProfile = token => async dispatch => {
-  dispatch(setIsFetching(true));
-  try {
-    let response = await userService.getProfile(token);
-    dispatch([
-      setUserData(response.user),
-      setEmployeeId(response.user.employeeId),
-      setIsAuth(true),
-      setIsFetching(false),
-    ]);
-  } catch (err) {
-    dispatch(setIsFetching(false));
-  }
-};
-
-export const getUserProfile = employeeId => async dispatch => {
-  dispatch(setIsFetching(true));
-  try {
-    let respnose = await userService.getUserProfile(employeeId);
-    dispatch([setUserData(respnose), setIsFetching(false)]);
-  } catch (err) {
-    dispatch(setIsFetching(false));
-  }
-};
-
-export const logout = () => async dispatch => {
-  dispatch([setIsFetching(true), setIsAuth(false), setIsStartData(false), setUserData([])]);
-  localStorage.removeItem('usertoken');
-  sessionStorage.removeItem('usertoken');
-  dispatch(setIsFetching(false));
+export const getPorgramDirectors = (organizationId, name, pageId, recordsPerPage) => dispatch => {
+  dispatch({
+    type: USERS_ACTIONS.GET_PROGRAM_DIRECTORS,
+    payload: usersService.getPorgramDirectors(organizationId, name, pageId, recordsPerPage),
+  });
 };
 
 export default usersReducer;

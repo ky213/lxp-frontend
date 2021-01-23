@@ -24,7 +24,7 @@ const PageHeader = ({ title, filters, direction }) => {
           {
             <NavLink to="add">
               <FontAwesomeIcon icon={editMode ? faArrowLeft : faPlus} />
-              <span style={{ textAlign: 'right' }}>{editMode ? ' Go back' : 'add new'}</span>
+              <span style={{ textAlign: 'right' }}>{editMode ? ' Go back' : 'Add new'}</span>
             </NavLink>
           }
         </div>

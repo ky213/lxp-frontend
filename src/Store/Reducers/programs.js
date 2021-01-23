@@ -13,6 +13,7 @@ const PROGRAMS_ACTIONS = {
 const initialState = {
   programs: [],
   currentProgram: null,
+  programDirectors: [],
   totalNumberOfRecords: 0,
   loading: false,
   error: null,

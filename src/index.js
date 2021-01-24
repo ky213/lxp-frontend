@@ -1,16 +1,22 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Preloader } from 'Components';
 import { theme } from 'Themes';
-import reportWebVitals from './reportWebVitals';
+import { clearAuthentication } from 'Store/Reducers/authentication';
+import initAxios from 'Config/axios';
 import store from 'Store/reduxStore';
+import reportWebVitals from './reportWebVitals';
 import App from './App';
 
 import './index.css';
 import './Utils/i18n';
+
+const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
+initAxios(actions.clearAuthentication);
 
 ReactDOM.render(
   <Provider store={store}>

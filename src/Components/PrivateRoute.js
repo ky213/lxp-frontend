@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 
 import ErrorBoundary from './ErrorBoundry';
 
@@ -44,7 +45,7 @@ export const PrivateRouteComponent = ({
 
 const mapStateToProps = ({ authentication: { isAuthenticated, profile } }, { hasRole = [] }) => ({
   isAuthenticated,
-  isAuthorized: hasRole.includes(profile.role),
+  isAuthorized: isEmpty(hasRole) || hasRole.includes(profile.role),
 });
 
 export const PrivateRoute = connect(mapStateToProps, null, null, { pure: false })(PrivateRouteComponent);

@@ -1,4 +1,4 @@
-import axios from 'Config/axios';
+import axios from 'axios';
 
 export function getUnreadNotifications(limit, selectedOrganizationId) {
   return axios.get(`/notifications/unread?limit=${limit}&selectedOrganizationId=${selectedOrganizationId}`);

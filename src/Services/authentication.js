@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from 'axios';
 
 export function login(email, password) {
   return axios.post(`/users/authenticate`, { email, password });

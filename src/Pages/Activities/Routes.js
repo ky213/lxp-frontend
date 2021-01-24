@@ -18,7 +18,7 @@ const ActivityRoutes = props => {
       <Route
         exact
         path={`/activities/add`}
-        component={props.user.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager}
+        component={props.profile.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager}
       />
       <Route exact path={`/activities/edit/:id`} component={EditActivity} />
       <Route component={PageNotFound} />

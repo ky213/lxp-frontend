@@ -7,10 +7,10 @@ import { useLayoutEffect } from 'react';
 
 const ActivitiesContainer = props => {
   useEffect(() => {
-    if (props.user.employeeId) {
-      props.getActivities(props.user.employeeId, props.user.userId, props.user.organizationId);
+    if (props.profile.employeeId) {
+      props.getActivities(props.profile.employeeId, props.profile.userId, props.profile.organizationId);
     }
-  }, [props.user.employeeId]);
+  }, [props.profile.employeeId]);
 
   const [all, setAll] = useState(true);
   const [completed, setCompleted] = useState(true);

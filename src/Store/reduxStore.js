@@ -14,17 +14,7 @@ const reducers = combineReducers({
   activities,
   programs,
   users,
-  notifications: () => ({
-    unreadNotifications: [],
-    totalUnreadNotificationsCount: 0,
-    notifications: [],
-    totalNotificationsCount: 0,
-    limit: 5,
-    currentPage: 1,
-    pageSize: 15,
-    error: null,
-    loading: false,
-  }),
+  notifications,
   form: formReducer,
 });
 

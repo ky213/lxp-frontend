@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import classes from './ProgramView.module.css';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { empty_state_icon } from '../../../../Assets/Images/empty_state_icon';
+import { empty_state_icon } from 'Assets/Images/empty_state_icon';
 
 const StyledHeader = styled.div``;
 

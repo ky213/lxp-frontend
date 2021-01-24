@@ -1,4 +1,4 @@
-import axios from 'Config/axios';
+import axios from 'axios';
 
 import { buildQuery } from 'Utils/buildQuery';
 

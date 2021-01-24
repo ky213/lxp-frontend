@@ -227,7 +227,7 @@ const EditActivity = props => {
 
   useEffect(() => {
     let activityId = props.match.params.activityId;
-    props.getActivity(activityId, props.user.selectedOrganizationId);
+    props.getActivity(activityId, props.profile.selectedOrganizationId);
   }, []);
 
   let onSubmit = formData => {

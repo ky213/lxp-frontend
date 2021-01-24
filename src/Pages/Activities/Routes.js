@@ -1,13 +1,13 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { PageNotFound } from 'Components';
+import { USER_ROLES } from 'Config/constants';
 import AddActivity from './AddActivity/AddActivity';
 import EditActivity from './EditActivity/EditActivity';
 import ActivitiesContainer from './ActivitiesContainer';
-import { USER_ROLES } from 'Config/constants';
 import AddActivityManager from './AddActivity/AddActivityManager';
-import { connect } from 'react-redux';
 import Activity from './Activity';
 
 const ActivityRoutes = props => {
@@ -30,4 +30,4 @@ let mapStateToProps = state => ({
   profile: state.authentication.profile,
 });
 
-export default connect(mapStateToProps, {})(ActivityRoutes);
+export default connect(mapStateToProps)(ActivityRoutes);

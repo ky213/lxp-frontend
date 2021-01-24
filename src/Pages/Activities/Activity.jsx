@@ -34,7 +34,7 @@ const Activity = props => {
 
   useEffect(() => {
     let activityId = props.match.params.activityId;
-    props.getActivity(activityId, props.user.selectedOrganizationId);
+    props.getActivity(activityId, props.profile.selectedOrganizationId);
   }, []);
 
   const [daysLag, setDaysLag] = useState(0);
@@ -73,7 +73,7 @@ const Activity = props => {
             <div className={classes.block + ' ' + classes.withoutPadding}>
               <div className={classes.infoBlock}>
                 <p>{t('home.statistic.infoUser.welcome')}</p>
-                <h3>{props.user.name}</h3>
+                <h3>{props.profile.name}</h3>
               </div>
               <div className={classes.infoBlock}>
                 <label>{t('home.statistic.infoUser.learningHours')}</label>
@@ -158,7 +158,7 @@ const Activity = props => {
             </div>
             <div className={classes.chatBlock}>
               <h1>{props.activity.isPublic ? t('activityDetails.discuss') : t('activityDetails.contact')}</h1>
-              <Chat currentUser={props.user} />
+              <Chat currentUser={props.profile} />
             </div>
           </div>
         </div>

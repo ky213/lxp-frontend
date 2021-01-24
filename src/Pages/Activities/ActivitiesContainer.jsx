@@ -10,7 +10,7 @@ const ActivitiesContainer = props => {
     if (props.profile.employeeId) {
       props.getActivities(props.profile.employeeId, props.profile.userId, props.profile.organizationId);
     }
-  }, [props.profile.employeeId]);
+  }, []);
 
   const [all, setAll] = useState(true);
   const [completed, setCompleted] = useState(true);

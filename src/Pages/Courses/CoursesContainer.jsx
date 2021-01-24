@@ -7,7 +7,7 @@ import { Preloader } from '../../Components';
 const CoursesContainer = props => {
   useEffect(() => {
     if (props.page && props.take) {
-      props.getCourses(props.user.organizationId, props.page, props.take);
+      props.getCourses(props.profile.organizationId, props.page, props.take);
     }
   }, []);
 

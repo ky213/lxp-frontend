@@ -73,7 +73,7 @@ export const clearAuthToken = () => {
   if (localStorage.getItem(AUTH_TOKEN_KEY)) localStorage.removeItem(AUTH_TOKEN_KEY);
 };
 
-export const clearAuthentication = dispatch => {
+export const clearAuthentication = () => dispatch => {
   clearAuthToken();
   dispatch({
     type: ACTION_TYPES.LOGOUT,

@@ -6,32 +6,31 @@ export default store => next => action => {
   const { success, error } = store.getState().global;
   const actionName = action.type.split('/').pop();
 
-  if (!isPromise(action.payload) || !['CREATE', 'UPDATE', 'DELETE'].includes(actionName)) {
+  if (!isPromise(action.payload)) {
     return next(action);
   }
 
-  if (success || error)
-    store.dispatch({
-      type: GLOBAL_ACTION_TYPES.RESET,
-    });
+  store.dispatch({
+    type: GLOBAL_ACTION_TYPES.RESET,
+  });
 
   return next(action)
     .then(response => {
       const actionType = response.action.type;
 
-      if (actionType.endsWith('FULFILLED'))
+      if (actionType.endsWith('FULFILLED') && ['CREATE', 'UPDATE', 'DELETE'].includes(actionName))
         store.dispatch({
           type: GLOBAL_ACTION_TYPES.SET_SUCCESS,
         });
 
       return Promise.resolve(response);
     })
-    .catch(error => {
+    .catch(err => {
       store.dispatch({
         type: GLOBAL_ACTION_TYPES.SET_ERROR,
-        payload: error.response.data.message,
+        payload: err.response.data.message,
       });
 
-      return Promise.reject(error);
+      return Promise.reject(err);
     });
 };

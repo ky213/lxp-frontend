@@ -13,9 +13,9 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case GLOBAL_ACTION_TYPES.SET_SUCCESS:
-      return { ...state, loading: false, success: true };
+      return { ...state, loading: false, success: true, error: null };
     case GLOBAL_ACTION_TYPES.SET_ERROR:
-      return { ...state, loading: false, error: payload };
+      return { ...state, loading: false, success: null, error: payload };
     case GLOBAL_ACTION_TYPES.RESET:
       return { ...initialState };
     default:

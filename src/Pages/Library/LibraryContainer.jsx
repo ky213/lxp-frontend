@@ -6,8 +6,8 @@ import { Preloader } from '../../Components';
 
 const LibraryContainer = props => {
   // useEffect(()=>{
-  //     if(props.user.organizationId){
-  //         props.getPrograms(props.user.organizationId, props.pageId, props.perPage);
+  //     if(props.profile.organizationId){
+  //         props.getPrograms(props.profile.organizationId, props.pageId, props.perPage);
   //     }
   // },[]);
 

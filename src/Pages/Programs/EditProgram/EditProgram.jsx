@@ -120,7 +120,7 @@ const EditProgram = props => {
   };
   return (
     <div className={classes.main}>
-      {props.user.roleId === USER_ROLES.LEARNER && <Redirect to="/" />}
+      {props.profile.roleId === USER_ROLES.LEARNER && <Redirect to="/" />}
       {props.isFetching && <Preloader />}
       {isShowDeleteModal && (
         <DeleteModal

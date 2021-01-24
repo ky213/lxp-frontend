@@ -124,7 +124,7 @@ const AddCourse = props => {
 
   return (
     <div className={classes.main}>
-      {props.user.roleId === USER_ROLES.LEARNER && <Redirect to="/" />}
+      {props.profile.roleId === USER_ROLES.LEARNER && <Redirect to="/" />}
       {props.isFetching && <Preloader />}
       <div className={classes.header}>
         <div className={classes.headerContainer}>

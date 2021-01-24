@@ -64,7 +64,7 @@ const ActivitiesContainer = props => {
   }, [size]);
 
   return (
-    <>
+    <h1>
       {props.isFetching ? (
         <Preloader />
       ) : (
@@ -88,12 +88,12 @@ const ActivitiesContainer = props => {
           )}
         </>
       )}
-    </>
+    </h1>
   );
 };
 
 let mapStateToProps = state => ({
-  isFetching: state.common.isFetching,
+  isFetching: state.activities.loading,
   profile: state.authentication.profile,
   activities: state.activities.activities,
   isAuthenticated: state.authentication.isAuthenticated,

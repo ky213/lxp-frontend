@@ -10,7 +10,7 @@ import ActivitiesContainer from './ActivitiesContainer';
 import AddActivityManager from './AddActivity/AddActivityManager';
 import Activity from './Activity';
 
-const ActivityRoutes = props => {
+const ActivityRoutes = ({ match, profile }) => {
   return (
     <Switch>
       <Route exact path={`/activities`} component={ActivitiesContainer} />
@@ -18,7 +18,7 @@ const ActivityRoutes = props => {
       <Route
         exact
         path={`/activities/add`}
-        component={props.profile.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager}
+        component={profile.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager}
       />
       <Route exact path={`/activities/edit/:id`} component={EditActivity} />
       <Route component={PageNotFound} />

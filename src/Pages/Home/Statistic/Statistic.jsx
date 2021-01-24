@@ -17,7 +17,7 @@ const Statistic = props => {
       <div className={classes.block + ' ' + classes.withoutPadding}>
         <div className={classes.infoBlock}>
           <p>{t('home.statistic.infoUser.welcome')}</p>
-          <h3>{props.profile.name}</h3>
+          <h3>{props.user.name}</h3>
         </div>
         <div className={classes.infoBlock}>
           <label>{t('home.statistic.infoUser.learningHours')}</label>
@@ -34,7 +34,7 @@ const Statistic = props => {
           </span>
         </div>
       </div>
-      {props.profile.roleId === USER_ROLES.LEARNER && (
+      {props.user.roleId === USER_ROLES.LEARNER && (
         <div className={classes.block + ' ' + classes.programs}>
           <div className={classes.programsHeader}>
             <h4>{t('home.statistic.programs.programs')}</h4>
@@ -63,7 +63,7 @@ const Statistic = props => {
           </div>
         </div>
       )}
-      {props.profile.roleId === USER_ROLES.LEARNER && (
+      {props.user.roleId === USER_ROLES.LEARNER && (
         <div className={classes.block + ' ' + classes.stats}>
           <h4>{t('home.statistic.stats.stats')}</h4>
         </div>
@@ -72,7 +72,7 @@ const Statistic = props => {
       <div className={classes.block + ' ' + classes.quickAccess}>
         <h4>{t('home.statistic.quickAccess.title')}</h4>
         <div className={classes.links}>
-          {props.profile.roleId === USER_ROLES.LEARNING_MANAGER && (
+          {props.user.roleId === USER_ROLES.LEARNING_MANAGER && (
             <NavLink to="/resources">
               {libraryicon}
               <span>{t('home.statistic.quickAccess.resources')}</span>

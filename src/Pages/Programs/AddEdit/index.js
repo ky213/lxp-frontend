@@ -42,7 +42,7 @@ const AddEDitProgram = props => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    const programData = { ...values, body: emailBody, certificateBody };
+    const programData = { ...values, certificateBody, body: emailBody, organizationId: profile.organizationId };
     if (programs.currentProgram) props.updateProgram({ ...programData, programId: programs.currentProgram.programId });
     else props.createProgram(programData);
     setSubmitting(false);

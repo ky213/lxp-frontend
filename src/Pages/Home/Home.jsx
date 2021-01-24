@@ -30,10 +30,10 @@ const Home = props => {
         <StyledLeftSide className={classes.leftSide} direction={props.direction}>
           <div className={classes.containerLeft}>
             <div className={classes.statistic}>
-              <Statistic user={props.profile} />
+              <Statistic user={props.user} />
             </div>
             <StyledContentContainer direction={props.direction} className={classes.courses}>
-              {props.profile.roleId === USER_ROLES.LEARNER ? (
+              {props.user.roleId === USER_ROLES.LEARNER ? (
                 <HomeCourses courses={props.courses} />
               ) : (
                 <HomePrograms programs={props.programs} />
@@ -44,7 +44,7 @@ const Home = props => {
         <div className={classes.rightSide}>
           <div className={classes.containerRight}>
             <div className={classes.activities}>
-              {props.profile.roleId === USER_ROLES.LEARNER ? (
+              {props.user.roleId === USER_ROLES.LEARNER ? (
                 <HomeActivities activities={props.activities} />
               ) : (
                 <ManagerHomeActivities activities={props.activities} />

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useSelector, connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Formik, Form, Field, useFormik } from 'formik';
-import { withRouter } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Autocomplete } from 'formik-material-ui-lab';
 
+import { resetGlobalState } from 'Store/Reducers/global';
 import { getPorgramDirectors } from 'Store/Reducers/users';
-import { createProgram, updateProgram } from 'Store/Reducers/programs';
+import { createProgram, updateProgram, resetProgramsState } from 'Store/Reducers/programs';
 import { PageLayout, TextEditor } from 'Components';
-import { Grid, Button, TextField, MenuItem, Label, CircularProgress } from 'Components/Base';
+import { Grid, Button, TextField, Label, CircularProgress } from 'Components/Base';
 
 const AddEDitProgram = props => {
   const [emailBody, setEmailBody] = useState(props.programs.currentProgram?.body || '');
@@ -19,18 +19,16 @@ const AddEDitProgram = props => {
 
   const { users, programs, profile } = props;
 
-  const initialValues = {
-    name: programs.currentProgram?.name,
-    programDirectors: programs.currentProgram?.programDirectors,
-    subject: programs.currentProgram?.subject,
-    body: programs.currentProgram?.body,
-    certificateSubject: programs.currentProgram?.certificateSubject,
-    certificateBody: programs.currentProgram?.certificateBody,
-  };
-  const validationSchema = Yup.object({
-    name: Yup.string().required('Program name is required'),
-    programDirectors: Yup.array().min(1, 'You need to select at least one program manager').typeError('Invalid entry'),
-  });
+  useEffect(() => {
+    return () => {
+      props.resetProgramsState();
+      props.resetGlobalState();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!programs.loading && programs.success) props.history.goBack();
+  }, [programs.loading]);
 
   const handleEmailBodyChange = event => {
     const content = event.editor.getData();
@@ -47,6 +45,19 @@ const AddEDitProgram = props => {
     else props.createProgram(programData);
     setSubmitting(false);
   };
+
+  const initialValues = {
+    name: programs.currentProgram?.name,
+    programDirectors: programs.currentProgram?.programDirectors,
+    subject: programs.currentProgram?.subject,
+    body: programs.currentProgram?.body,
+    certificateSubject: programs.currentProgram?.certificateSubject,
+    certificateBody: programs.currentProgram?.certificateBody,
+  };
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Program name is required'),
+    programDirectors: Yup.array().min(1, 'You need to select at least one program manager').typeError('Invalid entry'),
+  });
 
   return (
     <PageLayout title="Add/Edit Programs">
@@ -146,6 +157,8 @@ const mapDispatchToProps = {
   createProgram,
   updateProgram,
   getPorgramDirectors,
+  resetProgramsState,
+  resetGlobalState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEDitProgram);

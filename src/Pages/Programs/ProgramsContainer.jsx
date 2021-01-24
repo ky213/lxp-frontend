@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Programs from './Programs';
-import { getPrograms } from '../../Store/Reducers/programs';
+
+import { resetGlobalState } from 'Store/Reducers/global';
+import { getPrograms, resetProgramsState } from 'Store/Reducers/programs';
 import { Preloader } from 'Components';
+import Programs from './Programs';
 
 const ProgramsContainer = props => {
   useEffect(() => {
     if (props.profile.organizationId) {
       props.getPrograms(props.profile.organizationId, props.pageId, props.perPage);
     }
+
+    return () => {
+      props.resetProgramsState();
+      props.resetGlobalState();
+    };
   }, []);
 
   const [all, setAll] = useState(true);
@@ -82,4 +89,6 @@ let mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getPrograms,
+  resetProgramsState,
+  resetGlobalState,
 })(ProgramsContainer);

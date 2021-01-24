@@ -22,3 +22,7 @@ export default (state = initialState, { type, payload }) => {
       return state;
   }
 };
+
+export const resetGlobalState = () => ({
+  type: GLOBAL_ACTION_TYPES.RESET,
+});

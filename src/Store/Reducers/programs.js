@@ -16,19 +16,24 @@ const initialState = {
   programDirectors: [],
   totalNumberOfRecords: 0,
   loading: false,
+  success: false,
   error: null,
 };
 
 const programsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST(PROGRAMS_ACTIONS.GET_ALL):
-    case REQUEST(PROGRAMS_ACTIONS.GET_ONE): {
-      return { ...state, loading: true, error: null };
+    case REQUEST(PROGRAMS_ACTIONS.GET_ONE):
+    case REQUEST(PROGRAMS_ACTIONS.CREATE):
+    case REQUEST(PROGRAMS_ACTIONS.UPDATE): {
+      return { ...state, loading: true, success: false, error: null };
     }
 
     case FAILURE(PROGRAMS_ACTIONS.GET_ALL):
-    case FAILURE(PROGRAMS_ACTIONS.GET_ONE): {
-      return { ...state, loading: false, error: payload.error };
+    case FAILURE(PROGRAMS_ACTIONS.GET_ONE):
+    case FAILURE(PROGRAMS_ACTIONS.CREATE):
+    case FAILURE(PROGRAMS_ACTIONS.UPDATE): {
+      return { ...state, loading: false, success: false, error: payload.error };
     }
 
     case SUCCESS(PROGRAMS_ACTIONS.GET_ALL): {
@@ -41,6 +46,10 @@ const programsReducer = (state = initialState, { type, payload }) => {
     }
     case SUCCESS(PROGRAMS_ACTIONS.GET_ONE): {
       return { ...state, loading: false, currentProgram: payload.data };
+    }
+    case SUCCESS(PROGRAMS_ACTIONS.CREATE):
+    case SUCCESS(PROGRAMS_ACTIONS.UPDATE): {
+      return { ...state, loading: false, success: true };
     }
     case PROGRAMS_ACTIONS.RESET: {
       return { ...initialState };
@@ -77,5 +86,9 @@ export const setCurrentProgram = (organizationId, pageId, perPage) => dispatch =
     payload: programsService.getPrograms(organizationId, pageId, perPage),
   });
 };
+
+export const resetProgramsState = () => ({
+  type: PROGRAMS_ACTIONS.RESET,
+});
 
 export default programsReducer;

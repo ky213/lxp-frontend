@@ -10,7 +10,7 @@ const UserInfo = props => {
       <div className={classes.block + ' ' + classes.withoutPadding}>
         <div className={classes.infoBlock}>
           <p>{t('home.statistic.infoUser.welcome')}</p>
-          <h3>{props.profile.name}</h3>
+          <h3>{props.user?.name}</h3>
         </div>
         <div className={classes.infoBlock}>
           <label>{t('home.statistic.infoUser.learningHours')}</label>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
 import { NavBar, ErrorBoundary } from 'Components';
 
@@ -26,5 +27,7 @@ const MainLayout = props => {
 const mapStateToProps = state => ({
   isAuthenticated: state.authentication.isAuthenticated,
 });
+
+const WrapSnackbar = withSnackbar(MainLayout);
 
 export default connect(mapStateToProps)(withRouter(MainLayout));

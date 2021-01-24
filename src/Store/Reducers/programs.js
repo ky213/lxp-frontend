@@ -1,7 +1,7 @@
 import * as programsService from 'Services/programs';
 import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const PROGRAMS_ACTIONS = {
+export const PROGRAMS_ACTIONS = {
   GET_ALL: 'programs/GET_ALL',
   GET_ONE: 'programs/GET_ONE',
   CREATE: 'programs/CREATE',

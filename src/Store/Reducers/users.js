@@ -1,7 +1,7 @@
 import { usersService } from 'Services';
 import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const USERS_ACTIONS = {
+export const USERS_ACTIONS = {
   GET_ALL: 'users/GET_ALL',
   GET_ONE: 'users/GET_ONE',
   GET_PROGRAM_DIRECTORS: 'users/GET_PROGRAM_DIRECTORS',

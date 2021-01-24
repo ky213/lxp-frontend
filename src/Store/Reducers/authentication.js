@@ -3,7 +3,7 @@ import * as authenticationSerivce from 'Services/authentication';
 import { AUTH_TOKEN_KEY } from 'Config/constants'; //local storage key
 import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const ACTION_TYPES = {
+export const ACTION_TYPES = {
   LOGIN: 'authentication/LOGIN',
   LOGOUT: 'authentication/LOGOUT',
   GET_USER_PROFILE: 'authentication/GET_USER_PROFILE',

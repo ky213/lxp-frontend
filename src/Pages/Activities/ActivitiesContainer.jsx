@@ -69,7 +69,7 @@ const ActivitiesContainer = props => {
         <Preloader />
       ) : (
         <>
-          {props.isAuth && (
+          {
             <Activities
               activities={props.activities}
               direction={props.direction}
@@ -85,7 +85,7 @@ const ActivitiesContainer = props => {
               privateParam={privateParam}
               setPrivateParam={setPrivateParam}
             />
-          )}
+          }
         </>
       )}
     </h1>

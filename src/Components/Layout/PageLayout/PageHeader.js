@@ -1,18 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import classes from './styles.module.css';
+import { Button } from 'Components/Base';
 
 const StyledLabel = styled.label`
   margin-left: ${({ direction }) => (direction === 'rtl' ? '56px' : '0')};
   margin-right: ${({ direction }) => (direction === 'ltr' ? '56px' : '0')};
 `;
 
-const PageHeader = ({ title, filters, direction }) => {
+const PageHeader = ({ title, filters, direction, history }) => {
   const { t, i18n } = useTranslation();
   const editMode = title.startsWith('Add/Edit');
 
@@ -22,10 +23,10 @@ const PageHeader = ({ title, filters, direction }) => {
         <div className={classes.headerHeader}>
           <h1>{title}</h1>
           {
-            <NavLink to="add">
+            <Button variant="contained" color="secondary" onClick={() => history.goBack()}>
               <FontAwesomeIcon icon={editMode ? faArrowLeft : faPlus} />
-              <span style={{ textAlign: 'right' }}>{editMode ? ' Go back' : 'Add new'}</span>
-            </NavLink>
+              <span style={{ margin: '10px' }}>{editMode ? ' Go back' : 'Add new'}</span>
+            </Button>
           }
         </div>
         <div className={classes.filters}>
@@ -42,4 +43,4 @@ const PageHeader = ({ title, filters, direction }) => {
   );
 };
 
-export default PageHeader;
+export default withRouter(PageHeader);

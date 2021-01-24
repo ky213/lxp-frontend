@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Preloader } from 'Components';
 import ProgramView from './ProgramView';
 import { withRouter } from 'react-router-dom';
-import { setCurrentProgram } from '../../../../Store/Reducers/programs';
+import { setCurrentProgram } from 'Store/Reducers/programs';
 
 const ProgramViewContainer = props => {
   useEffect(() => {
@@ -45,7 +45,7 @@ const ProgramViewContainer = props => {
   }, [completed, inProgress, notStarted]);
 
   useEffect(() => {
-    if (props.currentProgram.courses) {
+    if (props.currentProgram?.courses) {
       if (props.currentProgram.courses.length < 1) {
         setAll(false);
         setCompleted(false);
@@ -53,7 +53,7 @@ const ProgramViewContainer = props => {
         setNotStarted(false);
       }
     }
-  }, [props.currentProgram.courses]);
+  }, [props.currentProgram?.courses]);
 
   return (
     <>

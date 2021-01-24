@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import classes from './Programs.module.css';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { empty_state_icon } from '../../Assets/Images/empty_state_icon';
-import { NavLink } from 'react-router-dom';
-import ProgramItem from './ProgramItem/ProgramItem';
+
 import { USER_ROLES } from 'Config/constants';
+import { empty_state_icon } from 'Assets/Images/empty_state_icon';
+import ProgramItem from './ProgramItem/ProgramItem';
+import classes from './Programs.module.css';
 
 const StyledLabel = styled.label`
   margin-left: ${({ direction }) => (direction === 'rtl' ? '56px' : '0')};

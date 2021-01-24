@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import classes from './ProgramView.module.css';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +14,7 @@ const StyledLabel = styled.label`
 `;
 
 const ProgramView = props => {
+  const urlParams = useParams();
   const { t, i18n } = useTranslation();
 
   let courses = [];
@@ -31,7 +33,7 @@ const ProgramView = props => {
               </span>
             </div>
             <div className={classes.headerSide}>
-              <NavLink to={`/programs/edit/${props.currentProgram?.programId}`}>
+              <NavLink to={`/programs/edit/${urlParams.programId}`}>
                 <i className="far fa-edit"></i>
                 <span>{t('programView.edit')}</span>
               </NavLink>

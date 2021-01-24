@@ -15,3 +15,9 @@ export function getPrograms(organizationId, pageId, perPage) {
 
   return axios.get(`/programs/v2?${query}`);
 }
+
+export function getOneProgram(organizationId, programId) {
+  const query = buildQuery({ organizationId });
+
+  return axios.get(`/programs/${programId}?${query}`);
+}

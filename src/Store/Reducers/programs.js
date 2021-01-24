@@ -66,6 +66,13 @@ export const getPrograms = (organizationId, pageId, perPage) => dispatch => {
     payload: programsService.getPrograms(organizationId, pageId, perPage),
   });
 };
+
+export const getOneProgram = (organizationId, programId) => dispatch => {
+  dispatch({
+    type: PROGRAMS_ACTIONS.GET_ONE,
+    payload: programsService.getOneProgram(organizationId, programId),
+  });
+};
 export const createProgram = programData => dispatch => {
   dispatch({
     type: PROGRAMS_ACTIONS.CREATE,

@@ -62,7 +62,7 @@ const ActivityItem = props => {
           </span>
           <div className={classes.headerSide}>
             <span className={classes.status}>{props.item.status}</span>
-            {props.user.roleId === USER_ROLES.LEARNER ? (
+            {props.profile.roleId === USER_ROLES.LEARNER ? (
               <StyledTimeBlock className={classes.timeBlock} direction={props.direction}>
                 {clockicon}
                 <StyledTimeSpan className={classes.time} direction={props.direction}>
@@ -85,7 +85,7 @@ const ActivityItem = props => {
           </div>
         </div>
         <h3>{props.item.name}</h3>
-        {props.user.roleId === USER_ROLES.LEARNER && (
+        {props.profile.roleId === USER_ROLES.LEARNER && (
           <div className={classes.progressBlock}>
             <ProgressBar width={widthProgressBar} height={heightProgressBar} progress={props.item.totalPoints} />
             <StyledProgressSpan direction={props.direction}>{props.item.totalPoints}%</StyledProgressSpan>

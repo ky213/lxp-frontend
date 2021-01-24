@@ -8,8 +8,6 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 export default clearAuthentication => {
   const onRequestSuccess = config => {
     const token = localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
-    console.log('TOKEN\n', token);
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

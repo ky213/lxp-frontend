@@ -35,7 +35,7 @@ export const getActivities = (employeeId, userId, organizationId) => async dispa
   dispatch(setIsFetching(true));
   try {
     let response = await activityService.getActivities(employeeId, userId, organizationId);
-    dispatch([setActivitiesData(response), setIsFetching(false)]);
+    dispatch([setActivitiesData(response.data), setIsFetching(false)]);
   } catch (err) {
     dispatch(setIsFetching(false));
   }

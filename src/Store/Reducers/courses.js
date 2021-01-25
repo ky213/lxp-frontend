@@ -42,8 +42,8 @@ const coursesReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        courses: payload.data,
-        totalNumberOfRecords: payload.data.totalNumberOfRecords,
+        courses: payload.data.courses,
+        totalNumberOfRecords: payload.data.totalNumberOfCourses,
       };
     }
     case SUCCESS(COURSES_ACTIONS.GET_ONE): {

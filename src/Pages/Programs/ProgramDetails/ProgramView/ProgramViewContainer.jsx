@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { Preloader } from 'Components';
+import { useParams } from 'react-router-dom';
+
 import ProgramView from './ProgramView';
-import { withRouter } from 'react-router-dom';
 import { setCurrentProgram } from 'Store/Reducers/programs';
+import { getCourses } from 'Store/Reducers/courses';
 
 const ProgramViewContainer = props => {
+  const urlParams = useParams();
+
+  const { profile } = props;
+
   useEffect(() => {
-    let programId = props.match.params.programId;
-    props.programs.forEach(prog => {
-      if (prog.programId === programId) {
-        props.setCurrentProgram(prog);
-      }
-    });
+    props.getCourses(profile.organizationId, urlParams.programId);
   }, []);
 
   const [all, setAll] = useState(true);
@@ -77,15 +78,15 @@ const ProgramViewContainer = props => {
   );
 };
 
-let WithUrlDataContainerComponent = withRouter(ProgramViewContainer);
-
 let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
   currentProgram: state.programs.currentProgram,
   programs: state.programs.programs,
   direction: state.common.direction,
+  profile: state.authentication.profile,
 });
 
 export default connect(mapStateToProps, {
   setCurrentProgram,
-})(WithUrlDataContainerComponent);
+  getCourses,
+})(ProgramViewContainer);

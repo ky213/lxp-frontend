@@ -16,13 +16,13 @@ const AddEDitProgram = props => {
   const [emailBody, setEmailBody] = useState(props.programs.currentProgram?.body || '');
   const [certificateBody, setCertificateBody] = useState(props.programs.currentProgram?.certificateBody || '');
   const [open, setOpen] = useState(false);
-  const urlParams = useParams();
   const { t, i18n } = useTranslation();
+  const urlParams = useParams();
 
   const { users, programs, profile } = props;
 
   useEffect(() => {
-    props.getOneProgram(profile.organizationId, urlParams.programId);
+    if (urlParams.programId) props.getOneProgram(profile.organizationId, urlParams.programId);
 
     return () => {
       props.resetProgramsState();

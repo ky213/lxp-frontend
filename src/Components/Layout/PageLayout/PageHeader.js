@@ -15,7 +15,7 @@ const StyledLabel = styled.label`
 
 const PageHeader = ({ title, filters, direction, history }) => {
   const { t, i18n } = useTranslation();
-  const editMode = title.startsWith('Add/Edit');
+  const editMode = title.startsWith('Edit');
 
   return (
     <div className={classes.header}>
@@ -24,8 +24,8 @@ const PageHeader = ({ title, filters, direction, history }) => {
           <h1>{title}</h1>
           {
             <Button variant="contained" color="secondary" onClick={() => history.goBack()}>
-              <FontAwesomeIcon icon={editMode ? faArrowLeft : faPlus} />
-              <span style={{ margin: '10px' }}>{editMode ? ' Go back' : 'Add new'}</span>
+              <FontAwesomeIcon icon={faArrowLeft} />
+              <span style={{ margin: '10px' }}>{' Go back'}</span>
             </Button>
           }
         </div>

@@ -3,12 +3,11 @@ import isPromise from 'is-promise';
 import { GLOBAL_ACTION_TYPES } from 'Store/Reducers/global';
 
 export default store => next => action => {
-  const { success, error } = store.getState().global;
-  const actionName = action.type.split('/').pop();
-
   if (!isPromise(action.payload)) {
     return next(action);
   }
+
+  const actionName = action.type.split('/').pop();
 
   store.dispatch({
     type: GLOBAL_ACTION_TYPES.RESET,

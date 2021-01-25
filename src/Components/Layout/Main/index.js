@@ -14,18 +14,19 @@ const Container = styled.div`
 
 const Snack = ({ success, error }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  if (success || error)
-    enqueueSnackbar(success ? 'Success' : error, {
-      variant: success ? 'success' : 'error',
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right',
-      },
-    });
+
+  enqueueSnackbar(success ? 'Success' : error, {
+    variant: success ? 'success' : 'error',
+    anchorOrigin: {
+      vertical: 'top',
+      horizontal: 'right',
+    },
+  });
   return null;
 };
 
 const MainLayout = props => {
+  const { success, error } = props.global;
   useEffect(() => {
     if (!props.isAuthenticated) props.history.push('/login');
   }, [props.location.path, props.isAuthenticated]);
@@ -34,7 +35,7 @@ const MainLayout = props => {
     <Container dir={props.direction}>
       {props.isAuthenticated && <NavBar changeLanguage={props.changeLanguage} />}
       <SnackbarProvider>
-        <Snack success={props.global.success} error={props.global.error} />
+        {(success || error) && <Snack success={success} error={error} />}
         <ErrorBoundary>{props.children}</ErrorBoundary>
       </SnackbarProvider>
     </Container>

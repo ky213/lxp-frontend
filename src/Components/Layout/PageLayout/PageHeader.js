@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import classes from './styles.module.css';
-import { Button } from 'Components/Base';
+import { Button } from 'Components';
 
 const StyledLabel = styled.label`
   margin-left: ${({ direction }) => (direction === 'rtl' ? '56px' : '0')};

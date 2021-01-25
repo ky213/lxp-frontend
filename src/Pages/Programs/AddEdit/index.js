@@ -10,7 +10,7 @@ import { resetGlobalState } from 'Store/Reducers/global';
 import { getPorgramDirectors } from 'Store/Reducers/users';
 import { getOneProgram, createProgram, updateProgram, resetProgramsState } from 'Store/Reducers/programs';
 import { PageLayout, TextEditor } from 'Components';
-import { Grid, Button, TextField, Label, CircularProgress } from 'Components/Base';
+import { Grid, Button, TextField, Label, CircularProgress } from 'Components';
 
 const AddEDitProgram = props => {
   const [emailBody, setEmailBody] = useState(props.programs.currentProgram?.body || '');

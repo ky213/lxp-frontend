@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
+import { IconButton, CloseIcon } from 'Components';
+
 const Snack = ({ success, error }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   if (success || error)
@@ -11,6 +13,11 @@ const Snack = ({ success, error }) => {
         vertical: 'top',
         horizontal: 'right',
       },
+      action: key => (
+        <IconButton onClick={() => closeSnackbar(key)}>
+          <CloseIcon />
+        </IconButton>
+      ),
     });
   return null;
 };

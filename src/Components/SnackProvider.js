@@ -6,6 +6,7 @@ import { IconButton, CloseIcon } from 'Components';
 
 const Snack = ({ success, error }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  console.log('Snacking##############');
   if (success || error)
     enqueueSnackbar(success ? 'Success' : error, {
       variant: success ? 'success' : 'error',

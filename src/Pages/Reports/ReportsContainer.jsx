@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Preloader } from '../../Components';
 import Reports from './Reports';
 import { getActivities } from '../../Store/Reducers/activities';
-import { setJoinedCourses } from '../../Store/Reducers/courses';
+import { getJoinedCourses } from '../../Store/Reducers/courses';
 
 const ReportsContainer = props => {
   useEffect(() => {
@@ -14,7 +14,7 @@ const ReportsContainer = props => {
   }, [props.profile.employeeId]);
 
   useEffect(() => {
-    props.setJoinedCourses(props.profile.joinedCourses);
+    props.getJoinedCourses(props.profile.joinedCourses);
   }, [props.profile.joinedCourses]);
 
   return (
@@ -52,5 +52,5 @@ let mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getActivities,
-  setJoinedCourses,
+  getJoinedCourses,
 })(ReportsContainer);

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
+import { Preloader } from 'Components';
+import { getCourses } from 'Store/Reducers/courses';
 import Courses from './Courses';
-import { getCourses } from '../../Store/Reducers/courses';
-import { Preloader } from '../../Components';
 
 const CoursesContainer = props => {
   useEffect(() => {

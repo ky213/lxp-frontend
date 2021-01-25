@@ -1,46 +1,83 @@
-import { courseService } from '../../Services';
-import { setIsFetching } from './common';
+import { coursesService } from 'Services';
+import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
-const SET_COURSES_DATA = 'SET_COURSES_DATA';
-const SET_JOINED_COURSES = 'SET_JOINED_COURSES';
-
-let initialState = {
-  courses: [],
-  page: 1,
-  take: 20,
-  joinedCourses: [],
+export const COURSES_ACTIONS = {
+  GET_ALL: 'courses/GET_ALL',
+  GET_ONE: 'courses/GET_ONE',
+  GET_JOINED_COURSES: 'courses/GET_JOINED_COURSES',
+  CREATE: 'courses/CREATE',
+  UPDATE: 'courses/UPDATE',
+  DELETE: 'courses/DELETE',
+  RESET: 'courses/RESET',
 };
 
-const coursesReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_COURSES_DATA: {
-      return { ...state, courses: action.courses };
+const initialState = {
+  courses: [],
+  joinedCourses: [],
+  currentCourse: null,
+  totalNumberOfRecords: 0,
+  loading: false,
+  success: false,
+  error: null,
+};
+
+const coursesReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case REQUEST(COURSES_ACTIONS.GET_ALL):
+    case REQUEST(COURSES_ACTIONS.GET_ONE):
+    case REQUEST(COURSES_ACTIONS.GET_JOINED_COURSES):
+    case REQUEST(COURSES_ACTIONS.CREATE):
+    case REQUEST(COURSES_ACTIONS.UPDATE): {
+      return { ...state, loading: true, success: false, error: null };
     }
-    case SET_JOINED_COURSES: {
-      return { ...state, joinedCourses: action.joinedCourses };
+
+    case FAILURE(COURSES_ACTIONS.GET_ALL):
+    case FAILURE(COURSES_ACTIONS.GET_ONE):
+    case FAILURE(COURSES_ACTIONS.GET_JOINED_COURSES):
+    case FAILURE(COURSES_ACTIONS.CREATE):
+    case FAILURE(COURSES_ACTIONS.UPDATE): {
+      return { ...state, loading: false, success: false, error: payload.error };
+    }
+    case SUCCESS(COURSES_ACTIONS.GET_ALL): {
+      return {
+        ...state,
+        loading: false,
+        courses: payload.data,
+        totalNumberOfRecords: payload.data.totalNumberOfRecords,
+      };
+    }
+    case SUCCESS(COURSES_ACTIONS.GET_ONE): {
+      return { ...state, loading: false, currentCourse: payload.data };
+    }
+    case SUCCESS(COURSES_ACTIONS.GET_JOINED_COURSES): {
+      return { ...state, loading: false, joinedCourses: payload.data };
+    }
+    case SUCCESS(COURSES_ACTIONS.CREATE):
+    case SUCCESS(COURSES_ACTIONS.UPDATE): {
+      return { ...state, loading: false, success: true };
+    }
+    case COURSES_ACTIONS.RESET: {
+      return { ...initialState };
     }
     default:
       return state;
   }
 };
 
-export const setCoursesData = courses => ({
-  type: SET_COURSES_DATA,
-  courses,
-});
-export const setJoinedCourses = joinedCourses => ({
-  type: SET_JOINED_COURSES,
-  joinedCourses,
-});
-
-export const getCourses = (organizationId, page, take) => async dispatch => {
-  dispatch(setIsFetching(true));
-  try {
-    let respnose = await courseService.getCourses(organizationId, page, take);
-    dispatch([setCoursesData(respnose.courses), setIsFetching(false)]);
-  } catch (err) {
-    dispatch(setIsFetching(false));
-  }
+export const getCourses = (organizationId, programId, page, take, filter) => async dispatch => {
+  dispatch({
+    type: COURSES_ACTIONS.GET_ALL,
+    payload: coursesService.getCourses(organizationId, programId, page, take, filter),
+  });
 };
+
+export const getJoinedCourses = (organizationId, page, take, filter) => async dispatch => {
+  dispatch({
+    type: COURSES_ACTIONS.GET_JOINED_COURSES,
+    payload: coursesService.getJoinedCourses(organizationId, page, take, filter),
+  });
+};
+
+export const resetCoursesState = () => ({ type: COURSES_ACTIONS.RESET });
 
 export default coursesReducer;

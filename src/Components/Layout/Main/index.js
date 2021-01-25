@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import { NavBar, ErrorBoundary } from 'Components';
 
@@ -12,21 +11,7 @@ const Container = styled.div`
   margin: 0;
 `;
 
-const Snack = ({ success, error }) => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
-  enqueueSnackbar(success ? 'Success' : error, {
-    variant: success ? 'success' : 'error',
-    anchorOrigin: {
-      vertical: 'top',
-      horizontal: 'right',
-    },
-  });
-  return null;
-};
-
 const MainLayout = props => {
-  const { success, error } = props.global;
   useEffect(() => {
     if (!props.isAuthenticated) props.history.push('/login');
   }, [props.location.path, props.isAuthenticated]);
@@ -34,10 +19,7 @@ const MainLayout = props => {
   return (
     <Container dir={props.direction}>
       {props.isAuthenticated && <NavBar changeLanguage={props.changeLanguage} />}
-      <SnackbarProvider>
-        {(success || error) && <Snack success={success} error={error} />}
-        <ErrorBoundary>{props.children}</ErrorBoundary>
-      </SnackbarProvider>
+      <ErrorBoundary>{props.children}</ErrorBoundary>
     </Container>
   );
 };
@@ -45,7 +27,5 @@ const mapStateToProps = state => ({
   isAuthenticated: state.authentication.isAuthenticated,
   global: state.global,
 });
-
-// const WrapSnackbar = withSnackbar(MainLayout);
 
 export default connect(mapStateToProps)(withRouter(MainLayout));

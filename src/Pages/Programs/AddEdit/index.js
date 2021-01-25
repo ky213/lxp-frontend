@@ -31,7 +31,7 @@ const AddEDitProgram = props => {
   }, []);
 
   useEffect(() => {
-    if (!programs.loading && programs.success) props.history.goBack();
+    // if (!programs.loading && programs.success) props.history.goBack();
   }, [programs.loading]);
 
   const handleEmailBodyChange = event => {

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
@@ -6,12 +7,16 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import './styles.module.css';
-// Register the plugins
+
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-const FileDrop = () => {
+const FileDrop = ({ title, type, getFiles }) => {
   const [files, setFiles] = useState([]);
-  console.log(files);
+
+  useEffect(() => {
+    getFiles(files);
+  }, [files]);
+
   return (
     <div className="App">
       <FilePond
@@ -25,3 +30,9 @@ const FileDrop = () => {
 };
 
 export default FileDrop;
+
+FileDrop.propTypes = {
+  title: PropTypes.string,
+  type: PropTypes.string,
+  getFiles: PropTypes.func,
+};

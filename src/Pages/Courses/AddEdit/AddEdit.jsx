@@ -4,20 +4,21 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { Autocomplete } from 'formik-material-ui-lab';
 
 import { resetGlobalState } from 'Store/Reducers/global';
 import { getPorgramDirectors } from 'Store/Reducers/users';
 import { createCourse, updateCourse, resetCoursesState } from 'Store/Reducers/courses';
-import { PageLayout, Grid, Button, Label, TextField, FileDrop, CircularProgress } from 'Components';
+import { PageLayout, Grid, Button, Label, TextField, FileDrop, CircularProgress, TextAreaCustom } from 'Components';
 
 const AddEdit = props => {
+  const [courseLogo, setCourseLogo] = useState(null);
   const { t, i18n } = useTranslation();
   const urlParams = useParams();
 
   const { programs, courses } = props;
 
   const handleSubmit = values => {
+    console.log(values);
     //   const formData = new FormData();
     //   if (fileData) formData.append('tincan', fileData.name);
     //   formData.append('logo', selectedLogoDataUrl);
@@ -35,10 +36,18 @@ const AddEdit = props => {
     //     httpMethod = 'POST';
     //   }
   };
+  const handleGetFiles = files => {
+    setCourseLogo(files[0]?.file);
+  };
 
-  const initialValues = {};
+  const initialValues = {
+    name: courses.currenCourse?.name,
+    courseCode: courses.currenCourse?.courseCode,
+    description: courses.currenCourse?.description,
+  };
   const validationSchema = Yup.object({
     name: Yup.string().required('course name is required'),
+    courseCode: Yup.string().required('course code  is required'),
   });
 
   return (
@@ -69,30 +78,19 @@ const AddEdit = props => {
               fullWidth
               required
             />
-            <Field
+            <Label style={{ lineHeight: 1 }}>Description</Label>
+            <TextAreaCustom
               id="description"
               name="description"
-              label="Description"
-              component={TextField}
               onChange={handleChange}
-              error={touched.description && Boolean(errors.description)}
-              helperText={touched.description && errors.description}
-              fullWidth
+              rows={5}
+              meta={{ touched, errors }}
+              style={{ width: '93%' }}
             />
-            <Label style={{ lineHeight: 1 }}>Logo</Label>
 
-            <Field
-              id="logo"
-              name="logo"
-              label="Logo"
-              downloadText={t('addCourse.uploadImage')}
-              dragText={t('addCourse.dragImage')}
-              component={FileDrop}
-              onChange={handleChange}
-              error={touched.logo && Boolean(errors.logo)}
-              helperText={touched.logo && errors.logo}
-              fullWidth
-            />
+            <Label style={{ lineHeight: 1 }}>Logo</Label>
+            <FileDrop getFiles={handleGetFiles} />
+
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={courses.loading}>
                 {courses.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}

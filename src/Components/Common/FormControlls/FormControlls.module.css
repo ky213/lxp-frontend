@@ -1,109 +1,112 @@
-.formControll{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.formControll {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.formControll input{
-    width: calc(100% - 16px);
-    height: calc(47px - 24px);
-    padding: 12px 16px;
-    border-radius: 5px;
-    border: 1px solid #c6c6c6;
-    outline: none;
-    font-size: 16px;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    color: #3d3d3d;
-    margin-top: 8px;
-    display: block;
-}
-
-.formControll input::placeholder{
-    color: #a7a7a7;
+.formControll input {
+  width: calc(100% - 16px);
+  height: calc(47px - 24px);
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 1px solid #c6c6c6;
+  outline: none;
+  font-size: 16px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: #3d3d3d;
+  margin-top: 8px;
+  display: block;
 }
 
-.formControll.error{
-    color: tomato;
-}
-.formControll.error span{
-    position: relative;
-    top: 10px;
+.formControll input::placeholder {
+  color: #a7a7a7;
 }
 
-.textarea{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    
+.formControll.error {
+  color: tomato;
 }
-.textarea textarea{
-    resize: none;
-    width: 60%;
-    outline: none;
-    padding: 12px 16px;
-    border-radius: 5px;
-    border: 1px solid #c6c6c6;
-    font-size: 16px;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    color: #3d3d3d;
-    margin-top: 8px;
+.formControll.error span {
+  position: relative;
+  top: 10px;
 }
 
-.textarea.error{
-    color: tomato;
+.textarea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.textarea.error span{
-    position: relative;
-    top: 10px;
-}
-.textarea label{
-    margin-top: 8px;
-    color: #747474;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-.calendar{
-    width: 155px;
-    z-index: 100;
-}
-
-
-.calendar input{
-    width: 155px;
-    height: 47px;
-    padding: 12px 16px;
-    border-radius: 5px;
-    border: 1px solid #c6c6c6;
-    outline: none;
-    font-size: 16px;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    color: #3d3d3d;
-    margin-top: 8px;
-    box-sizing: border-box;
+.textarea textarea {
+  resize: none;
+  width: 60%;
+  outline: none;
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 1px solid #c6c6c6;
+  font-size: 16px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: #3d3d3d;
+  margin-top: 8px;
+  margin-bottom: 15px;
 }
 
-@media screen and (max-width: 968px){
-    .formControll input{
-        width: 100%;
-    }
-    .calendar{
-        width: max-content;
-    }
-    .textarea textarea{
-        width: calc(100% - 32px);
-    }
+textarea:focus {
+  border: 2px solid #42a678 !important;
 }
-@media screen and (max-width: 568px){
-    .calendar{
-        width: 100%;
-    }
-    .calendar input{
-        width: 100%;
-    }
-    .formControll input{
-        width: calc(100% - 32px) !important;
-    }
-    .textarea textarea{
-        width: calc(100% - 32px) !important;
-    }
+
+.textarea.error {
+  color: tomato;
+}
+.textarea.error span {
+  position: relative;
+  top: 10px;
+}
+.textarea label {
+  margin-top: 8px;
+  color: #747474;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.calendar {
+  width: 155px;
+  z-index: 100;
+}
+
+.calendar input {
+  width: 155px;
+  height: 47px;
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 1px solid #c6c6c6;
+  outline: none;
+  font-size: 16px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: #3d3d3d;
+  margin-top: 8px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 968px) {
+  .formControll input {
+    width: 100%;
+  }
+  .calendar {
+    width: max-content;
+  }
+  .textarea textarea {
+    width: calc(100% - 32px);
+  }
+}
+@media screen and (max-width: 568px) {
+  .calendar {
+    width: 100%;
+  }
+  .calendar input {
+    width: 100%;
+  }
+  .formControll input {
+    width: calc(100% - 32px) !important;
+  }
+  .textarea textarea {
+    width: calc(100% - 32px) !important;
+  }
 }

@@ -78,6 +78,19 @@ export const getJoinedCourses = (organizationId, page, take, filter) => async di
   });
 };
 
+export const createCourse = courseDate => dispatch => {
+  dispatch({
+    type: COURSES_ACTIONS.CREATE,
+    payload: coursesService.createCourse(courseDate),
+  });
+};
+export const updateCourse = courseDate => dispatch => {
+  dispatch({
+    type: COURSES_ACTIONS.UPDATE,
+    payload: coursesService.updateCourse(courseDate),
+  });
+};
+
 export const resetCoursesState = () => ({ type: COURSES_ACTIONS.RESET });
 
 export default coursesReducer;

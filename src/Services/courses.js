@@ -13,3 +13,11 @@ export function getJoinedCourses(organizationId, page, take, filter) {
 
   return axios.get(`/programs/currentUser?${query}`);
 }
+
+export function createCourse(courseData) {
+  return axios.post('/courses', courseData);
+}
+
+export function updateCourse(courseData) {
+  return axios.put('/courses', courseData);
+}

@@ -9,7 +9,7 @@ import { Autocomplete } from 'formik-material-ui-lab';
 import { resetGlobalState } from 'Store/Reducers/global';
 import { getPorgramDirectors } from 'Store/Reducers/users';
 import { createCourse, updateCourse, resetCoursesState } from 'Store/Reducers/courses';
-import { PageLayout, Grid, Button, TextField, Label, CircularProgress } from 'Components';
+import { PageLayout, Grid, Button, Label, TextField, FileDrop, CircularProgress } from 'Components';
 
 const AddEdit = props => {
   const { t, i18n } = useTranslation();
@@ -79,21 +79,20 @@ const AddEdit = props => {
               helperText={touched.description && errors.description}
               fullWidth
             />
+            <Label style={{ lineHeight: 1 }}>Logo</Label>
 
-            {/* <Field
+            <Field
               id="logo"
               name="logo"
               label="Logo"
               downloadText={t('addCourse.uploadImage')}
               dragText={t('addCourse.dragImage')}
-              name="image"
-              component={() => <ImageFileSelect />}
+              component={FileDrop}
               onChange={handleChange}
               error={touched.logo && Boolean(errors.logo)}
               helperText={touched.logo && errors.logo}
               fullWidth
-            /> */}
-
+            />
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={courses.loading}>
                 {courses.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}

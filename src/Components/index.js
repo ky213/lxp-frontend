@@ -24,7 +24,7 @@ export { default as Preloader } from './Common/Preloader/Preloader';
 export { default as ProgressBar } from './Common/ProgressBar/ProgressBar';
 export { default as SearchModal } from './Common/SearchModal/SearchModal';
 export { default as CustomSelect } from './Common/Cutsom/Select/CustomSelect';
-export { default as ImageFileSelect } from './Common/FormControlls/FileControlls/FieldImageInput';
+export { FileDrop } from './FileDrop';
 export { default as TextEditor } from './Common/TextEditor';
 export { default as NotificationMiddleware } from './NotificationMiddleware';
 

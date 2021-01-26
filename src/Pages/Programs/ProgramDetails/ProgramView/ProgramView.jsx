@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import classes from './ProgramView.module.css';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+
+import CourseItemView from 'Pages/Courses/CourseItemView/CourseItemView';
 import { empty_state_icon } from 'Assets/Images/empty_state_icon';
+import classes from './ProgramView.module.css';
 
 const StyledHeader = styled.div``;
 
@@ -17,7 +19,9 @@ const ProgramView = props => {
   const urlParams = useParams();
   const { t, i18n } = useTranslation();
 
-  let courses = [];
+  const {
+    courses: { courses },
+  } = props;
 
   return (
     <div className={classes.main}>
@@ -89,21 +93,13 @@ const ProgramView = props => {
           </div>
         </div>
         <div className={classes.itemsList}>
-          {props.currentProgram?.courses ? (
-            props.currentProgram?.courses.length > 0 ? (
-              courses
-            ) : (
-              <div className={classes.empty}>
-                <div className={classes.emptyIcon}>{empty_state_icon}</div>
-                <span>{t('programView.empty')}</span>
-                <NavLink to="/courses/add">{t('programView.addCourse')}</NavLink>
-              </div>
-            )
+          {[courses].length > 0 ? (
+            courses.map(course => <CourseItemView item={course} key={course.courseId} />)
           ) : (
             <div className={classes.empty}>
               <div className={classes.emptyIcon}>{empty_state_icon}</div>
               <span>{t('programView.empty')}</span>
-              <NavLink to="/courses/add">{t('programView.addCourse')}</NavLink>
+              <NavLink to={`/courses/add/${urlParams.programId}`}>{t('programView.addCourse')}</NavLink>
             </div>
           )}
         </div>

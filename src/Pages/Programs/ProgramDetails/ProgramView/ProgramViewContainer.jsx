@@ -63,6 +63,7 @@ const ProgramViewContainer = props => {
       ) : (
         <ProgramView
           currentProgram={props.currentProgram}
+          courses={props.courses}
           direction={props.direction}
           all={all}
           setAll={handleAll}
@@ -82,6 +83,7 @@ let mapStateToProps = state => ({
   isFetching: state.common.isFetching,
   currentProgram: state.programs.currentProgram,
   programs: state.programs.programs,
+  courses: state.courses,
   direction: state.common.direction,
   profile: state.authentication.profile,
 });

@@ -15,26 +15,24 @@ const AddEdit = props => {
   const { t, i18n } = useTranslation();
   const urlParams = useParams();
 
-  const { programs, courses } = props;
+  const { programs, courses, profile } = props;
 
   const handleSubmit = values => {
     console.log(values);
-    //   const formData = new FormData();
-    //   if (fileData) formData.append('tincan', fileData.name);
-    //   formData.append('logo', selectedLogoDataUrl);
-    //   formData.append('name', name);
-    //   formData.append('courseCode', courseCode);
-    //   formData.append('description', description);
-    //   formData.append('programId', programId);
-    //   formData.append('selectedOrganization', selectedOrganization.organizationId);
-    //   let httpMethod = '';
-    //   if (course) {
-    //     httpMethod = 'PUT';
-    //     formData.append('courseId', course.courseId);
-    //     formData.append('contentPath', course.contentPath);
-    //   } else {
-    //     httpMethod = 'POST';
-    //   }
+    const formData = new FormData();
+    formData.append('logo', courseLogo.name);
+    formData.append('name', values.name);
+    formData.append('courseCode', values.courseCode);
+    formData.append('description', values.description);
+    formData.append('programId', urlParams.programId);
+    formData.append('selectedOrganization', profile.organizationId);
+
+    if (courses.currenCourse) {
+      formData.append('courseId', courses.currenCourse.courseId);
+      formData.append('contentPath', courses.currenCourse.contentPath);
+    } else {
+      props.createCourse(formData);
+    }
   };
   const handleGetFiles = files => {
     setCourseLogo(files[0]?.file);

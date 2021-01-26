@@ -42,7 +42,7 @@ const CoursesContainer = props => {
 
   return (
     <>
-      {props.isFetching ? (
+      {props.courses.loading ? (
         <Preloader />
       ) : (
         <Courses
@@ -63,7 +63,7 @@ const CoursesContainer = props => {
 };
 
 let mapStateToProps = state => ({
-  courses: state.courses.courses,
+  courses: state.courses,
   profile: state.authentication.profile,
   isFetching: state.common.isFetching,
   page: state.courses.page,

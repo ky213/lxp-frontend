@@ -1,0 +1,71 @@
+.header {
+  width: 100%;
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 264px;
+}
+
+.thumbnail {
+  height: 200px;
+  width: 200px;
+}
+
+.details {
+  height: 200px;
+  width: 100%;
+  max-width: 550px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.programName {
+  position: relative;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+  color: #757575;
+  display: flex;
+  justify-content: space-between;
+  height: 20px;
+}
+
+.courseName {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 34px;
+  text-transform: capitalize;
+
+  color: #000000;
+}
+
+.courseDescription {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 168.3%;
+  color: #6e798c;
+}
+
+.courseActions {
+  margin-top: auto;
+  display: flex;
+}
+
+.actionButton {
+  height: 10px !important;
+  width: 15px !important;
+  background-color: transparent !important;
+}
+
+.actionButton span {
+  margin: 2px;
+}

@@ -11,7 +11,14 @@ export { default as TextArea } from '@material-ui/core/TextareaAutosize';
 export { default as Autocomplete } from '@material-ui/lab/Autocomplete';
 export { default as CircularProgress } from '@material-ui/core/CircularProgress';
 export { default as IconButton } from '@material-ui/core/IconButton';
+export { default as Typography } from '@material-ui/core/Typography';
+export { default as Link } from '@material-ui/core/Link';
+
+//Icons
 export { default as CloseIcon } from '@material-ui/icons/Close';
+export { default as PlusIcon } from '@material-ui/icons/Add';
+export { default as DeleteIcon } from '@material-ui/icons/Delete';
+export { default as EditIcon } from '@material-ui/icons/Edit';
 
 //Layout
 export { default as MainLayout } from './Layout/Main';

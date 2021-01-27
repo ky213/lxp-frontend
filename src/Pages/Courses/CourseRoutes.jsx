@@ -13,7 +13,7 @@ const CourseRoutes = props => {
       <Route exact path={`/courses`} component={CoursesContainer} />
       <Route exact path={`/courses/:courseId`} component={CourseDetails} />
       <Route exact path={`/courses/add/:programId`} component={AddEdit} />
-      <Route exact path={`/courses/edit/:courseId`} component={EditCourse} />
+      <Route exact path={`/courses/edit/:courseId`} component={AddEdit} />
       <Route component={PageNotFound} />
     </Switch>
   );

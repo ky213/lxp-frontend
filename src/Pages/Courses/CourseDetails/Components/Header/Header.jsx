@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Button, PlusIcon, EditIcon, DeleteIcon, Typography } from 'Components';
-import CourseImage from 'Assets/Images/course.svg';
+import CourseImage from 'Assets/Icons/course.svg';
 import classes from './styles.module.css';
 
 const Header = props => {

@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import { resetGlobalState } from 'Store/Reducers/global';
-import { getPorgramDirectors } from 'Store/Reducers/users';
-import { createCourse, updateCourse, resetCoursesState } from 'Store/Reducers/courses';
-import { PageLayout, Grid, Button, Label, TextField, FileDrop, CircularProgress, TextAreaCustom } from 'Components';
+import { getOneCourse, createCourse, updateCourse, resetCoursesState } from 'Store/Reducers/courses';
+import { PageLayout, Preloader, Grid, Button, Label, FileDrop, CircularProgress, TextAreaCustom } from 'Components';
 
 const AddEdit = props => {
   const [courseLogo, setCourseLogo] = useState(null);
@@ -17,46 +17,62 @@ const AddEdit = props => {
 
   const { programs, courses, profile } = props;
 
-  const handleSubmit = values => {
-    console.log(values);
+  useEffect(() => {
+    if (urlParams.courseId) props.getOneCourse(profile.organizationId, urlParams.courseId);
+    return props.resetCoursesState;
+  }, []);
+
+  useEffect(() => {
+    if (!courses.loading && courses.success)
+      props.getOneCourse(profile.organizationId, courses.currentCourse?.courseId || urlParams.courseId);
+  }, [courses.success]);
+
+  const handleSubmit = (values, { setSubmitting }) => {
     const formData = new FormData();
-    formData.append('logo', courseLogo.name);
+
+    formData.append('logo', courseLogo?.name);
     formData.append('name', values.name);
     formData.append('courseCode', values.courseCode);
     formData.append('description', values.description);
-    formData.append('programId', urlParams.programId);
     formData.append('selectedOrganization', profile.organizationId);
 
-    if (courses.currenCourse) {
-      formData.append('courseId', courses.currenCourse.courseId);
-      formData.append('contentPath', courses.currenCourse.contentPath);
+    if (courses.currentCourse) {
+      formData.append('programId', courses.currentCourse.programId);
+      formData.append('courseId', courses.currentCourse.courseId);
+      formData.append('contentPath', courses.currentCourse.contentPath);
+      props.updateCourse(formData);
     } else {
+      formData.append('programId', urlParams.programId);
       props.createCourse(formData);
     }
+
+    setSubmitting(false);
   };
+
   const handleGetFiles = files => {
     setCourseLogo(files[0]?.file);
   };
 
   const initialValues = {
-    name: courses.currenCourse?.name,
-    courseCode: courses.currenCourse?.courseCode,
-    description: courses.currenCourse?.description,
+    name: courses.currentCourse?.name,
+    courseCode: courses.currentCourse?.courseCode,
+    description: courses.currentCourse?.description,
   };
   const validationSchema = Yup.object({
     name: Yup.string().required('course name is required'),
     courseCode: Yup.string().required('course code  is required'),
   });
 
+  if (courses.loading) return <Preloader />;
+
   return (
-    <PageLayout title={urlParams.programId ? 'Edit course' : 'Add new course'} loading={courses.loading}>
+    <PageLayout title={urlParams.courseId ? 'Edit course' : 'Add new course'} loading={courses.loading}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ errors, touched, values, handleChange }) => (
+        {({ errors, touched, handleChange }) => (
           <Form>
             <Field
               id="name"
               name="name"
-              defaultValue={programs.currentProgram?.name}
               label="Course name"
               component={TextField}
               onChange={handleChange}
@@ -80,6 +96,7 @@ const AddEdit = props => {
             <TextAreaCustom
               id="description"
               name="description"
+              defaultValue={courses.currentCourse?.description}
               onChange={handleChange}
               rows={5}
               meta={{ touched, errors }}
@@ -111,6 +128,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+  getOneCourse,
   createCourse,
   updateCourse,
   resetCoursesState,

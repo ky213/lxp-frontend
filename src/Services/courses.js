@@ -8,6 +8,12 @@ export function getCourses(organizationId, programId, page, take, filter) {
   return axios.get(`/courses?${query}`);
 }
 
+export function getOneCourse(organizationId, courseId) {
+  const query = buildQuery({ organizationId, courseId });
+
+  return axios.get(`/courses/getById?${query}`);
+}
+
 export function getJoinedCourses(organizationId, page, take, filter) {
   const query = buildQuery({ organizationId, page, take, filter });
 

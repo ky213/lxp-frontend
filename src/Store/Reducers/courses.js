@@ -71,6 +71,13 @@ export const getCourses = (organizationId, programId, page, take, filter) => asy
   });
 };
 
+export const getOneCourse = (organizationId, courseId) => async dispatch => {
+  dispatch({
+    type: COURSES_ACTIONS.GET_ONE,
+    payload: coursesService.getOneCourse(organizationId, courseId),
+  });
+};
+
 export const getJoinedCourses = (organizationId, page, take, filter) => async dispatch => {
   dispatch({
     type: COURSES_ACTIONS.GET_JOINED_COURSES,

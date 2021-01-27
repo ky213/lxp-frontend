@@ -46,7 +46,7 @@ const CoursesContainer = props => {
         <Preloader />
       ) : (
         <Courses
-          courses={props.courses}
+          courses={props.courses.courses}
           direction={props.direction}
           all={all}
           setAll={handleAll}

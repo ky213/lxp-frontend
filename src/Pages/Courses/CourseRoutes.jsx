@@ -5,11 +5,13 @@ import { PageNotFound } from 'Components';
 import CoursesContainer from './CoursesContainer';
 import EditCourse from './EditCourse/EditCourse';
 import { AddEdit } from './AddEdit';
+import { CourseDetails } from './CourseDetails';
 
 const CourseRoutes = props => {
   return (
     <Switch>
       <Route exact path={`/courses`} component={CoursesContainer} />
+      <Route exact path={`/courses/:courseId`} component={CourseDetails} />
       <Route exact path={`/courses/add/:programId`} component={AddEdit} />
       <Route exact path={`/courses/edit/:courseId`} component={EditCourse} />
       <Route component={PageNotFound} />

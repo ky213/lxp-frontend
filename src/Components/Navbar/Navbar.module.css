@@ -27,7 +27,7 @@
   align-items: center;
   text-decoration: none;
   color: #42a678;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-weight: bold;
   font-size: 24px;
 }
@@ -63,13 +63,13 @@
   font-size: 18px;
   transition-duration: 0.4s;
 }
-.learnersLink svg{
+.learnersLink svg {
   margin-bottom: 4px !important;
 }
 .menuItem a i {
   font-size: 24px;
 }
-.menuItem span{
+.menuItem span {
   height: calc(100% - 5px);
   border-bottom: 5px solid transparent;
   display: flex;
@@ -83,21 +83,21 @@
   cursor: pointer;
   position: relative;
 }
-.menuItem span.active{
+.menuItem span.active {
   border-bottom: 5px solid rgba(89, 188, 171, 0.3);
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
   color: #42a678;
 }
-.menuItem span svg{
+.menuItem span svg {
   margin-bottom: 7px;
 }
-.menuItem span svg path{
+.menuItem span svg path {
   transition-duration: 0.4s;
   fill: #373f41;
   margin-bottom: 5px;
 }
-.menuItem span.active svg path{
+.menuItem span.active svg path {
   fill: #42a678;
 }
 
@@ -118,12 +118,12 @@
 .menuItem a.active svg path {
   fill: #42a678;
 }
-.submenu{
+.submenu {
   display: none;
   position: absolute;
   top: 70px;
 }
-.menuHover:hover .submenu{
+.menuHover:hover .submenu {
   display: flex;
   flex-direction: column;
 }
@@ -263,7 +263,7 @@
 }
 
 .showLng::after {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   border-left: 4px solid transparent;
@@ -275,7 +275,7 @@
 }
 
 .showLng::before {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   border-left: 5px solid transparent;

@@ -84,12 +84,13 @@ const Navbar = props => {
               </NavLink>
             </div>
             <div className={classes.menuItem}>
-              {props.profile.roleId === USER_ROLES.LEARNER ? (
-                <NavLink to="/courses" activeClassName={classes.active}>
-                  {coursesicon}
-                  {t('navbar.courses')}
-                </NavLink>
-              ) : (
+              <NavLink to="/courses" activeClassName={classes.active}>
+                {coursesicon}
+                {t('navbar.courses')}
+              </NavLink>
+            </div>
+            <div className={classes.menuItem}>
+              {props.profile.roleId !== USER_ROLES.LEARNER && (
                 <NavLink to="/learners" activeClassName={classes.active} className={classes.learnersLink}>
                   {learnersicon}
                   {t('navbar.learners')}

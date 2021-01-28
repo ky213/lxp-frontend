@@ -5,7 +5,7 @@ import { Preloader } from 'Components';
 import { useParams } from 'react-router-dom';
 
 import ProgramView from './ProgramView';
-import { setCurrentProgram } from 'Store/Reducers/programs';
+import { getOneProgram } from 'Store/Reducers/programs';
 import { getCourses } from 'Store/Reducers/courses';
 
 const ProgramViewContainer = props => {
@@ -15,6 +15,7 @@ const ProgramViewContainer = props => {
 
   useEffect(() => {
     props.getCourses(profile.organizationId, urlParams.programId);
+    props.getOneProgram(profile.organizationId, urlParams.programId);
   }, []);
 
   const [all, setAll] = useState(true);
@@ -89,6 +90,6 @@ let mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  setCurrentProgram,
+  getOneProgram,
   getCourses,
 })(ProgramViewContainer);

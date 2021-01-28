@@ -4,7 +4,7 @@ import ProgramAttendees from './ProgramAttendees';
 
 import { Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { setCurrentProgram } from '../../../../Store/Reducers/programs';
+import { getOneProgram } from '../../../../Store/Reducers/programs';
 import { Preloader } from 'Components';
 import { USER_ROLES } from 'Config/constants';
 
@@ -83,5 +83,5 @@ let mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  setCurrentProgram,
+  setCurrentProgram: getOneProgram,
 })(WithUrlDataContainerComponent);

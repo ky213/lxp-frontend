@@ -4,11 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Button, PlusIcon } from 'Components';
+import { getOneProgram } from 'Store/Reducers/programs';
 import CourseItemView from 'Pages/Courses/CourseItemView/CourseItemView';
 import { empty_state_icon } from 'Assets/Images/empty_state_icon';
 import classes from './ProgramView.module.css';
 
-const StyledHeader = styled.div``;
+const StyledHeader = styled.div`
+  background-color: #f6f6f6;
+`;
 
 const StyledLabel = styled.label`
   margin-left: ${({ direction }) => (direction === 'rtl' ? '56px' : '0')};
@@ -25,7 +29,18 @@ const ProgramView = props => {
 
   return (
     <div className={classes.main}>
-      <StyledHeader className={classes.header}></StyledHeader>
+      <StyledHeader className={classes.header}>
+        <div>
+          <h2>Program courses</h2>
+          <div>
+            <NavLink to={`/courses/add/${props.currentProgram.programId}`}>
+              <Button variant="contained" color="primary" startIcon={<PlusIcon />}>
+                Add course
+              </Button>
+            </NavLink>
+          </div>
+        </div>
+      </StyledHeader>
       <div className={classes.container}>
         <div className={classes.headerContainer}>
           <div className={classes.headerTop}>
@@ -33,7 +48,7 @@ const ProgramView = props => {
               <h1>{props.currentProgram?.name}</h1>
               <div className={classes.def} />
               <span className={classes.headerCourses}>
-                {props.currentProgram?.courses ? props.currentProgram?.courses.length : 0} {t('programView.courses')}
+                {courses.length} {t('programView.courses')}
               </span>
             </div>
             <div className={classes.headerSide}>

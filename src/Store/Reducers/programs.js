@@ -87,13 +87,6 @@ export const updateProgram = programData => dispatch => {
   });
 };
 
-export const setCurrentProgram = (organizationId, pageId, perPage) => dispatch => {
-  dispatch({
-    type: PROGRAMS_ACTIONS.GET_ALL,
-    payload: programsService.getPrograms(organizationId, pageId, perPage),
-  });
-};
-
 export const resetProgramsState = () => ({
   type: PROGRAMS_ACTIONS.RESET,
 });

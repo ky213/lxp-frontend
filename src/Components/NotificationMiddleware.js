@@ -27,7 +27,7 @@ export default store => next => action => {
     .catch(err => {
       store.dispatch({
         type: GLOBAL_ACTION_TYPES.SET_ERROR,
-        payload: err.response.data.message,
+        payload: err.response?.data.message,
       });
 
       return Promise.reject(err);

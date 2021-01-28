@@ -55,6 +55,7 @@ const App = props => {
           <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Route path="/home" component={Home} />
           <Route path="/courses" component={CourseRoutes} />
+          <Route path="/lessons" component={CourseRoutes} />
           <Route path="/activities" component={Activities} />
           <Route path="/programs" component={Programs} />
           <Route path="/profile" component={Profile} />

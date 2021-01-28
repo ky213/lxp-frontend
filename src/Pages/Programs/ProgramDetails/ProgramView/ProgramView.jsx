@@ -33,7 +33,7 @@ const ProgramView = props => {
         <div>
           <h2>Program courses</h2>
           <div>
-            <NavLink to={`/courses/add/${props.currentProgram.programId}`}>
+            <NavLink to={`/courses/add/${props.currentProgram?.programId}`}>
               <Button variant="contained" color="primary" startIcon={<PlusIcon />}>
                 Add course
               </Button>

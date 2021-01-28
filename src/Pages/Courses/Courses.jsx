@@ -3,6 +3,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
+import { Button, PlusIcon } from 'Components';
 import CourseItemView from './CourseItemView/CourseItemView';
 import classes from './Courses.module.css';
 
@@ -23,13 +24,15 @@ const Courses = props => {
     <div className={classes.main}>
       <div className={classes.coursesHeader}>
         <div className={classes.coursesHeaderContainer}>
-          <h1>{t('courses.title')}</h1>
-          <div className={classes.headerHeader}>
-            <h1>{t('programs.title')}</h1>
-            <NavLink to="/courses/add">
-              <span>+</span>
-              Add course
-            </NavLink>
+          <div className={classes.headerTitle}>
+            <h1>{t('courses.title')}</h1>
+            <div className={classes.headerHeader}>
+              <NavLink to="/courses/add">
+                <Button variant="contained" color="primary" startIcon={<PlusIcon />}>
+                  Add course
+                </Button>
+              </NavLink>
+            </div>
           </div>
           <div className={classes.filters}>
             <StyledLabel className={classes.filter} direction={props.direction}>

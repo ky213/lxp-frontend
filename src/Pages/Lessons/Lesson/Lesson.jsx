@@ -4,7 +4,7 @@ import { Header, Body } from './Components';
 
 const Lesson = () => {
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <Header />
       <Body />
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 
-import { Button, PlusIcon, EditIcon, DeleteIcon, Typography } from 'Components';
+import { Button, PlusIcon, EditIcon, DeleteIcon } from 'Components';
 import CourseImage from 'Assets/Icons/course.svg';
 import classes from './styles.module.css';
 

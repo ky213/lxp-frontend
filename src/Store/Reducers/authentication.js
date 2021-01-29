@@ -46,7 +46,7 @@ export const login = (email, password, rememberMe = false) => async dispatch => 
     type: ACTION_TYPES.LOGIN,
     payload: authenticationSerivce.login(email, password),
   });
-  const token = value?.data?.token;
+  const token = value.data?.token;
 
   if (token) {
     sessionStorage.setItem(AUTH_TOKEN_KEY, token);

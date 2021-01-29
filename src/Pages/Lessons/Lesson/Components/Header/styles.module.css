@@ -1,0 +1,96 @@
+.header {
+  width: 100%;
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 264px;
+}
+
+.thumbnail {
+  height: 200px;
+  width: 200px;
+}
+
+.details {
+  height: 200px;
+  width: 100%;
+  max-width: 550px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.courseName {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+  color: #757575;
+  height: 20px;
+}
+
+.lessonName {
+  margin-top: auto;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 145.3%;
+  text-transform: capitalize;
+  color: #3d3d3d;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.status .number {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 145.3%;
+  color: #6e798c;
+}
+
+.status .separator {
+  display: inline-block;
+  margin: auto 13px;
+  height: 0;
+  width: 23px;
+  border: 3px solid #cdd8ea;
+  border-radius: 5px;
+}
+
+.status .badge {
+  width: 88px;
+  height: 23px;
+  background: #fef2bf;
+  border-radius: 35px;
+  font-size: 12px;
+  text-align: center;
+  padding: 3px;
+  line-height: 20px;
+}
+
+.lessonActions {
+  margin-top: auto;
+  display: flex;
+}
+
+.actionButton {
+  height: 10px !important;
+  width: 15px !important;
+  background-color: transparent !important;
+}
+
+.actionButton span {
+  margin: 2px;
+}

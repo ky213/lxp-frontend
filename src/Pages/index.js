@@ -1,6 +1,7 @@
 export { default as Home } from './Home/HomeContainer';
 export { default as Programs } from './Programs/Routes';
 export { default as Courses } from './Courses/CoursesContainer';
+export { default as CourseRoutes } from './Courses/CourseRoutes';
 export { default as Lessons } from './Lessons/Routes';
 export { default as Activities } from './Activities/Routes';
 export { default as Notifications } from './Notifications/NotificationsContainer';

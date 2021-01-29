@@ -4,4 +4,5 @@ export const colors = {
   secondary: '#F5F5F5',
   info: '#6671AB',
   error: '#C70000',
+  warning: '#FEF2BF',
 };

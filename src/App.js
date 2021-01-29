@@ -17,9 +17,10 @@ import {
   Login,
   ForgotPassword,
   Profile,
+  CourseRoutes,
+  Lessons,
 } from 'Pages';
 import './App.css';
-import CourseRoutes from 'Pages/Courses/CourseRoutes';
 import { AUTH_TOKEN_KEY } from 'Config/constants';
 
 const App = props => {
@@ -55,7 +56,7 @@ const App = props => {
           <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Route path="/home" component={Home} />
           <Route path="/courses" component={CourseRoutes} />
-          <Route path="/lessons" component={CourseRoutes} />
+          <Route path="/lessons" component={Lessons} />
           <Route path="/activities" component={Activities} />
           <Route path="/programs" component={Programs} />
           <Route path="/profile" component={Profile} />

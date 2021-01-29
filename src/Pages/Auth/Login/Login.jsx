@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classes from '../Auth.module.css';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { AuthInput, Preloader } from 'Components';
 import { useTranslation } from 'react-i18next';
 import { login } from 'Store/Reducers/authentication';
@@ -56,6 +56,7 @@ const LoginReduxForm = reduxForm({ form: 'login' })(LoginForm);
 const Login = props => {
   const [isRememberMe, setIsRememberMe] = useState(false);
   const { t, i18n } = useTranslation();
+  const history = useHistory();
 
   useEffect(() => {
     props.setCurrentRoute(window.location.pathname);
@@ -66,9 +67,7 @@ const Login = props => {
   };
 
   if (props.isAuthenticated) {
-    const { from } = props.location.state || { from: { pathname: '/home', search: props.location.search } };
-
-    return <Redirect to={from} />;
+    history.goBack();
   }
 
   return (

@@ -16,6 +16,9 @@ export const theme = createMuiTheme({
     error: {
       main: colors.error,
     },
+    warning: {
+      main: colors.warning,
+    },
   },
   props: {
     MuiButton: {

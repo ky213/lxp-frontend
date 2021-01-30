@@ -15,8 +15,7 @@ const FileDrop = ({ fileTypes, getFiles }) => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    getFiles(files);
-    console.log(files);
+    getFiles(files.map(file => file.file));
   }, [files]);
 
   return (

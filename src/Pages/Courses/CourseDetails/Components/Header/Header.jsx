@@ -12,9 +12,23 @@ const Header = props => {
 
   const { course } = props;
 
+  const handleSaveLesson = (name, file) => {
+    setAddLesson(false);
+    console.log(name, file);
+  };
+
+  const handleCloseLesson = () => {
+    setAddLesson(false);
+  };
+
   return (
     <div className={classes.header}>
-      <AddLesson title="Add lesson" open={addLesson} handleClose={() => setAddLesson(false)}></AddLesson>
+      <AddLesson
+        title="Add lesson"
+        open={addLesson}
+        handleSave={handleSaveLesson}
+        handleClose={handleCloseLesson}
+      ></AddLesson>
       <div>
         <img src={CourseImage} alt="course_thumbnail" className={classes.thumbnail} />
       </div>

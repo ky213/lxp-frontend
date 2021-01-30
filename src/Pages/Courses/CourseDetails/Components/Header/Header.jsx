@@ -1,24 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 
 import { Button, PlusIcon, EditIcon, DeleteIcon } from 'Components';
+import { AddEdit as AddLesson } from 'Pages/Lessons/AddEdit';
 import CourseImage from 'Assets/Icons/course.svg';
 import classes from './styles.module.css';
 
 const Header = props => {
+  const [addLesson, setAddLesson] = useState(false);
   const urlParams = useParams();
 
   const { course } = props;
 
   return (
     <div className={classes.header}>
+      <AddLesson title="Add lesson" open={addLesson} handleClose={() => setAddLesson(false)}></AddLesson>
       <div>
         <img src={CourseImage} alt="course_thumbnail" className={classes.thumbnail} />
       </div>
       <div className={classes.details}>
         <div className={classes.programName}>
           <span>Program name</span>
-          <Button variant="contained" color="primary" size="small" startIcon={<PlusIcon />}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            startIcon={<PlusIcon />}
+            onClick={() => setAddLesson(true)}
+          >
             Add lesson
           </Button>
         </div>

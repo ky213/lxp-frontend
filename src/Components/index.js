@@ -13,6 +13,11 @@ export { default as CircularProgress } from '@material-ui/core/CircularProgress'
 export { default as IconButton } from '@material-ui/core/IconButton';
 export { default as Typography } from '@material-ui/core/Typography';
 export { default as Link } from '@material-ui/core/Link';
+export { default as Dialog } from '@material-ui/core/Dialog';
+export { default as DialogActions } from '@material-ui/core/DialogActions';
+export { default as DialogContent } from '@material-ui/core/DialogContent';
+export { default as DialogContentText } from '@material-ui/core/DialogContentText';
+export { default as DialogTitle } from '@material-ui/core/DialogTitle';
 
 //Icons
 export { default as CloseIcon } from '@material-ui/icons/Close';

@@ -34,7 +34,7 @@ const Header = props => {
       </div>
       <div className={classes.details}>
         <div className={classes.programName}>
-          <span>Program name</span>
+          <span>{course.programName}</span>
           <Button
             variant="contained"
             color="primary"
@@ -45,11 +45,8 @@ const Header = props => {
             Add lesson
           </Button>
         </div>
-        <div className={classes.courseName}>Course name</div>
-        <div className={classes.courseDescription}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum quaerat atque dolores facilis ab facere
-          quisquam adipisci reiciendis voluptas nulla!
-        </div>
+        <div className={classes.courseName}>{course.name}</div>
+        <div className={classes.courseDescription}>{course.description || 'no description'}</div>
         <div className={classes.courseActions}>
           <div>
             <NavLink to={`/courses/edit/${urlParams.courseId}`}>

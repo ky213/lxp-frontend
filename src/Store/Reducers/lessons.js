@@ -93,6 +93,6 @@ export const deleteLesson = (organizationId, lessonId) => dispatch => {
   });
 };
 
-export const resetCoursesState = () => ({ type: LESSONS_ACTIONS.RESET });
+export const resetLessonsState = () => ({ type: LESSONS_ACTIONS.RESET });
 
 export default coursesReducer;

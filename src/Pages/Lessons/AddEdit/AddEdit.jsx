@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import { Button, Preloader, Dialog, DialogTitle, DialogContent, DialogActions, Label, FileDrop } from 'Components';
+import { createLesson } from 'Store/Reducers/lessons';
 
 const AddEdit = props => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
 
   const handleSubmit = (values, { setSubmitting }) => {
+    const formData = new FormData();
+
+    formData.append('tincan', 'file.name');
+    formData.append('courseId', 'asxasx');
+    formData.append('selectedOrganization', 'xasx');
+
+    props.createLesson(formData);
+
     setSubmitting(false);
   };
 
@@ -50,7 +60,16 @@ const AddEdit = props => {
   );
 };
 
-export default AddEdit;
+const mapStateToprops = state => ({
+  courses: state.courses,
+  lessons: state.lessons,
+});
+
+const mapDispatchToProps = {
+  createLesson,
+};
+
+export default connect(mapStateToprops, mapDispatchToProps)(AddEdit);
 
 AddEdit.propsTypes = {
   title: PropTypes.string.isRequired,

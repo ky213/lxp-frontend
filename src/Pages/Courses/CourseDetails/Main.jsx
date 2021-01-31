@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
+import { Preloader } from 'Components';
 import { Header, Body } from './Components';
+import { getOneCourse, resetCoursesState } from 'Store/Reducers/courses';
 
 const Main = props => {
-  const { courses } = props;
+  const params = useParams();
+
+  const { courses, profile } = props;
+
+  useEffect(() => {
+    props.getOneCourse(profile.organizationId, params.courseId);
+    return props.resetCoursesState();
+  }, []);
+
+  if (courses.loading) return <Preloader />;
+
   return (
     <div>
       <Header course={courses.currentCourse} />
@@ -14,7 +27,13 @@ const Main = props => {
 };
 
 const mapstateToProps = state => ({
+  profile: state.authentication.profile,
   courses: state.courses,
 });
 
-export default connect(mapstateToProps)(Main);
+const mapDispatchToProps = {
+  getOneCourse,
+  resetCoursesState,
+};
+
+export default connect(mapstateToProps, mapDispatchToProps)(Main);

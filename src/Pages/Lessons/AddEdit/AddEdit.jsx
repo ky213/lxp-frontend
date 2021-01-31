@@ -8,20 +8,18 @@ import { Button, Preloader, Dialog, DialogTitle, DialogContent, DialogActions, L
 
 const AddEdit = props => {
   const [open, setOpen] = useState(false);
-  const [lessonName, setLessonName] = useState('');
   const [file, setFile] = useState(null);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
     setSubmitting(false);
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('course name is required'),
+    name: Yup.string().required('lesson name is required'),
   });
 
   const initialValues = {
-    name: 'xxxx',
+    name: '',
   };
 
   return (
@@ -30,21 +28,12 @@ const AddEdit = props => {
         <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
         <DialogContent>
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-            {({ touched, errors }) => (
+            {() => (
               <Form>
-                <Field
-                  id="name"
-                  name="name"
-                  label="Title"
-                  component={TextField}
-                  margin="dense"
-                  fullWidth
-                  autoFocus
-                  onChange={({ target }) => setLessonName(target.value)}
-                />
+                <Field id="name" name="name" label="Title" component={TextField} fullWidth autoFocus required />
                 <Label style={{ marginBottom: '19px' }}>Course lesson</Label>
                 <FileDrop getFiles={files => setFile(files)} fileTypes={['application/zip']} />
-                <DialogActions disableSpacing>
+                <DialogActions disableSpacing style={{ marginRight: 'auto' }}>
                   <Button type="submit" variant="contained" color="primary">
                     Save
                   </Button>

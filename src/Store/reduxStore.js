@@ -6,13 +6,24 @@ import multi from 'redux-multi';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NotificationMiddleware } from 'Components';
-import { global, authentication, common, courses, activities, notifications, programs, users } from './Reducers';
+import {
+  global,
+  authentication,
+  common,
+  courses,
+  lessons,
+  activities,
+  notifications,
+  programs,
+  users,
+} from './Reducers';
 
 const reducers = combineReducers({
   global,
   authentication,
   common,
   courses,
+  lessons,
   activities,
   programs,
   users,

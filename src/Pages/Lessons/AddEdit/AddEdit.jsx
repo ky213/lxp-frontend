@@ -12,12 +12,14 @@ const AddEdit = props => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
 
+  const { courses, profile } = props;
+
   const handleSubmit = (values, { setSubmitting }) => {
     const formData = new FormData();
-
-    formData.append('tincan', 'file.name');
-    formData.append('courseId', 'asxasx');
-    formData.append('selectedOrganization', 'xasx');
+    console.log(file[0].name);
+    formData.append('tincan', file[0]?.name);
+    formData.append('courseId', courses.currentCourse?.courseId);
+    formData.append('selectedOrganization', profile.organizationId);
 
     props.createLesson(formData);
 
@@ -61,6 +63,7 @@ const AddEdit = props => {
 };
 
 const mapStateToprops = state => ({
+  profile: state.authentication.profile,
   courses: state.courses,
   lessons: state.lessons,
 });

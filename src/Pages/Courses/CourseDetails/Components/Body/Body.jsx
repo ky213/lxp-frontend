@@ -15,10 +15,10 @@ const Body = props => {
         <span>Lessons</span>
       </div>
       <div>
-        {/* {course?.lessons.map(lesson => (
-          <LessonCard lesson={lesson} />
-        ))} */}
-        <NoDataPlaceholder message="no lessons yet" />
+        {course?.lessons.map(lesson => (
+          <LessonCard lesson={lesson} key={lesson.lessonId} />
+        ))}
+        {course?.lessons.length === 0 && <NoDataPlaceholder message="no lessons yet" />}
       </div>
     </div>
   );

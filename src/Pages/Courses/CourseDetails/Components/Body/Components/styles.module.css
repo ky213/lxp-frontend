@@ -16,6 +16,10 @@
   background: #f6f6f6;
 }
 
+a {
+  text-decoration: none;
+}
+
 .lessonNumber {
   height: 100%;
   width: 50px;

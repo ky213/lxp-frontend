@@ -5,13 +5,13 @@ import { buildQuery } from 'Utils/buildQuery';
 export function getCourseLessons(organizationId, courseId) {
   const query = buildQuery({ organizationId, courseId });
 
-  return axios.get(`/courses/lesson/${query}`);
+  return axios.get(`/courses/lesson?${query}`);
 }
 
-export function getOneLessons(organizationId, lessonId) {
+export function getOneLesson(organizationId, lessonId) {
   const query = buildQuery({ organizationId, lessonId });
 
-  return axios.get(`/courses/lesson/${query}`);
+  return axios.get(`/courses/lesson?${query}`);
 }
 
 export function createLesson(lessonData) {
@@ -25,5 +25,5 @@ export function updateLesson(lessonData) {
 export function deleteLesson(organizationId, lessonId) {
   const query = buildQuery({ organizationId, lessonId });
 
-  return axios.delete(`/courses/lesson/${query}`);
+  return axios.delete(`/courses/lesson${query}`);
 }

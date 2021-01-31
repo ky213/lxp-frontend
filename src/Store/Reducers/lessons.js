@@ -65,10 +65,10 @@ export const getCourseLessons = (organizationId, courseId) => async dispatch => 
   });
 };
 
-export const getOneLessons = (organizationId, lessonId) => async dispatch => {
+export const getOneLesson = (organizationId, lessonId) => async dispatch => {
   dispatch({
     type: LESSONS_ACTIONS.GET_ONE,
-    payload: lessonsService.getOneLessons(organizationId, lessonId),
+    payload: lessonsService.getOneLesson(organizationId, lessonId),
   });
 };
 

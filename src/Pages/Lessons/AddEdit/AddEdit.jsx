@@ -16,7 +16,7 @@ const AddEdit = props => {
 
   const handleSubmit = (values, { setSubmitting }) => {
     const formData = new FormData();
-    console.log(file[0].name);
+
     formData.append('tincan', file[0]?.name);
     formData.append('courseId', courses.currentCourse?.courseId);
     formData.append('selectedOrganization', profile.organizationId);

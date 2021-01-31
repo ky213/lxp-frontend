@@ -13,8 +13,12 @@ const Main = props => {
 
   useEffect(() => {
     props.getOneCourse(profile.organizationId, params.courseId);
-    return props.resetCoursesState();
+    // return props.resetCoursesState();
   }, []);
+
+  useEffect(() => {
+    if (!courses.loading && courses.success) props.getOneCourse(profile.organizationId, params.courseId);
+  }, [courses.loading, courses.success]);
 
   if (courses.loading) return <Preloader />;
 

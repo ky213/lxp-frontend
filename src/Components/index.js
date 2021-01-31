@@ -39,6 +39,7 @@ export { default as CustomSelect } from './Common/Cutsom/Select/CustomSelect';
 export { FileDrop } from './FileDrop';
 export { default as TextEditor } from './Common/TextEditor';
 export { default as NotificationMiddleware } from './NotificationMiddleware';
+export { NoDataPlaceholder } from './NoDataPlaceholder';
 
 //Wrappers
 export { default as ErrorBoundary } from './ErrorBoundry';

@@ -22,13 +22,7 @@ const Header = props => {
 
   return (
     <div className={classes.header}>
-      <EditLesson
-        title="Edit lesson"
-        lesson={lesson}
-        open={editLesson}
-        handleSave={handleSaveLesson}
-        handleClose={handleCloseLesson}
-      />
+      <EditLesson title="Edit lesson" open={editLesson} handleSave={handleSaveLesson} handleClose={handleCloseLesson} />
       <div>
         <img src={CourseImage} alt="course_thumbnail" className={classes.thumbnail} />
       </div>

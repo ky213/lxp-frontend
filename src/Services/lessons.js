@@ -11,7 +11,7 @@ export function getCourseLessons(organizationId, courseId) {
 export function getOneLesson(organizationId, lessonId) {
   const query = buildQuery({ organizationId, lessonId });
 
-  return axios.get(`/courses/lesson?${query}`);
+  return axios.get(`/courses/lesson/byId?${query}`);
 }
 
 export function createLesson(lessonData) {

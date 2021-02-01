@@ -1,14 +1,15 @@
-import { lessonsService } from 'Services';
+import { lessonsService, commonService } from 'Services';
 
 import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 
 export const LESSONS_ACTIONS = {
-  GET_ALL: 'courses/GET_ALL',
-  GET_ONE: 'courses/GET_ONE',
-  CREATE: 'courses/CREATE',
-  UPDATE: 'courses/UPDATE',
-  DELETE: 'courses/DELETE',
-  RESET: 'courses/RESET',
+  GET_ALL: 'lessons/GET_ALL',
+  GET_ONE: 'lessons/GET_ONE',
+  CREATE: 'lessons/CREATE',
+  UPDATE: 'lessons/UPDATE',
+  DELETE: 'lessons/DELETE',
+  UPLOAD_FILE: 'lessons/UPLOAD_FILE',
+  RESET: 'lessons/RESET',
 };
 
 const initialState = {
@@ -20,34 +21,37 @@ const initialState = {
   error: null,
 };
 
-const coursesReducer = (state = initialState, { type, payload }) => {
+const lessonsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST(LESSONS_ACTIONS.GET_ALL):
     case REQUEST(LESSONS_ACTIONS.GET_ONE):
     case REQUEST(LESSONS_ACTIONS.CREATE):
-    case REQUEST(LESSONS_ACTIONS.UPDATE): {
+    case REQUEST(LESSONS_ACTIONS.UPDATE):
+    case REQUEST(LESSONS_ACTIONS.UPLOAD_FILE): {
       return { ...state, loading: true, success: false, error: null };
     }
 
     case FAILURE(LESSONS_ACTIONS.GET_ALL):
     case FAILURE(LESSONS_ACTIONS.GET_ONE):
     case FAILURE(LESSONS_ACTIONS.CREATE):
-    case FAILURE(LESSONS_ACTIONS.UPDATE): {
+    case FAILURE(LESSONS_ACTIONS.UPDATE):
+    case FAILURE(LESSONS_ACTIONS.UPLOAD_FILE): {
       return { ...state, loading: false, success: false, error: payload.error };
     }
     case SUCCESS(LESSONS_ACTIONS.GET_ALL): {
       return {
         ...state,
         loading: false,
-        courses: payload.data.courses,
+        lessons: payload.data.lessons,
         totalNumberOfRecords: payload.data.totalNumberOfCourses,
       };
     }
     case SUCCESS(LESSONS_ACTIONS.GET_ONE): {
-      return { ...state, loading: false, currentCourse: payload.data };
+      return { ...state, loading: false, currentLesson: payload.data };
     }
     case SUCCESS(LESSONS_ACTIONS.CREATE):
-    case SUCCESS(LESSONS_ACTIONS.UPDATE): {
+    case SUCCESS(LESSONS_ACTIONS.UPDATE):
+    case SUCCESS(LESSONS_ACTIONS.UPLOAD_FILE): {
       return { ...state, loading: false, success: true };
     }
     case LESSONS_ACTIONS.RESET: {
@@ -72,10 +76,15 @@ export const getOneLesson = (organizationId, lessonId) => async dispatch => {
   });
 };
 
-export const createLesson = lessonData => dispatch => {
-  dispatch({
+export const createLesson = lessonData => async dispatch => {
+  const { value } = await dispatch({
     type: LESSONS_ACTIONS.CREATE,
     payload: lessonsService.createLesson(lessonData),
+  });
+
+  dispatch({
+    type: LESSONS_ACTIONS.UPLOAD_FILE,
+    payload: commonService.uploadFile(value.data.uploadUrl),
   });
 };
 
@@ -95,4 +104,4 @@ export const deleteLesson = (organizationId, lessonId) => dispatch => {
 
 export const resetLessonsState = () => ({ type: LESSONS_ACTIONS.RESET });
 
-export default coursesReducer;
+export default lessonsReducer;

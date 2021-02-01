@@ -1,38 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import { Button, Preloader, Dialog, DialogTitle, DialogContent, DialogActions, Label, FileDrop } from 'Components';
-import { createLesson } from 'Store/Reducers/lessons';
+import { createLesson, updateLesson, getOneLesson, resetLessonsState } from 'Store/Reducers/lessons';
+import { getOneCourse } from 'Store/Reducers/courses';
 
 const AddEdit = props => {
+  const urlParams = useParams();
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
 
-  const { courses, profile } = props;
+  const { lessons, courses, profile } = props;
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  useEffect(() => {
+    return () => {
+      if (lessons.currentLesson) {
+        props.getOneLesson(lessons.currentLesson.organizationId, lessons.currentLesson.lessonId);
+        console.log('cleaning');
+      } else {
+        props.handleClose();
+        props.resetLessonsState();
+        props.getOneCourse(profile.organizationId, urlParams.courseId);
+      }
+    };
+  }, []);
+
+  const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
 
     formData.append('tincan', file[0]?.name);
     formData.append('courseId', courses.currentCourse?.courseId);
     formData.append('selectedOrganization', profile.organizationId);
 
-    props.createLesson(formData);
+    if (lessons.currentLesson) {
+      formData.append('lessonId', lessons.currentLesson.lessonId);
+      props.updateLesson(formData);
+    } else {
+      props.createLesson(formData);
+    }
 
     setSubmitting(false);
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('lesson name is required'),
+    // name: Yup.string(),
   });
 
   const initialValues = {
-    name: '',
+    // name: lessons.currentLesson?.lessonName,
   };
+
+  if (lessons.loading) return <Preloader />;
 
   return (
     <div>
@@ -42,7 +65,6 @@ const AddEdit = props => {
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
             {() => (
               <Form>
-                <Field id="name" name="name" label="Title" component={TextField} fullWidth autoFocus required />
                 <Label style={{ marginBottom: '19px' }}>Course lesson</Label>
                 <FileDrop getFiles={files => setFile(files)} fileTypes={['application/zip']} />
                 <DialogActions disableSpacing style={{ marginRight: 'auto' }}>
@@ -70,6 +92,10 @@ const mapStateToprops = state => ({
 
 const mapDispatchToProps = {
   createLesson,
+  updateLesson,
+  getOneLesson,
+  resetLessonsState,
+  getOneCourse,
 };
 
 export default connect(mapStateToprops, mapDispatchToProps)(AddEdit);

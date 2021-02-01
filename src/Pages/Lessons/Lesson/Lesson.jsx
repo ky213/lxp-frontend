@@ -19,7 +19,7 @@ const Lesson = props => {
   if (lessons.loading) return <Preloader />;
 
   return (
-    <div style={{ height: '100%' }}>
+    <div>
       <Header lesson={lessons} />
       <Body lesson={lessons} />
     </div>

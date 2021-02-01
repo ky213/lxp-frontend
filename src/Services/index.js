@@ -1,3 +1,4 @@
+export * as commonService from './common';
 export * as activityService from './activities';
 export * as coursesService from './courses';
 export * as lessonsService from './lessons';

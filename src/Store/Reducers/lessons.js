@@ -76,7 +76,7 @@ export const getOneLesson = (organizationId, lessonId) => async dispatch => {
   });
 };
 
-export const createLesson = lessonData => async dispatch => {
+export const createLesson = (lessonData, file) => async dispatch => {
   const { value } = await dispatch({
     type: LESSONS_ACTIONS.CREATE,
     payload: lessonsService.createLesson(lessonData),
@@ -84,7 +84,7 @@ export const createLesson = lessonData => async dispatch => {
 
   dispatch({
     type: LESSONS_ACTIONS.UPLOAD_FILE,
-    payload: commonService.uploadFile(value.data.uploadUrl),
+    payload: commonService.uploadFile(value.data.uploadUrl, file),
   });
 };
 

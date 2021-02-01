@@ -41,7 +41,7 @@ const AddEdit = props => {
       formData.append('lessonId', lessons.currentLesson.lessonId);
       props.updateLesson(formData);
     } else {
-      props.createLesson(formData);
+      props.createLesson(formData, file[0]);
     }
 
     setSubmitting(false);

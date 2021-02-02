@@ -19,16 +19,13 @@ const AddEdit = props => {
 
   useEffect(() => {
     return () => {
-      if (lessons.currentLesson) {
-        props.getOneLesson(lessons.currentLesson.organizationId, lessons.currentLesson.lessonId);
-        console.log('cleaning');
-      } else {
-        props.handleClose();
-        props.resetLessonsState();
-        props.getOneCourse(profile.organizationId, urlParams.courseId);
-      }
+      props.resetLessonsState();
     };
   }, []);
+
+  useEffect(() => {
+    if (props.open && !lessons.loading) props.handleClose();
+  }, [lessons.loading]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();

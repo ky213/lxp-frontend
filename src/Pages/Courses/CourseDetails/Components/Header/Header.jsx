@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { Button, PlusIcon, EditIcon, DeleteIcon } from 'Components';
+import { getOneCourse } from 'Store/Reducers/courses';
 import { AddEdit as AddLesson } from 'Pages/Lessons/AddEdit';
 import CourseImage from 'Assets/Icons/course.svg';
 import classes from './styles.module.css';
@@ -10,14 +12,16 @@ const Header = props => {
   const [addLesson, setAddLesson] = useState(false);
   const urlParams = useParams();
 
-  const { course } = props;
+  const { course, profile } = props;
 
   const handleSaveLesson = (name, file) => {
     setAddLesson(false);
+    props.getOneCourse(profile.organizationId, urlParams.courseId);
   };
 
   const handleCloseLesson = () => {
     setAddLesson(false);
+    props.getOneCourse(profile.organizationId, urlParams.courseId);
   };
 
   return (
@@ -60,4 +64,12 @@ const Header = props => {
   );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  profile: state.authentication.profile,
+});
+
+const mapDispatchToProps = {
+  getOneCourse,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

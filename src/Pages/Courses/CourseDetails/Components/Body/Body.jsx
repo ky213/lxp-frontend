@@ -7,6 +7,7 @@ import LessonIcon from 'Assets/Icons/LessonIcon.svg';
 
 const Body = props => {
   const { course } = props;
+  const lessons = course?.lessons?.sort((a, b) => a.lessonOrder - b.lessonOrder) || [];
 
   return (
     <div className={classes.main}>
@@ -15,7 +16,7 @@ const Body = props => {
         <span>Lessons</span>
       </div>
       <div>
-        {course?.lessons?.map(lesson => (
+        {lessons.map(lesson => (
           <LessonCard lesson={lesson} key={lesson.lessonId} />
         ))}
         {course?.lessons?.length === 0 && <NoDataPlaceholder message="no lessons yet" />}

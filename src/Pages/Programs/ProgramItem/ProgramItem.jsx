@@ -35,7 +35,7 @@ const ProgramItem = props => {
   return (
     <div className={classes.main}>
       <NavLink to={`/programs/view/${props.item.programId}`}>
-        <img src={thumbnail} style={{ width: '261px', height: '120px' }} />
+        <img src={props.item.thumbnail || thumbnail} style={{ width: '261px', height: '120px' }} />
         <div className={classes.itemInfo}>
           <div className={classes.header}>
             <label>{t('programMini.label')}</label>

@@ -17,7 +17,7 @@ import {
   CircularProgress,
   PageLayout,
   TextEditor,
-  Preloader,
+  FileDrop,
   TextField as BaseTextField,
 } from 'Components';
 
@@ -39,10 +39,6 @@ const AddEDitProgram = props => {
     };
   }, []);
 
-  useEffect(() => {
-    // if (!programs.loading && programs.success) props.history.goBack();
-  }, [programs.loading]);
-
   const handleEmailBodyChange = event => {
     const content = event.editor.getData();
     setEmailBody(content);
@@ -50,6 +46,18 @@ const AddEDitProgram = props => {
   const handleCertificateBodyChange = event => {
     const content = event.editor.getData();
     setCertificateBody(content);
+  };
+
+  const handleThumbnailchange = (file, setFieldValue) => {
+    const fileReader = new FileReader();
+
+    if (!file) return;
+
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = data => {
+      setFieldValue('thumbnail', fileReader.result);
+    };
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
@@ -73,18 +81,16 @@ const AddEDitProgram = props => {
     programDirectors: Yup.array().min(1, 'You need to select at least one program manager').typeError('Invalid entry'),
   });
 
-  if (programs.loading) return <Preloader />;
-
   return (
     <PageLayout title={urlParams.programId ? 'Edit program' : 'Add new program'} loading={programs.loading}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ errors, touched, values, handleChange }) => (
+        {({ errors, touched, values, handleChange, setFieldValue }) => (
           <Form>
             <Field
               id="name"
               name="name"
-              defaultValue={programs.currentProgram?.name}
               label="Program name"
+              defaultValue={programs.currentProgram?.name}
               component={TextField}
               onChange={handleChange}
               error={touched.name && Boolean(errors.name)}
@@ -151,6 +157,14 @@ const AddEDitProgram = props => {
             />
             <Label>Certificate body</Label>
             <TextEditor name="certifcateBody" data={values.certificateBody} onChange={handleCertificateBodyChange} />
+
+            <Label style={{ lineHeight: 2 }}>Program thumbnail</Label>
+            <Field
+              name="thumbnail"
+              component={FileDrop}
+              fileTypes={['image/*']}
+              getFiles={file => handleThumbnailchange(file[0], setFieldValue)}
+            />
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={programs.loading}>
                 {programs.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}

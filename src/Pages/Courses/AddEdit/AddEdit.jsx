@@ -30,7 +30,7 @@ const AddEdit = props => {
   const handleSubmit = (values, { setSubmitting }) => {
     const formData = new FormData();
 
-    formData.append('logo', courseLogo?.name);
+    formData.append('logo', values.logo);
     formData.append('name', values.name);
     formData.append('courseCode', values.courseCode);
     formData.append('description', values.description);
@@ -49,8 +49,16 @@ const AddEdit = props => {
     setSubmitting(false);
   };
 
-  const handleGetFiles = files => {
-    setCourseLogo(files[0]?.file);
+  const handleGetFiles = (file, setFieldValue) => {
+    const fileReader = new FileReader();
+
+    if (!file) return;
+
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = data => {
+      setFieldValue('logo', fileReader.result);
+    };
   };
 
   const initialValues = {
@@ -68,7 +76,7 @@ const AddEdit = props => {
   return (
     <PageLayout title={urlParams.courseId ? 'Edit course' : 'Add new course'} loading={courses.loading}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ errors, touched, handleChange }) => (
+        {({ errors, touched, handleChange, setFieldValue }) => (
           <Form>
             <Field
               id="name"
@@ -104,7 +112,7 @@ const AddEdit = props => {
             />
 
             <Label style={{ lineHeight: 1 }}>Logo</Label>
-            <FileDrop getFiles={handleGetFiles} />
+            <FileDrop fileTypes={['image/*']} getFiles={files => handleGetFiles(files[0], setFieldValue)} />
 
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={courses.loading}>

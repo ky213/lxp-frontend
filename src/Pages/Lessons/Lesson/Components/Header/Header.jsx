@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { getOneLesson } from 'Store/Reducers/lessons';
 import { Button, EditIcon, DeleteIcon } from 'Components';
 import { AddEdit as EditLesson } from 'Pages/Lessons/AddEdit';
 import CourseImage from 'Assets/Icons/course.svg';
+import { orderNumber } from 'Utils/general';
 import classes from './styles.module.css';
 
 const Header = props => {
   const [editLesson, setEditLesson] = useState(false);
   const urlParams = useParams();
 
-  const { lesson } = props;
+  const { lessons, profile } = props;
 
   const handleSaveLesson = (name, file) => {
     setEditLesson(false);
+    props.getOneLesson(profile.organizationId, lessons.currentLesson?.lessonId);
   };
 
   const handleCloseLesson = () => {
+    props.getOneLesson(profile.organizationId, lessons.currentLesson?.lessonId);
     setEditLesson(false);
   };
 
@@ -31,11 +36,11 @@ const Header = props => {
           <span>Course name</span>
         </div>
         <div className={classes.status}>
-          <p className={classes.number}>Lesson 01</p>
+          <p className={classes.number}>Lesson {orderNumber(lessons.currentLesson?.lessonOrder)}</p>
           <p className={classes.separator}></p>
           <p className={classes.badge}>in progress</p>
         </div>
-        <div className={classes.lessonName}>Lesson name</div>
+        <div className={classes.lessonName}>{lessons.currentLesson?.lessonName}</div>
         <div className={classes.lessonActions}>
           <div>
             <Button
@@ -58,4 +63,11 @@ const Header = props => {
   );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  lessons: state.lessons,
+  profile: state.authentication.profile,
+});
+
+const mapDispatchToProps = { getOneLesson };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -47,7 +47,7 @@ const lessonsReducer = (state = initialState, { type, payload }) => {
       };
     }
     case SUCCESS(LESSONS_ACTIONS.GET_ONE): {
-      return { ...state, loading: false, currentLesson: payload.data };
+      return { ...state, loading: false, currentLesson: payload.data.lessonData };
     }
     case SUCCESS(LESSONS_ACTIONS.CREATE):
     case SUCCESS(LESSONS_ACTIONS.UPDATE):

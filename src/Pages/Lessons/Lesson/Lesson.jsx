@@ -20,8 +20,8 @@ const Lesson = props => {
 
   return (
     <div>
-      <Header lesson={lessons} />
-      <Body lesson={lessons} />
+      <Header />
+      <Body />
     </div>
   );
 };

@@ -13,7 +13,7 @@ const Main = props => {
 
   useEffect(() => {
     props.getOneCourse(profile.organizationId, params.courseId);
-    // return props.resetCoursesState();
+    return props.resetCoursesState();
   }, []);
 
   useEffect(() => {

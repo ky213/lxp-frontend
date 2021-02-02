@@ -8,36 +8,34 @@ import * as Yup from 'yup';
 
 import { Button, Preloader, Dialog, DialogTitle, DialogContent, DialogActions, Label, FileDrop } from 'Components';
 import { createLesson, updateLesson, getOneLesson, resetLessonsState } from 'Store/Reducers/lessons';
-import { getOneCourse } from 'Store/Reducers/courses';
 
 const AddEdit = props => {
   const urlParams = useParams();
-  const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
 
   const { lessons, courses, profile } = props;
 
   useEffect(() => {
-    return () => {
-      props.resetLessonsState();
-    };
+    // props.getOneLesson(profile.organizationId, urlParams.lessonId);
+    return props.handleClose;
   }, []);
 
   useEffect(() => {
-    if (props.open && !lessons.loading) props.handleClose();
+    // if (props.open && !lessons.loading) ;
   }, [lessons.loading]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
 
     formData.append('tincan', file[0]?.name);
-    formData.append('courseId', courses.currentCourse?.courseId);
     formData.append('selectedOrganization', profile.organizationId);
 
     if (lessons.currentLesson) {
+      formData.append('courseId', lessons.currentLesson?.courseId);
       formData.append('lessonId', lessons.currentLesson.lessonId);
       props.updateLesson(formData);
     } else {
+      formData.append('courseId', courses.currentCourse?.courseId);
       props.createLesson(formData, file[0]);
     }
 
@@ -92,7 +90,6 @@ const mapDispatchToProps = {
   updateLesson,
   getOneLesson,
   resetLessonsState,
-  getOneCourse,
 };
 
 export default connect(mapStateToprops, mapDispatchToProps)(AddEdit);

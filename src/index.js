@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import { Preloader } from 'Components';
+import { Preloader, SnackBarProvider } from 'Components';
 import { theme } from 'Themes';
 import { clearAuthentication } from 'Store/Reducers/authentication';
 import initAxios from 'Config/axios';
@@ -22,7 +22,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <Suspense fallback={<Preloader />}>
-        <App />
+        <SnackBarProvider>
+          <App />
+        </SnackBarProvider>
       </Suspense>
     </ThemeProvider>
   </Provider>,

@@ -4,13 +4,22 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { TextField } from 'formik-material-ui';
 import { Autocomplete } from 'formik-material-ui-lab';
 
 import { resetGlobalState } from 'Store/Reducers/global';
 import { getPorgramDirectors } from 'Store/Reducers/users';
 import { getOneProgram, createProgram, updateProgram, resetProgramsState } from 'Store/Reducers/programs';
-import { PageLayout, TextEditor } from 'Components';
-import { Grid, Button, TextField, Label, CircularProgress } from 'Components';
+import {
+  Grid,
+  Button,
+  Label,
+  CircularProgress,
+  PageLayout,
+  TextEditor,
+  Preloader,
+  TextField as BaseTextField,
+} from 'Components';
 
 const AddEDitProgram = props => {
   const [emailBody, setEmailBody] = useState(props.programs.currentProgram?.body || '');
@@ -64,6 +73,8 @@ const AddEDitProgram = props => {
     programDirectors: Yup.array().min(1, 'You need to select at least one program manager').typeError('Invalid entry'),
   });
 
+  if (programs.loading) return <Preloader />;
+
   return (
     <PageLayout title={urlParams.programId ? 'Edit program' : 'Add new program'} loading={programs.loading}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
@@ -85,12 +96,13 @@ const AddEDitProgram = props => {
               id="programDirectors"
               name="programDirectors"
               component={Autocomplete}
-              multiple
               open={open}
               getOptionSelected={(option, value) => option.name === value.name}
               getOptionLabel={option => `${option.name} ${option.surname}`}
               options={users.users}
               loading={users.loading}
+              multiple
+              required
               onOpen={() => {
                 setOpen(true);
                 props.getPorgramDirectors(profile.organizationId);
@@ -98,10 +110,9 @@ const AddEDitProgram = props => {
               onClose={() => {
                 setOpen(false);
               }}
-              required
               error={touched.programDirectors && Boolean(errors.programDirectors)}
               renderInput={params => (
-                <TextField
+                <BaseTextField
                   {...params}
                   label="Program directors"
                   InputProps={{

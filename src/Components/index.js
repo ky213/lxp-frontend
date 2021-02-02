@@ -45,4 +45,4 @@ export { NoDataPlaceholder } from './NoDataPlaceholder';
 export { default as ErrorBoundary } from './ErrorBoundry';
 export { default as PageNotFound } from './PageNotFound';
 export { PrivateRoute } from './PrivateRoute';
-export { default as SnackProvider } from './SnackProvider';
+export { default as SnackBarProvider } from './SnackProvider';

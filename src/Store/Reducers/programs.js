@@ -44,11 +44,11 @@ const programsReducer = (state = initialState, { type, payload }) => {
         totalNumberOfRecords: payload.data.totalNumberOfRecords,
       };
     }
-    case SUCCESS(PROGRAMS_ACTIONS.GET_ONE): {
+    case SUCCESS(PROGRAMS_ACTIONS.GET_ONE):
+    case SUCCESS(PROGRAMS_ACTIONS.UPDATE): {
       return { ...state, loading: false, currentProgram: payload.data };
     }
-    case SUCCESS(PROGRAMS_ACTIONS.CREATE):
-    case SUCCESS(PROGRAMS_ACTIONS.UPDATE): {
+    case SUCCESS(PROGRAMS_ACTIONS.CREATE): {
       return { ...state, loading: false, success: true };
     }
     case PROGRAMS_ACTIONS.RESET: {

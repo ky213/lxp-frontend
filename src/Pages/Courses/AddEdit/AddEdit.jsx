@@ -112,7 +112,11 @@ const AddEdit = props => {
             />
 
             <Label style={{ lineHeight: 1 }}>Logo</Label>
-            <FileDrop fileTypes={['image/*']} getFiles={files => handleGetFiles(files[0], setFieldValue)} />
+            <FileDrop
+              fileTypes={['image/*']}
+              getFiles={files => handleGetFiles(files[0], setFieldValue)}
+              defaultImage={courses.currentCourse?.image}
+            />
 
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={courses.loading}>

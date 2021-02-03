@@ -164,6 +164,7 @@ const AddEDitProgram = props => {
               component={FileDrop}
               fileTypes={['image/*']}
               getFiles={file => handleThumbnailchange(file[0], setFieldValue)}
+              defaultImage={programs.currentProgram?.thumbnail}
             />
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={programs.loading}>

@@ -11,19 +11,25 @@ import './styles.module.css';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
-const FileDrop = ({ fileTypes, getFiles }) => {
+const FileDrop = ({ fileTypes, getFiles, defaultImage }) => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
     getFiles(files.map(file => file.file));
   }, [files]);
 
+  useEffect(() => {
+    if (defaultImage) setFiles([defaultImage]);
+    return () => {
+      setFiles([]);
+    };
+  }, []);
+
   return (
     <div className="App">
       <FilePond
         files={files}
         acceptedFileTypes={fileTypes}
-        allowReorder={true}
         onupdatefiles={setFiles}
         labelIdle='<span class="filepond--label-action"><img src="/static/media/upload.1e37f923.svg"> Upload file</span> or drag and drop the file here '
       />
@@ -36,5 +42,6 @@ export default FileDrop;
 FileDrop.propTypes = {
   title: PropTypes.string,
   fileTypes: PropTypes.arrayOf(PropTypes.string),
+  defaultImage: PropTypes.string,
   getFiles: PropTypes.func,
 };

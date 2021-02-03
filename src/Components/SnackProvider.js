@@ -6,7 +6,7 @@ import { IconButton, CloseIcon } from 'Components';
 
 const Snack = ({ success, error }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  console.log('Snacking##############');
+  console.log('Snacking', success, error);
   if (success || error)
     enqueueSnackbar(success ? 'Success' : error, {
       variant: success ? 'success' : 'error',
@@ -25,7 +25,7 @@ const Snack = ({ success, error }) => {
 
 const Provider = ({ success, error, children }) => {
   return (
-    <SnackbarProvider>
+    <SnackbarProvider style={{ zIndex: 999999999999999999999999999 }}>
       <Snack success={success} error={error} />
       {children}
     </SnackbarProvider>

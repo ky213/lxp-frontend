@@ -8,14 +8,13 @@ import * as Yup from 'yup';
 
 import { resetGlobalState } from 'Store/Reducers/global';
 import { getOneCourse, createCourse, updateCourse, resetCoursesState } from 'Store/Reducers/courses';
-import { PageLayout, Preloader, Grid, Button, Label, FileDrop, CircularProgress, TextAreaCustom } from 'Components';
+import { PageLayout, Preloader, Grid, Button, Label, FileDrop, TextAreaCustom } from 'Components';
 
 const AddEdit = props => {
-  const [courseLogo, setCourseLogo] = useState(null);
   const { t, i18n } = useTranslation();
   const urlParams = useParams();
 
-  const { programs, courses, profile } = props;
+  const { courses, profile } = props;
 
   useEffect(() => {
     if (urlParams.courseId) props.getOneCourse(profile.organizationId, urlParams.courseId);
@@ -120,7 +119,7 @@ const AddEdit = props => {
 
             <Grid>
               <Button type="submit" variant="contained" color="primary" disabled={courses.loading}>
-                {courses.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}
+                Save
               </Button>
               <Button variant="contained" color="secondary" disabled={courses.loading} onClick={props.history.goBack}>
                 Cancel

@@ -7,20 +7,17 @@ export default store => next => action => {
     return next(action);
   }
 
-  const actionName = action.type.split('/').pop();
-
-  store.dispatch({
-    type: GLOBAL_ACTION_TYPES.RESET,
-  });
-
   return next(action)
     .then(response => {
-      const actionType = response.action.type;
-
-      if (actionType.endsWith('FULFILLED') && ['CREATE', 'UPDATE', 'DELETE'].includes(actionName))
+      const { config, status } = response.value;
+      if (['post', 'put', 'delete'].includes(config.method) && [200, 201].includes(status))
         store.dispatch({
           type: GLOBAL_ACTION_TYPES.SET_SUCCESS,
         });
+
+      store.dispatch({
+        type: GLOBAL_ACTION_TYPES.RESET,
+      });
 
       return Promise.resolve(response);
     })

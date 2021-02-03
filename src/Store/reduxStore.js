@@ -35,7 +35,7 @@ const store = createStore(
   reducers,
   process.env.NODE_ENV === 'development'
     ? composeWithDevTools(applyMiddleware(thunkMiddleWare, NotificationMiddleware, promiseMiddleware, multi))
-    : compose(applyMiddleware(thunkMiddleWare, promiseMiddleware, multi))
+    : compose(applyMiddleware(thunkMiddleWare, NotificationMiddleware, promiseMiddleware, multi))
 );
 
 export default store;

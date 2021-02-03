@@ -51,7 +51,7 @@ const AddEdit = props => {
   const handleGetFiles = (file, setFieldValue) => {
     const fileReader = new FileReader();
 
-    if (!file) return;
+    if (!file || typeof file !== 'object') return;
 
     fileReader.readAsDataURL(file);
 

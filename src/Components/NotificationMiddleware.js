@@ -10,14 +10,15 @@ export default store => next => action => {
   return next(action)
     .then(response => {
       const { config, status } = response.value;
-      if (['post', 'put', 'delete'].includes(config.method) && [200, 201].includes(status))
+      if (['post', 'put', 'delete'].includes(config.method) && [200, 201].includes(status)) {
         store.dispatch({
           type: GLOBAL_ACTION_TYPES.SET_SUCCESS,
         });
 
-      store.dispatch({
-        type: GLOBAL_ACTION_TYPES.RESET,
-      });
+        store.dispatch({
+          type: GLOBAL_ACTION_TYPES.RESET,
+        });
+      }
 
       return Promise.resolve(response);
     })
@@ -25,6 +26,10 @@ export default store => next => action => {
       store.dispatch({
         type: GLOBAL_ACTION_TYPES.SET_ERROR,
         payload: err.response?.data.message,
+      });
+
+      store.dispatch({
+        type: GLOBAL_ACTION_TYPES.RESET,
       });
 
       return Promise.reject(err);

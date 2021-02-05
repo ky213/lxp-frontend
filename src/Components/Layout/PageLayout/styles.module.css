@@ -147,6 +147,7 @@
 .pageBody {
   margin: auto;
   padding: 20px 2px;
+  width: 60%;
 }
 
 @media screen and (max-width: 968px) {

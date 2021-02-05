@@ -35,6 +35,9 @@ export const theme = createMuiTheme({
     MuiCheckbox: {
       disableRipple: true,
     },
+    MuiRadio: {
+      color: colors.info,
+    },
   },
   overrides: {
     MuiButton: {
@@ -77,8 +80,10 @@ export const theme = createMuiTheme({
         lineHeight: 0,
       },
     },
-  },
-  status: {
-    checkbox: '#6671AB',
+    MuiRadio: {
+      root: {
+        color: colors.info,
+      },
+    },
   },
 });

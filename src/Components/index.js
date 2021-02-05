@@ -1,5 +1,6 @@
 //Base
 export { default as Grid } from '@material-ui/core/Grid';
+export { default as Box } from '@material-ui/core/Box';
 export { default as Button } from '@material-ui/core/Button';
 export { default as TextField } from '@material-ui/core/TextField';
 export { default as Checkbox } from '@material-ui/core/Checkbox';
@@ -18,6 +19,9 @@ export { default as DialogActions } from '@material-ui/core/DialogActions';
 export { default as DialogContent } from '@material-ui/core/DialogContent';
 export { default as DialogContentText } from '@material-ui/core/DialogContentText';
 export { default as DialogTitle } from '@material-ui/core/DialogTitle';
+export { default as FormControlLabel } from '@material-ui/core/FormControlLabel';
+export { default as RadioGroup } from '@material-ui/core/RadioGroup';
+export { default as Radio } from '@material-ui/core/Radio';
 
 //Icons
 export { default as CloseIcon } from '@material-ui/icons/Close';

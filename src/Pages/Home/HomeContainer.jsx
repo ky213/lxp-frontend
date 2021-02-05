@@ -20,7 +20,7 @@ const HomeContainer = props => {
     <Home
       user={props.profile}
       courses={props.courses.getJoinedCourses}
-      activities={props.activities.activities}
+      activities={props.activities.allActivities}
       direction={props.direction}
       programs={props.programs}
     />

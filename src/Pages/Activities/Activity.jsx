@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import classes from './Activity.module.css';
-import { NavLink, withRouter } from 'react-router-dom';
-import { setIsFetching } from '../../Store/Reducers/common';
-import { getActivity, setCurrentActivity } from '../../Store/Reducers/activities';
-import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { NavLink, withRouter } from 'react-router-dom';
+
+import classes from './Activity.module.css';
+import { setIsFetching } from 'Store/Reducers/common';
+import { getOneActivity } from 'Store/Reducers/activities';
 import Chat from './Chat/Chat';
-import DeleteModal from '../../Components/DeleteModal/DeleteModal';
+import DeleteModal from 'Components/DeleteModal/DeleteModal';
 import { Preloader } from 'Components';
 
 const StyledMarkButton = styled.button`
@@ -27,8 +28,6 @@ const StyledProgressSpan = styled.span`
 
 const Activity = props => {
   const { t, i18n } = useTranslation();
-  let widthProgressBar = 83;
-  let heightProgressBar = 16;
 
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
@@ -178,7 +177,6 @@ let mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  setCurrentActivity,
   setIsFetching,
-  getActivity,
+  getOneActivity,
 })(WithUrlDataContainerComponent);

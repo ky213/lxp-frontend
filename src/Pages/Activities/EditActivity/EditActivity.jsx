@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import classes from '../AddActivity/AddActivity.module.css';
 import { useTranslation } from 'react-i18next';
-import { required } from '../../../Utils/validators';
+import { required } from 'Utils/validators';
 import { NavLink, withRouter } from 'react-router-dom';
-import { Preloader, CustomSelect, AuthInput, Calendar, TextAreaCustom } from '../../../Components';
-import { getActivity } from '../../../Store/Reducers/activities';
+import { Preloader, CustomSelect, AuthInput, Calendar, TextAreaCustom } from 'Components';
+import { getOneActivity } from 'Store/Reducers/activities';
 import styled from 'styled-components';
 import ActivityFile from '../ActivityFile/ActivityFile';
 import { FileDrop } from 'react-file-drop';
-import uploadicon from '../../../Assets/Images/upload.svg';
+import uploadicon from 'Assets/Images/upload.svg';
 
 const StyledLabel = styled.label`
   margin-left: ${({ direction }) => '30px'};
@@ -227,7 +227,7 @@ const EditActivity = props => {
 
   useEffect(() => {
     let activityId = props.match.params.activityId;
-    props.getActivity(activityId, props.profile.selectedOrganizationId);
+    props.getOneActivity(activityId, props.profile.selectedOrganizationId);
   }, []);
 
   let onSubmit = formData => {
@@ -258,14 +258,16 @@ const EditActivity = props => {
   );
 };
 
-let WithUrlDataContainerComponent = withRouter(EditActivity);
+const WithUrlDataContainerComponent = withRouter(EditActivity);
 
-let mapStateToProps = state => ({
+const mapStateToProps = state => ({
   isFetching: state.common.isFetching,
   profile: state.authentication.profile,
   direction: state.common.direction,
 });
 
-export default connect(mapStateToProps, {
-  getActivity,
-})(WithUrlDataContainerComponent);
+const mapDispatchToProps = {
+  getOneActivity,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithUrlDataContainerComponent);

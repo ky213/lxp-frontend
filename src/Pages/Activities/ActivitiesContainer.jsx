@@ -95,7 +95,7 @@ const ActivitiesContainer = props => {
 let mapStateToProps = state => ({
   isFetching: state.activities.loading,
   profile: state.authentication.profile,
-  activities: state.activities.activities,
+  activities: state.activities.allctivities,
   isAuthenticated: state.authentication.isAuthenticated,
   direction: state.common.direction,
 });

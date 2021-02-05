@@ -13,3 +13,7 @@ export const USER_ROLES = {
 };
 
 export const TIMEOUT = 1000 * 60 * 1; // 1 minute
+
+export const DATE_FORMAT = {
+  DEFAULT: 'DDMMYYYY',
+};

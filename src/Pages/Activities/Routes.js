@@ -8,12 +8,13 @@ import AddActivity from './AddActivity/AddActivity';
 import EditActivity from './EditActivity/EditActivity';
 import ActivitiesContainer from './ActivitiesContainer';
 import AddActivityManager from './AddActivity/AddActivityManager';
+import Activities from './Activities';
 import Activity from './Activity';
 
 const ActivityRoutes = ({ match, profile }) => {
   return (
     <Switch>
-      <Route exact path={`/activities`} component={ActivitiesContainer} />
+      <Route exact path={`/activities`} component={Activities} />
       <Route exact path={`/activities/view/:activityId`} component={Activity} />
       <Route
         exact

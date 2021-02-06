@@ -38,7 +38,7 @@ export const AddEditActivity = props => {
   };
 
   const initialValues = {
-    programId: 'c1ab5e5d-48d2-4004-b902-6318ace53353',
+    programId: [],
     name: 'xxxxx',
     start: '2021-02-09T23:00:00.000Z',
     end: '2021-02-09T23:00:00.000Z',
@@ -67,11 +67,12 @@ export const AddEditActivity = props => {
                 component={Autocomplete}
                 open={programSearch}
                 getOptionSelected={(option, value) => option.programId === value.programId}
-                getOptionLabel={option => `${option.name} ${option.surname}`}
+                getOptionLabel={option => `${option?.name || ''}`}
                 options={programs.programs}
                 loading={programs.loading}
                 error={touched.programId && Boolean(errors.programId)}
-                required
+                error={touched.programId && Boolean(errors.programId)}
+                helperText={touched.programId && errors.programId}
                 onOpen={() => {
                   setProgramSearch(true);
                   props.getPrograms(profile.organizationId);
@@ -83,6 +84,9 @@ export const AddEditActivity = props => {
                   <BaseTextField
                     {...params}
                     label="Program"
+                    error={touched.programId && Boolean(errors.programId)}
+                    helperText={touched.programId && errors.programId}
+                    required
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
@@ -111,6 +115,10 @@ export const AddEditActivity = props => {
                 name="totalPoints"
                 label="Total points"
                 type="number"
+                min={0}
+                InputProps={{
+                  min: 0,
+                }}
                 component={TextField}
                 error={touched.totalPoints && Boolean(errors.totalPoints)}
                 helperText={touched.totalPoints && errors.totalPoints}
@@ -153,8 +161,8 @@ export const AddEditActivity = props => {
                   <MenuItem value={30}>Thirty</MenuItem>
                 </Field>
               </FormControl>
-              <Label style={{ marginTop: '20px' }}>Visibility</Label>
-              <RadioGroup label="position" name="position" defaultValue={true} row>
+              <Label style={{ margin: '25px 0 10px 0' }}>Visibility</Label>
+              <RadioGroup label="position" name="position" defaultValue={'true'} row>
                 <FormControlLabel
                   label="Public"
                   labelPlacement="end"
@@ -170,7 +178,7 @@ export const AddEditActivity = props => {
                   disabled={isSubmitting}
                 />
               </RadioGroup>
-              <Label style={{ marginTop: '20px' }}>Assign to</Label>
+              {/* <Label style={{ marginTop: '20px' }}>Assign to</Label>
               <RadioGroup label="position" name="position" defaultValue={'program'} row>
                 <FormControlLabel
                   label="Course"
@@ -186,7 +194,7 @@ export const AddEditActivity = props => {
                   control={<Radio disabled={isSubmitting} />}
                   disabled={isSubmitting}
                 />
-              </RadioGroup>
+              </RadioGroup> */}
               <Field
                 id="courses"
                 name="courses"
@@ -199,6 +207,8 @@ export const AddEditActivity = props => {
                 error={touched.courses && Boolean(errors.courses)}
                 required
                 multiple
+                disabled={!values.programId}
+                style={{ marginTop: '15px' }}
                 onOpen={() => {
                   setCourseSearch(true);
                   props.getCourses(profile.organizationId);
@@ -227,13 +237,15 @@ export const AddEditActivity = props => {
                 name="participants"
                 component={Autocomplete}
                 open={learnerSearch}
-                getOptionSelected={(option, value) => option.courseId === value.courseId}
+                getOptionSelected={(option, value) => option.userId === value.userId}
                 getOptionLabel={option => `${option.name} ${option.surname}`}
                 options={learners.users}
                 loading={learners.loading}
                 error={touched.learners && Boolean(errors.learners)}
+                style={{ marginTop: '10px' }}
                 required
                 multiple
+                disabled={!values.programId}
                 onOpen={() => {
                   setLearnerSearch(true);
                   props.getActiveLearners(profile.organizationId, values.programId);
@@ -249,7 +261,7 @@ export const AddEditActivity = props => {
                       ...params.InputProps,
                       endAdornment: (
                         <>
-                          {courses.loading ? <CircularProgress color="primary" size={20} /> : null}
+                          {learners.loading ? <CircularProgress color="primary" size={20} /> : null}
                           {params.InputProps.endAdornment}
                         </>
                       ),

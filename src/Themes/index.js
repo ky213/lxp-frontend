@@ -58,7 +58,7 @@ export const theme = createMuiTheme({
     },
     MuiInput: {
       root: {
-        height: '47px',
+        minHeight: '47px',
         border: '1px solid #C6C6C6',
         borderRadius: '5px',
         background: '#FFF',

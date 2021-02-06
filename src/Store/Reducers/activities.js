@@ -4,6 +4,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'Utils/actionTypes';
 export const ACTIVITIES_ACTIONS = {
   GET_ALL: 'activities/GET_ALL',
   GET_ONE: 'activities/GET_ONE',
+  GET_ACTIVITY_TYPES: 'activities/GET_ACTIVITY_TYPES',
   CREATE: 'activities/CREATE',
   UPDATE: 'activities/UPDATE',
   DELETE: 'activities/DELETE',
@@ -12,6 +13,7 @@ export const ACTIVITIES_ACTIONS = {
 
 const initialState = {
   allActivities: [],
+  activityTypes: [],
   currentActivity: null,
   totalNumberOfRecords: 0,
   loading: false,
@@ -23,6 +25,7 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST(ACTIVITIES_ACTIONS.GET_ALL):
     case REQUEST(ACTIVITIES_ACTIONS.GET_ONE):
+    case REQUEST(ACTIVITIES_ACTIONS.GET_ACTIVITY_TYPES):
     case REQUEST(ACTIVITIES_ACTIONS.CREATE):
     case REQUEST(ACTIVITIES_ACTIONS.UPDATE): {
       return { ...state, loading: true, success: false, error: null };
@@ -30,6 +33,7 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
 
     case FAILURE(ACTIVITIES_ACTIONS.GET_ALL):
     case FAILURE(ACTIVITIES_ACTIONS.GET_ONE):
+    case FAILURE(ACTIVITIES_ACTIONS.GET_ACTIVITY_TYPES):
     case FAILURE(ACTIVITIES_ACTIONS.CREATE):
     case FAILURE(ACTIVITIES_ACTIONS.UPDATE): {
       return { ...state, loading: false, success: false, error: payload.error };
@@ -40,6 +44,13 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: false,
         allActivities: payload.data,
+      };
+    }
+    case SUCCESS(ACTIVITIES_ACTIONS.GET_ACTIVITY_TYPES): {
+      return {
+        ...state,
+        loading: false,
+        activityTypes: payload.data,
       };
     }
     case SUCCESS(ACTIVITIES_ACTIONS.GET_ONE):
@@ -68,6 +79,12 @@ export const getActivitiesByLearner = (organizationId, employeeId, userId) => di
   dispatch({
     type: ACTIVITIES_ACTIONS.GET_ALL,
     payload: activitiesService.getActivitiesByLearner(organizationId, employeeId, userId),
+  });
+};
+export const getActivityTypes = organizationId => dispatch => {
+  dispatch({
+    type: ACTIVITIES_ACTIONS.GET_ACTIVITY_TYPES,
+    payload: activitiesService.getActivityTypes(organizationId),
   });
 };
 

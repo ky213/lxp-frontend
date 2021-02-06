@@ -70,6 +70,13 @@ export const theme = createMuiTheme({
           border: `2px solid #42A678`,
         },
       },
+      multiline: {
+        borderRadius: '5px',
+        padding: 0,
+        '&$focused': {
+          border: `2px solid #42A678`,
+        },
+      },
     },
     MuiInputLabel: {
       root: {

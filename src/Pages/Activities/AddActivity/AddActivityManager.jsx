@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import { getPrograms } from 'Store/Reducers/programs';
 import { getActiveLearners } from 'Store/Reducers/users';
 import { getCourses } from 'Store/Reducers/courses';
+import { getActivityTypes } from 'Store/Reducers/activities';
 import {
   Grid,
   PageLayout,
@@ -30,7 +31,7 @@ export const AddEditActivity = props => {
   const [courseSearch, setCourseSearch] = useState(false);
   const [learnerSearch, setLearnerSearch] = useState(false);
 
-  const { programs, courses, learners, profile } = props;
+  const { activities, programs, courses, learners, profile } = props;
 
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
@@ -110,15 +111,26 @@ export const AddEditActivity = props => {
                 fullWidth
                 required
               />
+              <FormControl style={{ margin: '10px 0 25px 0' }} required fullWidth>
+                <Label>Activity type</Label>
+                <Field
+                  component={Select}
+                  name="activityTypeId"
+                  onOpen={() => props.getActivityTypes(profile.organizationId)}
+                >
+                  {activities.activityTypes.map(({ activityTypeName, activityTypeId }) => (
+                    <MenuItem value={activityTypeId} key={activityTypeId}>
+                      {activityTypeName}
+                    </MenuItem>
+                  ))}
+                </Field>
+              </FormControl>
+
               <Field
                 id="totalPoints"
                 name="totalPoints"
                 label="Total points"
                 type="number"
-                min={0}
-                InputProps={{
-                  min: 0,
-                }}
                 component={TextField}
                 error={touched.totalPoints && Boolean(errors.totalPoints)}
                 helperText={touched.totalPoints && errors.totalPoints}
@@ -133,11 +145,14 @@ export const AddEditActivity = props => {
                 error={touched.description && Boolean(errors.description)}
                 helperText={touched.description && errors.description}
                 fullWidth
+                multiline
+                rows={4}
+                rowsMax={4}
               />
               <Field id="start" name="start" label="From" component={DateTimePicker} />
               <Field id="start" name="start" label="To" component={DateTimePicker} />
               <Label style={{ marginBottom: '8px' }}>Repeat?</Label>
-              <RadioGroup label="position" name="position" defaultValue="yes" row>
+              <RadioGroup defaultValue="yes" row>
                 <FormControlLabel
                   label="Yes"
                   labelPlacement="end"
@@ -153,14 +168,6 @@ export const AddEditActivity = props => {
                   disabled={isSubmitting}
                 />
               </RadioGroup>
-              <FormControl fullWidth style={{ marginTop: '10px' }}>
-                <Label>Activity type</Label>
-                <Field component={Select} name="activityTypeId" fullWidth>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Field>
-              </FormControl>
               <Label style={{ margin: '25px 0 10px 0' }}>Visibility</Label>
               <RadioGroup label="position" name="position" defaultValue={'true'} row>
                 <FormControlLabel
@@ -292,6 +299,7 @@ export const AddEditActivity = props => {
 
 const mapStateToProps = state => ({
   profile: state.authentication.profile,
+  activities: state.activities,
   programs: state.programs,
   courses: state.courses,
   learners: state.users,
@@ -301,6 +309,7 @@ const mapDispatchToProps = {
   getPrograms,
   getCourses,
   getActiveLearners,
+  getActivityTypes,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditActivity);

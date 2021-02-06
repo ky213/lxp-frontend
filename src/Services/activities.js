@@ -18,6 +18,12 @@ export function getActivitiesByLearner(organizationId, employeeId, userId) {
 
   return axios.get(`/activities/byLearner?${query}`);
 }
+
+export function getActivityTypes(organizationId) {
+  const query = buildQuery({ organizationId });
+
+  return axios.get(`/activities/types?${query}`);
+}
 export function createActivity(activityId, selectedOrganizationId) {
   return axios.get(`/activities/${activityId}?selectedOrganizationId=${selectedOrganizationId}`);
 }

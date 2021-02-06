@@ -11,3 +11,12 @@ export function getPorgramDirectors(filterOrganizationId, filterName, pageId, re
   });
   return axios.get(`/cm/filter?${query}`);
 }
+
+export function getActiveLearners(filterOrganizationId, filterProgramId) {
+  let query = buildQuery({
+    filterOrganizationId,
+    filterProgramId,
+  });
+
+  return axios.get(`/learners/filterActive?${query}`);
+}

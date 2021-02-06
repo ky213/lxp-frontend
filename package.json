@@ -50,6 +50,7 @@
     "redux-multi": "^0.1.12",
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.3.0",
+    "rrule": "^2.6.8",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.8"

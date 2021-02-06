@@ -22,6 +22,7 @@ export { default as DialogTitle } from '@material-ui/core/DialogTitle';
 export { default as FormControlLabel } from '@material-ui/core/FormControlLabel';
 export { default as RadioGroup } from '@material-ui/core/RadioGroup';
 export { default as Radio } from '@material-ui/core/Radio';
+export { default as Select } from '@material-ui/core/Select';
 
 //Icons
 export { default as CloseIcon } from '@material-ui/icons/Close';
@@ -44,6 +45,7 @@ export { FileDrop } from './FileDrop';
 export { default as TextEditor } from './Common/TextEditor';
 export { default as NotificationMiddleware } from './NotificationMiddleware';
 export { NoDataPlaceholder } from './NoDataPlaceholder';
+export { RRuleGenerator } from './RRuleGenerator';
 
 //Wrappers
 export { default as ErrorBoundary } from './ErrorBoundry';

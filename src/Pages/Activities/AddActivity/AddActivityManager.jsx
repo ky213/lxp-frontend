@@ -6,6 +6,7 @@ import { Autocomplete } from 'formik-material-ui-lab';
 import { DateTimePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
+import moment from 'moment';
 import * as Yup from 'yup';
 
 import { getPrograms } from 'Store/Reducers/programs';
@@ -23,6 +24,7 @@ import {
   MenuItem,
   FormControl,
   CircularProgress,
+  RRuleGenerator,
   TextField as BaseTextField,
 } from 'Components';
 
@@ -55,6 +57,33 @@ export const AddEditActivity = props => {
     totalPoints: 7,
     isPublic: true,
   };
+
+  const validationSchema = Yup.object().shape({
+    program: Yup.array().min(1, 'You need to select a program'),
+    priority: Yup.string().required('You need to select a priority'),
+    activityName: Yup.string().required('You need to enter a name for the activity'),
+    start: Yup.date().required('Starting time of the activity is required'),
+    activityType: Yup.string().required('You need to select the activity type'),
+    repeat: Yup.boolean(),
+    end: Yup.date()
+      .required('Ending time of the activity is required')
+      .when('start', (start, schema) =>
+        schema.min(
+          start,
+          ({ min }) => `Ending time must be greater than the activity starting time (${moment(min).format('LLLL')})`
+        )
+      ),
+    courses: Yup.array().when('priority', {
+      is: '2',
+      then: Yup.array().min(1, 'You need to select a course'),
+    }),
+    learners: Yup.array().when('priority', {
+      is: '3',
+      then: Yup.array().min(1, 'You need to select a learner'),
+    }),
+    totalPoints: Yup.number().min(0).required('You need to set total points').default(0),
+    isPublic: Yup.boolean(),
+  });
 
   return (
     <PageLayout title="Add activity" fullWidth>
@@ -152,7 +181,7 @@ export const AddEditActivity = props => {
               <Field id="start" name="start" label="From" component={DateTimePicker} />
               <Field id="start" name="start" label="To" component={DateTimePicker} />
               <Label style={{ marginBottom: '8px' }}>Repeat?</Label>
-              <RadioGroup defaultValue="yes" row>
+              <RadioGroup defaultValue="no" row>
                 <FormControlLabel
                   label="Yes"
                   labelPlacement="end"
@@ -168,6 +197,8 @@ export const AddEditActivity = props => {
                   disabled={isSubmitting}
                 />
               </RadioGroup>
+
+              <RRuleGenerator />
               <Label style={{ margin: '25px 0 10px 0' }}>Visibility</Label>
               <RadioGroup label="position" name="position" defaultValue={'true'} row>
                 <FormControlLabel

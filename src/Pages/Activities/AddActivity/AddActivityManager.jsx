@@ -25,6 +25,7 @@ import {
   FormControl,
   CircularProgress,
   RRuleGenerator,
+  Preloader,
   TextField as BaseTextField,
 } from 'Components';
 
@@ -85,6 +86,8 @@ export const AddEditActivity = props => {
     isPublic: Yup.boolean(),
     priority: Yup.number(),
   });
+
+  // if (activities.loading && activities.activityTypes.length > 0) return <Preloader />;
 
   return (
     <PageLayout title="Add activity" fullWidth>

@@ -90,10 +90,10 @@ export const getActivityTypes = organizationId => dispatch => {
   });
 };
 
-export const getOneActivity = (organizationId, programId) => dispatch => {
+export const getOneActivity = (organizationId, activityId) => dispatch => {
   dispatch({
     type: ACTIVITIES_ACTIONS.GET_ONE,
-    payload: activitiesService.getOneActivity(organizationId, programId),
+    payload: activitiesService.getOneActivity(organizationId, activityId),
   });
 };
 export const createActivity = activityData => dispatch => {
@@ -107,6 +107,13 @@ export const updateActivity = activityData => dispatch => {
   dispatch({
     type: ACTIVITIES_ACTIONS.UPDATE,
     payload: activitiesService.updateActivity(activityData),
+  });
+};
+
+export const deleteActivity = activityId => dispatch => {
+  dispatch({
+    type: ACTIVITIES_ACTIONS.DELETE,
+    payload: activitiesService.deleteActivity(activityId),
   });
 };
 

@@ -3,8 +3,8 @@ import axios from 'axios';
 import { AUTH_TOKEN_KEY, TIMEOUT } from './constants';
 
 axios.defaults.timeout = TIMEOUT;
-// axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-axios.defaults.baseURL = 'https://api.staging.lxpia.com/api';
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+// axios.defaults.baseURL = 'https://api.staging.lxpia.com/api';
 
 export default clearAuthentication => {
   const onRequestSuccess = config => {

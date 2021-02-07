@@ -2,15 +2,15 @@ import axios from 'axios';
 
 import { buildQuery } from 'Utils/buildQuery';
 
-export function getActivities(organizationId, employeeId, userId, from, to) {
-  const query = buildQuery({ organizationId, employeeId, userId, from, to });
+export function getActivities(selectedOrganizationId, employeeId, userId, from, to) {
+  const query = buildQuery({ selectedOrganizationId, employeeId, userId, from, to });
 
   return axios.get(`/activities/?${query}`);
 }
-export function getOneActivity(organizationId, activityId) {
-  const query = buildQuery({ organizationId, activityId });
+export function getOneActivity(selectedOrganizationId, activityId) {
+  const query = buildQuery({ selectedOrganizationId });
 
-  return axios.get(`/activities/${activityId}?selectedOrganizationId=${organizationId}`);
+  return axios.get(`/activities/${activityId}?${query}`);
 }
 
 export function getActivitiesByLearner(organizationId, employeeId, userId) {
@@ -31,6 +31,6 @@ export function updateActivity(activityData) {
   return axios.put(`/activities`, activityData);
 }
 
-export function deleteActivity(activityId, selectedOrganizationId) {
-  return axios.get(`/activities`);
+export function deleteActivity(activityId) {
+  return axios.put(`/activities/${activityId}/status`, { statusId: 3 });
 }

@@ -23,8 +23,8 @@ const Activities = props => {
   const isLearner = profile.role === USER_ROLES.LEARNER;
 
   useEffect(() => {
-    const from = moment().format(DATE_FORMAT.DEFAULT);
-    const to = moment().format(DATE_FORMAT.DEFAULT);
+    const from = moment().startOf('month').format(DATE_FORMAT.DEFAULT);
+    const to = moment().endOf('month').format(DATE_FORMAT.DEFAULT);
 
     if (isLearner) props.getActivitiesByLearner(profile.organizationId, profile.employeeId, profile.userId);
     else props.getActivities(profile.organizationId, profile.employeeId, profile.userId, from, to);
@@ -117,11 +117,7 @@ const Activities = props => {
       </div>
       <div className={classes.itemsList}>
         <div className={classes.containerItems}>
-          {activities.length > 0 && activities != null && activities != undefined ? (
-            activityCards
-          ) : (
-            <NoDataPlaceholder message="no activities yet" />
-          )}
+          {activities.allActivities.length > 0 ? activityCards : <NoDataPlaceholder message="no activities yet" />}
         </div>
       </div>
     </div>

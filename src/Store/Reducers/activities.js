@@ -94,17 +94,17 @@ export const getOneActivity = (organizationId, programId) => dispatch => {
     payload: activitiesService.getOneActivity(organizationId, programId),
   });
 };
-export const createActivity = programData => dispatch => {
+export const createActivity = activityData => dispatch => {
   dispatch({
     type: ACTIVITIES_ACTIONS.CREATE,
-    payload: activitiesService.createActivity(programData),
+    payload: activitiesService.createActivity(activityData),
   });
 };
 
-export const updateActivity = programData => dispatch => {
+export const updateActivity = activityData => dispatch => {
   dispatch({
     type: ACTIVITIES_ACTIONS.UPDATE,
-    payload: activitiesService.updateActivity(programData),
+    payload: activitiesService.updateActivity(activityData),
   });
 };
 

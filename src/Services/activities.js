@@ -24,13 +24,13 @@ export function getActivityTypes(organizationId) {
 
   return axios.get(`/activities/types?${query}`);
 }
-export function createActivity(activityId, selectedOrganizationId) {
-  return axios.get(`/activities/${activityId}?selectedOrganizationId=${selectedOrganizationId}`);
+export function createActivity(activityData) {
+  return axios.post(`/activities`, activityData);
 }
-export function updateActivity(activityId, selectedOrganizationId) {
-  return axios.get(`/activities/${activityId}?selectedOrganizationId=${selectedOrganizationId}`);
+export function updateActivity(activityData) {
+  return axios.put(`/activities`, activityData);
 }
 
 export function deleteActivity(activityId, selectedOrganizationId) {
-  return axios.get(`/activities/${activityId}?selectedOrganizationId=${selectedOrganizationId}`);
+  return axios.get(`/activities`);
 }

@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import { getPrograms } from 'Store/Reducers/programs';
 import { getActiveLearners } from 'Store/Reducers/users';
 import { getCourses } from 'Store/Reducers/courses';
-import { getActivityTypes } from 'Store/Reducers/activities';
+import { getActivityTypes, createActivity, updateActivity } from 'Store/Reducers/activities';
 import {
   Grid,
   PageLayout,
@@ -36,7 +36,11 @@ export const AddEditActivity = props => {
   const { activities, programs, courses, learners, profile } = props;
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
+    console.log({ ...values, programId: values.programId.programId });
+
+    if (activities.currentActivity) props.updateActivity(values);
+    else props.createActivity({ ...values, programId: values.programId.programId });
+
     setSubmitting(false);
   };
 
@@ -45,7 +49,6 @@ export const AddEditActivity = props => {
     name: 'xxxxx',
     start: '2021-02-09T23:00:00.000Z',
     end: '2021-02-09T23:00:00.000Z',
-    priority: 1,
     activityTypeId: '2',
     location: 'xxxx',
     description: 'xxxxxxx',
@@ -56,12 +59,12 @@ export const AddEditActivity = props => {
     organizationId: 'b5cc3af9-334a-48dc-abbf-05a966bc648d',
     totalPoints: 7,
     isPublic: true,
+    priority: 1,
   };
 
   const validationSchema = Yup.object().shape({
-    program: Yup.array().min(1, 'You need to select a program'),
-    priority: Yup.string().required('You need to select a priority'),
-    activityName: Yup.string().required('You need to enter a name for the activity'),
+    programId: Yup.array().min(1, 'You need to select a program'),
+    name: Yup.string().required('You need to enter a name for the activity'),
     start: Yup.date().required('Starting time of the activity is required'),
     activityType: Yup.string().required('You need to select the activity type'),
     repeat: Yup.boolean(),
@@ -73,16 +76,11 @@ export const AddEditActivity = props => {
           ({ min }) => `Ending time must be greater than the activity starting time (${moment(min).format('LLLL')})`
         )
       ),
-    courses: Yup.array().when('priority', {
-      is: '2',
-      then: Yup.array().min(1, 'You need to select a course'),
-    }),
-    learners: Yup.array().when('priority', {
-      is: '3',
-      then: Yup.array().min(1, 'You need to select a learner'),
-    }),
+    courses: Yup.array(),
+    participants: Yup.array(),
     totalPoints: Yup.number().min(0).required('You need to set total points').default(0),
     isPublic: Yup.boolean(),
+    priority: Yup.number(),
   });
 
   return (
@@ -101,7 +99,6 @@ export const AddEditActivity = props => {
                 options={programs.programs}
                 loading={programs.loading}
                 error={touched.programId && Boolean(errors.programId)}
-                error={touched.programId && Boolean(errors.programId)}
                 helperText={touched.programId && errors.programId}
                 onOpen={() => {
                   setProgramSearch(true);
@@ -114,8 +111,6 @@ export const AddEditActivity = props => {
                   <BaseTextField
                     {...params}
                     label="Program"
-                    error={touched.programId && Boolean(errors.programId)}
-                    helperText={touched.programId && errors.programId}
                     required
                     InputProps={{
                       ...params.InputProps,
@@ -130,13 +125,13 @@ export const AddEditActivity = props => {
                 )}
               />
               <Field
-                id="activityName"
-                name="activityName"
+                id="name"
+                name="name"
                 label="Activty name"
                 placeholder="e.g: brainstorm new ideas "
                 component={TextField}
-                error={touched.activityName && Boolean(errors.activityName)}
-                helperText={touched.activityName && errors.activityName}
+                error={touched.name && Boolean(errors.name)}
+                helperText={touched.name && errors.name}
                 fullWidth
                 required
               />
@@ -178,8 +173,14 @@ export const AddEditActivity = props => {
                 rows={4}
                 rowsMax={4}
               />
-              <Field id="start" name="start" label="From" component={DateTimePicker} />
-              <Field id="start" name="start" label="To" component={DateTimePicker} />
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <Field id="start" name="start" label="From" component={DateTimePicker} fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <Field id="start" name="start" label="To" component={DateTimePicker} fullWidth />
+                </Grid>
+              </Grid>
               <Label style={{ marginBottom: '8px' }}>Repeat?</Label>
               <RadioGroup
                 defaultValue={'no'}
@@ -236,7 +237,7 @@ export const AddEditActivity = props => {
                 error={touched.courses && Boolean(errors.courses)}
                 required
                 multiple
-                disabled={!values.programId}
+                disabled={values.programId.length === 0}
                 style={{ marginTop: '15px' }}
                 onOpen={() => {
                   setCourseSearch(true);
@@ -274,7 +275,7 @@ export const AddEditActivity = props => {
                 style={{ marginTop: '10px' }}
                 required
                 multiple
-                disabled={!values.programId}
+                disabled={values.programId.length === 0}
                 onOpen={() => {
                   setLearnerSearch(true);
                   props.getActiveLearners(profile.organizationId, values.programId);
@@ -332,6 +333,8 @@ const mapDispatchToProps = {
   getCourses,
   getActiveLearners,
   getActivityTypes,
+  createActivity,
+  updateActivity,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditActivity);

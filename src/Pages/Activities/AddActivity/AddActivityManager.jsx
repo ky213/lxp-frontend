@@ -36,9 +36,12 @@ export const AddEditActivity = props => {
   const { activities, programs, courses, learners, profile } = props;
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log({ ...values, programId: values.programId.programId });
-
-    if (activities.currentActivity) props.updateActivity(values);
+    if (activities.currentActivity)
+      props.updateActivity({
+        ...values,
+        activityId: activities.currentActivity.activityId[0],
+        programId: values.programId.programId,
+      });
     else props.createActivity({ ...values, programId: values.programId.programId });
 
     setSubmitting(false);
@@ -178,7 +181,7 @@ export const AddEditActivity = props => {
                   <Field id="start" name="start" label="From" component={DateTimePicker} fullWidth />
                 </Grid>
                 <Grid item xs={6}>
-                  <Field id="start" name="start" label="To" component={DateTimePicker} fullWidth />
+                  <Field id="end" name="end" label="To" component={DateTimePicker} fullWidth />
                 </Grid>
               </Grid>
               <Label style={{ marginBottom: '8px' }}>Repeat?</Label>

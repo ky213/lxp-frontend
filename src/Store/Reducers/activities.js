@@ -53,11 +53,13 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
         activityTypes: payload.data,
       };
     }
-    case SUCCESS(ACTIVITIES_ACTIONS.GET_ONE):
-    case SUCCESS(ACTIVITIES_ACTIONS.UPDATE): {
+    case SUCCESS(ACTIVITIES_ACTIONS.GET_ONE): {
       return { ...state, loading: false, currentActivity: payload.data };
     }
     case SUCCESS(ACTIVITIES_ACTIONS.CREATE): {
+      return { ...state, currentActivity: payload.data, loading: false, success: true };
+    }
+    case SUCCESS(ACTIVITIES_ACTIONS.UPDATE): {
       return { ...state, loading: false, success: true };
     }
     case ACTIVITIES_ACTIONS.RESET: {

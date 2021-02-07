@@ -1,29 +1,31 @@
-import React from 'react';
-import { RRule, RRuleSet, rrulestr } from 'rrule';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import { Grid, Select, MenuItem } from 'Components';
+import RRuleGenerator from 'react-rrule-generator';
 
-const RRuleGenerator = props => {
-  const rule = new RRule({
-    freq: RRule.WEEKLY,
-    interval: 5,
-    byweekday: [RRule.MO, RRule.FR],
-    dtstart: new Date(Date.UTC(2012, 1, 1, 10, 30)),
-    until: new Date(Date.UTC(2012, 12, 31)),
-  });
+import './styles.css';
+
+const RRule = props => {
+  useEffect(() => {
+    return () => {
+      props.onChange(null);
+    };
+  }, []);
 
   return (
-    <Grid container spacing={2} style={{ width: '100%' }}>
-      <Grid item xs={5}>
-        Repeat
-      </Grid>
-      <Grid item xs={5}>
-        <Select fullWidth>
-          <MenuItem value={'YEARLY'}>Yearly</MenuItem>
-        </Select>
-      </Grid>
-    </Grid>
+    <RRuleGenerator
+      value={props.rrule}
+      onChange={props.onChange}
+      config={{
+        weekStartsOnSunday: true,
+      }}
+    />
   );
 };
 
-export default RRuleGenerator;
+export default RRule;
+
+RRule.propTypes = {
+  rrule: PropTypes.string,
+  onChange: PropTypes.func,
+};

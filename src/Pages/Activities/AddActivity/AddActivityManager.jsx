@@ -90,7 +90,7 @@ export const AddEditActivity = props => {
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ errors, touched, values, handleChange, setFieldValue, isSubmitting }) => (
-            <Form style={{ width: '50%', margin: 'auto' }}>
+            <Form style={{ width: '75%', margin: 'auto' }}>
               <Field
                 id="programId"
                 name="programId"
@@ -181,7 +181,11 @@ export const AddEditActivity = props => {
               <Field id="start" name="start" label="From" component={DateTimePicker} />
               <Field id="start" name="start" label="To" component={DateTimePicker} />
               <Label style={{ marginBottom: '8px' }}>Repeat?</Label>
-              <RadioGroup defaultValue="no" row>
+              <RadioGroup
+                defaultValue={'no'}
+                onChange={({ target }) => setFieldValue('repeat', target.value === 'yes')}
+                row
+              >
                 <FormControlLabel
                   label="Yes"
                   labelPlacement="end"
@@ -197,8 +201,12 @@ export const AddEditActivity = props => {
                   disabled={isSubmitting}
                 />
               </RadioGroup>
-
-              <RRuleGenerator />
+              {values.repeat && (
+                <RRuleGenerator
+                  onChange={rrule => setFieldValue('rrule', rrule)}
+                  rrule={activities.currentActivity?.rrule}
+                />
+              )}
               <Label style={{ margin: '25px 0 10px 0' }}>Visibility</Label>
               <RadioGroup label="position" name="position" defaultValue={'true'} row>
                 <FormControlLabel
@@ -216,23 +224,6 @@ export const AddEditActivity = props => {
                   disabled={isSubmitting}
                 />
               </RadioGroup>
-              {/* <Label style={{ marginTop: '20px' }}>Assign to</Label>
-              <RadioGroup label="position" name="position" defaultValue={'program'} row>
-                <FormControlLabel
-                  label="Course"
-                  labelPlacement="end"
-                  value="course"
-                  control={<Radio disabled={isSubmitting} />}
-                  disabled={isSubmitting}
-                />
-                <FormControlLabel
-                  label="Learner"
-                  labelPlacement="end"
-                  value="learner"
-                  control={<Radio disabled={isSubmitting} />}
-                  disabled={isSubmitting}
-                />
-              </RadioGroup> */}
               <Field
                 id="courses"
                 name="courses"

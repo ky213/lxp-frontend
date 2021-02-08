@@ -6,7 +6,7 @@ import { NavLink, useParams, withRouter } from 'react-router-dom';
 
 import classes from './Activity.module.css';
 import { setIsFetching } from 'Store/Reducers/common';
-import { getOneActivity } from 'Store/Reducers/activities';
+import { getOneActivity, deleteActivity } from 'Store/Reducers/activities';
 import Chat from './Chat/Chat';
 import DeleteModal from 'Components/DeleteModal/DeleteModal';
 import { Preloader } from 'Components';
@@ -53,7 +53,13 @@ const Activity = props => {
   }, [props.activity]);
 
   const handleDelete = answer => {
-    setOpenDeleteDialog(false);
+    if (answer === 'ok') {
+      props.deleteActivity(urlParams.activityId);
+      if (!props.loading) {
+        setOpenDeleteDialog(false);
+        props.history.goBack();
+      }
+    }
   };
 
   if (props.loading) return <Preloader />;
@@ -177,6 +183,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setIsFetching,
   getOneActivity,
+  deleteActivity,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Activity);

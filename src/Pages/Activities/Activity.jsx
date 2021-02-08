@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, useParams, withRouter } from 'react-router-dom';
 
 import classes from './Activity.module.css';
-import { setIsFetching } from 'Store/Reducers/common';
 import { getOneActivity, deleteActivity } from 'Store/Reducers/activities';
 import Chat from './Chat/Chat';
 import DeleteModal from 'Components/DeleteModal/DeleteModal';
@@ -32,7 +31,7 @@ const Activity = props => {
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    props.getOneActivity(urlParams.activityId, props.profile.organizationId);
+    props.getOneActivity(props.profile.organizationId, urlParams.activityId);
   }, []);
 
   const [daysLag, setDaysLag] = useState(0);
@@ -183,7 +182,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  setIsFetching,
   getOneActivity,
   deleteActivity,
 };

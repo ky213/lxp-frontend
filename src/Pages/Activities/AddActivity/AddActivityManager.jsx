@@ -50,21 +50,20 @@ export const AddEditActivity = props => {
   }, []);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    if (activities.currentActivity)
-      props.updateActivity({
-        ...values,
-        activityId: activities.currentActivity.activityId[0],
-        programId: values.programId.programId,
-      });
-    else props.createActivity({ ...values, programId: values.programId.programId });
+    console.log(values);
+    // if (activities.currentActivity)
+    //   props.updateActivity({
+    //     ...values,
+    //     activityId: activities.currentActivity.activityId[0],
+    //     programId: values.programId.programId,
+    //   });
+    // else props.createActivity({ ...values, programId: values.programId.programId });
 
     setSubmitting(false);
   };
 
   const initialValues = {
     ...activities.currentActivity,
-    programId: [{ programId: 'xxxx', name: 'amu name' }],
-    priority: 1,
   };
 
   const validationSchema = Yup.object().shape({
@@ -210,13 +209,10 @@ export const AddEditActivity = props => {
                 />
               </RadioGroup>
               {values.repeat && (
-                <RRuleGenerator
-                  onChange={rrule => setFieldValue('rrule', rrule)}
-                  rrule={activities.currentActivity?.rrule}
-                />
+                <RRuleGenerator onChange={rrule => setFieldValue('rrule', rrule)} rrule={values.rrule} />
               )}
-              <Label style={{ margin: '25px 0 10px 0' }}>Visibility</Label>
-              <RadioGroup label="position" name="position" defaultValue={'true'} row>
+              <Label style={{ margin: '20px 0 10px 0' }}>Visibility</Label>
+              <RadioGroup name="isPublic" defaultValue={'true'} row>
                 <FormControlLabel
                   label="Public"
                   labelPlacement="end"
@@ -232,80 +228,113 @@ export const AddEditActivity = props => {
                   disabled={isSubmitting}
                 />
               </RadioGroup>
-              <Field
-                id="courses"
-                name="courses"
-                component={Autocomplete}
-                open={courseSearch}
-                getOptionSelected={(option, value) => option.courseId === value.courseId}
-                getOptionLabel={option => `${option.name}`}
-                options={courses.courses}
-                loading={courses.loading}
-                error={touched.courses && Boolean(errors.courses)}
-                required
-                multiple
-                disabled={values.programId.length === 0}
-                style={{ marginTop: '15px' }}
-                onOpen={() => {
-                  setCourseSearch(true);
-                  props.getCourses(profile.organizationId);
-                }}
-                onClose={() => {
-                  setCourseSearch(false);
-                }}
-                renderInput={params => (
-                  <BaseTextField
-                    {...params}
-                    label="Courses"
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {courses.loading ? <CircularProgress color="primary" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
-                )}
-              />
-              <Field
-                id="participants"
-                name="participants"
-                component={Autocomplete}
-                open={learnerSearch}
-                getOptionSelected={(option, value) => option.userId === value.userId}
-                getOptionLabel={option => `${option.name} ${option.surname}`}
-                options={learners.users}
-                loading={learners.loading}
-                error={touched.learners && Boolean(errors.learners)}
-                style={{ marginTop: '10px' }}
-                required
-                multiple
-                disabled={values.programId.length === 0}
-                onOpen={() => {
-                  setLearnerSearch(true);
-                  props.getActiveLearners(profile.organizationId, values.programId);
-                }}
-                onClose={() => {
-                  setLearnerSearch(false);
-                }}
-                renderInput={params => (
-                  <BaseTextField
-                    {...params}
-                    label="Learners"
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {learners.loading ? <CircularProgress color="primary" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
-                )}
-              />
+              <Label style={{ margin: '20px 0 10px 0' }}>Assign to</Label>
+              <RadioGroup
+                name="priority"
+                defaultValue={`${values.priority || 1}`}
+                onChange={({ target }) => setFieldValue('priority', parseInt(target.value))}
+                row
+              >
+                <FormControlLabel
+                  label="Program"
+                  labelPlacement="end"
+                  value="1"
+                  control={<Radio disabled={isSubmitting} />}
+                  disabled={isSubmitting}
+                />
+                <FormControlLabel
+                  label="Course"
+                  labelPlacement="end"
+                  value="2"
+                  control={<Radio disabled={isSubmitting} />}
+                  disabled={isSubmitting}
+                />
+                <FormControlLabel
+                  label="Learner"
+                  labelPlacement="end"
+                  value="3"
+                  control={<Radio disabled={isSubmitting} />}
+                  disabled={isSubmitting}
+                />
+              </RadioGroup>
+              {values.priority == 2 && (
+                <Field
+                  id="courses"
+                  name="courses"
+                  component={Autocomplete}
+                  open={courseSearch}
+                  getOptionSelected={(option, value) => option.courseId === value.courseId}
+                  getOptionLabel={option => `${option.name}`}
+                  options={courses.courses}
+                  loading={courses.loading}
+                  error={touched.courses && Boolean(errors.courses)}
+                  required
+                  multiple
+                  disabled={values.programId?.length === 0}
+                  style={{ marginTop: '15px' }}
+                  onOpen={() => {
+                    setCourseSearch(true);
+                    props.getCourses(profile.organizationId);
+                  }}
+                  onClose={() => {
+                    setCourseSearch(false);
+                  }}
+                  renderInput={params => (
+                    <BaseTextField
+                      {...params}
+                      label="Courses"
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {courses.loading ? <CircularProgress color="primary" size={20} /> : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              )}
+              {values.priority == 3 && (
+                <Field
+                  id="participants"
+                  name="participants"
+                  component={Autocomplete}
+                  open={learnerSearch}
+                  getOptionSelected={(option, value) => option.userId === value.userId}
+                  getOptionLabel={option => `${option.name} ${option.surname}`}
+                  options={learners.users}
+                  loading={learners.loading}
+                  error={touched.learners && Boolean(errors.learners)}
+                  style={{ marginTop: '10px' }}
+                  required
+                  multiple
+                  disabled={values.programId?.length === 0}
+                  onOpen={() => {
+                    setLearnerSearch(true);
+                    props.getActiveLearners(profile.organizationId, values.programId);
+                  }}
+                  onClose={() => {
+                    setLearnerSearch(false);
+                  }}
+                  renderInput={params => (
+                    <BaseTextField
+                      {...params}
+                      label="Learners"
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {learners.loading ? <CircularProgress color="primary" size={20} /> : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              )}
               <Grid>
                 <Button type="submit" variant="contained" color="primary" disabled={activities.loading}>
                   {activities.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}

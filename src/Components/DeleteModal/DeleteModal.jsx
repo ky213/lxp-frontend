@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
 
 import sheild from 'Assets/Images/shield.svg';
 
@@ -24,7 +25,14 @@ const DeleteModal = props => {
       <DialogContent>
         <img src={sheild} alt="alert_shield" style={{ display: 'block', margin: 'auto' }} />
       </DialogContent>
-      <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        <Typography color="error" variant="h5">
+          {props.title}
+        </Typography>
+        <Typography align="center" variant="subtitle2">
+          this operation may be irreversible
+        </Typography>
+      </DialogTitle>
       <DialogActions>
         <Button
           onClick={() => props.onClose('ok')}

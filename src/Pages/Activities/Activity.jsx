@@ -59,6 +59,8 @@ const Activity = props => {
         setOpenDeleteDialog(false);
         props.history.goBack();
       }
+    } else {
+      setOpenDeleteDialog(false);
     }
   };
 

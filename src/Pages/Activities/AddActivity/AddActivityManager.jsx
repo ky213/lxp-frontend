@@ -13,6 +13,7 @@ import * as Yup from 'yup';
 import { getPrograms } from 'Store/Reducers/programs';
 import { getActiveLearners } from 'Store/Reducers/users';
 import { getCourses } from 'Store/Reducers/courses';
+import { Attachements } from '../Components/Attachements';
 import {
   getActivityTypes,
   getOneActivity,
@@ -34,6 +35,7 @@ import {
   RRuleGenerator,
   Preloader,
   TextField as BaseTextField,
+  FileDrop,
 } from 'Components';
 
 export const AddEditActivity = props => {
@@ -335,18 +337,24 @@ export const AddEditActivity = props => {
                   )}
                 />
               )}
-              <Grid>
-                <Button type="submit" variant="contained" color="primary" disabled={activities.loading}>
-                  {activities.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  disabled={programs.loading}
-                  onClick={props.history.goBack}
-                >
-                  Cancel
-                </Button>
+              <Label style={{ margin: '20px 0 15px 0' }}>Add links & files</Label>
+              <Attachements activity={activities.currentActivity} />
+              <Grid container spacing={1}>
+                <Grid item>
+                  <Button type="submit" variant="contained" color="primary" disabled={activities.loading}>
+                    {activities.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    disabled={programs.loading}
+                    onClick={props.history.goBack}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
               </Grid>
             </Form>
           )}

@@ -11,7 +11,7 @@ import './styles.module.css';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
-const FileDrop = ({ fileTypes, getFiles, defaultImage }) => {
+const FileDrop = ({ fileTypes, getFiles, defaultImage, allowMultiple, disabled }) => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
@@ -32,6 +32,8 @@ const FileDrop = ({ fileTypes, getFiles, defaultImage }) => {
         acceptedFileTypes={fileTypes}
         onupdatefiles={setFiles}
         labelIdle='<span class="filepond--label-action"><img src="/static/media/upload.1e37f923.svg"> Upload file</span> or drag and drop the file here '
+        allowMultiple={allowMultiple}
+        disabled={disabled}
       />
     </div>
   );
@@ -44,4 +46,6 @@ FileDrop.propTypes = {
   fileTypes: PropTypes.arrayOf(PropTypes.string),
   defaultImage: PropTypes.string,
   getFiles: PropTypes.func,
+  allowMultiple: PropTypes.bool,
+  disabled: PropTypes.bool,
 };

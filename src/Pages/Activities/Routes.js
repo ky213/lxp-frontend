@@ -21,7 +21,7 @@ const ActivityRoutes = ({ match, profile }) => {
         path={`/activities/add`}
         component={profile.roleId === USER_ROLES.LEARNER ? AddActivity : AddActivityManager}
       />
-      <Route exact path={`/activities/edit/:id`} component={EditActivity} />
+      <Route exact path={`/activities/edit/:activityId`} component={AddActivityManager} />
       <Route component={PageNotFound} />
     </Switch>
   );

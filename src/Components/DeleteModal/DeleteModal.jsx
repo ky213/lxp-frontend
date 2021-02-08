@@ -1,33 +1,52 @@
 import React from 'react';
-import classes from './DeleteModal.module.css';
-import Aos from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import shield from '../../Assets/Images/shield.svg';
 
-const DeleteActivity = (props) => {
-    const {t, i18n} = useTranslation();
+import { colors } from 'Themes/Colors';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-    useEffect(() => {
-        Aos.init({ duration: 1000 });
-    }, []);
+import sheild from 'Assets/Images/shield.svg';
 
-    return(
-        <div className={classes.backGray}>
-            <div className={classes.modal} data-aos="fade-down">
-                <button className={classes.close} onClick={()=>props.setIsShowDeleteModal(false)}>×</button>
-                <img src={shield}/>
-                <h1>{props.title}</h1>
-                <span>{props.sub}</span>
-                <div className={classes.buttons}>
-                    <button className={classes.del}>{props.deleteText}</button>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <button className={classes.cancel} onClick={()=>props.setIsShowDeleteModal(false)}>{props.cancelText}</button>
-                </div>
-            </div>
-        </div>
-    );
-}
+const DeleteModal = props => {
+  const { t, i18n } = useTranslation();
 
-export default DeleteActivity;
+  return (
+    <Dialog
+      open={props.open}
+      onClose={props.onClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogContent>
+        <img src={sheild} alt="alert_shield" style={{ display: 'block', margin: 'auto' }} />
+      </DialogContent>
+      <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
+      <DialogActions>
+        <Button
+          onClick={props.onClose}
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: colors.error, color: 'white' }}
+        >
+          Delete
+        </Button>
+        <Button onClick={props.onClose} variant="contained" color="primary" size="large" autoFocus>
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default DeleteModal;
+
+DeleteModal.propTypes = {
+  open: PropTypes.bool,
+  title: PropTypes.string,
+  onClose: PropTypes.func,
+};

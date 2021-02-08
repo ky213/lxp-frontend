@@ -28,7 +28,6 @@ export const theme = createMuiTheme({
       shrink: true,
       disableRipple: true,
     },
-
     MuiInput: {
       disableUnderline: true,
     },
@@ -42,13 +41,13 @@ export const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        width: '146px',
-        height: '44px',
+        // width: '146px',
+        // height: '44px',
         borderRadius: '56px',
         fontWeight: '400',
         fontSize: '16px',
         textTransform: 'none',
-        margin: '1px 5px',
+        // margin: '1px 5px',
       },
     },
     MuiTextField: {

@@ -27,7 +27,7 @@ const StyledProgressSpan = styled.span`
 `;
 
 const Activity = props => {
-  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const urlParams = useParams();
   const { t, i18n } = useTranslation();
 
@@ -52,20 +52,22 @@ const Activity = props => {
     }
   }, [props.activity]);
 
+  const handleDelete = answer => {
+    setOpenDeleteDialog(false);
+  };
+
   if (props.loading) return <Preloader />;
 
   return (
     <div className={classes.main}>
       <div className={classes.container}>
-        {isShowDeleteModal && (
+        {
           <DeleteModal
-            setIsShowDeleteModal={setIsShowDeleteModal}
-            title={t('deleteActivity.title')}
-            sub={t('deleteActivity.sub')}
-            deleteText={t('deleteActivity.delete')}
-            cancelText={t('deleteActivity.cancel')}
+            open={openDeleteDialog}
+            title="Are you sure you want to delete this activity?"
+            onClose={handleDelete}
           />
-        )}
+        }
         <StyledLeftSide className={classes.leftSide} direction={props.direction}>
           <div className={classes.block + ' ' + classes.withoutPadding}>
             <div className={classes.infoBlock}>
@@ -123,7 +125,7 @@ const Activity = props => {
                   <i className="far fa-edit"></i>
                   {t('activityDetails.edit')}
                 </NavLink>
-                <button className={classes.removeBut} onClick={() => setIsShowDeleteModal(true)}>
+                <button className={classes.removeBut} onClick={() => setOpenDeleteDialog(true)}>
                   <i className="far fa-trash-alt"></i>
                   {t('activityDetails.delete')}
                 </button>

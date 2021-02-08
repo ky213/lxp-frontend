@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Select } from 'formik-material-ui';
 import { Autocomplete } from 'formik-material-ui-lab';
@@ -12,7 +13,13 @@ import * as Yup from 'yup';
 import { getPrograms } from 'Store/Reducers/programs';
 import { getActiveLearners } from 'Store/Reducers/users';
 import { getCourses } from 'Store/Reducers/courses';
-import { getActivityTypes, createActivity, updateActivity } from 'Store/Reducers/activities';
+import {
+  getActivityTypes,
+  getOneActivity,
+  createActivity,
+  updateActivity,
+  resetActivitiesState,
+} from 'Store/Reducers/activities';
 import {
   Grid,
   PageLayout,
@@ -33,8 +40,14 @@ export const AddEditActivity = props => {
   const [programSearch, setProgramSearch] = useState(false);
   const [courseSearch, setCourseSearch] = useState(false);
   const [learnerSearch, setLearnerSearch] = useState(false);
+  const urlParams = useParams();
 
   const { activities, programs, courses, learners, profile } = props;
+
+  useEffect(() => {
+    if (urlParams.activityId) props.getOneActivity(profile.organizationId, urlParams.activityId);
+    return props.resetActivitiesState;
+  }, []);
 
   const handleSubmit = (values, { setSubmitting }) => {
     if (activities.currentActivity)
@@ -49,20 +62,8 @@ export const AddEditActivity = props => {
   };
 
   const initialValues = {
-    programId: [],
-    name: 'xxxxx',
-    start: '2021-02-09T23:00:00.000Z',
-    end: '2021-02-09T23:00:00.000Z',
-    activityTypeId: '2',
-    location: 'xxxx',
-    description: 'xxxxxxx',
-    repeat: false,
-    participants: [],
-    courses: [],
-    rrule: null,
-    organizationId: 'b5cc3af9-334a-48dc-abbf-05a966bc648d',
-    totalPoints: 7,
-    isPublic: true,
+    ...activities.currentActivity,
+    programId: [{ programId: 'xxxx', name: 'amu name' }],
     priority: 1,
   };
 
@@ -306,8 +307,8 @@ export const AddEditActivity = props => {
                 )}
               />
               <Grid>
-                <Button type="submit" variant="contained" color="primary" disabled={programs.loading}>
-                  Save
+                <Button type="submit" variant="contained" color="primary" disabled={activities.loading}>
+                  {activities.loading ? <CircularProgress color="primary" size={20} /> : 'Save'}
                 </Button>
                 <Button
                   variant="contained"
@@ -339,8 +340,10 @@ const mapDispatchToProps = {
   getCourses,
   getActiveLearners,
   getActivityTypes,
+  getOneActivity,
   createActivity,
   updateActivity,
+  resetActivitiesState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditActivity);

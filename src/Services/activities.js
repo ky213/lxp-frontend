@@ -38,3 +38,8 @@ export function deleteActivity(activityId) {
 export function addActivityLink(activityId, url) {
   return axios.post(`/activities/addActivityLink`, { activityId, url });
 }
+
+export function addActivityFile(organizationId, fileData) {
+  const query = buildQuery({ organizationId });
+  return axios.post(`/activities/addActivityFile?${query}`, fileData);
+}

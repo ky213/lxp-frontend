@@ -8,6 +8,7 @@ export const ACTIVITIES_ACTIONS = {
   CREATE: 'activities/CREATE',
   UPDATE: 'activities/UPDATE',
   DELETE: 'activities/DELETE',
+  ADD_ACTIVITY_LINK: 'activities/ADD_ACTIVITY_LINK',
   RESET: 'activities/RESET',
 };
 
@@ -27,7 +28,8 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
     case REQUEST(ACTIVITIES_ACTIONS.GET_ONE):
     case REQUEST(ACTIVITIES_ACTIONS.GET_ACTIVITY_TYPES):
     case REQUEST(ACTIVITIES_ACTIONS.CREATE):
-    case REQUEST(ACTIVITIES_ACTIONS.UPDATE): {
+    case REQUEST(ACTIVITIES_ACTIONS.UPDATE):
+    case REQUEST(ACTIVITIES_ACTIONS.ADD_ACTIVITY_LINK): {
       return { ...state, loading: true, success: false, error: null };
     }
 
@@ -35,7 +37,8 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
     case FAILURE(ACTIVITIES_ACTIONS.GET_ONE):
     case FAILURE(ACTIVITIES_ACTIONS.GET_ACTIVITY_TYPES):
     case FAILURE(ACTIVITIES_ACTIONS.CREATE):
-    case FAILURE(ACTIVITIES_ACTIONS.UPDATE): {
+    case FAILURE(ACTIVITIES_ACTIONS.UPDATE):
+    case FAILURE(ACTIVITIES_ACTIONS.ADD_ACTIVITY_LINK): {
       return { ...state, loading: false, success: false, error: payload.error };
     }
 
@@ -60,6 +63,9 @@ const activitiesReducer = (state = initialState, { type, payload }) => {
       return { ...state, currentActivity: payload.data, loading: false, success: true };
     }
     case SUCCESS(ACTIVITIES_ACTIONS.UPDATE): {
+      return { ...state, loading: false, success: true };
+    }
+    case SUCCESS(ACTIVITIES_ACTIONS.ADD_ACTIVITY_LINK): {
       return { ...state, loading: false, success: true };
     }
     case ACTIVITIES_ACTIONS.RESET: {
@@ -115,6 +121,19 @@ export const deleteActivity = activityId => dispatch => {
     type: ACTIVITIES_ACTIONS.DELETE,
     payload: activitiesService.deleteActivity(activityId),
   });
+};
+
+export const addActivityLink = (organizationId, activityId, url) => async dispatch => {
+  const { value } = await dispatch({
+    type: ACTIVITIES_ACTIONS.ADD_ACTIVITY_LINK,
+    payload: activitiesService.addActivityLink(activityId, url),
+  });
+
+  if (value.data[0])
+    dispatch({
+      type: ACTIVITIES_ACTIONS.GET_ONE,
+      payload: activitiesService.getOneActivity(organizationId, activityId),
+    });
 };
 
 export const resetActivitiesState = () => ({

@@ -34,3 +34,7 @@ export function updateActivity(activityData) {
 export function deleteActivity(activityId) {
   return axios.put(`/activities/${activityId}/status`, { statusId: 3 });
 }
+
+export function addActivityLink(activityId, url) {
+  return axios.post(`/activities/addActivityLink`, { activityId, url });
+}

@@ -7,6 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 
 import { TextField, CircularProgress } from 'Components';
+import { addActivityLink } from 'Store/Reducers/activities';
 import uploadicon from 'Assets/Images/upload.svg';
 import classes from './styles.module.css';
 import { activities } from 'Store/Reducers';
@@ -14,6 +15,8 @@ import { activities } from 'Store/Reducers';
 const Attachements = props => {
   const fileInputRef = useRef(null);
   const [link, setLink] = useState('');
+
+  const { activities, profile } = props;
 
   const onDropHandler = (files, event) => {};
   const onFileInputChange = event => {
@@ -24,7 +27,8 @@ const Attachements = props => {
   };
 
   const handleAddLink = () => {
-    console.log(link);
+    console.log('LINK', link);
+    if (link) props.addActivityLink(profile.organizationId, activities.currentActivity.activityId, link);
   };
 
   return (
@@ -40,11 +44,19 @@ const Attachements = props => {
             </InputAdornment>
           ),
         }}
+        disabled={!activities.currentActivity}
         fullWidth
         required
       />
       <div>
-        <input onChange={onFileInputChange} ref={fileInputRef} type="file" className={classes.hidden} accept=".pdf" />
+        <input
+          onChange={onFileInputChange}
+          ref={fileInputRef}
+          type="file"
+          className={classes.hidden}
+          accept=".pdf"
+          disabled={!activities.currentActivity}
+        />
         <FileDrop
           className={classes.drop}
           draggingOverFrameClassName={classes.onDrag}
@@ -65,8 +77,11 @@ const Attachements = props => {
 
 const mapStateToProps = state => ({
   activities: state.activities,
+  profile: state.authentication.profile,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  addActivityLink,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Attachements);

@@ -10,16 +10,16 @@ import { TextField, CircularProgress } from 'Components';
 import { addActivityLink, addActivityFile } from 'Store/Reducers/activities';
 import uploadicon from 'Assets/Images/upload.svg';
 import classes from './styles.module.css';
-import { activities } from 'Store/Reducers';
 
 const Attachements = props => {
+  const linkInputRef = useRef('');
   const fileInputRef = useRef(null);
   const [link, setLink] = useState('');
 
   const { activities, profile } = props;
 
   useEffect(() => {
-    if (!activities.loading) setLink('');
+    if (!activities.loading) linkInputRef.current.children[0].value = '';
   }, [activities.loading]);
 
   const onDropHandler = (files, event) => {};
@@ -51,8 +51,8 @@ const Attachements = props => {
     <div className={classes.container}>
       <TextField
         onChange={event => setLink(event.target.value)}
-        defaultValue={link}
         InputProps={{
+          ref: linkInputRef,
           endAdornment: (
             <InputAdornment position="end">
               <IconButton color="primary" onClick={handleAddLink}>

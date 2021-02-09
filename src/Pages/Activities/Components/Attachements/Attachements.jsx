@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FileDrop } from 'react-file-drop';
 import Send from '@material-ui/icons/NearMe';
+import Delete from '@material-ui/icons/HighlightOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -16,7 +17,9 @@ const Attachements = props => {
   const fileInputRef = useRef(null);
   const [link, setLink] = useState('');
 
-  const { activities, profile } = props;
+  const { profile, activities } = props;
+  const links = activities.currentActivity?.links;
+  const files = activities.currentActivity?.files;
 
   useEffect(() => {
     if (!activities.loading) linkInputRef.current.children[0].value = '';
@@ -91,6 +94,20 @@ const Attachements = props => {
           </div>
           <p className={classes.dragText}>or grag and drop files here</p>
         </FileDrop>
+        <div className={classes.list}>
+          {files &&
+            links &&
+            [...links, ...files].map((element, index) => (
+              <div className={classes.link}>
+                <a href={element.url} target="_blank">
+                  {element.url}
+                </a>
+                <IconButton color="primary">
+                  <Delete />
+                </IconButton>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import Delete from '@material-ui/icons/HighlightOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 
-import { TextField, CircularProgress } from 'Components';
+import { TextField, CircularProgress, NoDataPlaceholder } from 'Components';
 import { addActivityLink, addActivityFile } from 'Store/Reducers/activities';
 import uploadicon from 'Assets/Images/upload.svg';
 import classes from './styles.module.css';
@@ -107,6 +107,7 @@ const Attachements = props => {
                 </IconButton>
               </div>
             ))}
+          {files && links && [...links, ...files].length === 0 && <NoDataPlaceholder message="no links, no files" />}
         </div>
       </div>
     </div>

@@ -338,7 +338,7 @@ export const AddEditActivity = props => {
                 />
               )}
               <Label style={{ margin: '20px 0 15px 0' }}>Add links & files</Label>
-              <Attachements activity={activities.currentActivity} />
+              <Attachements />
               <Grid container spacing={1}>
                 <Grid item>
                   <Button type="submit" variant="contained" color="primary" disabled={activities.loading}>
